@@ -1,0 +1,100 @@
+@charset "UTF-8";
+/*! reset.scss Copyright 2014@Tomohiro IKEDA*/
+ 
+ 
+ 
+// for option
+$isHTML5      : true !default;
+$isResponsive : true !default;
+$imgMaxWidth  : 100% !default;
+$isNoOutline  : true !default;
+$isPointer    : true !default;
+
+// for @viewport
+$viewportWidth    : extend-to-zoom 100% !default;
+$viewportZoom     : 1 !default;
+$viewportUserZoom : zoom !default;  // or fixed
+
+@if $isHTML5 {
+    html, body, div,
+    h1, h2, h3, h4, h5, h6,
+    p, ul, ol, dl, dt, dd,
+    table, th, td,
+    form, fieldset,
+    header, section, article, aside, footer, figure,
+    figcaption, nav {
+        margin  : 0px;
+        padding : 0px;
+    }
+
+    article, aside, canvas, details, figcaption, figure, 
+    footer, header, menu, nav, section, summary {
+        display : block;
+    }
+
+    @viewport {
+        width     : $viewportWidth;
+        zoom      : $viewportZoom;
+        user-zoom : $viewportUserZoom;
+    }
+
+} @else {
+    html, body, div,
+    h1, h2, h3, h4, h5, h6,
+    p, ul, ol, dl, dt, dd, 
+    table, th, td,
+    form, fieldset {
+        margin  : 0px;
+        padding : 0px;
+    }
+}
+
+@if $isResponsive {
+    img {max-width : $imgMaxWidth;}
+}
+
+@if $isNoOutline {
+    input, textarea, select, button {outline : none;}
+}
+
+@if $isPointer {
+    label,
+    select,
+    [type="button"],
+    [type="checkbox"],
+    [type="radio"],
+    [type="submit"],
+    [type="reset"],
+    [type="file"],
+    [type="number"] {
+        cursor : pointer;
+    }
+}
+
+// Common Reset Style
+html {
+    overflow   : scroll;
+    overflow   : -moz-scrollbars-vertical;
+    overflow-x :scroll;
+}
+
+ul, ol {
+    list-style:none;
+}
+
+p, li, dt, dd, th, td, pre {
+    -ms-line-break : strict;
+        line-break : strict;
+    -ms-word-break : break-strict;
+        word-break : break-stritc;
+}
+
+table {
+    border-collapse : collapse;
+    border-spacing  : 0px;
+}
+
+img {
+    border         : none;
+    vertical-align : middle;
+}

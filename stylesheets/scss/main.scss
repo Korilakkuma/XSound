@@ -1,0 +1,661 @@
+@charset "UTF-8";
+/*!
+ * x-sound.scss
+ *
+ * This Sass file is "X Sound" application.
+ *
+ * Copyright 2014@Tomohiro IKEDA
+ */
+
+@import "partial/_reset.scss";
+@import "partial/_utility.scss";
+
+// Base font-size (for Responsive)
+$baseFontSize : 16;
+
+// Define colors
+$accentColor1 : #cc00cc;
+$accentColor2 : #800080;
+$black        : #000000;
+$baseColor    : #212121;
+$baseColor1   : #333333;
+$baseColor2   : #666666;
+$baseColor3   : #999999;
+$baseColor4   : #cccccc;
+$white        : #ffffff;
+
+//
+// This function returns true in the case of "-webkit-", otherwise, false.
+// 
+@function isWebKit($prefix) {
+    @if ($prefix == -webkit-) {
+        @return true;
+    } @else {
+        @return false;
+    }
+}
+
+html, body {
+    font-size:unquote(($baseFontSize * 0.75) + "px");
+}
+
+body {
+    min-width:320px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:1rem;
+    color:rgba(#777, 1.0);
+    line-height:1.5;
+    background-color:rgba(#fafafa, 1.0);
+}
+
+header {
+    position:relative;
+    z-index:1;
+
+    padding:2rem;
+    background-color:rgba($baseColor, 1.0);
+    @each $prefix in $prefixLists {
+        @if (isWebKit($prefix)) {
+            background-image:-webkit-gradient(linear, left top, left bottom, from(rgba(#373737, 1.0)), to(rgba($baseColor, 1.0)));
+        }
+
+        background-image:#{$prefix}linear-gradient(top, rgba(#373737, 1.0), rgba($baseColor, 1.0));
+    }
+
+    @extend .clearfix;
+}
+
+h1, h2 {
+    margin:1rem 0rem;
+    font-family:"Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+    font-weight:lighter;
+    color:rgba(#666, 1.0);
+}
+
+h1 {
+    font-size:2rem;
+}
+
+h2 {
+    font-size:1.5rem;
+}
+
+h1 {
+    .type,
+    .returns,
+    .applicable {
+        display:none;
+        float:right;
+        margin-top:1rem;
+        font-size:50%;
+        font-style:italic;
+
+        span {
+            color:rgba($accentColor1, 1.0);
+        }
+    }
+}
+
+#project-title {
+    margin:0rem;
+    font-size:3rem;
+    font-weight:lighter;
+    color:rgba($accentColor1, 1.0);
+    text-align:center;
+    text-shadow:-1px -1px 1px rgba($black, 1.0);
+}
+
+#project-tagline {
+    font-size:1.5rem;
+    font-weight:300;
+    color:rgba($accentColor1, 1.0);
+    background:none;
+    text-align:center;
+    text-shadow:-1px -1px 1px rgba($black, 1.0);
+}
+
+#github-buttons {
+    display:none;
+    position:absolute;
+    top:8px;
+    right:172px;
+    z-index:10;
+
+    > iframe {
+        width:80px;
+    }
+}
+
+#social-buttons {
+    display:none;
+    position:absolute;
+    top:8px;
+    right:324px;
+    z-index:10;
+
+    li {
+        display:inline-block;
+        margin-right:4px;
+
+        &#twitter {}
+
+        &#facebook {
+            > iframe {
+                width:60px !important;
+                height:20px !important;
+            }
+        }
+
+        &#hatena {}
+
+        &#google {}
+    }
+}
+
+#forkme-banner {
+    display:none;
+    position:absolute;
+    top:0;
+    right:0px;
+    z-index:10;
+    padding:10px 50px 10px 10px;
+    font-weight:lighter;
+    color:rgba($white, 1.0);
+    text-decoration:none;
+    background-color:rgba($accentColor1, 1.0);
+    background-image:url(../../images/blacktocat.png);
+    background-repeat:no-repeat;
+    background-position:95% 50%;
+    @include boxshadow(0px 0px 10px rgba($black, 0.5));
+    @include borderradius(0px 0px 2px 2px);
+
+    @include setTransition(background-color 1.0s ease);
+
+    &:hover {
+        background-color:rgba($accentColor2, 1.0);
+    }
+}
+
+#downloads {
+    display:none;
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    z-index:10;
+    width:210px;
+    height:70px;
+    background-image:url(../../images/icon-download.png);
+    background-repeat:no-repeat;
+    background-position:0% 90%;
+}
+
+.zip-download-link {
+    display:block;
+    float:right;
+    @include offLeft(90px, 70px);
+    background-image:url(../../images/sprite-download.png);
+    background-repeat:no-repeat;
+    background-position:bottom left;
+
+    &:hover {
+        background-position:top left;
+    }
+}
+
+.tar-download-link {
+    display:block;
+    float:right;
+    margin-left:10px;
+    @include offLeft(90px, 70px);
+    background-image:url(../../images/sprite-download.png);
+    background-repeat:no-repeat;
+    background-position:bottom right;
+
+    &:hover {
+        background-position:top right;
+    }
+}
+
+#contents {
+    margin:0rem auto;
+    width:85%;
+
+    @extend .clearfix;
+}
+
+#maincontents {
+    width:100%;
+
+    section {
+        margin:1rem 0rem;
+    }
+}
+
+#sidebar {
+    section {
+        &:last-child {
+            margin-bottom:1rem;
+        }
+
+        h2 {
+            font-size:1.5rem;
+            color:rgba(#999, 1.0);
+        }
+
+        dl {
+            dt {
+                font-size:1.25rem;
+            }
+
+            dd {
+                margin:1rem 0rem;
+                font-size:1rem;
+
+                a:hover {
+                    text-decoration:underline;
+                }
+            }
+        }
+    }
+}
+
+#loading-animation {
+    padding:25% 0%;
+    text-align:center;
+}
+
+.list-marker li {
+    margin:1rem 0rem;
+
+    // list marker
+    &:before {
+        content:"";
+        display:inline-block;
+        margin-right:0.5rem;
+        border-top   :10px solid $transparent;
+        border-left  :15px solid rgba(#777, 1.0);
+        border-bottom:10px solid $transparent;
+        vertical-align:-0.4rem;
+    }
+}
+
+pre {
+    padding:1rem;
+    background-color:rgba($white, 1.0);
+    overflow-x:scroll;
+
+    code {
+        font-family:"Source Code Pro", monospace;
+        color:rgba(#333, 1.0);
+    }
+}
+
+table {
+    margin:1rem auto 2rem;
+    border:1px solid rgba(#999, 1.0);
+    width:100%;
+
+    caption {
+        margin-bottom:0.5rem;
+        font-family:"Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+        font-size:1.5rem;
+        font-weight:lighter;
+        color:rgba(#666, 1.0);
+    }
+
+    thead {
+        tr {
+            th {
+                border:1px solid rgba(#999, 1.0);
+                padding:0.5rem 0rem;
+                font-size:1.25rem;
+                font-weight:lighter;
+                color:rgba($white, 1.0);
+                text-align:center;
+                text-shadow:-1px -1px 1px rgba($black, 1.0);
+                background-color:rgba($baseColor, 1.0);
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            th {
+                padding:0.5rem;
+                border:1px solid rgba(#999, 1.0);
+                font-size:1rem;
+                font-weight:lighter;
+                text-align:center;
+            }
+
+            td {
+                padding:1rem;
+                border:1px solid rgba(#999, 1.0);
+                font-size:1rem;
+
+                .type {
+                    font-style:italic;
+                    color:rgba($accentColor1, 1.0);
+                }
+
+                dl {
+                    dt {
+                        // list marker
+                        &:before {
+                            content:"";
+                            display:inline-block;
+                            margin-right:0.25rem;
+                            border-top   : 5px solid $transparent;
+                            border-left  :10px solid rgba(#777, 1.0);
+                            border-bottom: 5px solid $transparent;
+                        }
+                    }
+
+                    dd {
+                        margin-left:1rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.CodeMirror {
+    height:auto;
+    font-family:"Source Code Pro", monospace;
+    font-size:1rem;
+    color:rgba(#333, 1.0);
+}
+
+.sound-controllers {
+    margin-left:2rem;
+
+    dt {
+        margin:1rem 0rem;
+        font-size:1rem;
+
+        // list marker
+        &:before {
+            content:"";
+            display:inline-block;
+            margin-right:0.5rem;
+            border-top   :10px solid $transparent;
+            border-left  :15px solid rgba(#777, 1.0);
+            border-bottom:10px solid $transparent;
+            vertical-align:-0.4rem;
+        }
+    }
+
+    dd {
+        margin:1rem 0rem;
+        font-size:1rem;
+
+        label {
+            cursor:pointer;
+        }
+
+        [type="radio"] {
+            margin-left:0.25rem;
+            vertical-align:0.1rem;
+        }
+
+        [type="range"] {
+            cursor:pointer;
+            outline:none;
+            width:100%;
+
+            &:active {
+                cursor:ew-resize;
+            }
+        }
+    }
+}
+
+[type="file"] {
+    cursor:pointer;
+    margin:2rem 0rem;
+}
+
+audio, video {
+    margin:2rem 0rem;
+}
+
+.draw-container,
+#svg-visualizer-parent {
+    margin:2rem 0rem 0rem 2rem;
+    overflow-x:scroll;
+}
+
+canvas, svg, #captured-wave {
+    margin:2rem 0rem;
+    background-color:$black;
+}
+
+.drop-area {
+    margin:1rem auto;
+    border:3px dashed $transparent;
+    width:100%;
+    height:5rem;
+    font-size:1.5rem;
+    color:rgba($white, 1.0);
+    line-height:5rem;
+    text-align:center;
+    background-color:rgba(#CCC, 1.0);
+}
+
+.drop-area.over {
+    border:3px dashed rgba(#CCC, 1.0);
+    color:rgba(#CCC, 1.0);
+    background-color:rgba(#EEE, 1.0);
+}
+
+button {
+    cursor:pointer;
+    border:none;
+    width:120px;
+    height:60px;
+    line-height:60px;
+    font-size:1rem;
+    color:rgba(#FFF, 1.0);
+    background-color:rgba(#CCC, 1.0);
+
+    @include setTransition(background-color 1s ease 0s);
+
+    &:hover {
+        background-color:rgba(#999, 1.0);
+    }
+
+    &:active {
+        @include boxshadow(0px 1px 1px 1px rgba($black, 0.2) inset);
+    }
+}
+
+.buttons {
+    margin:2rem 0rem 0rem 2rem;
+    @extend .clearfix;
+
+    li {
+        display:block;
+        float:left;
+
+        &:not(first-child) {
+            margin-left:0.5rem;
+        }
+    }
+}
+
+hr {
+    margin:1rem 0rem;
+    padding:0rem;
+    border-top:1px solid rgba(#CCC, 1.0);
+    border-bottom:1px solid rgba(#EEE, 1.0);
+}
+
+footer {
+    margin-top:2rem;
+    padding:4rem;
+    background-color:rgba($baseColor, 1.0);
+    text-align:center;
+
+    p {
+        margin:1rem 0rem;
+        color:rgba(#f2f2f2, 1.0);
+    }
+}
+
+a {
+    color:rgba($accentColor1, 1.0);
+    text-decoration:none;
+    text-shadow:none;
+
+    @include setTransition(color 1.0s ease);
+
+    &:hover, &.selected {
+        color:rgba($accentColor2, 1.0);
+    }
+}
+
+@media only screen and (min-width:768px) and (max-width:1023px) {
+    html, body {
+        font-size:unquote(($baseFontSize * 0.875) + "px");
+    }
+
+    h1 {
+        .type,
+        .returns,
+        .applicable {
+            display:block;
+        }
+    }
+
+    #project-title, #project-tagline {
+        text-align:left;
+    }
+
+    #github-buttons, #forkme-banner {
+        display:block;
+    }
+
+    #github-buttons {
+        right:156px;
+    }
+
+    #downloads {
+        display:block !important;
+    }
+
+    #contents {
+        width:95%;
+    }
+
+    #maincontents {
+        float:left;
+        width:70%;
+    }
+
+    #sidebar {
+        float:right;
+        width:30%;
+
+        section {
+            margin-right:1rem;
+            text-align:right;
+        }
+    }
+
+    .navigation-separator {
+        display:none;
+    }
+
+    .list-marker li {
+        &:before {
+            vertical-align:-0.25rem;
+        }
+    }
+
+    .sound-controllers {
+        dt {
+            // list marker
+            &:before {
+                vertical-align:-0.3rem;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width:1024px) {
+    html, body {
+        font-size:unquote($baseFontSize + "px");
+    }
+
+    h1 {
+        .type,
+        .returns,
+        .applicable {
+            display:block;
+        }
+    }
+
+    #project-title, #project-tagline {
+        text-align:left;
+    }
+
+    #project-title {
+        font-size:4rem;
+    }
+
+    #project-tagline {
+        font-size:2rem;
+    }
+
+    #github-buttons, #forkme-banner, #social-buttons {
+        display:block;
+    }
+
+    #downloads {
+        display:block !important;
+    }
+
+    #contents {
+        width:95%;
+    }
+
+    #maincontents {
+        float:left;
+        width:70%;
+    }
+
+    #sidebar {
+        float:right;
+        width:30%;
+
+        section {
+            margin-right:1rem;
+            text-align:right;
+
+            dl {
+                dt {margin:0.50rem 0rem;}
+                dd {margin:0.25rem 0rem;}
+            }
+        }
+    }
+
+    .navigation-separator {
+        display:none;
+    }
+
+    .list-marker li {
+        &:before {
+            vertical-align:-0.25rem;
+        }
+    }
+
+    .sound-controllers {
+        dt {
+            // list marker
+            &:before {
+                vertical-align:-0.25rem;
+            }
+        }
+    }
+}

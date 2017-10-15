@@ -1,0 +1,213 @@
+@charset "UTF-8";
+/*! _utility.scss Copyright 2014@Tomohiro IKEDA*/
+ 
+ 
+ 
+$prefixLists      : -webkit-, -moz-, -o-, -ms-, null;
+$isSimpleClearfix : false !default;
+$isClearfixIE6    : false !default;
+$hoverTransition  : opacity 1s ease 0s !default;
+$hoverOpacity     : 0.6;
+$transparent      : rgba(#000, 0);
+
+//
+// clearfix
+//
+// @extend .clearfix;
+//
+@if $isSimpleClearfix {
+    // Simple clearfix
+    .clearfix {
+        @if #isCleafixIE6 {
+            zoom : 1;
+        }
+
+        & {
+            overflow : hidden;
+        }
+    }
+} @else {
+    .clearfix {
+        &:after {
+            content    : ".";
+            display    : block;
+            height     : 0px;
+            clear      : both;
+            visibility : hidden;
+        }
+    }
+}
+
+//
+// Text ellipsis
+//
+// @extend .text-ellipsis
+//
+.text-ellipsis {
+    overflow      : hidden;
+    white-space   : nowrap;
+    text-overflow : ellipsis;
+}
+
+//
+// border-box
+//
+// @extend %borderbox
+//
+%borderbox {
+    @each $prefix in $prefixLists {
+        #{$prefix}box-sizing : border-box;
+    }
+}
+
+//
+// background-clip
+//
+// @include backgroundclip
+//
+%backgroundclip {
+    @each $prefix in $prefixLists {
+        @if ($prefix == "-moz-") {
+            -moz-background-clip:padding;
+        } @else {
+            #{$prefix}background-clip:padding-box;
+        }
+    }
+}
+
+//
+// Semantics Invisibility
+//
+// @extend .invisiblity;
+//
+.invisibility {
+    width    : 0px;
+    height   : 0px;
+    overflow : hidden;
+}
+
+//
+// fade animation on hover
+//
+// @include .hover
+//
+.hover {
+    @each $prefix in $prefixLists {
+        #{$prefix}transition : $hoverTransition;
+    }
+
+    &:hover {
+        opacity : $hoverOpacity;
+    }
+}
+
+//
+// define keyframes
+//
+// @include defineKeyframes(fade-in-animation) {
+//       0 % {opacity:0}
+//     100 % {opacity:1}
+// }
+//
+@mixin defineKeyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @-ms-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+//
+// set animation
+//
+// @include setAnimation(fade-in-animation 1s ease 1 normal 0s)
+//
+@mixin setAnimation($animation) {
+    @each $prefix in $prefixLists {
+        #{$prefix}animation:$animation;
+    }
+}
+
+//
+// set transition
+//
+// @include setTransition(opacity 1s ease 0s)
+//
+@mixin setTransition($transition) {
+    @each $prefix in $prefixLists {
+        #{$prefix}transition:$transition;
+    }
+}
+
+// box-shadow
+//
+// @include boxshadow(0px 0px 3px 1px rgba(0, 0, 0, 0.2))
+//
+@mixin boxshadow($boxshadow) {
+    @each $prefix in $prefixLists {
+        #{$prefix}box-shadow : $boxshadow;
+    }
+}
+
+//
+// border-radius
+//
+// @include borderradius(12px)
+//
+@mixin borderradius($radius) {
+    @each $prefix in $prefixLists {
+        #{$prefix}border-radius : $radius;
+    }
+}
+
+//
+// background-size
+//
+// @include backgroundsize(50% 50%)
+// @include backgroundsize(cover)
+//
+@mixin backgroundsize($size) {
+    @each $prefix in $prefixLists {
+        #{$prefix}background-size : $size;
+    }
+}
+
+//
+// off left
+//
+// @include offseLeft(100px, 100px);
+//
+@mixin offLeft($width, $height) {
+    width       : $width;
+    height      : $height;
+    overflow    : hidden;
+    text-indent : -9999em;
+}
+
+//
+// convert px to rem
+//
+// toRem(12, 16)  //-> 0.75rem
+//
+@function toRem($fontSize, $baseFontSize : 16) {
+    @return unquote(($fontSize / $baseFontSize) + "rem");
+}
+
+//
+// set font-size as px and rem
+//
+// @include setRem(12, 16);
+//
+@mixin setRem($fontSize, $baseFontSize : 16) {
+    font-size : toRem($fontSize, $baseFontSize);
+}

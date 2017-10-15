@@ -1,0 +1,11 @@
+node_modules
+src
+test
+playground
+Dockerfile
+webpack.config.js
+karma.conf.js
+.babelrc
+.editorconfig
+.eslintrc
+.travis.yml

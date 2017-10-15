@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    color: #999;
+    line-height: 1.5;
+    background-color: #fafafa;
+    min-width: 320px;
+}
+
+header {
+    padding: 32px;
+    background-color: #212121;
+    text-align: center;
+}
+
+header h1 {
+    margin: 16px 0;
+    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+    font-size: 4rem;
+    font-weight: lighter;
+    color: #c0c;
+    text-shadow: -1px -1px 1px #000;
+}
+
+main {
+    margin: 48px auto;
+    max-width: 1280px;
+    width: 90%;
+}
+
+main a {
+    display: inline-block;
+    padding: 12px 24px;
+    color: #fff;
+    text-decoration: none;
+    background-color: #c000c0;
+    transition: background-color 0.4s ease;
+}
+
+main a:hover {
+    background-color: #800080;
+}
+
+main a:focus {
+    outline: 1px dotted #800080;
+}
+
+.CodeMirror {
+    height: 100vh;
+    font-family: "Source Code Pro", monospace;
+    color: #666;
+}
+
+footer {
+    padding: 64px;
+    background-color: #212121;
+    text-align: center;
+}
+
+footer > p {
+    margin: 16px 0;
+    color: #fafafa;
+}
+
+footer a {
+    color: #c0c;
+    text-decoration: none;
+    transition: color ease 0.6s;
+}
+
+footer a:hover {
+    color: #800080;
+    text-decoration: underline;
+}
+
+

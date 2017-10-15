@@ -1,0 +1,55 @@
+{
+  "name": "xsound",
+  "version": "2.0.0",
+  "description": "Web Audio API Library",
+  "main": "build/xsound.js",
+  "scripts": {
+    "lint": "eslint src build/xsound-server-session-websocket.js build/xsound-server-session-ws.js",
+    "build": "webpack",
+    "build:watch": "webpack --watch",
+    "test": "npm run lint && karma start",
+    "docker:build": "docker build -t app .",
+    "docker:rmi": "docker rmi app",
+    "start": "docker container run --name webserver -d -p 3000:80 -v $(pwd):/usr/share/nginx/html app",
+    "stop": "docker stop webserver && docker rm webserver",
+    "start:server:websocket": "node ./build/xsound-server-session-websocket.js",
+    "start:server:ws": "node ./build/xsound-server-session-ws.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Korilakkuma/XSound.git"
+  },
+  "keywords": [
+    "XSound",
+    "JavaScript",
+    "Web Audio API",
+    "Library"
+  ],
+  "author": "Korilakkuma <rilakkuma.san.xjapan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Korilakkuma/XSound/issues"
+  },
+  "homepage": "https://korilakkuma.github.io/XSound/",
+  "dependencies": {
+    "websocket": "^1.0.24",
+    "ws": "^3.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "eslint": "^4.5.0",
+    "eslint-cli": "^1.1.1",
+    "jasmine": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-cli": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-webpack": "^2.0.6",
+    "uglifyjs-webpack-plugin": "^1.0.1",
+    "webpack": "^3.5.5"
+  }
+}

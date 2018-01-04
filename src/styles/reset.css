@@ -1,0 +1,83 @@
+html,
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl,
+dt,
+dd,
+table,
+th,
+td,
+form,
+fieldset,
+header,
+main,
+section,
+article,
+aside,
+footer,
+figure,
+figcaption,
+nav {
+    margin: 0;
+    padding: 0;
+}
+
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
+    display: block;
+}
+
+html {
+    overflow: scroll;
+    overflow: -moz-scrollbars-vertical;
+    overflow-x: scroll;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+p,
+li,
+dt,
+dd,
+th,
+td,
+pre {
+    -ms-line-break: strict;
+    line-break: strict;
+    -ms-word-break: break-strict;
+    word-break: break-strict;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+img {
+    border: none;
+    max-width: 100%;
+    vertical-align: middle;
+}

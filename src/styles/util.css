@@ -1,0 +1,11 @@
+.text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.image-link:hover,
+.image-link:focus,
+.image-link:active {
+    text-decoration: none;
+}

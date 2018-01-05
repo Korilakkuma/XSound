@@ -12,3 +12,17 @@
     overflow: hidden;
     transition: max-height ease 0.6s;
 }
+
+.Nav button {
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    color: var(--assort-color);
+    transition: color ease 0.6s;
+}
+
+.Nav button:hover {
+    color: var(--base-color);
+}

@@ -5,3 +5,14 @@ body {
     line-height: 1.5;
     background-color: var(--gray-lightest);
 }
+
+a {
+    color: var(--assort-color);
+    text-decoration: none;
+    transition: color ease 0.6s;
+}
+
+a:hover {
+    color: var(--base-color);
+    text-decoration: underline;
+}

@@ -1,0 +1,7 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: var(--base-font-size);
+    color: var(--gray);
+    line-height: 1.5;
+    background-color: var(--gray-lightest);
+}

@@ -21,7 +21,17 @@ class Nav extends React.Component {
     }
 
     onClick(event) {
-        this.props.dispatch(NavActions.expandPanel(event.currentTarget.getAttribute('aria-controls')));
+        const id = event.currentTarget.getAttribute('aria-controls');
+
+        if (document.getElementById(id).getAttribute('aria-hidden') === 'true') {
+            this.props.dispatch(NavActions.expandPanel(id));
+        } else {
+            this.props.dispatch(NavActions.expandPanel(''));
+        }
+    }
+
+    shouldComponentUpdate() {
+        return true;
     }
 
     render() {

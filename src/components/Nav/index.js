@@ -28,7 +28,7 @@ class Nav extends React.Component {
         const id = this.props.expandedPanelId;
 
         return (
-            <section role="tablist" aria-multiselectable="false" className={Nav.CLASS_NAME}>
+            <nav role="tablist" aria-multiselectable="false" className={Nav.CLASS_NAME}>
                 <section role="presentation">
                     <h2><Link to="/">Overview</Link></h2>
                 </section>
@@ -234,7 +234,7 @@ class Nav extends React.Component {
                         <dd><Link to="/session/state">state</Link></dd>
                     </dl>
                 </section>
-            </section>
+            </nav>
         );
     }
 }

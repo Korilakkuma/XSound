@@ -27,6 +27,10 @@ class Header extends React.Component {
         }
     }
 
+    shouldComponentUpdate() {
+        return true;
+    }
+
     render() {
         return (
             <header className={Header.CLASS_NAME}>

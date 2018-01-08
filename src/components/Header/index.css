@@ -40,11 +40,6 @@
     background-color: var(--base-color);
 }
 
-.Header h1,
-.Header h2 {
-    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
-}
-
 .Header__title {
     font-size: 4rem;
     font-weight: lighter;

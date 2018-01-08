@@ -22,6 +22,10 @@ module.exports = {
             'postcss-loader'
           ]
         })
+      },
+      {
+        test: /\.png$/,
+        use: 'url-loader'
       }
     ]
   },

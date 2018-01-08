@@ -48,6 +48,7 @@
     "postcss-loader": "^2.0.10",
     "stylelint": "^8.4.0",
     "stylelint-config-standard": "^17.0.0",
+    "url-loader": "^0.6.2",
     "webpack": "^3.10.0"
   }
 }

@@ -4,6 +4,7 @@ body {
     color: var(--gray);
     line-height: 1.5;
     background-color: var(--gray-lightest);
+    min-width: 320px;
 }
 
 a {

@@ -7,6 +7,12 @@ body {
     min-width: 320px;
 }
 
+h1,
+h2 {
+    margin: 16px 0;
+    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+}
+
 a {
     color: var(--assort-color);
     text-decoration: none;

@@ -11,6 +11,12 @@ h1,
 h2 {
     margin: 16px 0;
     font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+    font-weight: lighter;
+    color: var(--gray);
+}
+
+h1 {
+    font-size: 2rem;
 }
 
 a {
@@ -22,4 +28,17 @@ a {
 a:hover {
     color: var(--base-color);
     text-decoration: underline;
+}
+
+hr {
+    margin: 16px 0;
+    padding: 0;
+    border-top: 1px solid var(--gray-light);
+    border-bottom: 1px solid var(--gray-lighter);
+}
+
+pre {
+    padding: 16px;
+    background-color: var(--white);
+    overflow-x: scroll;
 }

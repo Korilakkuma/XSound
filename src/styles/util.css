@@ -9,3 +9,17 @@
 .image-link:active {
     text-decoration: none;
 }
+
+.list-marker li {
+    margin: 16px 0;
+}
+
+.list-marker li::before {
+    content: "";
+    display: inline-block;
+    margin-right: 8px;
+    border-top: 10px solid transparent;
+    border-left: 15px solid var(--gray);
+    border-bottom: 10px solid transparent;
+    vertical-align: -4px;
+}

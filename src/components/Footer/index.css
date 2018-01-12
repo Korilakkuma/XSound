@@ -1,0 +1,11 @@
+.Footer {
+    margin-top: 32px;
+    padding: 64px;
+    background-color: var(--black);
+    text-align: center;
+}
+
+.Footer > p {
+    margin: 16px 0;
+    color: var(--gray-lightest);
+}

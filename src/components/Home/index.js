@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Home extends React.Component {
@@ -13,7 +12,7 @@ class Home extends React.Component {
 
     render() {
         return (
-            <section>
+            <section className={Home.CLASS_NAME}>
                 <section>
                     <h1>XSound</h1>
                     <hr />
@@ -91,4 +90,4 @@ class Home extends React.Component {
     }
 }
 
-export default connect(state => state)(Home);
+export default connect()(Home);

@@ -40,5 +40,10 @@ hr {
 pre {
     padding: 16px;
     background-color: var(--white);
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
+}
+
+code {
+    font-family: "Source Code Pro", monospace;
+    color: var(--gray-deep);
 }

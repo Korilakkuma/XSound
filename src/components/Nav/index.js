@@ -249,4 +249,10 @@ class Nav extends React.Component {
     }
 }
 
-export default connect(state => state)(Nav);
+function mapStateToProps(state) {
+    return {
+        expandedPanelId : state.expandedPanelId
+    };
+}
+
+export default connect(mapStateToProps)(Nav);

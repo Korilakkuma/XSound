@@ -66,4 +66,10 @@ class Header extends React.Component {
     }
 }
 
-export default connect(state => state)(Header);
+function mapStateToProps(state) {
+    return {
+        hidden : state.hidden
+    };
+}
+
+export default connect(mapStateToProps)(Header);

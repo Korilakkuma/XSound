@@ -35,18 +35,19 @@ class Nav extends React.Component {
     }
 
     render() {
-        const id = this.props.expandedPanelId;
+        const path = location.pathname;
+        const id   = this.props.expandedPanelId;
 
         return (
             <nav role="tablist" aria-multiselectable="false" className={Nav.CLASS_NAME}>
                 <section role="presentation">
-                    <h2><Link to="/">Overview</Link></h2>
+                    <h2><Link to={path}>Overview</Link></h2>
                 </section>
                 <section role="presentation">
                     <h2><button type="button" role="tab" aria-expanded={id === 'panel-xsound'} aria-selected={id === 'panel-xsound'} aria-controls="panel-xsound" tabIndex="0" onClick={this.onClick}>XSound</button></h2>
                     <dl id="panel-xsound" aria-hidden={id !== 'panel-xsound'}>
                         <dt>Properties</dt>
-                        <dd><Link to="/xsound/is-xsound">IS_XSOUND</Link></dd>
+                        <dd><Link to={`${path}xsound/is-xsound`}>IS_XSOUND</Link></dd>
                         <dd><Link to="/xsound/sample-rate">SAMPLE_RATE</Link></dd>
                         <dd><Link to="/xsound/number-of-inputs">NUMBER_OF_INPUTS</Link></dd>
                         <dd><Link to="/xsound/number-of-outputs">NUMBER_OF_OUTPUTS</Link></dd>

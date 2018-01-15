@@ -4,7 +4,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './components/Home';
-import IsXSound from './components/xsound/is-xsound';
+import IsXSound from './components/xsound/IsXSound';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 

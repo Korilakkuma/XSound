@@ -48,7 +48,7 @@ class Nav extends React.Component {
                     <dl id="panel-xsound" aria-hidden={id !== 'panel-xsound'}>
                         <dt>Properties</dt>
                         <dd><Link to={`${path}xsound/is-xsound`}>IS_XSOUND</Link></dd>
-                        <dd><Link to="/xsound/sample-rate">SAMPLE_RATE</Link></dd>
+                        <dd><Link to={`${path}xsound/sample-rate`}>SAMPLE_RATE</Link></dd>
                         <dd><Link to="/xsound/number-of-inputs">NUMBER_OF_INPUTS</Link></dd>
                         <dd><Link to="/xsound/number-of-outputs">NUMBER_OF_OUTPUTS</Link></dd>
                         <dt>Methods</dt>

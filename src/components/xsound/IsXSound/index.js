@@ -14,15 +14,6 @@ class IsXSound extends React.Component {
         return false;
     }
 
-    componentWillMount() {
-        const script = document.createElement('script');
-
-        script.src   = 'https://production-assets.codepen.io/assets/embed/ei.js';
-        script.async = true;
-
-        document.body.appendChild(script);
-    }
-
     render() {
         return (
             <section>
@@ -35,8 +26,9 @@ class IsXSound extends React.Component {
                         Otherwise this value is false.
                     </p>
                 </section>
-                <section>
-                    <p data-height="265" data-theme-id="0" data-slug-hash="NXBEjK" data-default-tab="js,result" data-user="Korilakkuma" data-embed-version="2" data-pen-title="NXBEjK" className="codepen">See the Pen <a href="https://codepen.io/Korilakkuma/pen/NXBEjK/">NXBEjK</a> by Tomohiro IKEDA (<a href="https://codepen.io/Korilakkuma">@Korilakkuma</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+                <section className="codepen">
+                    <iframe height='265' scrolling='no' title='IS_XSOUND | XSound - Web Audio API Library -' src='//codepen.io/Korilakkuma/embed/NXBEjK/?height=265&amp;theme-id=0&default-tab=js,result&amp;embed-version=2' frameBorder='no' allowtransparency='true' allowFullScreen='true' style={{ width : '100%' }}>See the Pen <a href='https://codepen.io/Korilakkuma/pen/NXBEjK/'>NXBEjK</a> by Tomohiro IKEDA (<a href='https://codepen.io/Korilakkuma'>@Korilakkuma</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
                 </section>
             </section>
         );
@@ -44,4 +36,3 @@ class IsXSound extends React.Component {
 }
 
 export default connect()(IsXSound);
-

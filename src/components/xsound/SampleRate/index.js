@@ -16,12 +16,15 @@ class SampleRate extends React.Component {
 
     render() {
         return (
-            <section>
+            <section className={SampleRate.CLASS_NAME}>
                 <section>
-                    <h1>SAMPLE_RATE<span className="type">Type : <span>number</span></span></h1>
+                    <div className="component-title">
+                        <h1>SAMPLE_RATE</h1>
+                        <p className="type">Type : <span>number</span></p>
+                    </div>
                     <hr />
                     <p>
-                        This property is sample rate for PCM (Pulse Code Modulation).
+                        This property is sample rate for <abbr>PCM</abbr> (Pulse Code Modulation).
                     </p>
                 </section>
                 <section className="codepen">

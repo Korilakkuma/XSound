@@ -24,11 +24,34 @@
     vertical-align: -4px;
 }
 
+.component-title {
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-flex-direction: row;
+    flex-direction: row;
+
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.component-title h1 {
+    -webkit-flex-grow: 40;
+    flex-grow: 40;
+}
+
 .type,
 .returns,
 .applicable {
-    float: right;
-    margin-top: 16px;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+
     font-size: 16px;
     font-style: italic;
 }

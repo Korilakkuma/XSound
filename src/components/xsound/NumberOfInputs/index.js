@@ -18,10 +18,14 @@ class NumberOfInputs extends React.Component {
         return (
             <section className={NumberOfInputs.CLASS_NAME}>
                 <section>
-                    <h1>SAMPLE_RATE<span className="type">Type : <span>number</span></span></h1>
+                    <div className="component-title">
+                        <h1>NUMBER_OF_INPUTS</h1>
+                        <p className="type">Type : <span>number</span></p>
+                    </div>
                     <hr />
                     <p>
-                        This property is sample rate for <abbr>PCM</abbr> (Pulse Code Modulation).
+                        This property is the number of input channels for <a href="http://webaudio.github.io/web-audio-api/#the-scriptprocessornode-interface---deprecated" target="_blank" rel="nofollow">ScriptProcessorNode</a>.
+                        The default value is 2.
                     </p>
                 </section>
                 <section className="codepen">

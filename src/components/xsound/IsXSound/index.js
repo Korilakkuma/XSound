@@ -16,14 +16,17 @@ class IsXSound extends React.Component {
 
     render() {
         return (
-            <section>
+            <section className={IsXSound.CLASS_NAME}>
                 <section>
-                    <h1>IS_XSOUND<span className="type">Type : <span>boolean</span></span></h1>
+                    <div className="component-title">
+                        <h1>IS_XSOUND</h1>
+                        <p className="type">Type : <span>boolean</span></p>
+                    </div>
                     <hr />
                     <p>
                         This property is to determine whether this library is usable.
-                        If this library is usable, this value is true.
-                        Otherwise this value is false.
+                        If this library is usable, this value is <var>true</var>.
+                        Otherwise this value is <var>false</var>.
                     </p>
                 </section>
                 <section className="codepen">

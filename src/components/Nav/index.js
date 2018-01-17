@@ -41,7 +41,7 @@ class Nav extends React.Component {
         return (
             <nav role="tablist" aria-multiselectable="false" className={Nav.CLASS_NAME}>
                 <section role="presentation">
-                    <h2><Link to={path}>Overview</Link></h2>
+                    <h2><Link to={path} onClick={this.onClick}>Overview</Link></h2>
                 </section>
                 <section role="presentation">
                     <h2><button type="button" role="tab" aria-expanded={id === 'panel-xsound'} aria-selected={id === 'panel-xsound'} aria-controls="panel-xsound" tabIndex="0" onClick={this.onClick}>XSound</button></h2>

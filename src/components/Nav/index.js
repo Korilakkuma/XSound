@@ -50,7 +50,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${path}xsound/is-xsound`}>IS_XSOUND</Link></dd>
                         <dd><Link to={`${path}xsound/sample-rate`}>SAMPLE_RATE</Link></dd>
                         <dd><Link to={`${path}xsound/number-of-inputs`}>NUMBER_OF_INPUTS</Link></dd>
-                        <dd><Link to="/xsound/number-of-outputs">NUMBER_OF_OUTPUTS</Link></dd>
+                        <dd><Link to={`${path}xsound/number-of-outputs`}>NUMBER_OF_OUTPUTS</Link></dd>
                         <dt>Methods</dt>
                         <dd><Link to="/xsound/ajax">ajax</Link></dd>
                         <dd><Link to="/xsound/clone">clone</Link></dd>

@@ -38,4 +38,3 @@ class NumberOfInputs extends React.Component {
 }
 
 export default connect()(NumberOfInputs);
-

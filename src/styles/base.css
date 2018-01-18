@@ -47,3 +47,7 @@ code {
     font-family: "Source Code Pro", monospace;
     color: var(--gray-deep);
 }
+
+abbr {
+    text-decoration: none;
+}

@@ -15,12 +15,12 @@ class Home extends React.Component {
             <section className={Home.CLASS_NAME}>
                 <section>
                     <h1>XSound</h1>
-                    <hr />
+                    <hr role="presentation" />
                     <p>Web Audio API Library</p>
                 </section>
                 <section>
                     <h1>Overview</h1>
-                    <hr />
+                    <hr role="presentation" />
                     <p>
                         This is full stack library for Web Audio API.<br />
                         In concrete, this library may be useful to implement the following features.
@@ -44,12 +44,12 @@ class Home extends React.Component {
                 </section>
                 <section>
                     <h1>Getting Started</h1>
-                    <hr />
+                    <hr role="presentation" />
 <pre><code>X('oscillator').setup(true).ready().start(440);</code></pre>
                 </section>
                 <section>
                     <h1>Demo</h1>
-                    <hr />
+                    <hr role="presentation" />
                     <p>
                         The application that uses this library is in the following URL.
                     </p>
@@ -65,12 +65,12 @@ class Home extends React.Component {
                 </section>
                 <section>
                     <h1>Installation</h1>
-                    <hr />
+                    <hr role="presentation" />
 <pre><code>$ npm install --save xsound</code></pre>
                 </section>
                 <section>
                     <h1>Usage</h1>
-                    <hr />
+                    <hr role="presentation" />
 <pre><code>&lt;script type="text/javascript" src="xsound.js"&gt;&lt;/script&gt;</code></pre>
                     <p>In the case of using WebSocket,</p>
 <pre><code>$ node xsound-server-session-websocket.js</code></pre>

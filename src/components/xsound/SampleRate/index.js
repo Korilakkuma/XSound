@@ -22,7 +22,7 @@ class SampleRate extends React.Component {
                         <h1>SAMPLE_RATE</h1>
                         <p className="type">Type : <span>number</span></p>
                     </div>
-                    <hr />
+                    <hr role="presentation" />
                     <p>
                         This property is sample rate for <abbr>PCM</abbr> (Pulse Code Modulation).
                     </p>

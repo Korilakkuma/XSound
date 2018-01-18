@@ -22,7 +22,7 @@ class IsXSound extends React.Component {
                         <h1>IS_XSOUND</h1>
                         <p className="type">Type : <span>boolean</span></p>
                     </div>
-                    <hr />
+                    <hr role="presentation" />
                     <p>
                         This property is to determine whether this library is usable.
                         If this library is usable, this value is <var>true</var>.

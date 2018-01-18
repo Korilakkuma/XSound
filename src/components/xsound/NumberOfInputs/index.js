@@ -22,7 +22,7 @@ class NumberOfInputs extends React.Component {
                         <h1>NUMBER_OF_INPUTS</h1>
                         <p className="type">Type : <span>number</span></p>
                     </div>
-                    <hr />
+                    <hr role="presentation" />
                     <p>
                         This property is the number of input channels for <a href="http://webaudio.github.io/web-audio-api/#the-scriptprocessornode-interface---deprecated" target="_blank" rel="nofollow">ScriptProcessorNode</a>.
                         The default value is 2.

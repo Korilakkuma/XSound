@@ -9,6 +9,7 @@ import SampleRate from './components/xsound/SampleRate';
 import NumberOfInputs from './components/xsound/NumberOfInputs';
 import NumberOfOutputs from './components/xsound/NumberOfOutputs';
 import Ajax from './components/xsound/Ajax';
+import Clone from './components/xsound/Clone';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -25,6 +26,7 @@ export default (
                 <Route exact path={`${path}xsound/number-of-inputs`} component={NumberOfInputs} />
                 <Route exact path={`${path}xsound/number-of-outputs`} component={NumberOfOutputs} />
                 <Route exact path={`${path}xsound/ajax`} component={Ajax} />
+                <Route exact path={`${path}xsound/clone`} component={Clone} />
             </Switch>
             <Nav />
         </div>

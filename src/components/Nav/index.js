@@ -53,7 +53,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${path}xsound/number-of-outputs`}>NUMBER_OF_OUTPUTS</Link></dd>
                         <dt>Methods</dt>
                         <dd><Link to={`${path}xsound/ajax`}>ajax</Link></dd>
-                        <dd><Link to="/xsound/clone">clone</Link></dd>
+                        <dd><Link to={`${path}xsound/clone`}>clone</Link></dd>
                         <dd><Link to="/xsound/convert-time">convertTime</Link></dd>
                         <dd><Link to="/xsound/decode">decode</Link></dd>
                         <dd><Link to="/xsound/file">file</Link></dd>

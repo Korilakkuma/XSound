@@ -51,3 +51,46 @@ code {
 abbr {
     text-decoration: none;
 }
+
+table {
+    margin: 16px auto 32px;
+    border: 1px solid var(gray-light);
+    width: 100%;
+}
+
+caption {
+    margin-bottom: 8px;
+    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+    font-size: 1.5rem;
+    font-weight: lighter;
+    color: var(--gray);
+}
+
+thead th {
+    border: 1px solid var(--gray-light);
+    padding: 8px 0;
+    font-size: 1.25rem;
+    font-weight: lighter;
+    color: var(--white);
+    text-align: center;
+    text-shadow: -1px -1px 1px var(--black);
+    background-color: var(--black);
+}
+
+tbody th {
+    padding: 8px;
+    border: 1px solid var(--gray-light);
+    font-size: 1rem;
+    font-weight: lighter;
+    text-align: center;
+}
+
+td {
+    padding: 16px;
+    border: 1px solid var(--gray-light);
+    font-size:1rem;
+}
+
+td dd {
+    margin-left: 16px;
+}

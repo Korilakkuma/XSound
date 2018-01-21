@@ -2,7 +2,8 @@
     position: relative;
     z-index: 1;
     padding: 32px;
-    background-color: var(--black);
+    background-color: var(--black-light);
+    /* background-image: linear-gradient(top, #373737, var(--black)); */
 }
 
 .Header__github-buttons {

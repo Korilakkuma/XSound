@@ -74,7 +74,7 @@ thead th {
     color: var(--white);
     text-align: center;
     text-shadow: -1px -1px 1px var(--black);
-    background-color: var(--black);
+    background-color: var(--black-light);
 }
 
 tbody th {

@@ -11,6 +11,7 @@ import NumberOfOutputs from './components/xsound/NumberOfOutputs';
 import Ajax from './components/xsound/Ajax';
 import Clone from './components/xsound/Clone';
 import ConvertTime from './components/xsound/ConvertTime';
+import Decode from './components/xsound/Decode';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -29,6 +30,7 @@ export default (
                 <Route exact path={`${path}xsound/ajax`} component={Ajax} />
                 <Route exact path={`${path}xsound/clone`} component={Clone} />
                 <Route exact path={`${path}xsound/convertTime`} component={ConvertTime} />
+                <Route exact path={`${path}xsound/decode`} component={Decode} />
             </Switch>
             <Nav />
         </div>

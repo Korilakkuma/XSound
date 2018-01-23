@@ -10,11 +10,13 @@
     text-decoration: none;
 }
 
-.list-marker li {
+.list-marker li,
+.list-marker dt {
     margin: 16px 0;
 }
 
-.list-marker li::before {
+.list-marker li::before,
+.list-marker dt::before {
     content: "";
     display: inline-block;
     margin-right: 8px;
@@ -48,7 +50,8 @@
 
 .type,
 .returns,
-.applicable {
+.applicable,
+.argument-type {
     -webkit-flex-grow: 1;
     flex-grow: 1;
 
@@ -58,7 +61,8 @@
 
 .type > span,
 .returns > span,
-.applicable > span {
+.applicable > span,
+.argument-type {
     color: var(--assort-color);
 }
 

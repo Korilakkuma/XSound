@@ -32,28 +32,28 @@ class Decode extends React.Component {
                         <tbody>
                             <tr>
                                 <th scope="row">1st</th>
-                                <td><span className="type">AudioContext</span></td>
+                                <td><span className="argument-type">AudioContext</span></td>
                                 <td>
                                     This argument is the instance of <code>AudioContext</code>.
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">2nd</th>
-                                <td><span className="type">ArrayBuffer</span></td>
+                                <td><span className="argument-type">ArrayBuffer</span></td>
                                 <td>
                                     This argument is the instance of <code>ArrayBuffer</code>.
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">3rd</th>
-                                <td><span className="type">function</span></td>
+                                <td><span className="argument-type">function</span></td>
                                 <td>
                                     This argument is function that is invoked on success.
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">4th</th>
-                                <td><span className="type">function</span></td>
+                                <td><span className="argument-type">function</span></td>
                                 <td>
                                     This argument is function that is invoked on error.
                                 </td>

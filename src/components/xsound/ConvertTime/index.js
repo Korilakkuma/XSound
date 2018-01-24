@@ -32,7 +32,7 @@ class ConvertTime extends React.Component {
                         <tbody>
                             <tr>
                                 <th scope="row">1st</th>
-                                <td><span className="type">number</span></td>
+                                <td><span className="argument-type">number</span></td>
                                 <td>
                                     The unit of this value is seconds.
                                 </td>

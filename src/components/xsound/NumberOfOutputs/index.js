@@ -24,7 +24,7 @@ class NumberOfOutputs extends React.Component {
                     </div>
                     <hr role="presentation" />
                     <p>
-                        This property is the number of output channels for <a href="http://webaudio.github.io/web-audio-api/#the-scriptprocessornode-interface---deprecated" target="_blank" rel="nofollow">ScriptProcessorNode</a>.
+                        This property is the number of output channels for <a href="http://webaudio.github.io/web-audio-api/#the-scriptprocessornode-interface---deprecated" target="_blank" rel="noopener noreferrer nofollow">ScriptProcessorNode</a>.
                         The default value is 2.
                     </p>
                 </section>

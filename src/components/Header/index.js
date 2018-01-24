@@ -47,7 +47,7 @@ class Header extends React.Component {
                     <iframe src="https://ghbtns.com/github-btn.html?user=Korilakkuma&amp;repo=XSound&amp;type=fork&amp;count=true&amp;size=small" frameBorder="0" scrolling="0" width="130" height="30"></iframe>
                 </p>
                 <p ref={node => this.forkme = node} hidden={hidden} className={`${Header.CLASS_NAME}__forkme`}>
-                    <a href="https://github.com/Korilakkuma/XSound" target="_blank" rel="noopener noreferrer" className="image-link">View on GitHub</a>
+                    <a href="https://github.com/Korilakkuma/XSound" target="_blank" rel="noopener noreferrer">View on GitHub</a>
                 </p>
                 <h1 className={`${Header.CLASS_NAME}__title`}>XSound</h1>
                 <h2 className={`${Header.CLASS_NAME}__subtitle`}>Web Audio API Library</h2>

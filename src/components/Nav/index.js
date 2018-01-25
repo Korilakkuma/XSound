@@ -56,11 +56,11 @@ class Nav extends React.Component {
                         <dd><Link to={`${path}xsound/clone`}>clone</Link></dd>
                         <dd><Link to={`${path}xsound/convertTime`}>convertTime</Link></dd>
                         <dd><Link to={`${path}xsound/decode`}>decode</Link></dd>
-                        <dd><Link to="/xsound/file">file</Link></dd>
-                        <dd><Link to="/xsound/free">free</Link></dd>
-                        <dd><Link to="/xsound/get">get</Link></dd>
                         <dd><Link to="/xsound/get-current-time">getCurrentTime</Link></dd>
                         <dd><Link to="/xsound/no-conflict">noConflict</Link></dd>
+                        <dd><Link to={`${path}xsound/file`}>file</Link></dd>
+                        <dd><Link to={`${path}xsound/free`}>free</Link></dd>
+                        <dd><Link to={`${path}xsound/get`}>get</Link></dd>
                         <dd><Link to="/xsound/read">read</Link></dd>
                         <dd><Link to="/xsound/to-frequencies">toFrequencies</Link></dd>
                         <dd><Link to="/xsound/fullscreen">fullscreen</Link></dd>

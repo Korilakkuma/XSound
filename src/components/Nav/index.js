@@ -58,12 +58,12 @@ class Nav extends React.Component {
                         <dd><Link to={`${path}xsound/decode`}>decode</Link></dd>
                         <dd><Link to={`${path}xsound/file`}>file</Link></dd>
                         <dd><Link to={`${path}xsound/free`}>free</Link></dd>
+                        <dd><Link to={`${path}xsound/fullscreen`}>fullscreen</Link></dd>
                         <dd><Link to={`${path}xsound/get`}>get</Link></dd>
                         <dd><Link to={`${path}xsound/getCurrentTime`}>getCurrentTime</Link></dd>
                         <dd><Link to={`${path}xsound/noConflict`}>noConflict</Link></dd>
                         <dd><Link to={`${path}xsound/read`}>read</Link></dd>
                         <dd><Link to="/xsound/to-frequencies">toFrequencies</Link></dd>
-                        <dd><Link to="/xsound/fullscreen">fullscreen</Link></dd>
                         <dd><Link to="/xsound/exit-fullscreen">exitFullscreen</Link></dd>
                     </dl>
                 </section>

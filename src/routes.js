@@ -14,6 +14,7 @@ import ConvertTime from './components/xsound/ConvertTime';
 import Decode from './components/xsound/Decode';
 import File from './components/xsound/File';
 import Free from './components/xsound/Free';
+import Fullscreen from './components/xsound/Fullscreen';
 import Get from './components/xsound/Get';
 import GetCurrentTime from './components/xsound/GetCurrentTime';
 import NoConflict from './components/xsound/NoConflict';
@@ -39,6 +40,7 @@ export default (
                 <Route exact path={`${path}xsound/decode`} component={Decode} />
                 <Route exact path={`${path}xsound/file`} component={File} />
                 <Route exact path={`${path}xsound/free`} component={Free} />
+                <Route exact path={`${path}xsound/fullscreen`} component={Fullscreen} />
                 <Route exact path={`${path}xsound/get`} component={Get} />
                 <Route exact path={`${path}xsound/getCurrentTime`} component={GetCurrentTime} />
                 <Route exact path={`${path}xsound/noConflict`} component={NoConflict} />

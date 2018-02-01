@@ -35,12 +35,12 @@ class Read extends React.Component {
                                 <td><span className="argument-type">object</span></td>
                                 <td>
                                     This argument is plain object that has the following properties.
-                                    <dl>
+                                    <dl className="list-marker">
                                         <dt>file<span className="argument-type">File (Blob)</span></dt>
                                         <dd>This value is the instance of <code>File</code> (extends <code>Blob</code>).</dd>
                                         <dt>type<span className="argument-type">string</span></dt>
-                                        <dd>This value is one of &apos;ArrayBuffer&apos;, &apos;DataURL&apos;, &apos;Text&apos;</dd>
-                                        <dt>success<span className="argumnet-type">function</span></dt>
+                                        <dd>This value is one of &apos;ArrayBuffer&apos;, &apos;DataURL&apos;, &apos;Text&apos;.</dd>
+                                        <dt>success<span className="argument-type">function</span></dt>
                                         <dd>This function is invoked on success.</dd>
                                         <dt>error<span className="argument-type">function</span></dt>
                                         <dd>This function is invoked on error.</dd>

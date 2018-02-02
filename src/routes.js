@@ -12,6 +12,7 @@ import Ajax from './components/xsound/Ajax';
 import Clone from './components/xsound/Clone';
 import ConvertTime from './components/xsound/ConvertTime';
 import Decode from './components/xsound/Decode';
+import ExitFullscreen from './components/xsound/ExitFullscreen';
 import File from './components/xsound/File';
 import Free from './components/xsound/Free';
 import Fullscreen from './components/xsound/Fullscreen';
@@ -38,6 +39,7 @@ export default (
                 <Route exact path={`${path}xsound/clone`} component={Clone} />
                 <Route exact path={`${path}xsound/convertTime`} component={ConvertTime} />
                 <Route exact path={`${path}xsound/decode`} component={Decode} />
+                <Route exact path={`${path}xsound/exitFullscreen`} component={ExitFullscreen} />
                 <Route exact path={`${path}xsound/file`} component={File} />
                 <Route exact path={`${path}xsound/free`} component={Free} />
                 <Route exact path={`${path}xsound/fullscreen`} component={Fullscreen} />

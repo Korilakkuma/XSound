@@ -64,7 +64,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${path}xsound/getCurrentTime`}>getCurrentTime</Link></dd>
                         <dd><Link to={`${path}xsound/noConflict`}>noConflict</Link></dd>
                         <dd><Link to={`${path}xsound/read`}>read</Link></dd>
-                        <dd><Link to="/xsound/to-frequencies">toFrequencies</Link></dd>
+                        <dd><Link to={`${path}xsound/toFrequencies`}>toFrequencies</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

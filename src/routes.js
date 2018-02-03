@@ -20,6 +20,7 @@ import Get from './components/xsound/Get';
 import GetCurrentTime from './components/xsound/GetCurrentTime';
 import NoConflict from './components/xsound/NoConflict';
 import Read from './components/xsound/Read';
+import ToFrequencies from './components/xsound/ToFrequencies';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -47,6 +48,7 @@ export default (
                 <Route exact path={`${path}xsound/getCurrentTime`} component={GetCurrentTime} />
                 <Route exact path={`${path}xsound/noConflict`} component={NoConflict} />
                 <Route exact path={`${path}xsound/read`} component={Read} />
+                <Route exact path={`${path}xsound/toFrequencies`} component={ToFrequencies} />
             </Switch>
             <Nav />
         </div>

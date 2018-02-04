@@ -4,23 +4,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './components/Home';
-import IsXSound from './components/xsound/IsXSound';
-import SampleRate from './components/xsound/SampleRate';
-import NumberOfInputs from './components/xsound/NumberOfInputs';
-import NumberOfOutputs from './components/xsound/NumberOfOutputs';
-import Ajax from './components/xsound/Ajax';
-import Clone from './components/xsound/Clone';
-import ConvertTime from './components/xsound/ConvertTime';
-import Decode from './components/xsound/Decode';
-import ExitFullscreen from './components/xsound/ExitFullscreen';
-import File from './components/xsound/File';
-import Free from './components/xsound/Free';
-import Fullscreen from './components/xsound/Fullscreen';
-import Get from './components/xsound/Get';
-import GetCurrentTime from './components/xsound/GetCurrentTime';
-import NoConflict from './components/xsound/NoConflict';
-import Read from './components/xsound/Read';
-import ToFrequencies from './components/xsound/ToFrequencies';
+import * as XSound from './components/xsound';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -32,23 +16,23 @@ export default (
         <div className="Routes">
             <Switch>
                 <Route exact path={path} component={Home} />
-                <Route exact path={`${path}xsound/is-xsound`} component={IsXSound} />
-                <Route exact path={`${path}xsound/sample-rate`} component={SampleRate} />
-                <Route exact path={`${path}xsound/number-of-inputs`} component={NumberOfInputs} />
-                <Route exact path={`${path}xsound/number-of-outputs`} component={NumberOfOutputs} />
-                <Route exact path={`${path}xsound/ajax`} component={Ajax} />
-                <Route exact path={`${path}xsound/clone`} component={Clone} />
-                <Route exact path={`${path}xsound/convertTime`} component={ConvertTime} />
-                <Route exact path={`${path}xsound/decode`} component={Decode} />
-                <Route exact path={`${path}xsound/exitFullscreen`} component={ExitFullscreen} />
-                <Route exact path={`${path}xsound/file`} component={File} />
-                <Route exact path={`${path}xsound/free`} component={Free} />
-                <Route exact path={`${path}xsound/fullscreen`} component={Fullscreen} />
-                <Route exact path={`${path}xsound/get`} component={Get} />
-                <Route exact path={`${path}xsound/getCurrentTime`} component={GetCurrentTime} />
-                <Route exact path={`${path}xsound/noConflict`} component={NoConflict} />
-                <Route exact path={`${path}xsound/read`} component={Read} />
-                <Route exact path={`${path}xsound/toFrequencies`} component={ToFrequencies} />
+                <Route exact path={`${path}xsound/is-xsound`} component={XSound.IsXSound} />
+                <Route exact path={`${path}xsound/sample-rate`} component={XSound.SampleRate} />
+                <Route exact path={`${path}xsound/number-of-inputs`} component={XSound.NumberOfInputs} />
+                <Route exact path={`${path}xsound/number-of-outputs`} component={XSound.NumberOfOutputs} />
+                <Route exact path={`${path}xsound/ajax`} component={XSound.Ajax} />
+                <Route exact path={`${path}xsound/clone`} component={XSound.Clone} />
+                <Route exact path={`${path}xsound/convertTime`} component={XSound.ConvertTime} />
+                <Route exact path={`${path}xsound/decode`} component={XSound.Decode} />
+                <Route exact path={`${path}xsound/exitFullscreen`} component={XSound.ExitFullscreen} />
+                <Route exact path={`${path}xsound/file`} component={XSound.File} />
+                <Route exact path={`${path}xsound/free`} component={XSound.Free} />
+                <Route exact path={`${path}xsound/fullscreen`} component={XSound.Fullscreen} />
+                <Route exact path={`${path}xsound/get`} component={XSound.Get} />
+                <Route exact path={`${path}xsound/getCurrentTime`} component={XSound.GetCurrentTime} />
+                <Route exact path={`${path}xsound/noConflict`} component={XSound.NoConflict} />
+                <Route exact path={`${path}xsound/read`} component={XSound.Read} />
+                <Route exact path={`${path}xsound/toFrequencies`} component={XSound.ToFrequencies} />
             </Switch>
             <Nav />
         </div>

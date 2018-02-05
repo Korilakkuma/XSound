@@ -71,7 +71,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={id === 'panel-oscillator'} aria-selected={id === 'panel-oscillator'} aria-controls="panel-oscillator" tabIndex="0" onClick={this.onClick}>Oscillator</button></h2>
                     <dl id="panel-oscillator" aria-hidden={id !== 'panel-oscillator'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/oscillator/setup">setup</Link></dd>
+                        <dd><Link to={`${path}oscillator/setup`}>setup</Link></dd>
                         <dd><Link to="/oscillator/ready">ready</Link></dd>
                         <dd><Link to="/oscillator/start">start</Link></dd>
                         <dd><Link to="/oscillator/stop">stop</Link></dd>

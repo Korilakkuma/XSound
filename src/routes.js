@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './components/Home';
 import * as XSound from './components/xsound';
+import * as OscillatorModule from './components/oscillator';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -33,6 +34,7 @@ export default (
                 <Route exact path={`${path}xsound/noConflict`} component={XSound.NoConflict} />
                 <Route exact path={`${path}xsound/read`} component={XSound.Read} />
                 <Route exact path={`${path}xsound/toFrequencies`} component={XSound.ToFrequencies} />
+                <Route exact path={`${path}oscillator/setup`} component={OscillatorModule.Setup} />
             </Switch>
             <Nav />
         </div>

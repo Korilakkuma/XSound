@@ -72,7 +72,7 @@ class Nav extends React.Component {
                     <dl id="panel-oscillator" aria-hidden={id !== 'panel-oscillator'}>
                         <dt>Methods</dt>
                         <dd><Link to={`${path}oscillator/setup`}>setup</Link></dd>
-                        <dd><Link to="/oscillator/ready">ready</Link></dd>
+                        <dd><Link to={`${path}oscillator/ready`}>ready</Link></dd>
                         <dd><Link to="/oscillator/start">start</Link></dd>
                         <dd><Link to="/oscillator/stop">stop</Link></dd>
                         <dd><Link to="/oscillator/param">param</Link></dd>

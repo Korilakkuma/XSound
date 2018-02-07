@@ -40,6 +40,7 @@ hr {
 pre {
     padding: 16px;
     background-color: var(--white);
+
     /* overflow-x: scroll; */
 }
 
@@ -88,7 +89,7 @@ tbody th {
 td {
     padding: 16px;
     border: 1px solid var(--gray-light);
-    font-size:1rem;
+    font-size: 1rem;
 }
 
 td dd {

@@ -36,6 +36,7 @@ export default (
                 <Route exact path={`${path}xsound/toFrequencies`} component={XSound.ToFrequencies} />
                 <Route exact path={`${path}oscillator/setup`} component={OscillatorModule.Setup} />
                 <Route exact path={`${path}oscillator/ready`} component={OscillatorModule.Ready} />
+                <Route exact path={`${path}oscillator/start`} component={OscillatorModule.Start} />
             </Switch>
             <Nav />
         </div>

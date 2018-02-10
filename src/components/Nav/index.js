@@ -75,7 +75,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${path}oscillator/ready`}>ready</Link></dd>
                         <dd><Link to={`${path}oscillator/start`}>start</Link></dd>
                         <dd><Link to={`${path}oscillator/stop`}>stop</Link></dd>
-                        <dd><Link to="/oscillator/param">param</Link></dd>
+                        <dd><Link to={`${path}oscillator/param`}>param</Link></dd>
                         <dd><Link to="/oscillator/params">params</Link></dd>
                         <dd><Link to="/oscillator/to-json">toJSON</Link></dd>
                         <dd><Link to="/oscillator/get">get</Link></dd>

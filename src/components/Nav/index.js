@@ -17,6 +17,7 @@ class Nav extends React.Component {
     constructor(props) {
         super(props);
 
+        this.path    = location.pathname;
         this.onClick = this.onClick.bind(this);
     }
 
@@ -35,49 +36,48 @@ class Nav extends React.Component {
     }
 
     render() {
-        const path = location.pathname;
-        const id   = this.props.expandedPanelId;
+        const id = this.props.expandedPanelId;
 
         return (
             <nav role="tablist" aria-multiselectable="false" className={Nav.CLASS_NAME}>
                 <section role="presentation">
-                    <h2><Link to={path} onClick={this.onClick}>Overview</Link></h2>
+                    <h2><Link to={this.path} onClick={this.onClick}>Overview</Link></h2>
                 </section>
                 <section role="presentation">
                     <h2><button type="button" role="tab" aria-expanded={id === 'panel-xsound'} aria-selected={id === 'panel-xsound'} aria-controls="panel-xsound" tabIndex="0" onClick={this.onClick}>XSound</button></h2>
                     <dl id="panel-xsound" aria-hidden={id !== 'panel-xsound'}>
                         <dt>Properties</dt>
-                        <dd><Link to={`${path}xsound/is-xsound`}>IS_XSOUND</Link></dd>
-                        <dd><Link to={`${path}xsound/sample-rate`}>SAMPLE_RATE</Link></dd>
-                        <dd><Link to={`${path}xsound/number-of-inputs`}>NUMBER_OF_INPUTS</Link></dd>
-                        <dd><Link to={`${path}xsound/number-of-outputs`}>NUMBER_OF_OUTPUTS</Link></dd>
+                        <dd><Link to={`${this.path}xsound/is-xsound`}>IS_XSOUND</Link></dd>
+                        <dd><Link to={`${this.path}xsound/sample-rate`}>SAMPLE_RATE</Link></dd>
+                        <dd><Link to={`${this.path}xsound/number-of-inputs`}>NUMBER_OF_INPUTS</Link></dd>
+                        <dd><Link to={`${this.path}xsound/number-of-outputs`}>NUMBER_OF_OUTPUTS</Link></dd>
                         <dt>Methods</dt>
-                        <dd><Link to={`${path}xsound/ajax`}>ajax</Link></dd>
-                        <dd><Link to={`${path}xsound/clone`}>clone</Link></dd>
-                        <dd><Link to={`${path}xsound/convertTime`}>convertTime</Link></dd>
-                        <dd><Link to={`${path}xsound/decode`}>decode</Link></dd>
-                        <dd><Link to={`${path}xsound/exitFullscreen`}>exitFullscreen</Link></dd>
-                        <dd><Link to={`${path}xsound/file`}>file</Link></dd>
-                        <dd><Link to={`${path}xsound/free`}>free</Link></dd>
-                        <dd><Link to={`${path}xsound/fullscreen`}>fullscreen</Link></dd>
-                        <dd><Link to={`${path}xsound/get`}>get</Link></dd>
-                        <dd><Link to={`${path}xsound/getCurrentTime`}>getCurrentTime</Link></dd>
-                        <dd><Link to={`${path}xsound/noConflict`}>noConflict</Link></dd>
-                        <dd><Link to={`${path}xsound/read`}>read</Link></dd>
-                        <dd><Link to={`${path}xsound/toFrequencies`}>toFrequencies</Link></dd>
+                        <dd><Link to={`${this.path}xsound/ajax`}>ajax</Link></dd>
+                        <dd><Link to={`${this.path}xsound/clone`}>clone</Link></dd>
+                        <dd><Link to={`${this.path}xsound/convert-time`}>convertTime</Link></dd>
+                        <dd><Link to={`${this.path}xsound/decode`}>decode</Link></dd>
+                        <dd><Link to={`${this.path}xsound/exit-fullscreen`}>exitFullscreen</Link></dd>
+                        <dd><Link to={`${this.path}xsound/file`}>file</Link></dd>
+                        <dd><Link to={`${this.path}xsound/free`}>free</Link></dd>
+                        <dd><Link to={`${this.path}xsound/fullscreen`}>fullscreen</Link></dd>
+                        <dd><Link to={`${this.path}xsound/get`}>get</Link></dd>
+                        <dd><Link to={`${this.path}xsound/get-current-time`}>getCurrentTime</Link></dd>
+                        <dd><Link to={`${this.path}xsound/no-conflict`}>noConflict</Link></dd>
+                        <dd><Link to={`${this.path}xsound/read`}>read</Link></dd>
+                        <dd><Link to={`${this.path}xsound/to-frequencies`}>toFrequencies</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">
                     <h2><button type="button" role="tab" aria-expanded={id === 'panel-oscillator'} aria-selected={id === 'panel-oscillator'} aria-controls="panel-oscillator" tabIndex="0" onClick={this.onClick}>Oscillator</button></h2>
                     <dl id="panel-oscillator" aria-hidden={id !== 'panel-oscillator'}>
                         <dt>Methods</dt>
-                        <dd><Link to={`${path}oscillator/setup`}>setup</Link></dd>
-                        <dd><Link to={`${path}oscillator/ready`}>ready</Link></dd>
-                        <dd><Link to={`${path}oscillator/start`}>start</Link></dd>
-                        <dd><Link to={`${path}oscillator/stop`}>stop</Link></dd>
-                        <dd><Link to={`${path}oscillator/param`}>param</Link></dd>
-                        <dd><Link to={`${path}oscillator/params`}>params</Link></dd>
-                        <dd><Link to={`${path}oscillator/to-json`}>toJSON</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/setup`}>setup</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/ready`}>ready</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/start`}>start</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/stop`}>stop</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/param`}>param</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/params`}>params</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/to-json`}>toJSON</Link></dd>
                         <dd><Link to="/oscillator/get">get</Link></dd>
                         <dd><Link to="/oscillator/length">length</Link></dd>
                         <dd><Link to="/oscillator/oscillator-param">Oscillator#param</Link></dd>

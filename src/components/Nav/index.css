@@ -13,6 +13,11 @@
     transition: max-height ease 0.6s;
 }
 
+.Nav [aria-expanded="true"],
+.Nav .-selected {
+    color: var(--base-color);
+}
+
 .Nav h2 {
     margin: 16px 0 0;
 }

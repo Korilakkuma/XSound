@@ -7,6 +7,7 @@ import Stop from './Stop';
 import Param from './Param';
 import Params from './Params';
 import ToJSON from './ToJSON';
+import Get from './Get';
 
 export {
     Setup,
@@ -15,5 +16,6 @@ export {
     Stop,
     Param,
     Params,
-    ToJSON
+    ToJSON,
+    Get
 };

@@ -88,7 +88,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}oscillator/param`} onClick={this.onClickLink}>param</Link></dd>
                         <dd><Link to={`${this.path}oscillator/params`} onClick={this.onClickLink}>params</Link></dd>
                         <dd><Link to={`${this.path}oscillator/to-json`} onClick={this.onClickLink}>toJSON</Link></dd>
-                        <dd><Link to="/oscillator/get">get</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/get`} onClick={this.onClickLink}>get</Link></dd>
                         <dd><Link to="/oscillator/length">length</Link></dd>
                         <dd><Link to="/oscillator/oscillator-param">Oscillator#param</Link></dd>
                         <dd><Link to="/oscillator/oscillator-state">Oscillator#state</Link></dd>

@@ -11,24 +11,34 @@ class Nav extends React.Component {
 
     static propTypes = {
         dispatch        : PropTypes.func.isRequired,
-        expandedPanelId : PropTypes.string
+        expandedPanelId : PropTypes.string,
+        selectedItem    : PropTypes.string
     };
 
     constructor(props) {
         super(props);
 
-        this.path    = location.pathname;
-        this.onClick = this.onClick.bind(this);
+        this.path        = location.pathname;
+        this.onClick     = this.onClick.bind(this);
+        this.onClickLink = this.onClickLink.bind(this);
     }
 
     onClick(event) {
         const id = event.currentTarget.getAttribute('aria-controls');
 
-        if (document.getElementById(id).getAttribute('aria-hidden') === 'true') {
-            this.props.dispatch(NavActions.expandPanel(id));
-        } else {
+        if ((document.getElementById(id) === null) || (document.getElementById(id).getAttribute('aria-hidden') === 'false')) {
             this.props.dispatch(NavActions.expandPanel(''));
+        } else {
+            this.props.dispatch(NavActions.expandPanel(id));
         }
+    }
+
+    onClickLink(event) {
+        for (const element of document.querySelectorAll('.-selected')) {
+            element.classList.remove('-selected');
+        }
+
+        event.currentTarget.classList.add('-selected');
     }
 
     shouldComponentUpdate() {
@@ -36,7 +46,7 @@ class Nav extends React.Component {
     }
 
     render() {
-        const id = this.props.expandedPanelId;
+        const { expandedPanelId, selectedItem } = this.props;
 
         return (
             <nav role="tablist" aria-multiselectable="false" className={Nav.CLASS_NAME}>
@@ -44,40 +54,40 @@ class Nav extends React.Component {
                     <h2><Link to={this.path} onClick={this.onClick}>Overview</Link></h2>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-xsound'} aria-selected={id === 'panel-xsound'} aria-controls="panel-xsound" tabIndex="0" onClick={this.onClick}>XSound</button></h2>
-                    <dl id="panel-xsound" aria-hidden={id !== 'panel-xsound'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-xsound'} aria-selected={expandedPanelId === 'panel-xsound'} aria-controls="panel-xsound" tabIndex="0" onClick={this.onClick}>XSound</button></h2>
+                    <dl id="panel-xsound" aria-hidden={expandedPanelId !== 'panel-xsound'}>
                         <dt>Properties</dt>
-                        <dd><Link to={`${this.path}xsound/is-xsound`}>IS_XSOUND</Link></dd>
-                        <dd><Link to={`${this.path}xsound/sample-rate`}>SAMPLE_RATE</Link></dd>
-                        <dd><Link to={`${this.path}xsound/number-of-inputs`}>NUMBER_OF_INPUTS</Link></dd>
-                        <dd><Link to={`${this.path}xsound/number-of-outputs`}>NUMBER_OF_OUTPUTS</Link></dd>
+                        <dd><Link to={`${this.path}xsound/is-xsound`} onClick={this.onClickLink}>IS_XSOUND</Link></dd>
+                        <dd><Link to={`${this.path}xsound/sample-rate`} onClick={this.onClickLink}>SAMPLE_RATE</Link></dd>
+                        <dd><Link to={`${this.path}xsound/number-of-inputs`} onClick={this.onClickLink}>NUMBER_OF_INPUTS</Link></dd>
+                        <dd><Link to={`${this.path}xsound/number-of-outputs`} onClick={this.onClickLink}>NUMBER_OF_OUTPUTS</Link></dd>
                         <dt>Methods</dt>
-                        <dd><Link to={`${this.path}xsound/ajax`}>ajax</Link></dd>
-                        <dd><Link to={`${this.path}xsound/clone`}>clone</Link></dd>
-                        <dd><Link to={`${this.path}xsound/convert-time`}>convertTime</Link></dd>
-                        <dd><Link to={`${this.path}xsound/decode`}>decode</Link></dd>
-                        <dd><Link to={`${this.path}xsound/exit-fullscreen`}>exitFullscreen</Link></dd>
-                        <dd><Link to={`${this.path}xsound/file`}>file</Link></dd>
-                        <dd><Link to={`${this.path}xsound/free`}>free</Link></dd>
-                        <dd><Link to={`${this.path}xsound/fullscreen`}>fullscreen</Link></dd>
-                        <dd><Link to={`${this.path}xsound/get`}>get</Link></dd>
-                        <dd><Link to={`${this.path}xsound/get-current-time`}>getCurrentTime</Link></dd>
-                        <dd><Link to={`${this.path}xsound/no-conflict`}>noConflict</Link></dd>
-                        <dd><Link to={`${this.path}xsound/read`}>read</Link></dd>
-                        <dd><Link to={`${this.path}xsound/to-frequencies`}>toFrequencies</Link></dd>
+                        <dd><Link to={`${this.path}xsound/ajax`} onClick={this.onClickLink}>ajax</Link></dd>
+                        <dd><Link to={`${this.path}xsound/clone`} onClick={this.onClickLink}>clone</Link></dd>
+                        <dd><Link to={`${this.path}xsound/convert-time`} onClick={this.onClickLink}>convertTime</Link></dd>
+                        <dd><Link to={`${this.path}xsound/decode`} onClick={this.onClickLink}>decode</Link></dd>
+                        <dd><Link to={`${this.path}xsound/exit-fullscreen`} onClick={this.onClickLink}>exitFullscreen</Link></dd>
+                        <dd><Link to={`${this.path}xsound/file`} onClick={this.onClickLink}>file</Link></dd>
+                        <dd><Link to={`${this.path}xsound/free`} onClick={this.onClickLink}>free</Link></dd>
+                        <dd><Link to={`${this.path}xsound/fullscreen`} onClick={this.onClickLink}>fullscreen</Link></dd>
+                        <dd><Link to={`${this.path}xsound/get`} onClick={this.onClickLink}>get</Link></dd>
+                        <dd><Link to={`${this.path}xsound/get-current-time`} onClick={this.onClickLink}>getCurrentTime</Link></dd>
+                        <dd><Link to={`${this.path}xsound/no-conflict`} onClick={this.onClickLink}>noConflict</Link></dd>
+                        <dd><Link to={`${this.path}xsound/read`} onClick={this.onClickLink}>read</Link></dd>
+                        <dd><Link to={`${this.path}xsound/to-frequencies`} onClick={this.onClickLink}>toFrequencies</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-oscillator'} aria-selected={id === 'panel-oscillator'} aria-controls="panel-oscillator" tabIndex="0" onClick={this.onClick}>Oscillator</button></h2>
-                    <dl id="panel-oscillator" aria-hidden={id !== 'panel-oscillator'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-oscillator'} aria-selected={expandedPanelId === 'panel-oscillator'} aria-controls="panel-oscillator" tabIndex="0" onClick={this.onClick}>Oscillator</button></h2>
+                    <dl id="panel-oscillator" aria-hidden={expandedPanelId !== 'panel-oscillator'}>
                         <dt>Methods</dt>
-                        <dd><Link to={`${this.path}oscillator/setup`}>setup</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/ready`}>ready</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/start`}>start</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/stop`}>stop</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/param`}>param</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/params`}>params</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/to-json`}>toJSON</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/setup`} onClick={this.onClickLink}>setup</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/ready`} onClick={this.onClickLink}>ready</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/start`} onClick={this.onClickLink}>start</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/stop`} onClick={this.onClickLink}>stop</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/param`} onClick={this.onClickLink}>param</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/params`} onClick={this.onClickLink}>params</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/to-json`} onClick={this.onClickLink}>toJSON</Link></dd>
                         <dd><Link to="/oscillator/get">get</Link></dd>
                         <dd><Link to="/oscillator/length">length</Link></dd>
                         <dd><Link to="/oscillator/oscillator-param">Oscillator#param</Link></dd>
@@ -86,8 +96,8 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-oneshot'} aria-selected={id === 'panel-oneshot'} aria-controls="panel-oneshot" tabIndex="0" onClick={this.onClick}>One-shot</button></h2>
-                    <dl id="panel-oneshot" aria-hidden={id !== 'panel-oneshot'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-oneshot'} aria-selected={expandedPanelId === 'panel-oneshot'} aria-controls="panel-oneshot" tabIndex="0" onClick={this.onClick}>One-shot</button></h2>
+                    <dl id="panel-oneshot" aria-hidden={expandedPanelId !== 'panel-oneshot'}>
                         <dt>Methods</dt>
                         <dd><Link to="/oneshot/setup">setup</Link></dd>
                         <dd><Link to="/oneshot/ready">ready</Link></dd>
@@ -100,8 +110,8 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-audio'} aria-selected={id === 'panel-audio'} aria-controls="panel-audio" tabIndex="0" onClick={this.onClick}>Audio</button></h2>
-                    <dl id="panel-audio" aria-hidden={id !== 'panel-audio'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-audio'} aria-selected={expandedPanelId === 'panel-audio'} aria-controls="panel-audio" tabIndex="0" onClick={this.onClick}>Audio</button></h2>
+                    <dl id="panel-audio" aria-hidden={expandedPanelId !== 'panel-audio'}>
                         <dt>Methods</dt>
                         <dd><Link to="/audio/setup">setup</Link></dd>
                         <dd><Link to="/audio/ready">ready</Link></dd>
@@ -118,8 +128,8 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-media'} aria-selected={id === 'panel-media'} aria-controls="panel-media" tabIndex="0" onClick={this.onClick}>Media</button></h2>
-                    <dl id="panel-media" aria-hidden={id !== 'panel-media'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-media'} aria-selected={expandedPanelId === 'panel-media'} aria-controls="panel-media" tabIndex="0" onClick={this.onClick}>Media</button></h2>
+                    <dl id="panel-media" aria-hidden={expandedPanelId !== 'panel-media'}>
                         <dt>Methods</dt>
                         <dd><Link to="/media/setup">setup</Link></dd>
                         <dd><Link to="/media/ready">ready</Link></dd>
@@ -136,8 +146,8 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-stream'} aria-selected={id === 'panel-stream'} aria-controls="panel-stream" tabIndex="0" onClick={this.onClick}>Stream</button></h2>
-                    <dl id="panel-stream" aria-hidden={id !== 'panel-stream'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-stream'} aria-selected={expandedPanelId === 'panel-stream'} aria-controls="panel-stream" tabIndex="0" onClick={this.onClick}>Stream</button></h2>
+                    <dl id="panel-stream" aria-hidden={expandedPanelId !== 'panel-stream'}>
                         <dt>Methods</dt>
                         <dd><Link to="/stream/setup">setup</Link></dd>
                         <dd><Link to="/stream/ready">ready</Link></dd>
@@ -152,24 +162,24 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-mixer'} aria-selected={id === 'panel-mixer'} aria-controls="panel-mixer" tabIndex="0" onClick={this.onClick}>Mixer</button></h2>
-                    <dl id="panel-mixer" aria-hidden={id !== 'panel-mixer'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-mixer'} aria-selected={expandedPanelId === 'panel-mixer'} aria-controls="panel-mixer" tabIndex="0" onClick={this.onClick}>Mixer</button></h2>
+                    <dl id="panel-mixer" aria-hidden={expandedPanelId !== 'panel-mixer'}>
                         <dt>Methods</dt>
                         <dd><Link to="/mixer/mix">mix</Link></dd>
                         <dd><Link to="/mixer/get">get</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-midi'} aria-selected={id === 'panel-midi'} aria-controls="panel-midi" tabIndex="0" onClick={this.onClick}>MIDI</button></h2>
-                    <dl id="panel-midi" aria-hidden={id !== 'panel-midi'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-mexpandedPanelIdi'} aria-selected={expandedPanelId === 'panel-midi'} aria-controls="panel-midi" tabIndex="0" onClick={this.onClick}>MIDI</button></h2>
+                    <dl id="panel-midi" aria-hidden={expandedPanelId !== 'panel-midi'}>
                         <dt>Methods</dt>
                         <dd><Link to="/midi/setup">setup</Link></dd>
                         <dd><Link to="/midi/get">get</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-mml'} aria-selected={id === 'panel-mml'} aria-controls="panel-mml" tabIndex="0" onClick={this.onClick}>MML</button></h2>
-                    <dl id="panel-mml" aria-hidden={id !== 'panel-mml'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-mml'} aria-selected={expandedPanelId === 'panel-mml'} aria-controls="panel-mml" tabIndex="0" onClick={this.onClick}>MML</button></h2>
+                    <dl id="panel-mml" aria-hidden={expandedPanelId !== 'panel-mml'}>
                         <dt>Methods</dt>
                         <dd><Link to="/mml/setup">setup</Link></dd>
                         <dd><Link to="/mml/ready">ready</Link></dd>
@@ -182,8 +192,8 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-effectors'} aria-selected={id === 'panel-effectors'} aria-controls="panel-effectors" tabIndex="0" onClick={this.onClick}>Effectors</button></h2>
-                    <dl id="panel-effectors" aria-hidden={id !== 'panel-effectors'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-effectors'} aria-selected={expandedPanelId === 'panel-effectors'} aria-controls="panel-effectors" tabIndex="0" onClick={this.onClick}>Effectors</button></h2>
+                    <dl id="panel-effectors" aria-hidden={expandedPanelId !== 'panel-effectors'}>
                         <dt>Modules</dt>
                         <dd><Link to="/effectors/autopanner">autopanner</Link></dd>
                         <dd><Link to="/effectors/chorus">chorus</Link></dd>
@@ -205,8 +215,8 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-analyser'} aria-selected={id === 'panel-analyser'} aria-controls="panel-analyser" tabIndex="0" onClick={this.onClick}>Analyser</button></h2>
-                    <dl id="panel-analyser" aria-hidden={id !== 'panel-analyser'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-analyser'} aria-selected={expandedPanelId === 'panel-analyser'} aria-controls="panel-analyser" tabIndex="0" onClick={this.onClick}>Analyser</button></h2>
+                    <dl id="panel-analyser" aria-hidden={expandedPanelId !== 'panel-analyser'}>
                         <dt>Methods</dt>
                         <dd><Link to="/analyser/domain">domain</Link></dd>
                         <dd><Link to="/analyser/param">param</Link></dd>
@@ -220,8 +230,8 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-recorder'} aria-selected={id === 'panel-recorder'} aria-controls="panel-recorder" tabIndex="0" onClick={this.onClick}>Recorder</button></h2>
-                    <dl id="panel-recorder" aria-hidden={id !== 'panel-recorder'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-recorder'} aria-selected={expandedPanelId === 'panel-recorder'} aria-controls="panel-recorder" tabIndex="0" onClick={this.onClick}>Recorder</button></h2>
+                    <dl id="panel-recorder" aria-hidden={expandedPanelId !== 'panel-recorder'}>
                         <dt>Methods</dt>
                         <dd><Link to="/recorder/setup">setup</Link></dd>
                         <dd><Link to="/recorder/ready">ready</Link></dd>
@@ -234,8 +244,8 @@ class Nav extends React.Component {
                     </dl>
                 </section>
                 <section role="presentation">
-                    <h2><button type="button" role="tab" aria-expanded={id === 'panel-session'} aria-selected={id === 'panel-session'} aria-controls="panel-session" tabIndex="0" onClick={this.onClick}>Session</button></h2>
-                    <dl id="panel-session" aria-hidden={id !== 'panel-session'}>
+                    <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-session'} aria-selected={expandedPanelId === 'panel-session'} aria-controls="panel-session" tabIndex="0" onClick={this.onClick}>Session</button></h2>
+                    <dl id="panel-session" aria-hidden={expandedPanelId !== 'panel-session'}>
                         <dt>Methods</dt>
                         <dd><Link to="/session/setup">setup</Link></dd>
                         <dd><Link to="/session/start">start</Link></dd>

@@ -42,6 +42,7 @@ export default (
                 <Route exact path={`${path}oscillator/params`} component={OscillatorModule.Params} />
                 <Route exact path={`${path}oscillator/to-json`} component={OscillatorModule.ToJSON} />
                 <Route exact path={`${path}oscillator/get`} component={OscillatorModule.Get} />
+                <Route exact path={`${path}oscillator/length`} component={OscillatorModule.Length} />
             </Switch>
             <Nav />
         </div>

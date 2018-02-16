@@ -9,6 +9,7 @@ import Params from './Params';
 import ToJSON from './ToJSON';
 import Get from './Get';
 import Length from './Length';
+import OscillatorParam from './OscillatorParam';
 
 export {
     Setup,
@@ -19,5 +20,6 @@ export {
     Params,
     ToJSON,
     Get,
-    Length
+    Length,
+    OscillatorParam
 };

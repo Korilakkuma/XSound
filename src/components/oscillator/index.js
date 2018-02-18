@@ -11,6 +11,7 @@ import Get from './Get';
 import Length from './Length';
 import OscillatorParam from './OscillatorParam';
 import OscillatorState from './OscillatorState';
+import OscillatorGet from './OscillatorGet';
 
 export {
     Setup,
@@ -23,5 +24,6 @@ export {
     Get,
     Length,
     OscillatorParam,
-    OscillatorState
+    OscillatorState,
+    OscillatorGet
 };

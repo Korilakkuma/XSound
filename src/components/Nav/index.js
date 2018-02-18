@@ -92,7 +92,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}oscillator/length`} onClick={this.onClickLink}>length</Link></dd>
                         <dd><Link to={`${this.path}oscillator/oscillator/param`}>Oscillator#param</Link></dd>
                         <dd><Link to={`${this.path}oscillator/oscillator/state`}>Oscillator#state</Link></dd>
-                        <dd><Link to="/oscillator/oscillator-get">Oscillator#get</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/oscillator/get`}>Oscillator#get</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

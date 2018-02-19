@@ -24,7 +24,7 @@ class File extends React.Component {
                     </div>
                     <hr role="presentation" />
                     <p>
-                        This method gets the instance of <code>File</code> (extends <code>Blob</code>) and reads this.
+                        This method gets the instance of File (extends Blob) and reads this.
                     </p>
                     <table>
                         <caption>Arguments</caption>
@@ -32,7 +32,7 @@ class File extends React.Component {
                         <tbody>
                             <tr>
                                 <th scope="row">1st</th>
-                                <td><span className="argument-type">object</span></td>
+                                <td><span className="argument-type">Object</span></td>
                                 <td>
                                     This argument is plain object that has the following properties.
                                     <dl className="list-marker">
@@ -40,11 +40,11 @@ class File extends React.Component {
                                         <dd>This value is event object.</dd>
                                         <dt>type<span className="argument-type">string</span></dt>
                                         <dd>This value is one of &apos;ArrayBuffer&apos;, &apos;DataURL&apos;, &apos;Text&apos;</dd>
-                                        <dt>success<span className="argument-type">function</span></dt>
+                                        <dt>success<span className="argument-type">Function</span></dt>
                                         <dd>This function is invoked on read success.</dd>
-                                        <dt>error<span className="argument-type">function</span></dt>
+                                        <dt>error<span className="argument-type">Function</span></dt>
                                         <dd>This function is invoked on read error.</dd>
-                                        <dt>progress<span className="argument-type">function</span></dt>
+                                        <dt>progress<span className="argument-type">Function</span></dt>
                                         <dd>This function is invoked while file is read.</dd>
                                     </dl>
                                 </td>

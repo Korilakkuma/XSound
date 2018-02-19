@@ -24,7 +24,7 @@ class GetCurrentTime extends React.Component {
                     </div>
                     <hr role="presentation" />
                     <p>
-                        This method returns <code>currentTime</code> property in <a href="https://webaudio.github.io/web-audio-api/#AudioContext" target="_blank" rel="noopener noreferrer nofollow">AudioContext</a>.
+                        This method returns <var>currentTime</var> property in <a href="https://webaudio.github.io/web-audio-api/#AudioContext" target="_blank" rel="noopener noreferrer nofollow">AudioContext</a>.
                     </p>
                 </section>
                 <section className="codepen">

@@ -24,7 +24,7 @@ class Read extends React.Component {
                     </div>
                     <hr role="presentation" />
                     <p>
-                        This method reads the instance of <code>File</code> (extends <code>Blob</code>).
+                        This method reads the instance of File (extends Blob).
                     </p>
                     <table>
                         <caption>Arguments</caption>
@@ -32,19 +32,19 @@ class Read extends React.Component {
                         <tbody>
                             <tr>
                                 <th scope="row">1st</th>
-                                <td><span className="argument-type">object</span></td>
+                                <td><span className="argument-type">Object</span></td>
                                 <td>
                                     This argument is plain object that has the following properties.
                                     <dl className="list-marker">
                                         <dt>file<span className="argument-type">File (Blob)</span></dt>
-                                        <dd>This value is the instance of <code>File</code> (extends <code>Blob</code>).</dd>
+                                        <dd>This value is the instance of File (extends Blob).</dd>
                                         <dt>type<span className="argument-type">string</span></dt>
                                         <dd>This value is one of &apos;ArrayBuffer&apos;, &apos;DataURL&apos;, &apos;Text&apos;.</dd>
-                                        <dt>success<span className="argument-type">function</span></dt>
+                                        <dt>success<span className="argument-type">Function</span></dt>
                                         <dd>This function is invoked on success.</dd>
-                                        <dt>error<span className="argument-type">function</span></dt>
+                                        <dt>error<span className="argument-type">Function</span></dt>
                                         <dd>This function is invoked on error.</dd>
-                                        <dt>progress<span className="argument-type">function</span></dt>
+                                        <dt>progress<span className="argument-type">Function</span></dt>
                                         <dd>This function is invoked while file is read.</dd>
                                     </dl>
                                 </td>

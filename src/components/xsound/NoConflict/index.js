@@ -34,7 +34,7 @@ class NoConflict extends React.Component {
                                 <th scope="row">1st</th>
                                 <td><span className="argument-type">undefined</span> or <span className="argument-type">boolean</span></td>
                                 <td>
-                                    If argument is <var>true</var>, the both of global objects are deleted.
+                                    If argument is true, the both of global objects are deleted.
                                 </td>
                             </tr>
                         </tbody>

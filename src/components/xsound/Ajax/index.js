@@ -33,7 +33,7 @@ class Ajax extends React.Component {
                     <tbody>
                         <tr>
                             <th scope="row">1st</th>
-                            <td><span className="argument-type">object</span></td>
+                            <td><span className="argument-type">Object</span></td>
                             <td>
                                 This argument is plain object that has the following properties.
                                 <dl className="list-marker">
@@ -41,11 +41,11 @@ class Ajax extends React.Component {
                                     <dd>This value is resource URL.</dd>
                                     <dt>timeout<span className="argument-type">number</span></dt>
                                     <dd>This value is <abbr title="Asynchronous JavaScript and XML">Ajax</abbr> timeout.</dd>
-                                    <dt>success<span className="argument-type">function</span></dt>
+                                    <dt>success<span className="argument-type">Function</span></dt>
                                     <dd>This function is invoked on success.</dd>
-                                    <dt>error<span className="argument-type">function</span></dt>
+                                    <dt>error<span className="argument-type">Function</span></dt>
                                     <dd>This function is invoked on error.</dd>
-                                    <dt>progress<span className="argument-type">function</span></dt>
+                                    <dt>progress<span className="argument-type">Function</span></dt>
                                     <dd>This function is invoked during connection.</dd>
                                 </dl>
                             </td>

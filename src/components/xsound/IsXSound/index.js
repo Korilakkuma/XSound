@@ -25,8 +25,8 @@ class IsXSound extends React.Component {
                     <hr role="presentation" />
                     <p>
                         This property is to determine whether this library is usable.
-                        If this library is usable, this value is <var>true</var>.
-                        Otherwise this value is <var>false</var>.
+                        If this library is usable, this value is true.
+                        Otherwise this value is false.
                     </p>
                 </section>
                 <section className="codepen">

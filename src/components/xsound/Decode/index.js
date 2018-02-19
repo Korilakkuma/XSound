@@ -24,7 +24,7 @@ class Decode extends React.Component {
                     </div>
                     <hr role="presentation" />
                     <p>
-                        This method creates the instance of <code>AudioBuffer</code> by decoding <code>ArrayBuffer</code>.
+                        This method creates the instance of AudioBuffer by decoding ArrayBuffer.
                     </p>
                     <table>
                         <caption>Arguments</caption>
@@ -34,26 +34,26 @@ class Decode extends React.Component {
                                 <th scope="row">1st</th>
                                 <td><span className="argument-type">AudioContext</span></td>
                                 <td>
-                                    This argument is the instance of <code>AudioContext</code>.
+                                    This argument is the instance of AudioContext.
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">2nd</th>
                                 <td><span className="argument-type">ArrayBuffer</span></td>
                                 <td>
-                                    This argument is the instance of <code>ArrayBuffer</code>.
+                                    This argument is the instance of ArrayBuffer.
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">3rd</th>
-                                <td><span className="argument-type">function</span></td>
+                                <td><span className="argument-type">Function</span></td>
                                 <td>
                                     This argument is function that is invoked on success.
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">4th</th>
-                                <td><span className="argument-type">function</span></td>
+                                <td><span className="argument-type">Function</span></td>
                                 <td>
                                     This argument is function that is invoked on error.
                                 </td>

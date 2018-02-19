@@ -31,7 +31,7 @@ class Free extends React.Component {
                         <thead><tr><th scope="col"></th><th scope="col">Type</th><th scope="col">Description</th></tr></thead>
                         <tbody>
                             <tr>
-                                <th>1st</th>
+                                <th scope="row">1st</th>
                                 <td><span className="argument-type">Array</span> or <span className="argument-type">SoundModule</span></td>
                                 <td>
                                     This argument is the array that contains sound source object.

@@ -20,7 +20,7 @@ class Clone extends React.Component {
                 <section>
                     <div className="component-title">
                         <h1>clone</h1>
-                        <p className="returns">Returns : <span>function</span></p>
+                        <p className="returns">Returns : <span>Function</span></p>
                     </div>
                     <hr role="presentation" />
                     <p>

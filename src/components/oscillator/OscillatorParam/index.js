@@ -38,7 +38,7 @@ class OscillatorParam extends React.Component {
                             <tr>
                                 <th scope="row">2nd</th>
                                 <td><span className="argument-type">number</span> or <span className="argument-type">string</span> or <span className="argument-type">undefined</span></td>
-                                <td>This value is value for parameters. If this value is <code>undefined</code>, this method is getter.</td>
+                                <td>This value is value for parameters. If this value is undefined, this method is getter.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -49,7 +49,7 @@ class OscillatorParam extends React.Component {
                         <tbody>
                             <tr>
                                 <th scope="row">1st</th>
-                                <td><span className="argument-type">object</span></td>
+                                <td><span className="argument-type">Object</span></td>
                                 <td>This value is associative array for parameters.</td>
                             </tr>
                         </tbody>

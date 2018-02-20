@@ -24,7 +24,7 @@ class OscillatorGet extends React.Component {
                     </div>
                     <hr role="presentation" />
                     <p>
-                        This method gets the instance of <code>OscillatorNode</code>.
+                        This method gets the instance of OscillatorNode.
                     </p>
                 </section>
                 <section className="codepen">

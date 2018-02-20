@@ -33,7 +33,7 @@ class OscillatorState extends React.Component {
                             <tr>
                                 <th scope="row">1st</th>
                                 <td><span className="argument-type">boolean</span> or <span className="argument-type">undefined</span></td>
-                                <td>This value is to determine oscillator state. If this value is <code>undefined</code>, this method is getter.</td>
+                                <td>This value is to determine oscillator state. If this value is undefined, this method is getter.</td>
                             </tr>
                         </tbody>
                     </table>

@@ -32,7 +32,7 @@ class Stop extends React.Component {
                         <tbody>
                             <tr>
                                 <th scope="row">1st</th>
-                                <td><span className="argument-type">function</span></td>
+                                <td><span className="argument-type">Function</span></td>
                                 <td>This value is <a href="http://webaudio.github.io/web-audio-api/#the-scriptprocessornode-interface---deprecated" target="_blank" rel="noopener noreferrer nofollow">onaudioprocess</a> event hanlder.</td>
                             </tr>
                         </tbody>

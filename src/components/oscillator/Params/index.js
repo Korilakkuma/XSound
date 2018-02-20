@@ -20,7 +20,7 @@ class Params extends React.Component {
                 <section>
                     <div className="component-title">
                         <h1>params</h1>
-                        <p className="returns">Returns : <span>object</span></p>
+                        <p className="returns">Returns : <span>Object</span></p>
                     </div>
                     <hr role="presentation" />
                     <p>

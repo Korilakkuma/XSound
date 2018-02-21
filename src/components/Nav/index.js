@@ -99,7 +99,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-oneshot'} aria-selected={expandedPanelId === 'panel-oneshot'} aria-controls="panel-oneshot" tabIndex="0" onClick={this.onClick}>One-shot</button></h2>
                     <dl id="panel-oneshot" aria-hidden={expandedPanelId !== 'panel-oneshot'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/oneshot/setup">setup</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/setup`}>setup</Link></dd>
                         <dd><Link to="/oneshot/ready">ready</Link></dd>
                         <dd><Link to="/oneshot/start">start</Link></dd>
                         <dd><Link to="/oneshot/stop">stop</Link></dd>

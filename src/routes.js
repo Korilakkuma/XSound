@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Home from './components/Home';
 import * as XSound from './components/xsound';
 import * as OscillatorModule from './components/oscillator';
+import * as OneshotModule from './components/oneshot';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -46,6 +47,7 @@ export default (
                 <Route exact path={`${path}oscillator/oscillator/param`} component={OscillatorModule.OscillatorParam} />
                 <Route exact path={`${path}oscillator/oscillator/state`} component={OscillatorModule.OscillatorState} />
                 <Route exact path={`${path}oscillator/oscillator/get`} component={OscillatorModule.OscillatorGet} />
+                <Route exact path={`${path}oneshot/setup`} component={OneshotModule.Setup} />
             </Switch>
             <Nav />
         </div>

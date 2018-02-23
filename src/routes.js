@@ -49,6 +49,7 @@ export default (
                 <Route exact path={`${path}oscillator/oscillator/get`} component={OscillatorModule.OscillatorGet} />
                 <Route exact path={`${path}oneshot/setup`} component={OneshotModule.Setup} />
                 <Route exact path={`${path}oneshot/ready`} component={OneshotModule.Ready} />
+                <Route exact path={`${path}oneshot/start`} component={OneshotModule.Start} />
             </Switch>
             <Nav />
         </div>

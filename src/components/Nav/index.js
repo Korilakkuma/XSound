@@ -101,7 +101,7 @@ class Nav extends React.Component {
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}oneshot/setup`}>setup</Link></dd>
                         <dd><Link to={`${this.path}oneshot/ready`}>ready</Link></dd>
-                        <dd><Link to="/oneshot/start">start</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/start`}>start</Link></dd>
                         <dd><Link to="/oneshot/stop">stop</Link></dd>
                         <dd><Link to="/oneshot/param">param</Link></dd>
                         <dd><Link to="/oneshot/params">params</Link></dd>

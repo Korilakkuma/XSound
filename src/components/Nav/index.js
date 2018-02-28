@@ -106,7 +106,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}oneshot/param`}>param</Link></dd>
                         <dd><Link to={`${this.path}oneshot/params`}>params</Link></dd>
                         <dd><Link to={`${this.path}oneshot/to-json`}>toJSON</Link></dd>
-                        <dd><Link to="/oneshot/get">get</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/get`}>get</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

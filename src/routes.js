@@ -54,6 +54,7 @@ export default (
                 <Route exact path={`${path}oneshot/param`} component={OneshotModule.Param} />
                 <Route exact path={`${path}oneshot/params`} component={OneshotModule.Params} />
                 <Route exact path={`${path}oneshot/to-json`} component={OneshotModule.ToJSON} />
+                <Route exact path={`${path}oneshot/get`} component={OneshotModule.Get} />
             </Switch>
             <Nav />
         </div>

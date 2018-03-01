@@ -7,6 +7,7 @@ import Home from './components/Home';
 import * as XSound from './components/xsound';
 import * as OscillatorModule from './components/oscillator';
 import * as OneshotModule from './components/oneshot';
+import * as AudioModule from './components/audio';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -55,6 +56,7 @@ export default (
                 <Route exact path={`${path}oneshot/params`} component={OneshotModule.Params} />
                 <Route exact path={`${path}oneshot/to-json`} component={OneshotModule.ToJSON} />
                 <Route exact path={`${path}oneshot/get`} component={OneshotModule.Get} />
+                <Route exact path={`${path}audio/setup`} component={AudioModule.Setup} />
             </Switch>
             <Nav />
         </div>

@@ -90,30 +90,30 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}oscillator/to-json`} onClick={this.onClickLink}>toJSON</Link></dd>
                         <dd><Link to={`${this.path}oscillator/get`} onClick={this.onClickLink}>get</Link></dd>
                         <dd><Link to={`${this.path}oscillator/length`} onClick={this.onClickLink}>length</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/oscillator/param`}>Oscillator#param</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/oscillator/state`}>Oscillator#state</Link></dd>
-                        <dd><Link to={`${this.path}oscillator/oscillator/get`}>Oscillator#get</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/oscillator/param`} onClick={this.onClickLink}>Oscillator#param</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/oscillator/state`} onClick={this.onClickLink}>Oscillator#state</Link></dd>
+                        <dd><Link to={`${this.path}oscillator/oscillator/get`} onClick={this.onClickLink}>Oscillator#get</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-oneshot'} aria-selected={expandedPanelId === 'panel-oneshot'} aria-controls="panel-oneshot" tabIndex="0" onClick={this.onClick}>One-shot</button></h2>
                     <dl id="panel-oneshot" aria-hidden={expandedPanelId !== 'panel-oneshot'}>
                         <dt>Methods</dt>
-                        <dd><Link to={`${this.path}oneshot/setup`}>setup</Link></dd>
-                        <dd><Link to={`${this.path}oneshot/ready`}>ready</Link></dd>
-                        <dd><Link to={`${this.path}oneshot/start`}>start</Link></dd>
-                        <dd><Link to={`${this.path}oneshot/stop`}>stop</Link></dd>
-                        <dd><Link to={`${this.path}oneshot/param`}>param</Link></dd>
-                        <dd><Link to={`${this.path}oneshot/params`}>params</Link></dd>
-                        <dd><Link to={`${this.path}oneshot/to-json`}>toJSON</Link></dd>
-                        <dd><Link to={`${this.path}oneshot/get`}>get</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/setup`} onClick={this.onClickLink}>setup</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/ready`} onClick={this.onClickLink}>ready</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/start`} onClick={this.onClickLink}>start</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/stop`} onClick={this.onClickLink}>stop</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/param`} onClick={this.onClickLink}>param</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/params`} onClick={this.onClickLink}>params</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/to-json`} onClick={this.onClickLink}>toJSON</Link></dd>
+                        <dd><Link to={`${this.path}oneshot/get`} onClick={this.onClickLink}>get</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-audio'} aria-selected={expandedPanelId === 'panel-audio'} aria-controls="panel-audio" tabIndex="0" onClick={this.onClick}>Audio</button></h2>
                     <dl id="panel-audio" aria-hidden={expandedPanelId !== 'panel-audio'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/audio/setup">setup</Link></dd>
+                        <dd><Link to={`${this.path}audio/setup`} onClick={this.onClickLink}>setup</Link></dd>
                         <dd><Link to="/audio/ready">ready</Link></dd>
                         <dd><Link to="/audio/start">start</Link></dd>
                         <dd><Link to="/audio/stop">stop</Link></dd>

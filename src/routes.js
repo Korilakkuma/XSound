@@ -57,6 +57,7 @@ export default (
                 <Route exact path={`${path}oneshot/to-json`} component={OneshotModule.ToJSON} />
                 <Route exact path={`${path}oneshot/get`} component={OneshotModule.Get} />
                 <Route exact path={`${path}audio/setup`} component={AudioModule.Setup} />
+                <Route exact path={`${path}audio/ready`} component={AudioModule.Ready} />
             </Switch>
             <Nav />
         </div>

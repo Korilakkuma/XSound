@@ -59,6 +59,7 @@ export default (
                 <Route exact path={`${path}audio/setup`} component={AudioModule.Setup} />
                 <Route exact path={`${path}audio/ready`} component={AudioModule.Ready} />
                 <Route exact path={`${path}audio/start`} component={AudioModule.Start} />
+                <Route exact path={`${path}audio/stop`} component={AudioModule.Stop} />
             </Switch>
             <Nav />
         </div>

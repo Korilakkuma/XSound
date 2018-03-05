@@ -60,6 +60,7 @@ export default (
                 <Route exact path={`${path}audio/ready`} component={AudioModule.Ready} />
                 <Route exact path={`${path}audio/start`} component={AudioModule.Start} />
                 <Route exact path={`${path}audio/stop`} component={AudioModule.Stop} />
+                <Route exact path={`${path}audio/param`} component={AudioModule.Param} />
             </Switch>
             <Nav />
         </div>

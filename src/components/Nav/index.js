@@ -121,7 +121,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}audio/params`} onClick={this.onClickLink}>params</Link></dd>
                         <dd><Link to={`${this.path}audio/to-json`} onClick={this.onClickLink}>toJSON</Link></dd>
                         <dd><Link to={`${this.path}audio/get`} onClick={this.onClickLink}>get</Link></dd>
-                        <dd><Link to="/audio/toggle">toggle</Link></dd>
+                        <dd><Link to={`${this.path}audio/toggle`} onClick={this.onClickLink}>toggle</Link></dd>
                         <dd><Link to="/audio/is-buffer">isBuffer</Link></dd>
                         <dd><Link to="/audio/is-source">isSource</Link></dd>
                         <dd><Link to="/audio/is-paused">isPaused</Link></dd>

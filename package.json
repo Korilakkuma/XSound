@@ -1,6 +1,6 @@
 {
   "name": "xsound",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Web Audio API Library",
   "main": "build/xsound.js",
   "scripts": {
@@ -34,18 +34,18 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.0.0",
+    "babel-loader": "^7.1.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
-    "eslint": "^4.15.0",
+    "eslint": "^4.18.2",
     "eslint-cli": "^1.1.1",
-    "jasmine": "^2.8.0",
+    "jasmine": "^2.99.0",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^1.0.1",
-    "karma-jasmine": "^1.1.0",
-    "karma-webpack": "^2.0.6",
-    "uglifyjs-webpack-plugin": "^1.0.1",
-    "webpack": "^3.5.5"
+    "karma-jasmine": "^1.1.1",
+    "karma-webpack": "^2.0.13",
+    "uglifyjs-webpack-plugin": "^1.2.2",
+    "webpack": "^3.11.0"
   }
 }

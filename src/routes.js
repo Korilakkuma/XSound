@@ -66,6 +66,7 @@ export default (
                 <Route exact path={`${path}audio/get`} component={AudioModule.Get} />
                 <Route exact path={`${path}audio/toggle`} component={AudioModule.Toggle} />
                 <Route exact path={`${path}audio/is-buffer`} component={AudioModule.IsBuffer} />
+                <Route exact path={`${path}audio/is-source`} component={AudioModule.IsSource} />
             </Switch>
             <Nav />
         </div>

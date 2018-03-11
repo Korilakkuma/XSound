@@ -10,6 +10,7 @@ import ToJSON from './ToJSON';
 import Get from './Get';
 import Toggle from './Toggle';
 import IsBuffer from './IsBuffer';
+import IsSource from './IsSource';
 
 export {
     Setup,
@@ -21,5 +22,6 @@ export {
     ToJSON,
     Get,
     Toggle,
-    IsBuffer
+    IsBuffer,
+    IsSource
 };

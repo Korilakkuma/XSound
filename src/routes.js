@@ -8,6 +8,7 @@ import * as XSound from './components/xsound';
 import * as OscillatorModule from './components/oscillator';
 import * as OneshotModule from './components/oneshot';
 import * as AudioModule from './components/audio';
+import * as MediaModule from './components/media';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -68,6 +69,7 @@ export default (
                 <Route exact path={`${path}audio/is-buffer`} component={AudioModule.IsBuffer} />
                 <Route exact path={`${path}audio/is-source`} component={AudioModule.IsSource} />
                 <Route exact path={`${path}audio/is-paused`} component={AudioModule.IsPaused} />
+                <Route exact path={`${path}media/setup`} component={MediaModule.Setup} />
             </Switch>
             <Nav />
         </div>

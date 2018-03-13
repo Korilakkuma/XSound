@@ -131,7 +131,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-media'} aria-selected={expandedPanelId === 'panel-media'} aria-controls="panel-media" tabIndex="0" onClick={this.onClick}>Media</button></h2>
                     <dl id="panel-media" aria-hidden={expandedPanelId !== 'panel-media'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/media/setup">setup</Link></dd>
+                        <dd><Link to={`${this.path}media/setup`} onClick={this.onClickLink}>setup</Link></dd>
                         <dd><Link to="/media/ready">ready</Link></dd>
                         <dd><Link to="/media/start">start</Link></dd>
                         <dd><Link to="/media/stop">stop</Link></dd>

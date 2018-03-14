@@ -70,6 +70,7 @@ export default (
                 <Route exact path={`${path}audio/is-source`} component={AudioModule.IsSource} />
                 <Route exact path={`${path}audio/is-paused`} component={AudioModule.IsPaused} />
                 <Route exact path={`${path}media/setup`} component={MediaModule.Setup} />
+                <Route exact path={`${path}media/ready`} component={MediaModule.Ready} />
             </Switch>
             <Nav />
         </div>

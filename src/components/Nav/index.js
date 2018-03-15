@@ -133,7 +133,7 @@ class Nav extends React.Component {
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}media/setup`} onClick={this.onClickLink}>setup</Link></dd>
                         <dd><Link to={`${this.path}media/ready`} onClick={this.onClickLink}>ready</Link></dd>
-                        <dd><Link to="/media/start">start</Link></dd>
+                        <dd><Link to={`${this.path}media/start`} onClick={this.onClickLink}>start</Link></dd>
                         <dd><Link to="/media/stop">stop</Link></dd>
                         <dd><Link to="/media/param">param</Link></dd>
                         <dd><Link to="/media/params">params</Link></dd>

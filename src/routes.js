@@ -72,6 +72,7 @@ export default (
                 <Route exact path={`${path}media/setup`} component={MediaModule.Setup} />
                 <Route exact path={`${path}media/ready`} component={MediaModule.Ready} />
                 <Route exact path={`${path}media/start`} component={MediaModule.Start} />
+                <Route exact path={`${path}media/stop`} component={MediaModule.Stop} />
             </Switch>
             <Nav />
         </div>

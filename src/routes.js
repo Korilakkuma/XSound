@@ -74,6 +74,7 @@ export default (
                 <Route exact path={`${path}media/start`} component={MediaModule.Start} />
                 <Route exact path={`${path}media/stop`} component={MediaModule.Stop} />
                 <Route exact path={`${path}media/param`} component={MediaModule.Param} />
+                <Route exact path={`${path}media/params`} component={MediaModule.Params} />
             </Switch>
             <Nav />
         </div>

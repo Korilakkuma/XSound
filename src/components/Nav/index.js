@@ -138,7 +138,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}media/param`} onClick={this.onClickLink}>param</Link></dd>
                         <dd><Link to={`${this.path}media/params`} onClick={this.onClickLink}>params</Link></dd>
                         <dd><Link to={`${this.path}media/to-json`} onClick={this.onClickLink}>toJSON</Link></dd>
-                        <dd><Link to="/media/get">get</Link></dd>
+                        <dd><Link to={`${this.path}media/get`} onClick={this.onClickLink}>get</Link></dd>
                         <dd><Link to="/media/toggle">toggle</Link></dd>
                         <dd><Link to="/media/is-media">isMedia</Link></dd>
                         <dd><Link to="/media/is-source">isSource</Link></dd>

@@ -77,6 +77,7 @@ export default (
                 <Route exact path={`${path}media/params`} component={MediaModule.Params} />
                 <Route exact path={`${path}media/to-json`} component={MediaModule.ToJSON} />
                 <Route exact path={`${path}media/get`} component={MediaModule.Get} />
+                <Route exact path={`${path}media/toggle`} component={MediaModule.Toggle} />
             </Switch>
             <Nav />
         </div>

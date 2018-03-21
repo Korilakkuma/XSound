@@ -8,6 +8,7 @@ import Param from './Param';
 import Params from './Params';
 import ToJSON from './ToJSON';
 import Get from './Get';
+import Toggle from './Toggle';
 
 export {
     Setup,
@@ -17,5 +18,6 @@ export {
     Param,
     Params,
     ToJSON,
-    Get
+    Get,
+    Toggle
 };

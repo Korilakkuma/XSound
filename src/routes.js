@@ -79,6 +79,7 @@ export default (
                 <Route exact path={`${path}media/get`} component={MediaModule.Get} />
                 <Route exact path={`${path}media/toggle`} component={MediaModule.Toggle} />
                 <Route exact path={`${path}media/is-media`} component={MediaModule.IsMedia} />
+                <Route exact path={`${path}media/is-source`} component={MediaModule.IsSource} />
             </Switch>
             <Nav />
         </div>

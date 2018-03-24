@@ -41,6 +41,7 @@ module.exports = function(config) {
 
 
     webpack: {
+      mode: 'production',
       module: {
         rules: [
           {

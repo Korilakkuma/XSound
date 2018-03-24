@@ -101,10 +101,10 @@ export default class OneshotModule extends SoundModule {
                 if ((buffer >= 0) && (buffer < this.buffers.length)) {
                     settings[i].buffer = buffer;
                 } else {
-                    return;
+                    return this;
                 }
             } else {
-                return;
+                return this;
             }
 
             settings[i].rate   = (('rate' in settings[i]) && (settings[i].rate >= 0)) ? parseFloat(settings[i].rate) : 1;

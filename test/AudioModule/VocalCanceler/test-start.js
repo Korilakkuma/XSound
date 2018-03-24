@@ -7,6 +7,7 @@ describe('VocalCanceler TEST', () => {
         const vocalcanceler = new VocalCanceler();
 
         it('should return 1', () => {
+            vocalcanceler.param('depth', 0);
             expect(vocalcanceler.start(1, 1)).toEqual(1);
         });
 

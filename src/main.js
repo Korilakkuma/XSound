@@ -87,6 +87,20 @@ if (IS_XSOUND) {
     XSound.exitFullscreen    = exitFullscreen;
 
     /**
+     * This class (static) method changes state ('running') of `AudioContext`.
+     * The initial state is 'suspended' by Autoplay Policy Change.
+     * Therefore, this method must be invoked by user gestures.
+     * @return {Promise} This is returned as `Promise`.
+     */
+    XSound.setup = () => {
+        if (audiocontext.state !== 'running') {
+            return audiocontext.resume();
+        }
+
+        return Promise.reject();
+    };
+
+    /**
      * This class (static) method returns function as closure that is getter of cloned module.
      * @return {function} This is returned as closure that is getter of cloned module.
      */

@@ -35,6 +35,14 @@ This don't depend on other libraries or frameworks (like jQuery, React).
 X('oscillator').setup(true).ready().start(440);
 ```
 
+But, it is necessary to invoke `X.setup` method by user gestures in Chrome 66+.
+
+```JavaScript
+document.body.addEventListener('click', () => {
+    X.setup();
+}, false);
+```
+  
 ## Demo
   
 The application that uses this library is in the following URL.  

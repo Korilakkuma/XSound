@@ -1,9 +1,12 @@
-XSound
-=========
+![XSound](./misc/xsound.png)
 
 [![Build Status](https://travis-ci.org/Korilakkuma/XSound.svg?branch=master)](https://travis-ci.org/Korilakkuma/XSound)
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![npm](https://img.shields.io/npm/dt/xsound.svg)](https://www.npmjs.com/package/xsound)
+![David](https://img.shields.io/david/Korilakkuma/XSound.svg)
+![David Dev](https://img.shields.io/david/dev/Korilakkuma/XSound.svg)
+[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/xsound/badge)](https://www.jsdelivr.com/package/npm/xsound)
 
-Web Audio API Library
   
 ## Overview
   
@@ -24,7 +27,7 @@ In concrete, this library may be useful to implement the following features.
   
 This don't depend on other libraries or frameworks (like jQuery, React).
   
-![support-browsers](https://user-images.githubusercontent.com/4006693/33797345-b6317092-dd49-11e7-9a16-6a96f9bd8bb3.jpg)
+![support-browsers](./misc/support-browsers.jpg)
   
 ## Getting Started
 

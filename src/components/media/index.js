@@ -11,6 +11,7 @@ import Get from './Get';
 import Toggle from './Toggle';
 import IsMedia from './IsMedia';
 import IsSource from './IsSource';
+import IsPaused from './IsPaused';
 
 export {
     Setup,
@@ -23,5 +24,6 @@ export {
     Get,
     Toggle,
     IsMedia,
-    IsSource
+    IsSource,
+    IsPaused
 };

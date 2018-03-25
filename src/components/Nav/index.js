@@ -142,7 +142,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}media/toggle`} onClick={this.onClickLink}>toggle</Link></dd>
                         <dd><Link to={`${this.path}media/is-media`} onClick={this.onClickLink}>isMedia</Link></dd>
                         <dd><Link to={`${this.path}media/is-source`} onClick={this.onClickLink}>isSource</Link></dd>
-                        <dd><Link to="/media/is-paused">isPaused</Link></dd>
+                        <dd><Link to={`${this.path}media/is-paused`} onClick={this.onClickLink}>isPaused</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

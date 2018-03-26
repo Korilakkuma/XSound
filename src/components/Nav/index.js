@@ -149,7 +149,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-stream'} aria-selected={expandedPanelId === 'panel-stream'} aria-controls="panel-stream" tabIndex="0" onClick={this.onClick}>Stream</button></h2>
                     <dl id="panel-stream" aria-hidden={expandedPanelId !== 'panel-stream'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/stream/setup">setup</Link></dd>
+                        <dd><Link to={`${this.path}stream/setup`} onClick={this.onClickLink}>setup</Link></dd>
                         <dd><Link to="/stream/ready">ready</Link></dd>
                         <dd><Link to="/stream/start">start</Link></dd>
                         <dd><Link to="/stream/stop">stop</Link></dd>

@@ -82,6 +82,7 @@ export default (
                 <Route exact path={`${path}media/is-source`} component={MediaModule.IsSource} />
                 <Route exact path={`${path}media/is-paused`} component={MediaModule.IsPaused} />
                 <Route exact path={`${path}stream/setup`} component={StreamModule.Setup} />
+                <Route exact path={`${path}stream/ready`} component={StreamModule.Ready} />
             </Switch>
             <Nav />
         </div>

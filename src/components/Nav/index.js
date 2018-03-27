@@ -150,7 +150,7 @@ class Nav extends React.Component {
                     <dl id="panel-stream" aria-hidden={expandedPanelId !== 'panel-stream'}>
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}stream/setup`} onClick={this.onClickLink}>setup</Link></dd>
-                        <dd><Link to="/stream/ready">ready</Link></dd>
+                        <dd><Link to={`${this.path}stream/ready`} onClick={this.onClickLink}>ready</Link></dd>
                         <dd><Link to="/stream/start">start</Link></dd>
                         <dd><Link to="/stream/stop">stop</Link></dd>
                         <dd><Link to="/stream/param">param</Link></dd>

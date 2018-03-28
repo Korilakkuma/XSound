@@ -151,7 +151,7 @@ class Nav extends React.Component {
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}stream/setup`} onClick={this.onClickLink}>setup</Link></dd>
                         <dd><Link to={`${this.path}stream/ready`} onClick={this.onClickLink}>ready</Link></dd>
-                        <dd><Link to="/stream/start">start</Link></dd>
+                        <dd><Link to={`${this.path}stream/start`} onClick={this.onClickLink}>start</Link></dd>
                         <dd><Link to="/stream/stop">stop</Link></dd>
                         <dd><Link to="/stream/param">param</Link></dd>
                         <dd><Link to="/stream/params">params</Link></dd>

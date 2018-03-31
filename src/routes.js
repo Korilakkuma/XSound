@@ -86,6 +86,7 @@ export default (
                 <Route exact path={`${path}stream/start`} component={StreamModule.Start} />
                 <Route exact path={`${path}stream/stop`} component={StreamModule.Stop} />
                 <Route exact path={`${path}stream/param`} component={StreamModule.Param} />
+                <Route exact path={`${path}stream/params`} component={StreamModule.Params} />
             </Switch>
             <Nav />
         </div>

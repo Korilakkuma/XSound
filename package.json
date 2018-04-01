@@ -1,6 +1,6 @@
 {
   "name": "xsound",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Web Audio API Library",
   "main": "build/xsound.js",
   "scripts": {
@@ -28,11 +28,11 @@
   },
   "homepage": "https://korilakkuma.github.io/XSound/",
   "dependencies": {
-    "websocket": "^1.0.24",
+    "websocket": "^1.0.25",
     "ws": "^5.1.0"
   },
   "devDependencies": {
-    "babel-core": "^6.24.1",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -46,7 +46,7 @@
     "karma-jasmine": "^1.1.1",
     "karma-webpack": "^3.0.0",
     "uglifyjs-webpack-plugin": "^1.2.4",
-    "webpack": "^4.2.0",
+    "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13"
   }
 }

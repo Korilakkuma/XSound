@@ -289,38 +289,64 @@ export default class MediaModule extends AudioModule {
             this.source.connect(this.processor);
             this.connect(this.processor, connects);
 
-            this.media.play();
+            const promise = this.media.play();
 
-            const pos = parseFloat(position);
+            promise.then(() => {
+                const pos = parseFloat(position);
 
-            this.media.currentTime  = ((pos >= 0) && (pos <= this.media.duration)) ? pos : 0;
-            this.media.playbackRate = this.playbackRate;
-            this.media.controls     = this.controls;
-            this.media.loop         = this.loop;
-            this.media.muted        = this.muted;
+                this.media.currentTime  = ((pos >= 0) && (pos <= this.media.duration)) ? pos : 0;
+                this.media.playbackRate = this.playbackRate;
+                this.media.controls     = this.controls;
+                this.media.loop         = this.loop;
+                this.media.muted        = this.muted;
 
-            this.on(this.context.currentTime);
+                this.on(this.context.currentTime);
 
-            this.analyser.start('time');
-            this.analyser.start('fft');
+                this.analyser.start('time');
+                this.analyser.start('fft');
 
-            const bufferSize = this.processor.bufferSize;
+                const bufferSize = this.processor.bufferSize;
 
-            if (Object.prototype.toString.call(processCallback) === '[object Function]') {
-                this.processor.onaudioprocess = processCallback;
-            } else {
-                this.processor.onaudioprocess = event => {
-                    const inputLs  = event.inputBuffer.getChannelData(0);
-                    const inputRs  = event.inputBuffer.getChannelData(1);
-                    const outputLs = event.outputBuffer.getChannelData(0);
-                    const outputRs = event.outputBuffer.getChannelData(1);
+                if (Object.prototype.toString.call(processCallback) === '[object Function]') {
+                    this.processor.onaudioprocess = processCallback;
+                } else {
+                    this.processor.onaudioprocess = event => {
+                        const inputLs  = event.inputBuffer.getChannelData(0);
+                        const inputRs  = event.inputBuffer.getChannelData(1);
+                        const outputLs = event.outputBuffer.getChannelData(0);
+                        const outputRs = event.outputBuffer.getChannelData(1);
 
-                    for (let i = 0; i < bufferSize; i++) {
-                        outputLs[i] = this.vocalcanceler.start(inputLs[i], inputRs[i]);
-                        outputRs[i] = this.vocalcanceler.start(inputRs[i], inputLs[i]);
+                        for (let i = 0; i < bufferSize; i++) {
+                            outputLs[i] = this.vocalcanceler.start(inputLs[i], inputRs[i]);
+                            outputRs[i] = this.vocalcanceler.start(inputRs[i], inputLs[i]);
+                        }
+                    };
+                }
+            }).catch(() => {
+                this.stop();
+
+                const isSafari = navigator.userAgent.indexOf('Safari') !== -1;
+
+                if (this.autoplay || isSafari) {
+                    const muted  = this.media.muted;
+                    const volume = this.media.volume;
+
+                    this.media.muted  = this.muted = true;
+                    this.media.volume = 0;
+
+                    if (!this.autoplay && isSafari) {
+                        this.start(position, connects, processCallback);
                     }
-                };
-            }
+
+                    if (isSafari) {
+                        this.media.muted  = this.muted = muted;
+                        this.media.volume = volume;
+                        return;
+                    }
+                }
+
+                this.start(position, connects, processCallback);
+            });
         }
 
         return this;

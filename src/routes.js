@@ -89,6 +89,7 @@ export default (
                 <Route exact path={`${path}stream/params`} component={StreamModule.Params} />
                 <Route exact path={`${path}stream/to-json`} component={StreamModule.ToJSON} />
                 <Route exact path={`${path}stream/get`} component={StreamModule.Get} />
+                <Route exact path={`${path}stream/toggle`} component={StreamModule.Toggle} />
             </Switch>
             <Nav />
         </div>

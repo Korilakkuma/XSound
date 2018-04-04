@@ -157,7 +157,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}stream/params`} onClick={this.onClickLink}>params</Link></dd>
                         <dd><Link to={`${this.path}stream/to-json`} onClick={this.onClickLink}>toJSON</Link></dd>
                         <dd><Link to={`${this.path}stream/get`} onClick={this.onClickLink}>get</Link></dd>
-                        <dd><Link to="/stream/toggle">toggle</Link></dd>
+                        <dd><Link to={`${this.path}stream/toggle`} onClick={this.onClickLink}>toggle</Link></dd>
                         <dd><Link to="/stream/is-streaming">isStreaming</Link></dd>
                     </dl>
                 </section>

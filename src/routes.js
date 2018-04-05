@@ -90,6 +90,7 @@ export default (
                 <Route exact path={`${path}stream/to-json`} component={StreamModule.ToJSON} />
                 <Route exact path={`${path}stream/get`} component={StreamModule.Get} />
                 <Route exact path={`${path}stream/toggle`} component={StreamModule.Toggle} />
+                <Route exact path={`${path}stream/is-streaming`} component={StreamModule.IsStreaming} />
             </Switch>
             <Nav />
         </div>

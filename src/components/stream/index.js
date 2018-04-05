@@ -9,6 +9,7 @@ import Params from './Params';
 import ToJSON from './ToJSON';
 import Get from './Get';
 import Toggle from './Toggle';
+import IsStreaming from './IsStreaming';
 
 export {
     Setup,
@@ -19,5 +20,6 @@ export {
     Params,
     ToJSON,
     Get,
-    Toggle
+    Toggle,
+    IsStreaming
 };

@@ -165,7 +165,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-mixer'} aria-selected={expandedPanelId === 'panel-mixer'} aria-controls="panel-mixer" tabIndex="0" onClick={this.onClick}>Mixer</button></h2>
                     <dl id="panel-mixer" aria-hidden={expandedPanelId !== 'panel-mixer'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/mixer/mix">mix</Link></dd>
+                        <dd><Link to={`${this.path}mixer/mix`} onClick={this.onClickLink}>mix</Link></dd>
                         <dd><Link to="/mixer/get">get</Link></dd>
                     </dl>
                 </section>

@@ -91,6 +91,7 @@ export default (
                 <Route exact path={`${path}stream/get`} component={StreamModule.Get} />
                 <Route exact path={`${path}stream/toggle`} component={StreamModule.Toggle} />
                 <Route exact path={`${path}stream/is-streaming`} component={StreamModule.IsStreaming} />
+                <Route exact path={`${path}mixer/mix`} component={MixerModule.Mix} />
             </Switch>
             <Nav />
         </div>

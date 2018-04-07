@@ -166,7 +166,7 @@ class Nav extends React.Component {
                     <dl id="panel-mixer" aria-hidden={expandedPanelId !== 'panel-mixer'}>
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}mixer/mix`} onClick={this.onClickLink}>mix</Link></dd>
-                        <dd><Link to="/mixer/get">get</Link></dd>
+                        <dd><Link to={`${this.path}mixer/get`} onClick={this.onClickLink}>get</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

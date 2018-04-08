@@ -9,6 +9,9 @@ import * as OscillatorModule from './components/oscillator';
 import * as OneshotModule from './components/oneshot';
 import * as AudioModule from './components/audio';
 import * as MediaModule from './components/media';
+import * as StreamModule from './components/stream';
+import * as MixerModule from './components/mixer';
+import * as MIDI from './components/midi';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -93,6 +96,7 @@ export default (
                 <Route exact path={`${path}stream/is-streaming`} component={StreamModule.IsStreaming} />
                 <Route exact path={`${path}mixer/mix`} component={MixerModule.Mix} />
                 <Route exact path={`${path}mixer/get`} component={MixerModule.Get} />
+                <Route exact path={`${path}midi/setup`} component={MIDI.Setup} />
             </Switch>
             <Nav />
         </div>

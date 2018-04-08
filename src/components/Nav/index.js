@@ -173,7 +173,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-mexpandedPanelIdi'} aria-selected={expandedPanelId === 'panel-midi'} aria-controls="panel-midi" tabIndex="0" onClick={this.onClick}>MIDI</button></h2>
                     <dl id="panel-midi" aria-hidden={expandedPanelId !== 'panel-midi'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/midi/setup">setup</Link></dd>
+                        <dd><Link to={`${this.path}midi/setup`} onClick={this.onClickLink}>setup</Link></dd>
                         <dd><Link to="/midi/get">get</Link></dd>
                     </dl>
                 </section>

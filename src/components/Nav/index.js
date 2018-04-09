@@ -174,7 +174,7 @@ class Nav extends React.Component {
                     <dl id="panel-midi" aria-hidden={expandedPanelId !== 'panel-midi'}>
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}midi/setup`} onClick={this.onClickLink}>setup</Link></dd>
-                        <dd><Link to="/midi/get">get</Link></dd>
+                        <dd><Link to={`${this.path}midi/get`} onClick={this.onClickLink}>get</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

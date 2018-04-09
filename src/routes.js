@@ -97,6 +97,7 @@ export default (
                 <Route exact path={`${path}mixer/mix`} component={MixerModule.Mix} />
                 <Route exact path={`${path}mixer/get`} component={MixerModule.Get} />
                 <Route exact path={`${path}midi/setup`} component={MIDI.Setup} />
+                <Route exact path={`${path}midi/get`} component={MIDI.Get} />
             </Switch>
             <Nav />
         </div>

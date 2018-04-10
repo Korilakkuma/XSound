@@ -12,6 +12,7 @@ import * as MediaModule from './components/media';
 import * as StreamModule from './components/stream';
 import * as MixerModule from './components/mixer';
 import * as MIDI from './components/midi';
+import * as MML from './components/mml';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -98,6 +99,7 @@ export default (
                 <Route exact path={`${path}mixer/get`} component={MixerModule.Get} />
                 <Route exact path={`${path}midi/setup`} component={MIDI.Setup} />
                 <Route exact path={`${path}midi/get`} component={MIDI.Get} />
+                <Route exact path={`${path}mml/setup`} component={MML.Setup} />
             </Switch>
             <Nav />
         </div>

@@ -100,6 +100,7 @@ export default (
                 <Route exact path={`${path}midi/setup`} component={MIDI.Setup} />
                 <Route exact path={`${path}midi/get`} component={MIDI.Get} />
                 <Route exact path={`${path}mml/setup`} component={MML.Setup} />
+                <Route exact path={`${path}mml/ready`} component={MML.Ready} />
             </Switch>
             <Nav />
         </div>

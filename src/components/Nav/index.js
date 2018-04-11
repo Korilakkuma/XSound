@@ -182,7 +182,7 @@ class Nav extends React.Component {
                     <dl id="panel-mml" aria-hidden={expandedPanelId !== 'panel-mml'}>
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}mml/setup`} onClick={this.onClickLink}>setup</Link></dd>
-                        <dd><Link to="/mml/ready">ready</Link></dd>
+                        <dd><Link to={`${this.path}mml/ready`} onClick={this.onClickLink}>ready</Link></dd>
                         <dd><Link to="/mml/start">start</Link></dd>
                         <dd><Link to="/mml/stop">stop</Link></dd>
                         <dd><Link to="/mml/get">get</Link></dd>

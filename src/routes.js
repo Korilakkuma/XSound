@@ -103,6 +103,7 @@ export default (
                 <Route exact path={`${path}mml/ready`} component={MML.Ready} />
                 <Route exact path={`${path}mml/start`} component={MML.Start} />
                 <Route exact path={`${path}mml/stop`} component={MML.Stop} />
+                <Route exact path={`${path}mml/get`} component={MML.Get} />
             </Switch>
             <Nav />
         </div>

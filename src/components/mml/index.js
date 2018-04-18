@@ -7,6 +7,7 @@ import Stop from './Stop';
 import Get from './Get';
 import IsSequences from './IsSequences';
 import IsPaused from './IsPaused';
+import Create from './Create';
 
 export {
     Setup,
@@ -15,5 +16,6 @@ export {
     Stop,
     Get,
     IsSequences,
-    IsPaused
+    IsPaused,
+    Create
 };

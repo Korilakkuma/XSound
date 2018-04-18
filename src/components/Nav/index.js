@@ -188,7 +188,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}mml/get`} onClick={this.onClickLink}>get</Link></dd>
                         <dd><Link to={`${this.path}mml/isSequences`} onClick={this.onClickLink}>isSequences</Link></dd>
                         <dd><Link to={`${this.path}mml/isPaused`} onClick={this.onClickLink}>isPaused</Link></dd>
-                        <dd><Link to="/mml/create">create</Link></dd>
+                        <dd><Link to={`${this.path}mml/create`} onClick={this.onClickLink}>create</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

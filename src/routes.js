@@ -106,6 +106,7 @@ export default (
                 <Route exact path={`${path}mml/get`} component={MML.Get} />
                 <Route exact path={`${path}mml/isSequences`} component={MML.IsSequences} />
                 <Route exact path={`${path}mml/isPaused`} component={MML.IsPaused} />
+                <Route exact path={`${path}mml/create`} component={MML.Create} />
             </Switch>
             <Nav />
         </div>

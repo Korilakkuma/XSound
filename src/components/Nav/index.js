@@ -186,8 +186,8 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}mml/start`} onClick={this.onClickLink}>start</Link></dd>
                         <dd><Link to={`${this.path}mml/stop`} onClick={this.onClickLink}>stop</Link></dd>
                         <dd><Link to={`${this.path}mml/get`} onClick={this.onClickLink}>get</Link></dd>
-                        <dd><Link to={`${this.path}mml/isSequences`} onClick={this.onClickLink}>isSequences</Link></dd>
-                        <dd><Link to={`${this.path}mml/isPaused`} onClick={this.onClickLink}>isPaused</Link></dd>
+                        <dd><Link to={`${this.path}mml/is-sequences`} onClick={this.onClickLink}>isSequences</Link></dd>
+                        <dd><Link to={`${this.path}mml/is-paused`} onClick={this.onClickLink}>isPaused</Link></dd>
                         <dd><Link to={`${this.path}mml/create`} onClick={this.onClickLink}>create</Link></dd>
                     </dl>
                 </section>

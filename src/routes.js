@@ -13,6 +13,7 @@ import * as StreamModule from './components/stream';
 import * as MixerModule from './components/mixer';
 import * as MIDI from './components/midi';
 import * as MML from './components/mml';
+import * as Effectors from './components/effectors';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -107,6 +108,7 @@ export default (
                 <Route exact path={`${path}mml/is-sequences`} component={MML.IsSequences} />
                 <Route exact path={`${path}mml/is-paused`} component={MML.IsPaused} />
                 <Route exact path={`${path}mml/create`} component={MML.Create} />
+                <Route exact path={`${path}effectors/autopanner`} component={Effectors.Autopanner} />
             </Switch>
             <Nav />
         </div>

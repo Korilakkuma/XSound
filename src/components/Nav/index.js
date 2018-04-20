@@ -196,7 +196,7 @@ class Nav extends React.Component {
                     <dl id="panel-effectors" aria-hidden={expandedPanelId !== 'panel-effectors'}>
                         <dt>Modules</dt>
                         <dd><Link to={`${this.path}effectors/autopanner`} onClick={this.onClickLink}>autopanner</Link></dd>
-                        <dd><Link to="/effectors/chorus">chorus</Link></dd>
+                        <dd><Link to={`${this.path}effectors/chorus`} onClick={this.onClickLink}>chorus</Link></dd>
                         <dd><Link to="/effectors/compressor">compressor</Link></dd>
                         <dd><Link to="/effectors/delay">delay</Link></dd>
                         <dd><Link to="/effectors/distortion">distortion</Link></dd>

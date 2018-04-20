@@ -109,6 +109,7 @@ export default (
                 <Route exact path={`${path}mml/is-paused`} component={MML.IsPaused} />
                 <Route exact path={`${path}mml/create`} component={MML.Create} />
                 <Route exact path={`${path}effectors/autopanner`} component={Effectors.Autopanner} />
+                <Route exact path={`${path}effectors/chorus`} component={Effectors.Chorus} />
             </Switch>
             <Nav />
         </div>

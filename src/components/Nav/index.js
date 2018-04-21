@@ -197,7 +197,7 @@ class Nav extends React.Component {
                         <dt>Modules</dt>
                         <dd><Link to={`${this.path}effectors/autopanner`} onClick={this.onClickLink}>autopanner</Link></dd>
                         <dd><Link to={`${this.path}effectors/chorus`} onClick={this.onClickLink}>chorus</Link></dd>
-                        <dd><Link to="/effectors/compressor">compressor</Link></dd>
+                        <dd><Link to={`${this.path}effectors/compressor`} onClick={this.onClickLink}>compressor</Link></dd>
                         <dd><Link to="/effectors/delay">delay</Link></dd>
                         <dd><Link to="/effectors/distortion">distortion</Link></dd>
                         <dd><Link to="/effectors/envelope-generator">envelopegenerator</Link></dd>

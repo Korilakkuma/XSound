@@ -111,6 +111,7 @@ export default (
                 <Route exact path={`${path}effectors/autopanner`} component={Effectors.Autopanner} />
                 <Route exact path={`${path}effectors/chorus`} component={Effectors.Chorus} />
                 <Route exact path={`${path}effectors/compressor`} component={Effectors.Compressor} />
+                <Route exact path={`${path}effectors/delay`} component={Effectors.Delay} />
             </Switch>
             <Nav />
         </div>

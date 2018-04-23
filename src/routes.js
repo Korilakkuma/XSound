@@ -112,6 +112,7 @@ export default (
                 <Route exact path={`${path}effectors/chorus`} component={Effectors.Chorus} />
                 <Route exact path={`${path}effectors/compressor`} component={Effectors.Compressor} />
                 <Route exact path={`${path}effectors/delay`} component={Effectors.Delay} />
+                <Route exact path={`${path}effectors/distortion`} component={Effectors.Distortion} />
             </Switch>
             <Nav />
         </div>

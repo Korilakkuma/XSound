@@ -113,6 +113,7 @@ export default (
                 <Route exact path={`${path}effectors/compressor`} component={Effectors.Compressor} />
                 <Route exact path={`${path}effectors/delay`} component={Effectors.Delay} />
                 <Route exact path={`${path}effectors/distortion`} component={Effectors.Distortion} />
+                <Route exact path={`${path}effectors/envelopegenerator`} component={Effectors.EnvelopeGenerator} />
             </Switch>
             <Nav />
         </div>

@@ -6,6 +6,7 @@ import Compressor from './Compressor';
 import Delay from './Delay';
 import Distortion from './Distortion';
 import EnvelopeGenerator from './EnvelopeGenerator';
+import Equalizer from './Equalizer';
 
 export {
     Autopanner,
@@ -13,5 +14,6 @@ export {
     Compressor,
     Delay,
     Distortion,
-    EnvelopeGenerator
+    EnvelopeGenerator,
+    Equalizer
 };

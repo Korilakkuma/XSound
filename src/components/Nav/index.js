@@ -201,7 +201,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}effectors/delay`} onClick={this.onClickLink}>delay</Link></dd>
                         <dd><Link to={`${this.path}effectors/distortion`} onClick={this.onClickLink}>distortion</Link></dd>
                         <dd><Link to={`${this.path}effectors/envelopegenerator`} onClick={this.onClickLink}>envelopegenerator</Link></dd>
-                        <dd><Link to="/effectors/equalizer">equalizer</Link></dd>
+                        <dd><Link to={`${this.path}effectors/equalizer`} onClick={this.onClickLink}>equalizer</Link></dd>
                         <dd><Link to="/effectors/filter">filter</Link></dd>
                         <dd><Link to="/effectors/flanger">flanger</Link></dd>
                         <dd><Link to="/effectors/glide">glide</Link></dd>

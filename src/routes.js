@@ -115,6 +115,7 @@ export default (
                 <Route exact path={`${path}effectors/distortion`} component={Effectors.Distortion} />
                 <Route exact path={`${path}effectors/envelopegenerator`} component={Effectors.EnvelopeGenerator} />
                 <Route exact path={`${path}effectors/equalizer`} component={Effectors.Equalizer} />
+                <Route exact path={`${path}effectors/filter`} component={Effectors.Filter} />
             </Switch>
             <Nav />
         </div>

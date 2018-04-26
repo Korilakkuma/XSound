@@ -7,6 +7,7 @@ import Delay from './Delay';
 import Distortion from './Distortion';
 import EnvelopeGenerator from './EnvelopeGenerator';
 import Equalizer from './Equalizer';
+import Filter from './Filter';
 
 export {
     Autopanner,
@@ -15,5 +16,6 @@ export {
     Delay,
     Distortion,
     EnvelopeGenerator,
-    Equalizer
+    Equalizer,
+    Filter
 };

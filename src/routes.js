@@ -116,6 +116,7 @@ export default (
                 <Route exact path={`${path}effectors/envelopegenerator`} component={Effectors.EnvelopeGenerator} />
                 <Route exact path={`${path}effectors/equalizer`} component={Effectors.Equalizer} />
                 <Route exact path={`${path}effectors/filter`} component={Effectors.Filter} />
+                <Route exact path={`${path}effectors/flanger`} component={Effectors.Flanger} />
             </Switch>
             <Nav />
         </div>

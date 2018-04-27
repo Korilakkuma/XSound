@@ -8,6 +8,7 @@ import Distortion from './Distortion';
 import EnvelopeGenerator from './EnvelopeGenerator';
 import Equalizer from './Equalizer';
 import Filter from './Filter';
+import Flanger from './Flanger';
 
 export {
     Autopanner,
@@ -17,5 +18,6 @@ export {
     Distortion,
     EnvelopeGenerator,
     Equalizer,
-    Filter
+    Filter,
+    Flanger
 };

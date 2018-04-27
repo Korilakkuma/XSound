@@ -203,7 +203,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}effectors/envelopegenerator`} onClick={this.onClickLink}>envelopegenerator</Link></dd>
                         <dd><Link to={`${this.path}effectors/equalizer`} onClick={this.onClickLink}>equalizer</Link></dd>
                         <dd><Link to={`${this.path}effectors/filter`} onClick={this.onClickLink}>filter</Link></dd>
-                        <dd><Link to="/effectors/flanger">flanger</Link></dd>
+                        <dd><Link to={`${this.path}effectors/flanger`} onClick={this.onClickLink}>flanger</Link></dd>
                         <dd><Link to="/effectors/glide">glide</Link></dd>
                         <dd><Link to="/effectors/noisegate">noisegate</Link></dd>
                         <dd><Link to="/effectors/phaser">phaser</Link></dd>

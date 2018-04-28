@@ -325,24 +325,9 @@ export default class MediaModule extends AudioModule {
             }).catch(() => {
                 this.stop();
 
-                const isSafari = navigator.userAgent.indexOf('Safari') !== -1;
-
-                if (this.autoplay || isSafari) {
-                    const muted  = this.media.muted;
-                    const volume = this.media.volume;
-
+                if (this.autoplay) {
                     this.media.muted  = this.muted = true;
                     this.media.volume = 0;
-
-                    if (!this.autoplay && isSafari) {
-                        this.start(position, connects, processCallback);
-                    }
-
-                    if (isSafari) {
-                        this.media.muted  = this.muted = muted;
-                        this.media.volume = volume;
-                        return;
-                    }
                 }
 
                 this.start(position, connects, processCallback);

@@ -9,6 +9,7 @@ import EnvelopeGenerator from './EnvelopeGenerator';
 import Equalizer from './Equalizer';
 import Filter from './Filter';
 import Flanger from './Flanger';
+import Glide from './Glide';
 
 export {
     Autopanner,
@@ -19,5 +20,6 @@ export {
     EnvelopeGenerator,
     Equalizer,
     Filter,
-    Flanger
+    Flanger,
+    Glide
 };

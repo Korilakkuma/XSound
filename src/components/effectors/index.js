@@ -10,6 +10,7 @@ import Equalizer from './Equalizer';
 import Filter from './Filter';
 import Flanger from './Flanger';
 import Glide from './Glide';
+import NoiseGate from './NoiseGate';
 
 export {
     Autopanner,
@@ -21,5 +22,6 @@ export {
     Equalizer,
     Filter,
     Flanger,
-    Glide
+    Glide,
+    NoiseGate
 };

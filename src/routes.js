@@ -119,6 +119,7 @@ export default (
                 <Route exact path={`${path}effectors/flanger`} component={Effectors.Flanger} />
                 <Route exact path={`${path}effectors/glide`} component={Effectors.Glide} />
                 <Route exact path={`${path}effectors/noisegate`} component={Effectors.NoiseGate} />
+                <Route exact path={`${path}effectors/phaser`} component={Effectors.Phaser} />
             </Switch>
             <Nav />
         </div>

@@ -11,6 +11,7 @@ import Filter from './Filter';
 import Flanger from './Flanger';
 import Glide from './Glide';
 import NoiseGate from './NoiseGate';
+import Phaser from './Phaser';
 
 export {
     Autopanner,
@@ -23,5 +24,6 @@ export {
     Filter,
     Flanger,
     Glide,
-    NoiseGate
+    NoiseGate,
+    Phaser
 };

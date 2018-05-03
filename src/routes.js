@@ -121,6 +121,7 @@ export default (
                 <Route exact path={`${path}effectors/noisegate`} component={Effectors.NoiseGate} />
                 <Route exact path={`${path}effectors/phaser`} component={Effectors.Phaser} />
                 <Route exact path={`${path}effectors/reverb`} component={Effectors.Reverb} />
+                <Route exact path={`${path}effectors/ringmodulator`} component={Effectors.Ringmodulator} />
             </Switch>
             <Nav />
         </div>

@@ -13,6 +13,7 @@ import Glide from './Glide';
 import NoiseGate from './NoiseGate';
 import Phaser from './Phaser';
 import Reverb from './Reverb';
+import Ringmodulator from './Ringmodulator';
 
 export {
     Autopanner,
@@ -27,5 +28,6 @@ export {
     Glide,
     NoiseGate,
     Phaser,
-    Reverb
+    Reverb,
+    Ringmodulator
 };

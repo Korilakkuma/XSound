@@ -14,6 +14,7 @@ import NoiseGate from './NoiseGate';
 import Phaser from './Phaser';
 import Reverb from './Reverb';
 import Ringmodulator from './Ringmodulator';
+import Tremolo from './Tremolo';
 
 export {
     Autopanner,
@@ -29,5 +30,6 @@ export {
     NoiseGate,
     Phaser,
     Reverb,
-    Ringmodulator
+    Ringmodulator,
+    Tremolo
 };

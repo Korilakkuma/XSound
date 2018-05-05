@@ -123,6 +123,7 @@ export default (
                 <Route exact path={`${path}effectors/reverb`} component={Effectors.Reverb} />
                 <Route exact path={`${path}effectors/ringmodulator`} component={Effectors.Ringmodulator} />
                 <Route exact path={`${path}effectors/tremolo`} component={Effectors.Tremolo} />
+                <Route exact path={`${path}effectors/vocalcanceler`} component={Effectors.VocalCanceler} />
             </Switch>
             <Nav />
         </div>

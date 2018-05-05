@@ -15,6 +15,7 @@ import Phaser from './Phaser';
 import Reverb from './Reverb';
 import Ringmodulator from './Ringmodulator';
 import Tremolo from './Tremolo';
+import VocalCanceler from './VocalCanceler';
 
 export {
     Autopanner,
@@ -31,5 +32,6 @@ export {
     Phaser,
     Reverb,
     Ringmodulator,
-    Tremolo
+    Tremolo,
+    VocalCanceler
 };

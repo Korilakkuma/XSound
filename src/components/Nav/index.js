@@ -211,7 +211,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}effectors/ringmodulator`} onClick={this.onClickLink}>ringmodulator</Link></dd>
                         <dd><Link to={`${this.path}effectors/tremolo`} onClick={this.onClickLink}>tremolo</Link></dd>
                         <dd><Link to={`${this.path}effectors/vocalcanceler`} onClick={this.onClickLink}>vocalcanceler</Link></dd>
-                        <dd><Link to="/effectors/wah">wah</Link></dd>
+                        <dd><Link to={`${this.path}effectors/wah`} onClick={this.onClickLink}>wah</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

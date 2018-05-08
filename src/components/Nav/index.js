@@ -218,7 +218,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-analyser'} aria-selected={expandedPanelId === 'panel-analyser'} aria-controls="panel-analyser" tabIndex="0" onClick={this.onClick}>Analyser</button></h2>
                     <dl id="panel-analyser" aria-hidden={expandedPanelId !== 'panel-analyser'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/analyser/domain">domain</Link></dd>
+                        <dd><Link to={`${this.path}analyser/domain`} onClick={this.onClickLink}>domain</Link></dd>
                         <dd><Link to="/analyser/param">param</Link></dd>
                         <dd><Link to="/analyser/get">get</Link></dd>
                         <dd><Link to="/analyser/domain-setup">domain#setup</Link></dd>

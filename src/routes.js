@@ -125,6 +125,7 @@ export default (
                 <Route exact path={`${path}effectors/tremolo`} component={Effectors.Tremolo} />
                 <Route exact path={`${path}effectors/vocalcanceler`} component={Effectors.VocalCanceler} />
                 <Route exact path={`${path}effectors/wah`} component={Effectors.Wah} />
+                <Route exact path={`${path}analyser/domain`} component={Analyser.Domain} />
             </Switch>
             <Nav />
         </div>

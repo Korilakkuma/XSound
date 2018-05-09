@@ -14,6 +14,7 @@ import * as MixerModule from './components/mixer';
 import * as MIDI from './components/midi';
 import * as MML from './components/mml';
 import * as Effectors from './components/effectors';
+import * as Analyser from './components/analyser';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -126,6 +127,7 @@ export default (
                 <Route exact path={`${path}effectors/vocalcanceler`} component={Effectors.VocalCanceler} />
                 <Route exact path={`${path}effectors/wah`} component={Effectors.Wah} />
                 <Route exact path={`${path}analyser/domain`} component={Analyser.Domain} />
+                <Route exact path={`${path}analyser/param`} component={Analyser.Param} />
             </Switch>
             <Nav />
         </div>

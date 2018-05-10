@@ -128,6 +128,7 @@ export default (
                 <Route exact path={`${path}effectors/wah`} component={Effectors.Wah} />
                 <Route exact path={`${path}analyser/domain`} component={Analyser.Domain} />
                 <Route exact path={`${path}analyser/param`} component={Analyser.Param} />
+                <Route exact path={`${path}analyser/get`} component={Analyser.Get} />
             </Switch>
             <Nav />
         </div>

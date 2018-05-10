@@ -220,7 +220,7 @@ class Nav extends React.Component {
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}analyser/domain`} onClick={this.onClickLink}>domain</Link></dd>
                         <dd><Link to={`${this.path}analyser/param`} onClick={this.onClickLink}>param</Link></dd>
-                        <dd><Link to="/analyser/get">get</Link></dd>
+                        <dd><Link to={`${this.path}analyser/get`} onClick={this.onClickLink}>get</Link></dd>
                         <dd><Link to="/analyser/domain-setup">domain#setup</Link></dd>
                         <dd><Link to="/analyser/domain-param">domain#param</Link></dd>
                         <dd><Link to="/analyser/domain-state">domain#state</Link></dd>

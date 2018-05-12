@@ -130,6 +130,7 @@ export default (
                 <Route exact path={`${path}analyser/param`} component={Analyser.Param} />
                 <Route exact path={`${path}analyser/get`} component={Analyser.Get} />
                 <Route exact path={`${path}analyser/visualizer/setup`} component={Analyser.VisualizerSetup} />
+                <Route exact path={`${path}analyser/visualizer/param`} component={Analyser.VisualizerParam} />
             </Switch>
             <Nav />
         </div>

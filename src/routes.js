@@ -132,6 +132,7 @@ export default (
                 <Route exact path={`${path}analyser/visualizer/setup`} component={Analyser.VisualizerSetup} />
                 <Route exact path={`${path}analyser/visualizer/param`} component={Analyser.VisualizerParam} />
                 <Route exact path={`${path}analyser/visualizer/state`} component={Analyser.VisualizerState} />
+                <Route exact path={`${path}analyser/visualizer/create`} component={Analyser.VisualizerCreate} />
             </Switch>
             <Nav />
         </div>

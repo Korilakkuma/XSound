@@ -6,6 +6,7 @@ import Get from './Get';
 import VisualizerSetup from './VisualizerSetup';
 import VisualizerParam from './VisualizerParam';
 import VisualizerState from './VisualizerState';
+import VisualizerCreate from './VisualizerCreate';
 
 export {
     Domain,
@@ -13,5 +14,6 @@ export {
     Get,
     VisualizerSetup,
     VisualizerParam,
-    VisualizerState
+    VisualizerState,
+    VisualizerCreate
 };

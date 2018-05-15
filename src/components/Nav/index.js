@@ -225,7 +225,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}analyser/visualizer/param`} onClick={this.onClickLink}>Visualizer#param</Link></dd>
                         <dd><Link to={`${this.path}analyser/visualizer/state`} onClick={this.onClickLink}>Visualizer#state</Link></dd>
                         <dd><Link to={`${this.path}analyser/visualizer/create`} onClick={this.onClickLink}>Visualizer#create</Link></dd>
-                        <dd><Link to="/analyser/time-overview-update">TimeOverview#update</Link></dd>
+                        <dd><Link to={`${this.path}analyser/time-overview/update`} onClick={this.onClickLink}>TimeOverview#update</Link></dd>
                         <dd><Link to="/analyser/time-overview-drag">TimeOverview#drag</Link></dd>
                     </dl>
                 </section>

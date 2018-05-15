@@ -133,6 +133,7 @@ export default (
                 <Route exact path={`${path}analyser/visualizer/param`} component={Analyser.VisualizerParam} />
                 <Route exact path={`${path}analyser/visualizer/state`} component={Analyser.VisualizerState} />
                 <Route exact path={`${path}analyser/visualizer/create`} component={Analyser.VisualizerCreate} />
+                <Route exact path={`${path}analyser/time-overview/update`} component={Analyser.TimeOverviewUpdate} />
             </Switch>
             <Nav />
         </div>

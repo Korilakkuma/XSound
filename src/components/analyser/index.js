@@ -7,6 +7,7 @@ import VisualizerSetup from './VisualizerSetup';
 import VisualizerParam from './VisualizerParam';
 import VisualizerState from './VisualizerState';
 import VisualizerCreate from './VisualizerCreate';
+import TimeOverviewUpdate from './TimeOverviewUpdate';
 
 export {
     Domain,
@@ -15,5 +16,6 @@ export {
     VisualizerSetup,
     VisualizerParam,
     VisualizerState,
-    VisualizerCreate
+    VisualizerCreate,
+    TimeOverviewUpdate
 };

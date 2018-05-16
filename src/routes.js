@@ -134,6 +134,7 @@ export default (
                 <Route exact path={`${path}analyser/visualizer/state`} component={Analyser.VisualizerState} />
                 <Route exact path={`${path}analyser/visualizer/create`} component={Analyser.VisualizerCreate} />
                 <Route exact path={`${path}analyser/time-overview/update`} component={Analyser.TimeOverviewUpdate} />
+                <Route exact path={`${path}analyser/time-overview/drag`} component={Analyser.TimeOverviewDrag} />
             </Switch>
             <Nav />
         </div>

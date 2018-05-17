@@ -15,6 +15,7 @@ import * as MIDI from './components/midi';
 import * as MML from './components/mml';
 import * as Effectors from './components/effectors';
 import * as Analyser from './components/analyser';
+import * as Recorder from './components/recorder';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -135,6 +136,7 @@ export default (
                 <Route exact path={`${path}analyser/visualizer/create`} component={Analyser.VisualizerCreate} />
                 <Route exact path={`${path}analyser/time-overview/update`} component={Analyser.TimeOverviewUpdate} />
                 <Route exact path={`${path}analyser/time-overview/drag`} component={Analyser.TimeOverviewDrag} />
+                <Route exact path={`${path}recorder/setup`} component={Recorder.Setup} />
             </Switch>
             <Nav />
         </div>

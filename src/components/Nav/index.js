@@ -233,7 +233,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-recorder'} aria-selected={expandedPanelId === 'panel-recorder'} aria-controls="panel-recorder" tabIndex="0" onClick={this.onClick}>Recorder</button></h2>
                     <dl id="panel-recorder" aria-hidden={expandedPanelId !== 'panel-recorder'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/recorder/setup">setup</Link></dd>
+                        <dd><Link to={`${this.path}recorder/setup`} onClick={this.onClickLink}>setup</Link></dd>
                         <dd><Link to="/recorder/ready">ready</Link></dd>
                         <dd><Link to="/recorder/start">start</Link></dd>
                         <dd><Link to="/recorder/stop">stop</Link></dd>

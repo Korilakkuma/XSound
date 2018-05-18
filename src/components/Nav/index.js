@@ -234,7 +234,7 @@ class Nav extends React.Component {
                     <dl id="panel-recorder" aria-hidden={expandedPanelId !== 'panel-recorder'}>
                         <dt>Methods</dt>
                         <dd><Link to={`${this.path}recorder/setup`} onClick={this.onClickLink}>setup</Link></dd>
-                        <dd><Link to="/recorder/ready">ready</Link></dd>
+                        <dd><Link to={`${this.path}recorder/ready`} onClick={this.onClickLink}>ready</Link></dd>
                         <dd><Link to="/recorder/start">start</Link></dd>
                         <dd><Link to="/recorder/stop">stop</Link></dd>
                         <dd><Link to="/recorder/param">param</Link></dd>

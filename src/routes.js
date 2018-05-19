@@ -138,6 +138,7 @@ export default (
                 <Route exact path={`${path}analyser/time-overview/drag`} component={Analyser.TimeOverviewDrag} />
                 <Route exact path={`${path}recorder/setup`} component={Recorder.Setup} />
                 <Route exact path={`${path}recorder/ready`} component={Recorder.Ready} />
+                <Route exact path={`${path}recorder/start`} component={Recorder.Start} />
             </Switch>
             <Nav />
         </div>

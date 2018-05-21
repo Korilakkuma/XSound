@@ -237,7 +237,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}recorder/ready`} onClick={this.onClickLink}>ready</Link></dd>
                         <dd><Link to={`${this.path}recorder/start`} onClick={this.onClickLink}>start</Link></dd>
                         <dd><Link to={`${this.path}recorder/stop`} onClick={this.onClickLink}>stop</Link></dd>
-                        <dd><Link to="/recorder/param">param</Link></dd>
+                        <dd><Link to={`${this.path}recorder/param`} onClick={this.onClickLink}>param</Link></dd>
                         <dd><Link to="/recorder/clear">clear</Link></dd>
                         <dd><Link to="/recorder/create">create</Link></dd>
                         <dd><Link to="/recorder/get-active-track">getActiveTrack</Link></dd>

@@ -141,6 +141,7 @@ export default (
                 <Route exact path={`${path}recorder/start`} component={Recorder.Start} />
                 <Route exact path={`${path}recorder/stop`} component={Recorder.Stop} />
                 <Route exact path={`${path}recorder/param`} component={Recorder.Param} />
+                <Route exact path={`${path}recorder/clear`} component={Recorder.Clear} />
             </Switch>
             <Nav />
         </div>

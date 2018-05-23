@@ -6,6 +6,7 @@ import Start from './Start';
 import Stop from './Stop';
 import Param from './Param';
 import Clear from './Clear';
+import Create from './Create';
 
 export {
     Setup,
@@ -13,5 +14,6 @@ export {
     Start,
     Stop,
     Param,
-    Clear
+    Clear,
+    Create
 };

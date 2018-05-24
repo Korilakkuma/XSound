@@ -7,6 +7,7 @@ import Stop from './Stop';
 import Param from './Param';
 import Clear from './Clear';
 import Create from './Create';
+import GetActiveTrack from './GetActiveTrack';
 
 export {
     Setup,
@@ -15,5 +16,6 @@ export {
     Stop,
     Param,
     Clear,
-    Create
+    Create,
+    GetActiveTrack
 };

@@ -143,6 +143,7 @@ export default (
                 <Route exact path={`${path}recorder/param`} component={Recorder.Param} />
                 <Route exact path={`${path}recorder/clear`} component={Recorder.Clear} />
                 <Route exact path={`${path}recorder/create`} component={Recorder.Create} />
+                <Route exact path={`${path}recorder/get-active-track`} render={render(Recorder.GetActiveTrack)} />
             </Switch>
             <Nav />
         </div>

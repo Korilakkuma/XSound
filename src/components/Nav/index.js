@@ -240,7 +240,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}recorder/param`} onClick={this.onClickLink}>param</Link></dd>
                         <dd><Link to={`${this.path}recorder/clear`} onClick={this.onClickLink}>clear</Link></dd>
                         <dd><Link to={`${this.path}recorder/create`} onClick={this.onClickLink}>create</Link></dd>
-                        <dd><Link to="/recorder/get-active-track">getActiveTrack</Link></dd>
+                        <dd><Link to={`${this.path}recorder/get-active-track`} onClick={this.onClickLink}>getActiveTrack</Link></dd>
                     </dl>
                 </section>
                 <section role="presentation">

@@ -173,6 +173,7 @@ export default (
                 <Route exact path={`${path}recorder/get-active-track`} render={render(Recorder.GetActiveTrack)} />
                 <Route exact path={`${path}session/setup`} render={render(Session.Setup)} />
                 <Route exact path={`${path}session/start`} render={render(Session.Start)} />
+                <Route exact path={`${path}session/close`} render={render(Session.Close)} />
             </Switch>
             <Nav />
         </div>

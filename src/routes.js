@@ -16,6 +16,7 @@ import * as MML from './components/mml';
 import * as Effectors from './components/effectors';
 import * as Analyser from './components/analyser';
 import * as Recorder from './components/recorder';
+import * as Session from './components/session';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -144,6 +145,7 @@ export default (
                 <Route exact path={`${path}recorder/clear`} component={Recorder.Clear} />
                 <Route exact path={`${path}recorder/create`} component={Recorder.Create} />
                 <Route exact path={`${path}recorder/get-active-track`} render={render(Recorder.GetActiveTrack)} />
+                <Route exact path={`${path}session/setup`} render={render(Session.Setup)} />
             </Switch>
             <Nav />
         </div>

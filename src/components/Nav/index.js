@@ -247,7 +247,7 @@ class Nav extends React.Component {
                     <h2><button type="button" role="tab" aria-expanded={expandedPanelId === 'panel-session'} aria-selected={expandedPanelId === 'panel-session'} aria-controls="panel-session" tabIndex="0" onClick={this.onClick}>Session</button></h2>
                     <dl id="panel-session" aria-hidden={expandedPanelId !== 'panel-session'}>
                         <dt>Methods</dt>
-                        <dd><Link to="/session/setup">setup</Link></dd>
+                        <dd><Link to={`${this.path}session/setup`} onClick={this.onClickLink}>setup</Link></dd>
                         <dd><Link to="/session/start">start</Link></dd>
                         <dd><Link to="/session/close">close</Link></dd>
                         <dd><Link to="/session/get">get</Link></dd>

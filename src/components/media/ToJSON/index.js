@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class ToJSON extends React.Component {
+    static TITLE      = 'MediaModule#toJSON';
     static CLASS_NAME = 'ToJSON';
 
     constructor(props) {

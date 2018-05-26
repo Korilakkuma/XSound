@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Clear extends React.Component {
+    static TITLE      = 'Recorder#clear';
     static CLASS_NAME = 'Clear';
 
     constructor(props) {

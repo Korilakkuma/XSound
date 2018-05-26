@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class VocalCanceler extends React.Component {
+    static TITLE      = 'Vocal Canceler';
     static CLASS_NAME = 'VocalCanceler';
 
     constructor(props) {

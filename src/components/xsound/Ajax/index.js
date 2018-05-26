@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Ajax extends React.Component {
+    static TITLE      = 'XSound.ajax';
     static CLASS_NAME = 'Ajax';
 
     constructor(props) {

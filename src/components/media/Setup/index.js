@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Setup extends React.Component {
+    static TITLE      = 'MediaModule#setup';
     static CLASS_NAME = 'Setup';
 
     constructor(props) {

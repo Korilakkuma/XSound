@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Close extends React.Component {
+    static TITLE      = 'Session#close';
     static CLASS_NAME = 'Close';
 
     constructor(props) {

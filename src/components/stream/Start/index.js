@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Start extends React.Component {
+    static TITLE      = 'StreamModule#start';
     static CLASS_NAME = 'Start';
 
     constructor(props) {

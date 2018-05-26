@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Toggle extends React.Component {
+    static TITLE      = 'StreamModule#toggle';
     static CLASS_NAME = 'Toggle';
 
     constructor(props) {

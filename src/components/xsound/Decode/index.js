@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Decode extends React.Component {
+    static TITLE      = 'XSound.decode';
     static CLASS_NAME = 'Decode';
 
     constructor(props) {

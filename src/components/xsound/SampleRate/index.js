@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class SampleRate extends React.Component {
+    static TITLE      = 'XSound.SAMPLE_RATE';
     static CLASS_NAME = 'SampleRate';
 
     constructor(props) {

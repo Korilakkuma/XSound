@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class OscillatorGet extends React.Component {
+    static TITLE      = 'Oscillator#get';
     static CLASS_NAME = 'OscillatorGet';
 
     constructor(props) {

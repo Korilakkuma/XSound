@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class GetActiveTrack extends React.Component {
+    static TITLE      = 'Recorder#getActiveTrack';
     static CLASS_NAME = 'GetActiveTrack';
 
     constructor(props) {

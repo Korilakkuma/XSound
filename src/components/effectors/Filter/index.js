@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Filter extends React.Component {
+    static TITLE      = 'Filter';
     static CLASS_NAME = 'Filter';
 
     constructor(props) {

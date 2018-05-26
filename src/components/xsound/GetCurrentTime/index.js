@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class GetCurrentTime extends React.Component {
+    static TITLE      = 'XSound.getCurrentTime';
     static CLASS_NAME = 'GetCurrentTime';
 
     constructor(props) {

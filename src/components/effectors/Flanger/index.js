@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Flanger extends React.Component {
+    static Flanger    = 'Flanger';
     static CLASS_NAME = 'Flanger';
 
     constructor(props) {

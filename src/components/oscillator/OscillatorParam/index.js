@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class OscillatorParam extends React.Component {
+    static TITLE      = 'Oscillator#param';
     static CLASS_NAME = 'OscillatorParam';
 
     constructor(props) {

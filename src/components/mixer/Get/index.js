@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Get extends React.Component {
+    static TITLE      = 'MixerModule#get';
     static CLASS_NAME = 'Get';
 
     constructor(props) {

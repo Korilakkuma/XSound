@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Compressor extends React.Component {
+    static TITLE      = 'Compressor';
     static CLASS_NAME = 'Compressor';
 
     constructor(props) {

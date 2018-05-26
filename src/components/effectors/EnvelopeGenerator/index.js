@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class EnvelopeGenerator extends React.Component {
+    static TITLE      = 'EnvelopeGenerator';
     static CLASS_NAME = 'EnvelopeGenerator';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class NoiseGate extends React.Component {
+    static TITLE      = 'Noise Gate';
     static CLASS_NAME = 'NoiseGate';
 
     constructor(props) {

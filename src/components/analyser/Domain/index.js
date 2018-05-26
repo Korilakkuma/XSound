@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Domain extends React.Component {
+    static TITLE      = 'Analyser#domain';
     static CLASS_NAME = 'Domain';
 
     constructor(props) {

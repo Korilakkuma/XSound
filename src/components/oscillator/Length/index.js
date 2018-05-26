@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Length extends React.Component {
+    static TITLE      = 'OscillatorModule#length';
     static CLASS_NAME = 'Length';
 
     constructor(props) {

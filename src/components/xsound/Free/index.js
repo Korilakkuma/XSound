@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Free extends React.Component {
+    static TITILE     = 'XSound.free';
     static CLASS_NAME = 'Free';
 
     constructor(props) {

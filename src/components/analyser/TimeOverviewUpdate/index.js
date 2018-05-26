@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class TimeOverviewUpdate extends React.Component {
+    static TITLE      = 'TimeOverview#update';
     static CLASS_NAME = 'TimeOverviewUpdate';
 
     constructor(props) {

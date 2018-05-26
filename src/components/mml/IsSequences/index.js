@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class IsSequences extends React.Component {
+    static TITLE      = 'MML#isSequences';
     static CLASS_NAME = 'IsSequences';
 
     constructor(props) {

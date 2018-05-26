@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Ringmodulator extends React.Component {
+    static TITLE      = 'Ring Modulator';
     static CLASS_NAME = 'Ringmodulator';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Chorus extends React.Component {
+    static TITLE      = 'Chorus';
     static CLASS_NAME = 'Chorus';
 
     constructor(props) {

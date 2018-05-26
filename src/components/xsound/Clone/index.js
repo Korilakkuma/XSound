@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Clone extends React.Component {
+    static TITLE      = 'XSound#clone';
     static CLASS_NAME = 'Clone';
 
     constructor(props) {

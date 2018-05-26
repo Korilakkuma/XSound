@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class IsMedia extends React.Component {
+    static TITLE      = 'MediaModule#isMedia';
     static CLASS_NAME = 'IsMedia';
 
     constructor(props) {

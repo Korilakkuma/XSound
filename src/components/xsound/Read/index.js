@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Read extends React.Component {
+    static TITLE      = 'XSound.read';
     static CLASS_NAME = 'Read';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Glide extends React.Component {
+    static TITLE      = 'Glide';
     static CLASS_NAME = 'Glide';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class IsXSound extends React.Component {
+    static TITLE      = 'XSound.IS_XSOUND';
     static CLASS_NAME = 'IsXSound';
 
     constructor(props) {

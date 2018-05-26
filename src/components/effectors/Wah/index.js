@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Wah extends React.Component {
+    static TITLE      = 'Wah';
     static CLASS_NAME = 'Wah';
 
     constructor(props) {

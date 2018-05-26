@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Equalizer extends React.Component {
+    static TITLE      = 'Equalizer';
     static CLASS_NAME = 'Equalizer';
 
     constructor(props) {

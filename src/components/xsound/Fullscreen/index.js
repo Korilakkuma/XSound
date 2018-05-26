@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Fullscreen extends React.Component {
+    static TITLE      = 'XSound.fullscreen';
     static CLASS_NAME = 'Fullscreen';
 
     constructor(props) {

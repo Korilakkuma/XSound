@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Params extends React.Component {
+    static TITLE      = 'MediaModule#params';
     static CLASS_NAME = 'Params';
 
     constructor(props) {

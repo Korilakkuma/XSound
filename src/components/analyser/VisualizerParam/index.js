@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class VisualizerParam extends React.Component {
+    static TITLE      = 'Visualizer#param';
     static CLASS_NAME = 'VisualizerParam';
 
     constructor(props) {

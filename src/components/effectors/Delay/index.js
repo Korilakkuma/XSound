@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Delay extends React.Component {
+    static TITLE      = 'Delay';
     static CLASS_NAME = 'Delay';
 
     constructor(props) {

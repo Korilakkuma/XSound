@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class File extends React.Component {
+    static TITLE      = 'XSound.file';
     static CLASS_NAME = 'File';
 
     constructor(props) {

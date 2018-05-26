@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class NoConflict extends React.Component {
+    static TITLE      = 'XSound.noConflict';
     static CLASS_NAME = 'NoConflict';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Distortion extends React.Component {
+    static TITLE      = 'Distortion';
     static CLASS_NAME = 'Distortion';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Stop extends React.Component {
+    static TITLE      = 'OneshotModule#stop';
     static CLASS_NAME = 'Stop';
 
     constructor(props) {

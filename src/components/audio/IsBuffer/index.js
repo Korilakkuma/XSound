@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class IsBuffer extends React.Component {
+    static TITLE      = 'AudioModule#isBuffer';
     static CLASS_NAME = 'IsBuffer';
 
     constructor(props) {

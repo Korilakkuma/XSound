@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class IsPaused extends React.Component {
+    static TITLE      = 'AudioModule#isPaused';
     static CLASS_NAME = 'IsPaused';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class VisualizerCreate extends React.Component {
+    static TITLE      = 'Visualizer#create';
     static CLASS_NAME = 'VisualizerCreate';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Phaser extends React.Component {
+    static TITLE      = 'Phaser';
     static CLASS_NAME = 'Phaser';
 
     constructor(props) {

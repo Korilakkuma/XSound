@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class NumberOfOutputs extends React.Component {
+    static TITLE      = 'XSound.NUMBER_OF_OUTPUTS';
     static CLASS_NAME = 'NumberOfOutputs';
 
     constructor(props) {

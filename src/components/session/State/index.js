@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class State extends React.Component {
+    static TITLE      = 'Session#state';
     static CLASS_NAME = 'State';
 
     constructor(props) {

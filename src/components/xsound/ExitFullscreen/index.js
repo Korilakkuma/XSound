@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class ExitFullscreen extends React.Component {
+    static TITLE      = 'XSound.exitFullscreen';
     static CLASS_NAME = 'ExitFullscreen';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class IsStreaming extends React.Component {
+    static TITLE      = 'StreamModule#isStreaming';
     static CLASS_NAME = 'IsStreaming';
 
     constructor(props) {

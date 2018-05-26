@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class ToFrequencies extends React.Component {
+    static TITLE      = 'XSound.toFrequencies';
     static CLASS_NAME = 'ToFrequencies';
 
     constructor(props) {

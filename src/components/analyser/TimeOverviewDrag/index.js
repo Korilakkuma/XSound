@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class TimeOverviewDrag extends React.Component {
+    static TITLE      = 'TimeOverview#drag';
     static CLASS_NAME = 'TimeOverviewDrag';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Ready extends React.Component {
+    static TITLE      = 'Recorder#ready';
     static CLASS_NAME = 'Ready';
 
     constructor(props) {

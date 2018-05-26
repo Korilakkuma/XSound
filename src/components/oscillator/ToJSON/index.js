@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class ToJSON extends React.Component {
+    static TITLE      = 'OscillatorModule#toJSON';
     static CLASS_NAME = 'ToJSON';
 
     constructor(props) {

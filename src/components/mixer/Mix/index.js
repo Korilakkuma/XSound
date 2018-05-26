@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Mix extends React.Component {
+    static TITLE      = 'MixerModule#mix';
     static CLASS_NAME = 'Mix';
 
     constructor(props) {

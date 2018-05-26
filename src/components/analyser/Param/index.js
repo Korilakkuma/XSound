@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Param extends React.Component {
+    static TITLE      = 'Analyser#param';
     static CLASS_NAME = 'Param';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class ConvertTime extends React.Component {
+    static TITLE      = 'XSound.convertTime';
     static CLASS_NAME = 'ConvertTime';
 
     constructor(props) {

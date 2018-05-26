@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Reverb extends React.Component {
+    static TITLE      = 'Reverb';
     static CLASS_NAME = 'Reverb';
 
     constructor(props) {

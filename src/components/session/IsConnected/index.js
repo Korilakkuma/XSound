@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class IsConnected extends React.Component {
+    static TITLE      = 'Session#isConnected';
     static CLASS_NAME = 'IsConnected';
 
     constructor(props) {

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Toggle extends React.Component {
+    static TITLE      = 'MediaModule#toggle';
     static CLASS_NAME = 'Toggle';
 
     constructor(props) {

@@ -29,18 +29,19 @@
 .component-title {
     display: -webkit-flex;
     display: flex;
-
-    -webkit-flex-direction: row;
-    flex-direction: row;
-
-    -webkit-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-
+    -webkit-flex: row nowrap space-between center;
+    flex: row nowrap;
     -webkit-justify-content: space-between;
     justify-content: space-between;
-
     -webkit-align-items: center;
     align-items: center;
+
+    /*
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    */
 }
 
 .component-title h1 {
@@ -53,7 +54,6 @@
 .applicable {
     -webkit-flex-grow: 1;
     flex-grow: 1;
-
     font-size: 16px;
     font-style: italic;
 }

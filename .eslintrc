@@ -19,6 +19,8 @@
     "semi": [2, "always"],
     "no-var": 1,
     "no-case-declarations": 0,
-    "react/jsx-uses-vars": 2
+    "react/display-name": 0,
+    "react/jsx-uses-vars": 2,
+    "react/prop-types": 0
   }
 }

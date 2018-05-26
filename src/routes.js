@@ -30,9 +30,6 @@ const onAnimationEnd = event => {
 };
 
 const render = Component => ({ history, match }) => {
-    console.dir(history);
-    console.dir(match);
-
     const pageLoadingBar = document.getElementById('page-loading-bar');
 
     if (pageLoadingBar) {

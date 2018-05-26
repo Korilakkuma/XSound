@@ -6,6 +6,7 @@
     /* background-image: linear-gradient(top, #373737, var(--black)); */
 }
 
+/*
 .Header__github-buttons {
     position: absolute;
     top: 8px;
@@ -40,6 +41,7 @@
 .Header__forkme > a:hover {
     background-color: var(--base-color);
 }
+*/
 
 .Header__title {
     font-size: 4rem;

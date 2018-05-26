@@ -8,6 +8,15 @@
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 
-    -webkit-justify-content: space-around;
-    justify-content: space-around;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+
+.Routes > section {
+    margin: 0 auto;
+    width: 70%;
+}
+
+.Routes > nav {
+    margin-right: 32px;
 }

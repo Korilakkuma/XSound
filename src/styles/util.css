@@ -64,13 +64,15 @@
     color: var(--assort-color);
 }
 
-.argument-type {
+.argument-type,
+.param-type {
     font-size: 16px;
     font-style: italic;
     color: var(--assort-color);
 }
 
-dl dt .argument-type {
+dl dt .argument-type,
+dl dt .param-type {
     margin-left: 8px;
 }
 

@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Home extends React.Component {
+    static TITLE      = 'Home';
     static CLASS_NAME = 'Home';
 
     constructor(props) {
@@ -46,6 +47,10 @@ class Home extends React.Component {
                     <h1>Getting Started</h1>
                     <hr role="presentation" />
 <pre><code>X('oscillator').setup(true).ready().start(440);</code></pre>
+                    <p>But, it is necessary to invoke X.setup method by user gestures in Chrome 70+.</p>
+<pre><code>{`document.body.addEventListener('click', () => {
+    X.setup();
+}, false);`}</code></pre>
                 </section>
                 <section>
                     <h1>Demo</h1>
@@ -58,7 +63,7 @@ class Home extends React.Component {
                         <li><a href="https://weblike-curtaincall.ssl-lolipop.jp/portfolio-music-v/" target="_blank" rel="noopener noreferrer">Music V</a></li>
                         <li><a href="https://github.com/Korilakkuma/Music-Tweet" target="_blank" rel="noopener noreferrer">Music Tweet</a></li>
                     </ul>
-                    <p>Now, I'm creating website for Web Audio API. Please refer to the following site for understanding this API Document.</p>
+                    <p>Now, I&apos;m creating website for Web Audio API. Please refer to the following site for understanding this API Document.</p>
                     <ul className="list-marker">
                         <li><a href="https://weblike-curtaincall.ssl-lolipop.jp/portfolio-web-sounder/" target="_blank" rel="noopener noreferrer">WEB SOUNDER</a></li>
                     </ul>

@@ -1,5 +1,5 @@
 const webpack            = require('webpack');
-const ExtracktTextPlugin = require('extract-text-webpack-plugin');
+const ExtracktTextPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: ['./src/main.js', './src/main.css'],
@@ -16,12 +16,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtracktTextPlugin.extract({
-          use: [
-            'css-loader',
-            'postcss-loader'
-          ]
-        })
+        use: [
+          ExtracktTextPlugin.loader,
+          'css-loader',
+          'postcss-loader'
+        ]
       },
       {
         test: /\.png$/,
@@ -37,7 +36,9 @@ module.exports = {
         }
       }
     }),
-    new ExtracktTextPlugin('./app.css')
+    new ExtracktTextPlugin({
+      filename: './app.css'
+    })
   ],
   devtool: 'source-map'
 };

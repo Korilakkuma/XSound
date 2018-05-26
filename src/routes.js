@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import PageLoadingBar from './components/PageLoadingBar';
 import Header from './components/Header';
 import Home from './components/Home';
 import * as XSound from './components/xsound';

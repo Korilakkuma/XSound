@@ -1,7 +1,7 @@
 .Header {
     position: relative;
     z-index: 1;
-    padding: 32px;
+    padding: 30px 32px 32px 32px;
     background-color: var(--black-light);
     /* background-image: linear-gradient(top, #373737, var(--black)); */
 }

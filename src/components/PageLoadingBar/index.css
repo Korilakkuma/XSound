@@ -1,0 +1,19 @@
+.PageLoadingBar {
+    height: 2px;
+    background-color: var(--black-light);
+}
+
+.PageLoadingBar > div {
+    width: 0;
+    height: 2px;
+}
+
+.PageLoadingBar.-loading > div {
+    background-color: var(--assort-color);
+    animation: animation-loading 1s ease-in-out 1 normal 0s;
+}
+
+@keyframes animation-loading {
+      0% { width:   0%; }
+    100% { width: 100%; }
+}

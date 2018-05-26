@@ -18,7 +18,7 @@ class Nav extends React.Component {
     constructor(props) {
         super(props);
 
-        this.path        = location.pathname;
+        this.path        = '/'; // location.pathname;
         this.onClick     = this.onClick.bind(this);
         this.onClickLink = this.onClickLink.bind(this);
     }

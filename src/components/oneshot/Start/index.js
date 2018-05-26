@@ -43,7 +43,7 @@ class Start extends React.Component {
                             <tr>
                                 <th scope="row">3rd</th>
                                 <td><span className="argument-type">Function</span></td>
-                                <td>This value is <a href="http://webaudio.github.io/web-audio-api/#the-scriptprocessornode-interface---deprecated" target="_blank">onaudioprocess</a> event hanlder.</td>
+                                <td>This value is <a href="http://webaudio.github.io/web-audio-api/#the-scriptprocessornode-interface---deprecated" target="_blank" rel="noopener noreferrer nofollow">onaudioprocess</a> event hanlder.</td>
                             </tr>
                         </tbody>
                     </table>

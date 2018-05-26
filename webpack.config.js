@@ -5,7 +5,7 @@ module.exports = {
   entry: ['./src/main.js', './src/main.css'],
   output: {
     filename: 'app.js',
-    path: `${__dirname}/public`
+    path: `${__dirname}`
   },
   module: {
     rules: [

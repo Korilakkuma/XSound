@@ -21,12 +21,14 @@
   },
   "homepage": "https://github.com/Korilakkuma/XSound",
   "dependencies": {
+    "history": "^4.7.2",
     "prop-types": "^15.5.10",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
     "redux": "^3.7.2"
   },
   "devDependencies": {
@@ -49,6 +51,6 @@
     "stylelint": "^8.4.0",
     "stylelint-config-standard": "^17.0.0",
     "url-loader": "^0.6.2",
-    "webpack": "^3.10.0"
+    "webpack": "^3.11.0"
   }
 }

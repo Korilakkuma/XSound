@@ -252,7 +252,7 @@ class Nav extends React.Component {
                         <dd><Link to={`${this.path}session/close`} onClick={this.onClickLink}>close</Link></dd>
                         <dd><Link to={`${this.path}session/get`} onClick={this.onClickLink}>get</Link></dd>
                         <dd><Link to={`${this.path}session/is-connected`} onClick={this.onClickLink}>isConnected</Link></dd>
-                        <dd><Link to="/session/state">state</Link></dd>
+                        <dd><Link to={`${this.path}session/state`} onClick={this.onClickLink}>state</Link></dd>
                     </dl>
                 </section>
             </nav>

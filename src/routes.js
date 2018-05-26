@@ -176,6 +176,7 @@ export default (
                 <Route exact path={`${path}session/close`} render={render(Session.Close)} />
                 <Route exact path={`${path}session/get`} render={render(Session.Get)} />
                 <Route exact path={`${path}session/is-connected`} render={render(Session.IsConnected)} />
+                <Route exact path={`${path}session/state`} render={render(Session.State)} />
             </Switch>
             <Nav />
         </div>

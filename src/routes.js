@@ -17,6 +17,7 @@ import * as Effectors from './components/effectors';
 import * as Analyser from './components/analyser';
 import * as Recorder from './components/recorder';
 import * as Session from './components/session';
+import NotFound from './components/NotFound';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 
@@ -177,6 +178,7 @@ export default (
                 <Route exact path={`${path}session/get`} render={render(Session.Get)} />
                 <Route exact path={`${path}session/is-connected`} render={render(Session.IsConnected)} />
                 <Route exact path={`${path}session/state`} render={render(Session.State)} />
+                <Route exact render={render(NotFound)} />
             </Switch>
             <Nav />
         </div>

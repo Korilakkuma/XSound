@@ -3,14 +3,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import store from './store';
+import { ConnectedRouter } from 'react-router-redux';
+import { store, history } from './store';
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router>
+        <ConnectedRouter history={history}>
             {require('./routes').default}
-        </Router>
+        </ConnectedRouter>
     </Provider>,
     document.getElementById('app')
 );

@@ -37,10 +37,10 @@ const render = Component => ({ history, match }) => {
         pageLoadingBar.addEventListener('animationend', onAnimationEnd, false);
     }
 
-    if (Component.CLASS_NAME !== 'Home') {
-        document.title = `${Component.CLASS_NAME} | XSound - Web Audio API Library -`;
-    } else {
+    if (Component.TITLE === 'Home') {
         document.title = 'XSound - Web Audio API Library -';
+    } else {
+        document.title = `${Component.TITLE} | XSound - Web Audio API Library -`;
     }
 
     return <Component history={history} match={match} />;

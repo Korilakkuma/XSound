@@ -1,8 +1,0 @@
-@charset "UTF-8";
-
-@import "./styles/reset.css";
-@import "./styles/vars.css";
-@import "./styles/util.css";
-@import "./styles/base.css";
-@import "./routes.css";
-@import "./components/**/*.css";

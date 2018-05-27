@@ -19,8 +19,96 @@
     <link rel="canonical" href="https://korilakkuma.github.io/XSound/" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon-precomposed" href="images/icon.png" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" type="text/css" media="all" />
-    <link rel="stylesheet" href="app.css" type="text/css" media="all" />
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            background-color: #212121;
+            min-width: 320px;
+        }
+
+        main {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            margin-top: -48px;
+            height: 100vh;
+        }
+
+        h1 {
+            font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+            font-size: 8rem;
+            font-weight: lighter;
+            color: #c000c0;
+            text-shadow: -1px -1px 1px #000;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #c000c0;
+            text-shadow: -1px -1px 1px #000;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #ccc;
+        }
+
+        nav {
+            margin-top: 48px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 12px;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        a:first-of-type {
+            border: 2px solid #c000c0;
+            color: #fff;
+            background-color: #c000c0;
+        }
+
+        a:last-of-type {
+            margin-left: 12px;
+            border: 2px solid #c000c0;
+            color: #c000c0;
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        a:first-of-type:hover {
+            border-color: #800080;
+            background-color: #800080;
+        }
+
+        a:last-of-type:hover {
+            border-color: #800080;
+            color: #fff;
+            background-color: #800080;
+        }
+    </style>
     <!-- Google Analytics -->
     <script type="text/javascript">
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -34,7 +122,14 @@
     <!-- /Google Analytics -->
 </head>
 <body>
-    <div id="app"></div>
-    <script type="text/javascript" src="app.js"></script>
+    <main>
+        <h1>XSound</h1>
+        <h2>Web Audio API Library</h2>
+        <h3>Synthesizer, Visualization, Effects ...</h3>
+        <nav>
+            <a href="https://github.com/Korilakkuma/XSound">Download v2.2.1</a>
+            <a href="https://korilakkuma.github.io/xsound-api/">XSound API Documentation</a>
+        </nav>
+    </main>
 </body>
 </html>

@@ -22,7 +22,7 @@ In concrete, this library may be useful to implement the following features.
   
 This don't depend on other libraries or frameworks (like jQuery, React).
   
-![support-browsers](https://user-images.githubusercontent.com/4006693/33797345-b6317092-dd49-11e7-9a16-6a96f9bd8bb3.jpg)
+![support-browsers](images/support-browsers.jpg)
   
 ## Getting Started
 
@@ -80,9 +80,9 @@ In the case of recording log, the path of log file must be designated by the 2nd
 $ node xsound-server-session-websocket.js 8080 websocket.log
 ```
 
-## API Document
+## API Documentation
   
-- [XSound API Document](https://korilakkuma.github.io/XSound/)
+- [XSound API Documentation](https://korilakkuma.github.io/xsound-api/)
   
 ## License
   

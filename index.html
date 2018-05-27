@@ -73,6 +73,30 @@
             color: #ccc;
         }
 
+        h1 > span {
+            display: inline-block;
+        }
+
+        h1 > span:first-child {
+            transform: translateX(164px);
+            animation: translate-x 0.6s linear 1 normal 0s forwards;
+        }
+
+        h1 > span:last-child {
+            opacity: 0;
+            animation: fade-in 0.6s ease 1 normal 0.6s forwards;
+        }
+
+        @keyframes translate-x {
+              0% { transform: translateX(164px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes fade-in {
+              0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
         nav {
             margin-top: 48px;
         }
@@ -123,7 +147,7 @@
 </head>
 <body>
     <main>
-        <h1>XSound</h1>
+        <h1><span>X</span><span>Sound</span></h1>
         <h2>Web Audio API Library</h2>
         <h3>Synthesizer, Visualization, Effects ...</h3>
         <nav>

@@ -104,11 +104,11 @@ export function read(file, type, successCallback, errorCallback, progressCallbac
 /**
  * This class (static) method gets the instance of `File` (extends `Blob`).
  * @param {Event} event This argument is the instance of Event by Drag & Drop or `<input type="file">`.
- * @param {string} type This argument is one of 'ArrayBuffer', 'DataURL', 'Text'.
+ * @param {string} type This argument is one of 'ArrayBuffer', 'DataURL', 'ObjectURL', 'Text'.
  * @param {function} successCallback This argument is invoked as next process when reading file is successful.
  * @param {function} errorCallback This argument is invoked when reading file failed.
  * @param {function} progressCallback This argument is invoked as `onprogress` event handler in the instance of `FileReader`.
- * @return {File} This is returned as the instance of `File` (extends `Blob`).
+ * @return {File|ObjectURL} This is returned as the instance of `File` (extends `Blob`) or Object URL.
  */
 export function file(event, type, successCallback, errorCallback, progressCallback) {
     // The argument is associative array ?
@@ -163,6 +163,11 @@ export function file(event, type, successCallback, errorCallback, progressCallba
     } else if ((/arraybuffer|dataurl/i.test(type)) && !/audio|video/.test(file.type)) {
         throw new Error('Please upload audio or video file.');
     } else {
+        if (/objecturl/i.test(type)) {
+            window.URL = window.URL || window.webkitURL || window.mozURL;
+            return window.URL.createObjectURL(file);
+        }
+
         read({
             'file'     : file,
             'type'     : type,

@@ -35,7 +35,7 @@ This don't depend on other libraries or frameworks (like jQuery, React).
 X('oscillator').setup(true).ready().start(440);
 ```
 
-But, it is necessary to invoke `X.setup` method by user gestures in Chrome 66+.
+But, it is necessary to invoke `X.setup` method by user gestures in Chrome 70+.
 
 ```JavaScript
 document.body.addEventListener('click', () => {
@@ -93,12 +93,12 @@ In the case of recording log, the path of log file must be designated by the 2nd
 $ node xsound-server-session-websocket.js 8080 websocket.log
 ```
 
-## API Document
+## API Documentation
   
-- [XSound API Document](https://korilakkuma.github.io/XSound/)
+- [XSound API Documentation](https://korilakkuma.github.io/XSound/)
   
 ## License
   
-Copyright (c) 2011, 2012, 2013, 2014, 2015, 2016, 2017 Tomohiro IKEDA (Korilakkuma)  
+Copyright (c) 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018 Tomohiro IKEDA (Korilakkuma)  
 Released under the MIT license
   

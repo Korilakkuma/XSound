@@ -18,9 +18,9 @@ export default class TimeOverview extends Visualizer {
         this.savedImage = null;
         this.length     = 0;
 
-        this.currentTime  = 'rgba(255, 255, 255, 1.0)';  // This style is used for the rectangle that displays current time of audio
-        this.plotInterval = 0.0625;                      // Draw wave at intervals of this value [sec]
-        this.textInterval = 60;                          // Draw text at intervals of this value [sec]
+        this.currentTime  = 'rgba(0, 0, 0, 0.5)';  // This style is used for the rectangle that displays current time of audio
+        this.plotInterval = 0.0625;                // Draw wave at intervals of this value [sec]
+        this.textInterval = 60;                    // Draw text at intervals of this value [sec]
     }
 
     /** @override */
@@ -282,9 +282,9 @@ export default class TimeOverview extends Visualizer {
         rect.classList.add('svg-current-time');
 
         rect.setAttribute('x',      this.styles.left);
-        rect.setAttribute('y',      this.styles.top);
-        rect.setAttribute('width',  1);
-        rect.setAttribute('height', innerHeight);
+        rect.setAttribute('y',      (this.styles.top + 1));
+        // rect.setAttribute('width',  1);
+        rect.setAttribute('height', (innerHeight - 1));
 
         rect.setAttribute('stroke', 'none');
         rect.setAttribute('fill',   this.currentTime);
@@ -319,25 +319,26 @@ export default class TimeOverview extends Visualizer {
 
                     const innerWidth  = width  - (this.styles.left + this.styles.right);
                     const innerHeight = height - (this.styles.top  + this.styles.bottom);
-                    const x           = Math.floor(((t * this.sampleRate) / this.length) * innerWidth) + this.styles.left;
+                    const x           = Math.floor(((t * this.sampleRate) / this.length) * innerWidth);
 
                     context.clearRect(0, 0, width, height);
                     context.putImageData(this.savedImage, 0, 0);
 
                     context.fillStyle = this.currentTime;
-                    context.fillRect(x, this.styles.top, 1, innerHeight);
+                    context.fillRect(this.styles.left, (this.styles.top + 1), x, (innerHeight - 1));
                 }
 
                 break;
             case Visualizer.SVG:
-                const svg = this.svg.querySelector('.svg-current-time');
+                const rect = this.svg.querySelector('.svg-current-time');
 
-                if (svg instanceof SVGElement) {
+                if (rect instanceof SVGElement) {
                     const width      = parseInt(this.svg.getAttribute('width'), 10);
                     const innerWidth = width  - (this.styles.left + this.styles.right);
                     const x          = Math.floor(((t * this.sampleRate) / this.length) * innerWidth);
 
-                    svg.setAttribute('transform', `translate(${x} 0)`);
+                    rect.setAttribute('width', x);
+                    // rect.setAttribute('transform', `translate(${x} 0)`);
                 }
 
                 break;

@@ -8,13 +8,13 @@ describe('TimeOverview TEST', () => {
 
         describe('currentTime', () => {
             afterEach(() => {
-                timeOverview.param('currentTime', 'rgba(255, 255, 255, 1.0)');
+                timeOverview.param('currentTime', 'rgba(0, 0, 0, 0.5)');
             });
 
             // Getter
             // Positive
             it('should return "rgba(255, 255, 255, 1.0)"', () => {
-                expect(timeOverview.param('currentTime')).toEqual('rgba(255, 255, 255, 1.0)');
+                expect(timeOverview.param('currentTime')).toEqual('rgba(0, 0, 0, 0.5)');
             });
 
             // Negative

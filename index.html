@@ -22,6 +22,7 @@
     <style type="text/css">
         :root {
             --translate-x: 200px;
+            --translate-y: -28px;
         }
 
         * {
@@ -98,6 +99,11 @@
             100% { opacity: 1; transform: translateX(0); }
         }
 
+        @keyframes translate-y {
+              0% { opacity: 0; transform: translateY(var(--translate-y)); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
         @keyframes fade-in {
               0% { opacity: 0; }
             100% { opacity: 1; }
@@ -138,6 +144,12 @@
             background-color: #800080;
         }
 
+        .translate-y {
+            opacity: 0;
+            transform: translateY(var(--translate-y));
+            animation: translate-y 0.6s ease 1 normal 2.4s forwards;
+        }
+
         .fade-in-first {
             opacity: 0;
             animation: fade-in 0.6s ease 1 normal 2.4s forwards;
@@ -152,8 +164,8 @@
 <body>
     <main>
         <h1><span>X</span><span>Sound</span></h1>
-        <h2 class="fade-in-first">Web Audio API Library</h2>
-        <h3 class="fade-in-first">Synthesizer, Visualization, Effects ...</h3>
+        <h2 class="translate-y">Web Audio API Library</h2>
+        <h3 class="translate-y">Synthesizer, Visualization, Effects ...</h3>
         <nav class="fade-in-last">
             <a href="https://github.com/Korilakkuma/XSound">Download v2.2.1</a>
             <a href="https://korilakkuma.github.io/xsound-api/">API Documentation</a>

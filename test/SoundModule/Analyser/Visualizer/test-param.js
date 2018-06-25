@@ -92,7 +92,7 @@ describe('Visualizer TEST', () => {
             afterEach(() => {
                 visualizer.param('grad', [
                     { 'offset' : 0, 'color' : 'rgba(0, 128, 255, 1.0)' },
-                    { 'offset' : 1, 'color' : 'rgba(0,   0, 255, 1.0)' }
+                    { 'offset' : 1, 'color' : 'rgba(0, 0, 255, 1.0)'   }
                 ]);
             });
 
@@ -137,7 +137,7 @@ describe('Visualizer TEST', () => {
 
                 expect(visualizer.param('grad')).toEqual([
                     { 'offset' : 0, 'color' : 'rgba(0, 128, 255, 1.0)' },
-                    { 'offset' : 1, 'color' : 'rgba(0,   0, 255, 1.0)' }
+                    { 'offset' : 1, 'color' : 'rgba(0, 0, 255, 1.0)'   }
                 ]);
             });
 
@@ -149,7 +149,7 @@ describe('Visualizer TEST', () => {
 
                 expect(visualizer.param('grad')).toEqual([
                     { 'offset' : 0, 'color' : 'rgba(0, 128, 255, 1.0)' },
-                    { 'offset' : 1, 'color' : 'rgba(0,   0, 255, 1.0)' }
+                    { 'offset' : 1, 'color' : 'rgba(0, 0, 255, 1.0)'   }
                 ]);
             });
 

@@ -6,12 +6,13 @@
 ![David](https://img.shields.io/david/Korilakkuma/XSound.svg)
 ![David Dev](https://img.shields.io/david/dev/Korilakkuma/XSound.svg)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/xsound/badge)](https://www.jsdelivr.com/package/npm/xsound)
-
+  
+Web Audio API Library for Synthesizer, Effects, Visualization, Recording ... etc
   
 ## Overview
   
-This is full stack library for Web Audio API.  
-In concrete, this library may be useful to implement the following features.
+XSound is Multifunctional Library for Web Audio API.  
+In concrete, XSound may be useful to implement the following features.
   
 - Create Sound
 - Play the One-Shot Audio
@@ -20,14 +21,14 @@ In concrete, this library may be useful to implement the following features.
 - Streaming (by WebRTC)
 - MIDI (by Web MIDI API)
 - MML (Music Macro Language)
-- Effectors (Compressor / Wah / Equalizer / Tremolo / Phaser / Chorus / Delay / Reverb ...etc)
+- Effectors (Compressor / Wah / Equalizer / Tremolo / Phaser / Chorus / Delay / Reverb ... etc)
 - Visualization (Overview in Time Domain / Time Domain / Spectrum)
 - Recording (Create WAVE file)
 - Session (by WebSocket)
   
-This don't depend on other libraries or frameworks (like jQuery, React).
+XSound don't depend on other libraries or frameworks (For example, jQuery, React).
   
-![support-browsers](./misc/support-browsers.jpg)
+![support-browsers](misc/support-browsers.jpg)
   
 ## Getting Started
 
@@ -35,23 +36,15 @@ This don't depend on other libraries or frameworks (like jQuery, React).
 X('oscillator').setup(true).ready().start(440);
 ```
 
-But, it is necessary to invoke `X.setup` method by user gestures in Chrome 70+.
-
-```JavaScript
-document.body.addEventListener('click', () => {
-    X.setup();
-}, false);
-```
-  
 ## Demo
   
-The application that uses this library is in the following URL.  
+The application that uses XSound is in the following URLs.
   
 - [X Sound](https://korilakkuma.github.io/X-Sound/)
 - [Music V](https://weblike-curtaincall.ssl-lolipop.jp/portfolio-music-v/)
 - [Music Tweet](https://github.com/Korilakkuma/Music-Tweet)
   
-Now, I'm creating website for Web Audio API. Please refer to the following site for understanding API Document.
+Now, I'm creating website for Web Audio API. Please refer to the following site for understanding API Documentation.
   
 - [WEB SOUNDER](https://weblike-curtaincall.ssl-lolipop.jp/portfolio-web-sounder/)
   
@@ -95,7 +88,7 @@ $ node xsound-server-session-websocket.js 8080 websocket.log
 
 ## API Documentation
   
-- [XSound API Documentation](https://korilakkuma.github.io/XSound/)
+- [XSound API Documentation](https://korilakkuma.github.io/xsound-api/)
   
 ## License
   

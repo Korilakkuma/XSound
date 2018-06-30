@@ -1,12 +1,12 @@
 XSound
 =========
   
-Web Audio API Library
+Web Audio API Library for Synthesizer, Effects, Visualization, Recording ... etc
   
 ## Overview
   
-This is full stack library for Web Audio API.  
-In concrete, this library may be useful to implement the following features.
+XSound is Multifunctional Library for Web Audio API.  
+In concrete, XSound may be useful to implement the following features.
   
 - Create Sound
 - Play the One-Shot Audio
@@ -15,12 +15,12 @@ In concrete, this library may be useful to implement the following features.
 - Streaming (by WebRTC)
 - MIDI (by Web MIDI API)
 - MML (Music Macro Language)
-- Effectors (Compressor / Wah / Equalizer / Tremolo / Phaser / Chorus / Delay / Reverb ...etc)
+- Effectors (Compressor / Wah / Equalizer / Tremolo / Phaser / Chorus / Delay / Reverb ... etc)
 - Visualization (Overview in Time Domain / Time Domain / Spectrum)
 - Recording (Create WAVE file)
 - Session (by WebSocket)
   
-This don't depend on other libraries or frameworks (like jQuery, React).
+XSound don't depend on other libraries or frameworks (For example, jQuery, React).
   
 ![support-browsers](images/support-browsers.jpg)
   
@@ -32,13 +32,13 @@ X('oscillator').setup(true).ready().start(440);
 
 ## Demo
   
-The application that uses this library is in the following URL.  
+The application that uses XSound is in the following URLs.
   
 - [X Sound](https://korilakkuma.github.io/X-Sound/)
 - [Music V](https://weblike-curtaincall.ssl-lolipop.jp/portfolio-music-v/)
 - [Music Tweet](https://github.com/Korilakkuma/Music-Tweet)
   
-Now, I'm creating website for Web Audio API. Please refer to the following site for understanding API Document.
+Now, I'm creating website for Web Audio API. Please refer to the following site for understanding API Documentation.
   
 - [WEB SOUNDER](https://weblike-curtaincall.ssl-lolipop.jp/portfolio-web-sounder/)
   
@@ -86,6 +86,6 @@ $ node xsound-server-session-websocket.js 8080 websocket.log
   
 ## License
   
-Copyright (c) 2011, 2012, 2013, 2014, 2015, 2016, 2017 Tomohiro IKEDA (Korilakkuma)  
+Copyright (c) 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018 Tomohiro IKEDA (Korilakkuma)  
 Released under the MIT license
   

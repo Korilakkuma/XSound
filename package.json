@@ -1,6 +1,6 @@
 {
   "name": "xsound",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "Web Audio API Library for Synthesizer, Effects, Visualization, Recording ... etc",
   "main": "build/xsound.js",
   "scripts": {
@@ -35,7 +35,7 @@
   "homepage": "https://korilakkuma.github.io/XSound/",
   "dependencies": {
     "websocket": "^1.0.26",
-    "ws": "^5.2.1"
+    "ws": "^6.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -46,7 +46,7 @@
     "eslint": "^5.0.1",
     "eslint-cli": "^1.1.1",
     "jasmine": "^3.1.0",
-    "karma": "^2.0.4",
+    "karma": "^2.0.5",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.1.2",

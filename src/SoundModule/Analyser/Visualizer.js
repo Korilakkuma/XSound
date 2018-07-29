@@ -82,8 +82,8 @@ export default class Visualizer {
             this.graphics = Visualizer.SVG;
             this.svg      = element;
 
-            this.svg.setAttribute('xmlns',       Visualizer.XMLNS);
-            this.svg.setAttribute('xmlns:xlink', Visualizer.XLINK);
+            // this.svg.setAttribute('xmlns',       Visualizer.XMLNS);
+            // this.svg.setAttribute('xmlns:xlink', Visualizer.XLINK);
         }
 
         return this;

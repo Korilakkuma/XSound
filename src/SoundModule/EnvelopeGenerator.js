@@ -89,8 +89,14 @@ export default class EnvelopeGenerator {
     ready(index, input, output) {
         const i = (parseInt(index, 10) >= 0) ? parseInt(index, 10) : 0;
 
-        input.connect(this.generators[i]);
-        this.generators[i].connect(output);
+        if ((input instanceof AudioNode) && (output instanceof AudioNode)) {
+            input.connect(this.generators[i]);
+            this.generators[i].connect(output);
+        } else if (input instanceof AudioNode) {
+            input.connect(this.generators[i]);
+        } else if (output instanceof AudioNode) {
+            this.generators[i].connect(output);
+        }
 
         this.activeIndexes[i] = i;
         this.activeCounter++;

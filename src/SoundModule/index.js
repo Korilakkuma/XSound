@@ -272,7 +272,7 @@ export default class SoundModule {
                 return this[m];
             case 'envelopegenerator':
             case 'eg'               :
-                // OscillatorModule, OneshotModule
+                // OscillatorModule, OneshotModule, NoiseModule
                 return this.envelopegenerator;
             case 'glide':
                 if (m in this) {

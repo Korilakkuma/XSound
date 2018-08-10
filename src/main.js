@@ -3,6 +3,7 @@
 import SoundModule from './SoundModule';
 import OscillatorModule from './OscillatorModule';
 import OneshotModule from './OneshotModule';
+import NoiseModule from './NoiseModule';
 import AudioModule from './AudioModule';
 import MediaModule from './MediaModule';
 import StreamModule from './StreamModule';
@@ -27,6 +28,7 @@ if (IS_XSOUND) {
     const sources = {
         'oscillator' : new OscillatorModule(audiocontext),
         'oneshot'    : new OneshotModule(audiocontext),
+        'noise'      : new NoiseModule(audiocontext),
         'audio'      : new AudioModule(audiocontext),
         'media'      : new MediaModule(audiocontext),
         'stream'     : new StreamModule(audiocontext),
@@ -36,10 +38,10 @@ if (IS_XSOUND) {
     };
 
     /**
-     * This function is global object for getting the instance of `OscillatorModule` or `OneshotModule` or `AudioModule` or `MediaModule` or `StreamModule` or `MixerModule` or `MIDI` or `MML` or `Oscillator`.
-     * @param {string} source This argument is one of 'oscillator', 'oneshot', 'audio', 'media', 'stream', 'mixer', 'midi', 'mml'.
+     * This function is global object for getting the instance of `OscillatorModule` or `OneshotModule` or `NoiseModule` or `AudioModule` or `MediaModule` or `StreamModule` or `MixerModule` or `MIDI` or `MML` or `Oscillator`.
+     * @param {string} source This argument is one of 'oscillator', 'oneshot', 'noise', 'audio', 'media', 'stream', 'mixer', 'midi', 'mml'.
      * @param {number} index This argument is in order to select one of some oscillators.
-     * @return {OscillatorModule|OneshotModule|AudioModule|MediaModule|StreamModule|MixerModule|MIDI|MML|Oscillator}
+     * @return {OscillatorModule|OneshotModule|NoiseModule|AudioModule|MediaModule|StreamModule|MixerModule|MIDI|MML|Oscillator}
      */
     const XSound = (source, index) => {
         const s = String(source).replace(/-/g, '').toLowerCase();
@@ -58,6 +60,7 @@ if (IS_XSOUND) {
 
                 return null;
             case 'oneshot':
+            case 'noise'  :
             case 'audio'  :
             case 'media'  :
             case 'stream' :
@@ -108,6 +111,7 @@ if (IS_XSOUND) {
         const clones = {
             'oscillator' : new OscillatorModule(audiocontext),
             'oneshot'    : new OneshotModule(audiocontext),
+            'noise'      : new NoiseModule(audiocontext),
             'audio'      : new AudioModule(audiocontext),
             'media'      : new MediaModule(audiocontext),
             'stream'     : new StreamModule(audiocontext),
@@ -133,6 +137,7 @@ if (IS_XSOUND) {
 
                     return null;
                 case 'oneshot':
+                case 'noise'  :
                 case 'audio'  :
                 case 'media'  :
                 case 'stream' :

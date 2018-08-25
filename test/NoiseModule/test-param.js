@@ -50,5 +50,35 @@ describe('NoiseModule TEST', () => {
                 expect(noiseModule.param('mastervolume')).toEqual(1);
             });
         });
+
+        describe('param', () => {
+            afterEach(() => {
+                noiseModule.param('param', NoiseModule.WHITE_NOISE);
+            });
+
+            // Getter
+            // Positive
+            it('should return "whitenoise"', () => {
+                expect(noiseModule.param('type')).toEqual(NoiseModule.WHITE_NOISE);
+            });
+
+            // Negative
+            it('should return the instance of `NoiseModule`', () => {
+                expect(noiseModule.param('')).toEqual(jasmine.any(NoiseModule));
+            });
+
+            // Setter
+            // Positive
+            it('should return "pinknoise"', () => {
+                noiseModule.param('type', NoiseModule.PINK_NOISE);
+                expect(noiseModule.param('type')).toEqual(NoiseModule.PINK_NOISE);
+            });
+
+            // Negative
+            it('should return "whitenoise"', () => {
+                noiseModule.param('type', 'blacknoise');
+                expect(noiseModule.param('type')).toEqual(NoiseModule.WHITE_NOISE);
+            });
+        });
     });
 });

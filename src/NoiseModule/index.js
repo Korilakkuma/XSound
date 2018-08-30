@@ -3,8 +3,9 @@
 import SoundModule from '../SoundModule';
 
 export default class NoiseModule extends SoundModule {
-    static WHITE_NOISE = 'whitenoise';
-    static PINK_NOISE  = 'pinknoise';
+    static WHITE_NOISE    = 'whitenoise';
+    static PINK_NOISE     = 'pinknoise';
+    static BROWNIAN_NOISE = 'browniannoise';
 
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
@@ -52,7 +53,7 @@ export default class NoiseModule extends SoundModule {
 
                     v = String(value).toLowerCase();
 
-                    if ((v === NoiseModule.WHITE_NOISE) || (v === NoiseModule.PINK_NOISE)) {
+                    if ((v === NoiseModule.WHITE_NOISE) || (v === NoiseModule.PINK_NOISE) || (v === NoiseModule.BROWNIAN_NOISE)) {
                         this.type = v;
                     }
 
@@ -87,6 +88,8 @@ export default class NoiseModule extends SoundModule {
         }
 
         const bufferSize = this.processor.bufferSize;
+
+        let lastOut = 0;
 
         this.processor.onaudioprocess = event => {
             const outputLs = event.outputBuffer.getChannelData(0);
@@ -135,6 +138,21 @@ export default class NoiseModule extends SoundModule {
                             outputRs[i] *= 0.11;
 
                             b6 = white * 0.115926;
+                        }
+
+                        break;
+                    case NoiseModule.BROWNIAN_NOISE:
+                        // ref: https://noisehack.com/generate-noise-web-audio-api/
+                        for (let i = 0; i < bufferSize; i++) {
+                            const white = (Math.random() * 2) - 1;
+
+                            outputLs[i] = (lastOut + (0.02 * white)) / 1.02;
+                            outputRs[i] = (lastOut + (0.02 * white)) / 1.02;
+
+                            lastOut = (lastOut + (0.02 * white)) / 1.02;
+
+                            outputLs[i] *= 3.5;
+                            outputRs[i] *= 3.5;
                         }
 
                         break;

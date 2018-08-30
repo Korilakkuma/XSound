@@ -50,8 +50,7 @@ module.exports = function(config) {
             use: {
               loader: 'babel-loader',
               options: {
-                presets: ['es2015'],
-                plugins: ['transform-class-properties']
+                plugins: ['@babel/plugin-proposal-class-properties']
               }
             }
           }

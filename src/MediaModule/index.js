@@ -91,10 +91,6 @@ export default class MediaModule extends AudioModule {
             }
         }
 
-        if (this.ext === '') {
-            throw new Error('Media format that can be played does not exist.');
-        }
-
         if (Object.prototype.toString.call(listeners) === '[object Object]') {
             for (const k in listeners) {
                 this.listeners[k.toLowerCase()] = (Object.prototype.toString.call(listeners[k]) === '[object Function]') ? listeners[k] : () => {};
@@ -263,8 +259,8 @@ export default class MediaModule extends AudioModule {
 
         try {
             // `Data URL` or `Object URL` ?
-            if ((src.indexOf('data:') !== -1) || (src.indexOf('blob:') !== -1)) {
-                this.media.src = src;  // `Data URL` or `Object URL`
+            if ((src.indexOf('data:') !== -1) || (src.indexOf('blob:') !== -1) || (this.ext === '')) {
+                this.media.src = src;  // `Data URL` or `Object URL` or Full path
             } else {
                 this.media.src = `${src}.${this.ext}`;  // Path
             }

@@ -60,6 +60,12 @@ $ npm install --save xsound
 <script type="text/javascript" src="xsound.js"></script>
 ```
 
+In the case of using ESModules for SSR ... etc,
+
+```JavaScript
+import { XSound, X } from 'xsound';
+```
+
 In the case of using WebSocket,
 
 ```bash

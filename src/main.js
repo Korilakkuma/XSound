@@ -12,9 +12,13 @@ import MIDI from './MIDI';
 import MML from './MML';
 import { read, file, ajax, decode, toFrequencies, convertTime, fullscreen, exitFullscreen } from './XSound';
 
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
+const global = (typeof window !== 'undefined') ? window : {};
 
-const IS_XSOUND = Boolean(window.AudioContext);
+global.AudioContext = global.AudioContext || global.webkitAudioContext;
+
+let XSound;
+
+const IS_XSOUND = Boolean(global.AudioContext);
 
 if (IS_XSOUND) {
     const audiocontext = new AudioContext();
@@ -43,7 +47,7 @@ if (IS_XSOUND) {
      * @param {number} index This argument is in order to select one of some oscillators.
      * @return {OscillatorModule|OneshotModule|NoiseModule|AudioModule|MediaModule|StreamModule|MixerModule|MIDI|MML|Oscillator}
      */
-    const XSound = (source, index) => {
+    XSound = (source, index) => {
         const s = String(source).replace(/-/g, '').toLowerCase();
 
         switch (s) {
@@ -257,15 +261,18 @@ if (IS_XSOUND) {
         document.addEventListener('touchend',   setup, true);
     }
 
-    // Export
-    window.XSound = XSound;
-    window.X      = XSound;  // Alias of XSound
 } else {
-    const XSound = () => null;
+    XSound = () => null;
 
     XSound.IS_XSOUND = IS_XSOUND;
+}
 
-    // Export
-    window.XSound = XSound;
-    window.X      = XSound;  // Alias of XSound
+// for `<script>`
+global.XSound = XSound;
+global.X      = XSound;  // Alias of `XSound`
+
+// for ESModules and SSR (Server Side Rendering)
+if (typeof exports !== 'undefined') {
+    exports.XSound = XSound;
+    exports.X      = XSound;  // Alias of `XSound`
 }

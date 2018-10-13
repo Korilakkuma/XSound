@@ -92,6 +92,16 @@ In the case of recording log, the path of log file must be designated by the 2nd
 $ node xsound-server-session-websocket.js 8080 websocket.log
 ```
 
+## Setup
+
+```bash
+$ git clone git@github.com:Korilakkuma/XSound.git
+$ cd xsound
+$ npm install
+$ npm run docker:build
+$ npm start
+```
+
 ## API Documentation
   
 - [XSound API Documentation](https://korilakkuma.github.io/xsound-api/)

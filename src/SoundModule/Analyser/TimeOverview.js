@@ -1,13 +1,13 @@
 'use strict';
 
-import Visualizer from './Visualizer';
+import { Visualizer } from './Visualizer';
 
 /**
  * This private class defines properties for drawing audio wave in overview of time domain.
  * @constructor
  * @extends {Visualizer}
  */
-export default class TimeOverview extends Visualizer {
+export class TimeOverview extends Visualizer {
     /**
      * @param {number} sampleRate This argument is sample rate.
      */

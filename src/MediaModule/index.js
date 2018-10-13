@@ -1,6 +1,6 @@
 'use strict';
 
-import AudioModule from '../AudioModule';
+import { AudioModule }  from '../AudioModule';
 
 /**
  * This class defines properties for processing sound data from `HTMLMediaElement`.
@@ -10,7 +10,7 @@ import AudioModule from '../AudioModule';
  * @constructor
  * @extends {AudioModule}
  */
-export default class MediaModule extends AudioModule {
+export class MediaModule extends AudioModule {
     static AUDIO = 'audio';
     static VIDEO = 'video';
 

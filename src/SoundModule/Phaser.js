@@ -1,13 +1,13 @@
 'use strict';
 
-import Effector from './Effector';
+import { Effector } from './Effector';
 
 /**
  * Effector's subclass
  * @constructor
  * @extends {Effector}
  */
-export default class Phaser extends Effector {
+export class Phaser extends Effector {
     static MAXIMUM_STAGES = 24;  // The maximum number of All-Pass Filters
 
     /**

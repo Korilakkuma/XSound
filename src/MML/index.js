@@ -1,13 +1,13 @@
 'use strict';
 
-import OscillatorModule from '../OscillatorModule';
-import OneshotModule from '../OneshotModule';
+import { OscillatorModule } from '../OscillatorModule';
+import { OneshotModule } from '../OneshotModule';
 
 /**
  * This class defines properties for playing the MML (Music Macro Language).
  * @constructor
  */
-export default class MML {
+export class MML {
     static ONE_MINUTES       = 60;  // sec
     static EQUAL_TEMPERAMENT = 12;
     static QUARTER_NOTE      = 4;

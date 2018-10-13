@@ -1,13 +1,13 @@
 'use strict';
 
-import Effector from './Effector';
+import { Effector } from './Effector';
 
 /**
  * Effector's subclass
  * @constructor
  * @extends {Effector}
  */
-export default class Filter extends Effector {
+export class Filter extends Effector {
     // for legacy browsers
     static FILTER_TYPES = {
         'lowpass'   : 0,

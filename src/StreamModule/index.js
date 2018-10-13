@@ -1,14 +1,14 @@
 'use strict';
 
-import SoundModule from '../SoundModule';
-import NoiseGate from './NoiseGate';
+import { SoundModule } from '../SoundModule';
+import { NoiseGate }  from './NoiseGate';
 
 /**
  * This class defines properties that processes sound data from WebRTC in Web Audio API.
  * @constructor
  * @extends {SoundModule}
  */
-export default class StreamModule extends SoundModule {
+export class StreamModule extends SoundModule {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */

@@ -1,13 +1,13 @@
 'use strict';
 
-import Effector from './Effector';
+import { Effector } from './Effector';
 
 /**
  * Effector's subclass
  * @constructor
  * @extends {Effector}
  */
-export default class Distortion extends Effector {
+export class Distortion extends Effector {
     static CLEAN      = 'clean';
     static CRUNCH     = 'crunch';
     static OVERDRIVE  = 'overdrive';

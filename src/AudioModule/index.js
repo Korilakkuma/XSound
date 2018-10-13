@@ -1,7 +1,7 @@
 'use strict';
 
-import SoundModule from '../SoundModule';
-import VocalCanceler from './VocalCanceler';
+import { SoundModule } from '../SoundModule';
+import { VocalCanceler } from './VocalCanceler';
 
 /**
  * This subclass defines properties for playing the single audio.
@@ -11,7 +11,7 @@ import VocalCanceler from './VocalCanceler';
  * @constructor
  * @extends {SoundModule}
  */
-export default class AudioModule extends SoundModule {
+export class AudioModule extends SoundModule {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */

@@ -1,25 +1,25 @@
 'use strict';
 
-import Analyser from './Analyser';
-import Recorder from './Recorder';
-import Session from './Session';
-import Compressor from './Compressor';
-import Distortion from './Distortion';
-import Wah from './Wah';
-import Equalizer from './Equalizer';
-import Filter from './Filter';
-import Autopanner from './Autopanner';
-import AutopannerFallback from './AutopannerFallback';
-import Tremolo from './Tremolo';
-import Ringmodulator from './Ringmodulator';
-import Phaser from './Phaser';
-import Flanger from './Flanger';
-import Chorus from './Chorus';
-import Delay from './Delay';
-import Reverb from './Reverb';
-import Panner from './Panner';
-import Listener from './Listener';
-import EnvelopeGenerator from './EnvelopeGenerator';
+import { Analyser } from './Analyser';
+import { Recorder } from './Recorder';
+import { Session } from './Session';
+import { Compressor } from './Compressor';
+import { Distortion } from './Distortion';
+import { Wah } from './Wah';
+import { Equalizer } from './Equalizer';
+import { Filter } from './Filter';
+import { Autopanner } from './Autopanner';
+import { AutopannerFallback } from './AutopannerFallback';
+import { Tremolo } from './Tremolo';
+import { Ringmodulator } from './Ringmodulator';
+import { Phaser } from './Phaser';
+import { Flanger } from './Flanger';
+import { Chorus } from './Chorus';
+import { Delay } from './Delay';
+import { Reverb } from './Reverb';
+import { Panner } from './Panner';
+import { Listener } from './Listener';
+import { EnvelopeGenerator } from './EnvelopeGenerator';
 
 /**
  * This class is superclass that is the top in this library.
@@ -28,7 +28,7 @@ import EnvelopeGenerator from './EnvelopeGenerator';
  * Therefore, this class defines the common properties for each sound sources.
  * @constructor
  */
-export default class SoundModule {
+export class SoundModule {
     static NUMBER_OF_INPUTS  = 2;
     static NUMBER_OF_OUTPUTS = 2;
 

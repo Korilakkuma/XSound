@@ -4,7 +4,7 @@
  * This private class defines common properties for effector classes.
  * @constructor
  */
-export default class Effector {
+export class Effector {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.

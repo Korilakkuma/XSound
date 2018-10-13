@@ -1,13 +1,13 @@
 'use strict';
 
-import SoundModule from '../SoundModule';
+import { SoundModule } from '../SoundModule';
 
 /**
  * This subclass defines properties for playing the one-shot audio.
  * @constructor
  * @extends {SoundModule}
  */
-export default class OneshotModule extends SoundModule {
+export class OneshotModule extends SoundModule {
     static ERROR_AJAX         = 'error';
     static ERROR_AJAX_TIMEOUT = 'timeout';
     static ERROR_DECODE       = 'decode';

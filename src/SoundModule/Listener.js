@@ -5,7 +5,7 @@
  * These properties relate to properties of `PannerNode`.
  * @constructor
  */
-export default class Listener {
+export class Listener {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */

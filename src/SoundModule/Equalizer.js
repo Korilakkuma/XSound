@@ -1,13 +1,13 @@
 'use strict';
 
-import Effector from './Effector';
+import { Effector } from './Effector';
 
 /**
  * Effector's subclass
  * @constructor
  * @extends {Effector}
  */
-export default class Equalizer extends Effector {
+export class Equalizer extends Effector {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.

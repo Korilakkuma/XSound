@@ -1,13 +1,13 @@
 'use strict';
 
-import Effector from './Effector';
+import { Effector } from './Effector';
 
 /**
  * Effector's subclass
  * @constructor
  * @extends {Effector}
  */
-export default class Tremolo extends Effector {
+export class Tremolo extends Effector {
     // for legacy browsers
     static WAVE_TYPES = {
         'sine'     : 0,

@@ -4,7 +4,7 @@
  * This private class defines properties for Vocal Canceler.
  * @constructor
  */
-export default class VocalCanceler {
+export class VocalCanceler {
     constructor() {
         this.depth = 0;
     }

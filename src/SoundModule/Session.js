@@ -4,7 +4,7 @@
  * This private class defines properties for sound session on network.
  * @constructor
  */
-export default class Session {
+export class Session {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.

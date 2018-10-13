@@ -1,15 +1,15 @@
 'use strict';
 
-import SoundModule from './SoundModule';
-import OscillatorModule from './OscillatorModule';
-import OneshotModule from './OneshotModule';
-import NoiseModule from './NoiseModule';
-import AudioModule from './AudioModule';
-import MediaModule from './MediaModule';
-import StreamModule from './StreamModule';
-import MixerModule from './MixerModule';
-import MIDI from './MIDI';
-import MML from './MML';
+import { SoundModule } from './SoundModule';
+import { OscillatorModule } from './OscillatorModule';
+import { OneshotModule } from './OneshotModule';
+import { NoiseModule } from './NoiseModule';
+import { AudioModule } from './AudioModule';
+import { MediaModule } from './MediaModule';
+import { StreamModule } from './StreamModule';
+import { MixerModule } from './MixerModule';
+import { MIDI } from './MIDI';
+import { MML } from './MML';
 import { read, file, ajax, decode, toFrequencies, convertTime, fullscreen, exitFullscreen } from './XSound';
 
 const global = (typeof window !== 'undefined') ? window : {};

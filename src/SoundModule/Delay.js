@@ -1,13 +1,13 @@
 'use strict';
 
-import Effector from './Effector';
+import { Effector } from './Effector';
 
 /**
  * Effector's subclass
  * @constructor
  * @extends {Effector}
  */
-export default class Delay extends Effector {
+export class Delay extends Effector {
     static MAX_DELAY_TIME = 5;  // Max delay time is 5000 [ms]
 
     /**

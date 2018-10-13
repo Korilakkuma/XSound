@@ -4,7 +4,7 @@
  * This private class defines properties for Envelope Generator.
  * @constructor
  */
-export default class EnvelopeGenerator {
+export class EnvelopeGenerator {
     static MIN_GAIN = 1e-3;
 
     /**

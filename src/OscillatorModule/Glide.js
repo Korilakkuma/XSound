@@ -4,7 +4,7 @@
  * This private class defines properties for Glide.
  * @constructor
  */
-export default class Glide {
+export class Glide {
     static LINEAR      = 'linear';
     static EXPONENTIAL = 'exponential';
 

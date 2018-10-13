@@ -1,6 +1,6 @@
 'use strict';
 
-import Recorder from '../../../src/SoundModule/Recorder';
+import { Recorder } from '../../../src/SoundModule/Recorder';
 
 describe('Recorder TEST', () => {
     describe('Recorder#param', () => {

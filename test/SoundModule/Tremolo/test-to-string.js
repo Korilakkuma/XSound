@@ -1,6 +1,6 @@
 'use strict';
 
-import Tremolo from '../../../src/SoundModule/Tremolo';
+import { Tremolo } from '../../../src/SoundModule/Tremolo';
 
 describe('Tremolo TEST', () => {
     describe('Tremolo#toString', () => {

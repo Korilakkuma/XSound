@@ -1,6 +1,6 @@
 'use strict';
 
-import OneshotModule from '../../src/OneshotModule';
+import { OneshotModule } from '../../src/OneshotModule';
 
 describe('OneshotModule TEST', () => {
     describe('OneshotModule#params', () => {

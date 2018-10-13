@@ -1,6 +1,6 @@
 'use strict';
 
-import FFT from '../../../../src/SoundModule/Analyser/FFT';
+import { FFT } from '../../../../src/SoundModule/Analyser/FFT';
 
 describe('FFT TEST', () => {
     describe('FFT#toString', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import MixerModule from '../../src/MixerModule';
+import { MixerModule } from '../../src/MixerModule';
 
 describe('MixerModule TEST', () => {
     describe('MixerModule#toString', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import NoiseModule from '../../src/NoiseModule';
+import { NoiseModule } from '../../src/NoiseModule';
 
 describe('NoiseModule TEST', () => {
     describe('NoiseModule#param', () => {

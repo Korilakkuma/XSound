@@ -1,7 +1,7 @@
 'use strict';
 
-import Session from '../../../src/SoundModule/Session';
-import Analyser from '../../../src/SoundModule/Analyser';
+import { Session } from '../../../src/SoundModule/Session';
+import { Analyser } from '../../../src/SoundModule/Analyser';
 
 describe('Session TEST', () => {
     describe('Session#toString', () => {

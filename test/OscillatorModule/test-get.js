@@ -1,7 +1,7 @@
 'use strict';
 
-import OscillatorModule from '../../src/OscillatorModule';
-import Oscillator from '../../src/OscillatorModule/Oscillator';
+import { OscillatorModule } from '../../src/OscillatorModule';
+import { Oscillator } from '../../src/OscillatorModule/Oscillator';
 
 describe('OscillatorModule TEST', () => {
     describe('OscillatorModule#get', () => {

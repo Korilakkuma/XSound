@@ -1,6 +1,6 @@
 'use strict';
 
-import Delay from '../../../src/SoundModule/Delay';
+import { Delay } from '../../../src/SoundModule/Delay';
 
 describe('Delay TEST', () => {
     describe('Delay#toString', () => {

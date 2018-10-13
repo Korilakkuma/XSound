@@ -1,6 +1,6 @@
 'use strict';
 
-import Ringmodulator from '../../../src/SoundModule/Ringmodulator';
+import { Ringmodulator } from '../../../src/SoundModule/Ringmodulator';
 
 describe('Ringmodulator TEST', () => {
     describe('Ringmodulator#params', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import Listener from '../../../src/SoundModule/Listener';
+import { Listener } from '../../../src/SoundModule/Listener';
 
 describe('Listener TEST', () => {
     describe('Listener#param', () => {

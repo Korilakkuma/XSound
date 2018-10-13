@@ -1,6 +1,6 @@
 'use strict';
 
-import Reverb from '../../../src/SoundModule/Reverb';
+import { Reverb } from '../../../src/SoundModule/Reverb';
 
 describe('Reverb TEST', () => {
     describe('Reverb#toString', () => {

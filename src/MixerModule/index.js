@@ -1,18 +1,18 @@
 'use strict';
 
-import SoundModule from '../SoundModule';
-import OscillatorModule from '../OscillatorModule';
-import OneshotModule from '../OneshotModule';
-import AudioModule from '../AudioModule';
-import MediaModule from '../MediaModule';
-import StreamModule from '../StreamModule';
+import { SoundModule } from '../SoundModule';
+import { OscillatorModule } from '../OscillatorModule';
+import { OneshotModule } from '../OneshotModule';
+import { AudioModule } from '../AudioModule';
+import { MediaModule } from '../MediaModule';
+import { StreamModule } from '../StreamModule';
 
 /**
  * This class defines properties for mixing sound sources that is defined in this library.
  * @constructor
  * @extends {SoundModule}
  */
-export default class MixerModule extends SoundModule {
+export class MixerModule extends SoundModule {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */

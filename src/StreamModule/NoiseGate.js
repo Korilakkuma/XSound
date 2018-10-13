@@ -4,7 +4,7 @@
  * This private class defines properties for Noise Gate.
  * @constructor
  */
-export default class NoiseGate {
+export class NoiseGate {
     constructor() {
         this.level = 0;
     }

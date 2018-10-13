@@ -1,13 +1,13 @@
 'use strict';
 
-import Effector from './Effector';
+import { Effector } from './Effector';
 
 /**
  * Effector's subclass
  * @constructor
  * @extends {Effector}
  */
-export default class Reverb extends Effector {
+export class Reverb extends Effector {
     static ERROR_AJAX         = 'error';
     static ERROR_AJAX_TIMEOUT = 'timeout';
     static ERROR_DECODE       = 'decode';

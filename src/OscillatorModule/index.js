@@ -1,8 +1,8 @@
 'use strict';
 
-import SoundModule from '../SoundModule';
-import Oscillator from './Oscillator';
-import Glide from './Glide';
+import { SoundModule } from '../SoundModule';
+import { Oscillator } from './Oscillator';
+import { Glide } from './Glide';
 
 /**
  * This subclass defines properties for creating sound.
@@ -11,7 +11,7 @@ import Glide from './Glide';
  * @constructor
  * @extends {SoundModule}
  */
-export default class OscillatorModule extends SoundModule {
+export class OscillatorModule extends SoundModule {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */

@@ -4,7 +4,7 @@
  * This private class defines the properties that subclasses (`TimeOverview`, `Time`, `FFT`) require.
  * @constructor
  */
-export default class Visualizer {
+export class Visualizer {
     static CANVAS = 'canvas';
     static SVG    = 'svg';
 

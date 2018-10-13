@@ -1,14 +1,14 @@
 'use strict';
 
-import TimeOverview from './TimeOverview';
-import Time from './Time';
-import FFT from './FFT';
+import { TimeOverview } from './TimeOverview';
+import { Time } from './Time';
+import { FFT } from './FFT';
 
 /**
  * This private class manages 3 private classes (`TimeOverview`, `Time`, `FFT`) for drawing sound wave.
  * @constructor
  */
-export default class Analyser {
+export class Analyser {
     /**
      * @param {AudioContext} context This argument is This argument is in order to use the interfaces of Web Audio API.
      */

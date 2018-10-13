@@ -4,7 +4,7 @@
  * This class defines properties for using Web MIDI API.
  * @constructor
  */
-export default class MIDI {
+export class MIDI {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */

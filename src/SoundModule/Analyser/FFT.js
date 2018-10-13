@@ -1,13 +1,13 @@
 'use strict';
 
-import Visualizer from './Visualizer';
+import { Visualizer } from './Visualizer';
 
 /**
  * This private class defines properties for drawing sound wave in frequency domain (spectrum).
  * @constructor
  * @extends {Visualizer}
  */
-export default class FFT extends Visualizer {
+export class FFT extends Visualizer {
     static UINT  = 'uint';
     static FLOAT = 'float';
 

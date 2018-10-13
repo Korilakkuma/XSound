@@ -1,8 +1,8 @@
 'use strict';
 
-import SoundModule from '../SoundModule';
+import { SoundModule }  from '../SoundModule';
 
-export default class NoiseModule extends SoundModule {
+export class NoiseModule extends SoundModule {
     static WHITE_NOISE    = 'whitenoise';
     static PINK_NOISE     = 'pinknoise';
     static BROWNIAN_NOISE = 'browniannoise';

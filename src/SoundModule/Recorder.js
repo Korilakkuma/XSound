@@ -4,7 +4,7 @@
  * This private class defines properties for multi track recording.
  * @constructor
  */
-export default class Recorder {
+export class Recorder {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.

@@ -4,7 +4,7 @@
  * This private class defines properties for the instance of `OscillatorNode`.
  * @constructor
  */
-export default class Oscillator {
+export class Oscillator {
     // 1 Octave = 1200 cent
     static OCTAVE = 1200;
 

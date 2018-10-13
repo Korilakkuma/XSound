@@ -1,13 +1,13 @@
 'use strict';
 
-import Effector from './Effector';
+import { Effector } from './Effector';
 
 /**
  * Effector's subclass
  * @constructor
  * @extends {Effector}
  */
-export default class Panner extends Effector {
+export class Panner extends Effector {
     static PANNING_MODELS = {
         'equalpower' : 0,
         'HRTF'       : 1

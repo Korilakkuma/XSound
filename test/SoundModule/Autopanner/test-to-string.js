@@ -1,6 +1,6 @@
 'use strict';
 
-import Autopanner from '../../../src/SoundModule/Autopanner';
+import { Autopanner } from '../../../src/SoundModule/Autopanner';
 
 describe('Autopanner TEST', () => {
     describe('Autopanner#toString', () => {

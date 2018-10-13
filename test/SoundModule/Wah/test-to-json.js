@@ -1,6 +1,6 @@
 'use strict';
 
-import Wah from '../../../src/SoundModule/Wah';
+import { Wah } from '../../../src/SoundModule/Wah';
 
 describe('Wah TEST', () => {
     describe('Wah#toJSON', () => {

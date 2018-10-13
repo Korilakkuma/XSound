@@ -1,7 +1,7 @@
 'use strict';
 
-import MML from '../../src/MML';
-import OscillatorModule from '../../src/OscillatorModule';
+import { MML } from '../../src/MML';
+import { OscillatorModule } from '../../src/OscillatorModule';
 
 describe('MML TEST', () => {
     describe('MML#get', () => {

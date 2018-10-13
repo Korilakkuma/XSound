@@ -1,6 +1,6 @@
 'use strict';
 
-import Phaser from '../../../src/SoundModule/Phaser';
+import { Phaser } from '../../../src/SoundModule/Phaser';
 
 describe('Phaser TEST', () => {
     describe('Phaser#toString', () => {

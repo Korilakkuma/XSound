@@ -1,6 +1,6 @@
 'use strict';
 
-import Filter from '../../../src/SoundModule/Filter';
+import { Filter } from '../../../src/SoundModule/Filter';
 
 describe('Filter TEST', () => {
     describe('Filter#params', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import Visualizer from '../../../../src/SoundModule/Analyser/Visualizer';
+import { Visualizer } from '../../../../src/SoundModule/Analyser/Visualizer';
 
 describe('Visualizer TEST', () => {
     describe('Visualizer#param', () => {

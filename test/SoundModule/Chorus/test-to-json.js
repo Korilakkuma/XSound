@@ -1,6 +1,6 @@
 'use strict';
 
-import Chorus from '../../../src/SoundModule/Chorus';
+import { Chorus } from '../../../src/SoundModule/Chorus';
 
 describe('Chorus TEST', () => {
     describe('Chorus#toJSON', () => {

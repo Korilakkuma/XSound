@@ -1,6 +1,6 @@
 'use strict';
 
-import Analyser from '../../../src/SoundModule/Analyser';
+import { Analyser } from '../../../src/SoundModule/Analyser';
 
 describe('Analyser TEST', () => {
     describe('Analyser#get', () => {

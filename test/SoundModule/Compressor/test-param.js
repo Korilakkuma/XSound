@@ -1,6 +1,6 @@
 'use strict';
 
-import Compressor from '../../../src/SoundModule/Compressor';
+import { Compressor } from '../../../src/SoundModule/Compressor';
 
 describe('Compressor TEST', () => {
     describe('Compressor#param', () => {

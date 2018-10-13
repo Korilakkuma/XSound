@@ -1,6 +1,6 @@
 'use strict';
 
-import Panner from '../../../src/SoundModule/Panner';
+import { Panner } from '../../../src/SoundModule/Panner';
 
 describe('Panner TEST', () => {
     describe('Panner#toString', () => {

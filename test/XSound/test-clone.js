@@ -1,15 +1,15 @@
 'use strict';
 
 // import '../../src/main.js';
-import OscillatorModule from '../../src/OscillatorModule';
-import OneshotModule from '../../src/OneshotModule';
-import AudioModule from '../../src/AudioModule';
-import MediaModule from '../../src/MediaModule';
-import StreamModule from '../../src/StreamModule';
-import MixerModule from '../../src/MixerModule';
-import MIDI from '../../src/MIDI';
-import MML from '../../src/MML';
-import Oscillator from '../../src/OscillatorModule/Oscillator';
+import { OscillatorModule } from '../../src/OscillatorModule';
+import { OneshotModule }  from '../../src/OneshotModule';
+import { AudioModule } from '../../src/AudioModule';
+import { MediaModule } from '../../src/MediaModule';
+import { StreamModule } from '../../src/StreamModule';
+import { MixerModule } from '../../src/MixerModule';
+import { MIDI } from '../../src/MIDI';
+import { MML } from '../../src/MML';
+import { Oscillator } from '../../src/OscillatorModule/Oscillator';
 
 describe('XSound TEST', () => {
     describe('XSound.clone', () => {

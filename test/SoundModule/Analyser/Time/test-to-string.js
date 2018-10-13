@@ -1,6 +1,6 @@
 'use strict';
 
-import Time from '../../../../src/SoundModule/Analyser/Time';
+import { Time } from '../../../../src/SoundModule/Analyser/Time';
 
 describe('Time TEST', () => {
     describe('Time#toString', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import EnvelopeGenerator from '../../../src/SoundModule/EnvelopeGenerator';
+import { EnvelopeGenerator } from '../../../src/SoundModule/EnvelopeGenerator';
 
 describe('EnvelopeGenerator TEST', () => {
     describe('EnvelopeGenerator#params', () => {

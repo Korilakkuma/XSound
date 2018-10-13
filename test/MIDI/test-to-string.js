@@ -1,6 +1,6 @@
 'use strict';
 
-import MIDI from '../../src/MIDI';
+import { MIDI } from '../../src/MIDI';
 
 describe('MIDI TEST', () => {
     describe('MIDI#toString', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import MML from '../../src/MML';
+import { MML } from '../../src/MML';
 
 describe('MML TEST', () => {
     describe('MML#toString', () => {

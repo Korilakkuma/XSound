@@ -1,6 +1,6 @@
 'use strict';
 
-import Glide from '../../../src/OscillatorModule/Glide';
+import { Glide } from '../../../src/OscillatorModule/Glide';
 
 describe('Glide TEST', () => {
     describe('Glide#toString', () => {

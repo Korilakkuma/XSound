@@ -1,6 +1,6 @@
 'use strict';
 
-import AudioModule from '../../src/AudioModule';
+import { AudioModule } from '../../src/AudioModule';
 
 describe('AudioModule TEST', () => {
     describe('AudioModule#param', () => {

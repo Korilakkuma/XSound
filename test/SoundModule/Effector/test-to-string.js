@@ -1,6 +1,6 @@
 'use strict';
 
-import Effector from '../../../src/SoundModule/Effector';
+import { Effector } from '../../../src/SoundModule/Effector';
 
 describe('Effector TEST', () => {
     describe('Effector#toString', () => {

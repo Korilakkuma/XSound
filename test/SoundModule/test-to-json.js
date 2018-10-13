@@ -1,6 +1,6 @@
 'use strict';
 
-import SoundModule from '../../src/SoundModule';
+import { SoundModule } from '../../src/SoundModule';
 
 describe('SoundModule TEST', () => {
     describe('SoundModule#toJSON', () => {

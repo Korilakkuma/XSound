@@ -1,6 +1,6 @@
 'use strict';
 
-import VocalCanceler from '../../../src/AudioModule/VocalCanceler';
+import { VocalCanceler } from '../../../src/AudioModule/VocalCanceler';
 
 describe('VocalCanceler TEST', () => {
     describe('VocalCanceler#start', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import Distortion from '../../../src/SoundModule/Distortion';
+import { Distortion } from '../../../src/SoundModule/Distortion';
 
 describe('Distortion TEST', () => {
     describe('Distortion#param', () => {

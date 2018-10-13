@@ -1,6 +1,6 @@
 'use strict';
 
-import Flanger from '../../../src/SoundModule/Flanger';
+import { Flanger } from '../../../src/SoundModule/Flanger';
 
 describe('Flanger TEST', () => {
     describe('Flanger#toString', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import TimeOverview from '../../../../src/SoundModule/Analyser/TimeOverview';
+import { TimeOverview } from '../../../../src/SoundModule/Analyser/TimeOverview';
 
 describe('TimeOverview TEST', () => {
     describe('TimeOverview#toString', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-import NoiseGate from '../../../src/StreamModule/NoiseGate';
+import { NoiseGate } from '../../../src/StreamModule/NoiseGate';
 
 describe('NoiseGate TEST', () => {
     describe('NoiseGate#start', () => {

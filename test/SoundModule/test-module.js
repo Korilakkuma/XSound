@@ -1,24 +1,24 @@
 'use strict';
 
-import SoundModule from '../../src/SoundModule';
-import Analyser from '../../src/SoundModule/Analyser';
-import Recorder from '../../src/SoundModule/Recorder';
-import Session from '../../src/SoundModule/Session';
-import Compressor from '../../src/SoundModule/Compressor';
-import Distortion from '../../src/SoundModule/Distortion';
-import Wah from '../../src/SoundModule/Wah';
-import Equalizer from '../../src/SoundModule/Equalizer';
-import Filter from '../../src/SoundModule/Filter';
-import Autopanner from '../../src/SoundModule/Autopanner';
-import Tremolo from '../../src/SoundModule/Tremolo';
-import Ringmodulator from '../../src/SoundModule/Ringmodulator';
-import Phaser from '../../src/SoundModule/Phaser';
-import Flanger from '../../src/SoundModule/Flanger';
-import Chorus from '../../src/SoundModule/Chorus';
-import Delay from '../../src/SoundModule/Delay';
-import Reverb from '../../src/SoundModule/Reverb';
-import Panner from '../../src/SoundModule/Panner';
-import Listener from '../../src/SoundModule/Listener';
+import { SoundModule } from '../../src/SoundModule';
+import { Analyser } from '../../src/SoundModule/Analyser';
+import { Recorder } from '../../src/SoundModule/Recorder';
+import { Session } from '../../src/SoundModule/Session';
+import { Compressor } from '../../src/SoundModule/Compressor';
+import { Distortion } from '../../src/SoundModule/Distortion';
+import { Wah } from '../../src/SoundModule/Wah';
+import { Equalizer } from '../../src/SoundModule/Equalizer';
+import { Filter } from '../../src/SoundModule/Filter';
+import { Autopanner } from '../../src/SoundModule/Autopanner';
+import { Tremolo } from '../../src/SoundModule/Tremolo';
+import { Ringmodulator } from '../../src/SoundModule/Ringmodulator';
+import { Phaser } from '../../src/SoundModule/Phaser';
+import { Flanger } from '../../src/SoundModule/Flanger';
+import { Chorus } from '../../src/SoundModule/Chorus';
+import { Delay } from '../../src/SoundModule/Delay';
+import { Reverb } from '../../src/SoundModule/Reverb';
+import { Panner } from '../../src/SoundModule/Panner';
+import { Listener } from '../../src/SoundModule/Listener';
 
 describe('SoundModule TEST', () => {
     describe('SoundModule#module', () => {

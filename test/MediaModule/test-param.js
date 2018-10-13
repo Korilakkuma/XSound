@@ -1,6 +1,6 @@
 'use strict';
 
-import MediaModule from '../../src/MediaModule';
+import { MediaModule } from '../../src/MediaModule';
 
 describe('MediaModule TEST', () => {
     describe('MediaModule#param', () => {

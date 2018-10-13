@@ -1,6 +1,6 @@
 'use strict';
 
-import Equalizer from '../../../src/SoundModule/Equalizer';
+import { Equalizer } from '../../../src/SoundModule/Equalizer';
 
 describe('Equalizer TEST', () => {
     describe('Equalizer#toJSON', () => {

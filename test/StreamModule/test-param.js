@@ -1,6 +1,6 @@
 'use strict';
 
-import StreamModule from '../../src/StreamModule';
+import { StreamModule } from '../../src/StreamModule';
 
 describe('StreamModule TEST', () => {
     describe('StreamModule#param', () => {

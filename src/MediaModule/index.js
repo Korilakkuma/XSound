@@ -424,6 +424,70 @@ export class MediaModule extends AudioModule {
         return params;
     }
 
+    /**
+     * This method requests Picture In Picture (PIP).
+     * @return {Promise} This is returned as `Promise`.
+     */
+    requestPictureInPicture() {
+        if (!(this.media instanceof HTMLVideoElement)) {
+            return Promise.reject();
+        }
+
+        if (!('pictureInPictureEnabled' in document)) {
+            return Promise.reject();
+        }
+
+        if (!document.pictureInPictureEnabled) {
+            return Promise.reject();
+        }
+
+        if (this.media.disablePictureInPicture) {
+            return Promise.reject();
+        }
+
+        if (this.media.readyState === 0) {
+            return Promise.reject();
+        }
+
+        if (this.media === document.pictureInPictureElement) {
+            return Promise.reject();
+        }
+
+        return this.media.requestPictureInPicture();
+    }
+
+    /**
+     * This method exits from Picture In Picture (PIP).
+     * @return {Promise} This is returned as `Promise`.
+     */
+    exitPictureInPicture() {
+        if (!(this.media instanceof HTMLVideoElement)) {
+            return Promise.reject();
+        }
+
+        if (!('pictureInPictureEnabled' in document)) {
+            return Promise.reject();
+        }
+
+        if (!document.pictureInPictureEnabled) {
+            return Promise.reject();
+        }
+
+        if (this.media.disablePictureInPicture) {
+            return Promise.reject();
+        }
+
+        if (this.media.readyState === 0) {
+            return Promise.reject();
+        }
+
+        if (this.media !== document.pictureInPictureElement) {
+            return Promise.reject();
+        }
+
+        return document.exitPictureInPicture();
+    }
+
     /** @override */
     toString() {
         return '[MediaModule]';

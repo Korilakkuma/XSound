@@ -424,6 +424,70 @@ export class MediaModule extends AudioModule {
         return params;
     }
 
+    /**
+     * This method requests Picture In Picture (PIP).
+     * @return {Promise} If picture in picture successed, this value is `Promise`. Otherwise, this is returned for method chain.
+     */
+    requestPictureInPicture() {
+        if (!(this.media instanceof HTMLVideoElement)) {
+            return this;
+        }
+
+        if (!('pictureInPictureEnabled' in document)) {
+            return this;
+        }
+
+        if (!document.pictureInPictureEnabled) {
+            return this;
+        }
+
+        if (this.media.disablePictureInPicture) {
+            return this;
+        }
+
+        if (this.media.readyState === 0) {
+            return this;
+        }
+
+        if (this.media === document.pictureInPictureElement) {
+            return this;
+        }
+
+        return this.media.requestPictureInPicture();
+    }
+
+    /**
+     * This method exits from Picture In Picture (PIP).
+     * @return {Promise} If exit of picture in picture successed, this value is `Promise`. Otherwise, this is returned for method chain.
+     */
+    exitPictureInPicture() {
+        if (!(this.media instanceof HTMLVideoElement)) {
+            return this;
+        }
+
+        if (!('pictureInPictureEnabled' in document)) {
+            return this;
+        }
+
+        if (!document.pictureInPictureEnabled) {
+            return this;
+        }
+
+        if (this.media.disablePictureInPicture) {
+            return this;
+        }
+
+        if (this.media.readyState === 0) {
+            return this;
+        }
+
+        if (this.media !== document.pictureInPictureElement) {
+            return this;
+        }
+
+        return document.exitPictureInPicture();
+    }
+
     /** @override */
     toString() {
         return '[MediaModule]';

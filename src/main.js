@@ -11,14 +11,14 @@ import { MixerModule } from './MixerModule';
 import { MIDI } from './MIDI';
 import { MML } from './MML';
 import {
-    read,
-    file,
     ajax,
-    decode,
-    toFrequencies,
     convertTime,
-    fullscreen,
+    decode,
     exitFullscreen,
+    file,
+    fullscreen,
+    read,
+    toFrequencies,
     toTextFile
 } from './XSound';
 
@@ -94,14 +94,14 @@ if (IS_XSOUND) {
     XSound.SAMPLE_RATE       = audiocontext.sampleRate;
     XSound.NUMBER_OF_INPUTS  = SoundModule.NUMBER_OF_INPUTS;
     XSound.NUMBER_OF_OUTPUTS = SoundModule.NUMBER_OF_OUTPUTS;
-    XSound.read              = read;
-    XSound.file              = file;
     XSound.ajax              = ajax;
-    XSound.decode            = decode;
-    XSound.toFrequencies     = toFrequencies;
     XSound.convertTime       = convertTime;
-    XSound.fullscreen        = fullscreen;
+    XSound.decode            = decode;
     XSound.exitFullscreen    = exitFullscreen;
+    XSound.file              = file;
+    XSound.fullscreen        = fullscreen;
+    XSound.read              = read;
+    XSound.toFrequencies     = toFrequencies;
     XSound.toTextFile        = toTextFile;
 
     /**

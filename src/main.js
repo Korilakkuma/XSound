@@ -10,7 +10,17 @@ import { StreamModule } from './StreamModule';
 import { MixerModule } from './MixerModule';
 import { MIDI } from './MIDI';
 import { MML } from './MML';
-import { read, file, ajax, decode, toFrequencies, convertTime, fullscreen, exitFullscreen } from './XSound';
+import {
+    read,
+    file,
+    ajax,
+    decode,
+    toFrequencies,
+    convertTime,
+    fullscreen,
+    exitFullscreen,
+    toTextFile
+} from './XSound';
 
 const global = (typeof window !== 'undefined') ? window : {};
 
@@ -92,6 +102,7 @@ if (IS_XSOUND) {
     XSound.convertTime       = convertTime;
     XSound.fullscreen        = fullscreen;
     XSound.exitFullscreen    = exitFullscreen;
+    XSound.toTextFile        = toTextFile;
 
     /**
      * This class (static) method changes state ('running') of `AudioContext`.

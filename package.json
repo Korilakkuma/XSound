@@ -8,10 +8,9 @@
     "build": "webpack --mode production",
     "build:watch": "webpack --watch --mode development",
     "test": "npm run lint && karma start",
-    "docker:build": "docker build -t app .",
-    "docker:rmi": "docker rmi app",
-    "start": "docker container run --name webserver -d -p 3000:80 -v $(pwd):/usr/share/nginx/html app",
-    "stop": "docker stop webserver && docker rm webserver",
+    "docker-compose:build": "docker-compose build",
+    "start": "docker-compose up -d",
+    "stop": "docker stop xsound",
     "start:server:websocket": "node ./build/xsound-server-session-websocket.js",
     "start:server:ws": "node ./build/xsound-server-session-ws.js"
   },

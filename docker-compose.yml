@@ -1,0 +1,10 @@
+version: '3'
+services:
+  webserver:
+    build: .
+    container_name: xsound
+    tty: true
+    ports:
+      - 3000:80
+    volumes:
+      - .:/usr/share/nginx/html

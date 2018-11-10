@@ -98,7 +98,8 @@ $ node xsound-server-session-websocket.js 8080 websocket.log
 $ git clone git@github.com:Korilakkuma/XSound.git
 $ cd xsound
 $ npm install
-$ npm run docker:build
+$ npm run build
+$ npm run docker-compose:build
 $ npm start
 ```
 

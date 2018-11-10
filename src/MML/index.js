@@ -85,27 +85,6 @@ export class MML {
     };
 
     /**
-     * This class (static) method converts string to ASCII string.
-     * @param {string} string This argument is string.
-     * @return {string} This is returned as string that is converted to ASCII string.
-     */
-    static toAscii = string => {
-        let converted = '';
-
-        for (let i = 0, len = string.length; i < len; i++) {
-            const charCode = string.charCodeAt(i);
-
-            if (charCode > 0xFF) {
-                converted += `&#${charCode};`;
-            } else {
-                converted += string.charAt(i);
-            }
-        }
-
-        return converted;
-    };
-
-    /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */
     constructor(context) {
@@ -606,18 +585,6 @@ export class MML {
         }
 
         return true;
-    }
-
-    /**
-     * This method creates text file for MML.
-     * @param {string} mml This argument is MML string.
-     * @return {string} This is returned as text file that MML is written.
-     */
-    create(mml) {
-        const base64  = window.btoa(MML.toAscii(String(mml)));
-        const dataURL = `data:text/plain;base64,${base64}`;
-
-        return dataURL;
     }
 
     /** @override */

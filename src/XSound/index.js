@@ -378,3 +378,36 @@ export function exitFullscreen() {
         throw new Error('Cannot exit from full screen.');
     }
 }
+
+/**
+ * This class (static) method creates text file.
+ * @param {string} text This argument is string.
+ * @return {string} This is returned as text file.
+ */
+export function toTextFile(text) {
+    /**
+     * This function converts string to ASCII string.
+     * @param {string} string This argument is string.
+     * @return {string} This is returned as string that is converted to ASCII string.
+     */
+    const toAscii = string => {
+        let converted = '';
+
+        for (let i = 0, len = string.length; i < len; i++) {
+            const charCode = string.charCodeAt(i);
+
+            if (charCode > 0xFF) {
+                converted += `&#${charCode};`;
+            } else {
+                converted += string.charAt(i);
+            }
+        }
+
+        return converted;
+    };
+
+    const base64  = window.btoa(toAscii(String(text)));
+    const dataURL = `data:text/plain;base64,${base64}`;
+
+    return dataURL;
+}

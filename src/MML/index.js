@@ -587,6 +587,134 @@ export class MML {
         return true;
     }
 
+    /**
+     * This method converts MML to ABC Notation.
+     * @param {string} mml This argument is MML string.
+     * @param {number} X This argument is file number in ABC Notation.
+     * @param {string} T This argument is title in ABC Notation.
+     * @param {string} M This argument is beat in ABC Notation.
+     * @param {string} L This argument is note duration in ABC Notation.
+     * @param {string} K This argument is tone in ABC Notation.
+     * @return {string} This is returned as ABC Notation.
+     */
+    toABC(mml, X, T, M, L, K) {
+        let abc = '';
+
+        abc += `X:${X ? X : 1}\n`;
+        abc += `T:${T ? T : ''}\n`;
+        abc += `M:${M ? M : '4/4'}\n`;
+        abc += `L:${L ? L : '1/256'}\n`;
+        abc += `K:${K ? K : ''}\n`;
+
+        const notes = mml.match(MML.REGEXP_MML);
+
+        if (notes === null) {
+            return abc;
+        }
+
+        let octave = null;
+
+        while (notes.length > 0) {
+            let note = notes.shift().trim();
+
+            if (MML.REGEXP_TEMPO.test(note)) {
+                const Q = parseInt(note.slice(1), 10);
+
+                if (Q > 0) {
+                    abc += `Q:1/4=${Q}\n`;
+                } else {
+                    return abc;
+                }
+            } else if (MML.REGEXP_OCTAVE.test(note)) {
+                octave = parseInt(note.slice(1), 10);
+
+                if (octave < 0) {
+                    return abc;
+                }
+            } else if (MML.REGEXP_NOTE.test(note)) {
+                if (octave === null) {
+                    return abc;
+                }
+
+                const duration = parseInt(note.replace(/^.+?(\d+)$/i, '$1'), 10);
+
+                let n = '';
+
+                switch (duration) {
+                    case 1:
+                        n = note.replace('1', '256');
+                        break;
+                    case 2:
+                        n = note.replace('2', '128');
+                        break;
+                    case 4:
+                        n = note.replace('4', '64');
+                        break;
+                    case 8:
+                        n = note.replace('8', '32');
+                        break;
+                    case 16:
+                        n = note.replace('16', '16');
+                        break;
+                    case 32:
+                        n = note.replace('32', '8');
+                        break;
+                    case 64:
+                        n = note.replace('64', '4');
+                        break;
+                    case 128:
+                        n = note.replace('128', '2');
+                        break;
+                    case 256:
+                        n = note.replace('256', '1');
+                        break;
+                    default:
+                        break;
+                }
+
+                if (/r/i.test(n)) {
+                    abc += n;
+                    continue;
+                }
+
+                switch (octave) {
+                    case 0:
+                        n += ',,,,';
+                        break;
+                    case 1:
+                        n += ',,,';
+                        break;
+                    case 2:
+                        n += ',,';
+                        break;
+                    case 3:
+                        n += ',';
+                        break;
+                    case 5:
+                        n += '\'';
+                        break;
+                    case 6:
+                        n += '\'\'';
+                        break;
+                    case 7:
+                        n += '\'\'\'';
+                        break;
+                    case 4 :
+                    default:
+                        break;
+                }
+
+                abc += n.replace(/^([CDEFGAB]+)(\d+)([',]*)$/i, '$1$3$2');
+            }
+        }
+
+        abc = abc.replace(/R/ig, 'z')
+                 .replace(/[#+]/ig, '#')
+                 .replace(/-/ig, 'b');
+
+        return abc;
+    }
+
     /** @override */
     toString() {
         return '[MML]';

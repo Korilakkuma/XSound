@@ -612,10 +612,11 @@ export class MML {
             return abc;
         }
 
-        let octave = null;
+        let octave        = null;
+        let totalDuration = 0;
 
         while (notes.length > 0) {
-            let note = notes.shift().trim();
+            const note = notes.shift().trim();
 
             if (MML.REGEXP_TEMPO.test(note)) {
                 const Q = parseInt(note.slice(1), 10);
@@ -636,83 +637,200 @@ export class MML {
                     return abc;
                 }
 
-                const duration = parseInt(note.replace(/^.+?(\d+)$/i, '$1'), 10);
+                let splittedNotes = null;
 
-                let n = '';
-
-                switch (duration) {
-                    case 1:
-                        n = note.replace('1', '256');
-                        break;
-                    case 2:
-                        n = note.replace('2', '128');
-                        break;
-                    case 4:
-                        n = note.replace('4', '64');
-                        break;
-                    case 8:
-                        n = note.replace('8', '32');
-                        break;
-                    case 16:
-                        n = note.replace('16', '16');
-                        break;
-                    case 32:
-                        n = note.replace('32', '8');
-                        break;
-                    case 64:
-                        n = note.replace('64', '4');
-                        break;
-                    case 128:
-                        n = note.replace('128', '2');
-                        break;
-                    case 256:
-                        n = note.replace('256', '1');
-                        break;
-                    default:
-                        break;
+                if (note.indexOf('&') === -1) {
+                    splittedNotes = [note];
+                } else {
+                    splittedNotes = note.split('&');
                 }
 
-                if (/r/i.test(n)) {
-                    abc += n;
-                    continue;
-                }
+                let chord = '';
 
-                switch (octave) {
-                    case 0:
-                        n += ',,,,';
-                        break;
-                    case 1:
-                        n += ',,,';
-                        break;
-                    case 2:
-                        n += ',,';
-                        break;
-                    case 3:
-                        n += ',';
-                        break;
-                    case 5:
-                        n += '\'';
-                        break;
-                    case 6:
-                        n += '\'\'';
-                        break;
-                    case 7:
-                        n += '\'\'\'';
-                        break;
-                    case 4 :
-                    default:
-                        break;
-                }
+                while (splittedNotes.length > 0) {
+                    const splittedNote = splittedNotes.shift();
 
-                abc += n.replace(/^([CDEFGAB]+)(\d+)([',]*)$/i, '$1$3$2 ');
+                    const duration = parseInt(splittedNote.replace(/^.+?(\d+)\.*$/, '$1'), 10);
+
+                    let n = '';
+                    let d = 0;
+
+                    switch (duration) {
+                        case 1:
+                            n = splittedNote.replace('1', '256');
+                            break;
+                        case 2:
+                            n = splittedNote.replace('2', '128');
+                            break;
+                        case 4:
+                            n = splittedNote.replace('4', '64');
+                            break;
+                        case 8:
+                            n = splittedNote.replace('8', '32');
+                            break;
+                        case 16:
+                            n = splittedNote.replace('16', '16');
+                            break;
+                        case 32:
+                            n = splittedNote.replace('32', '8');
+                            break;
+                        case 64:
+                            n = splittedNote.replace('64', '4');
+                            break;
+                        case 128:
+                            n = splittedNote.replace('128', '2');
+                            break;
+                        case 256:
+                            n = splittedNote.replace('256', '1');
+                            break;
+                        // Tuplet
+                        case 6:
+                            n = `(3${splittedNote.replace('6', '128')}`;
+                            d = 128 / 3;
+                            break;
+                        case 12:
+                            n = `(3${splittedNote.replace('12', '64')}`;
+                            d = 64 / 3;
+                            break;
+                        case 18:
+                            n = `(9${splittedNote.replace('18', '128')}`;
+                            d = 128 / 9;
+                            break;
+                        case 24:
+                            n = `(3${splittedNote.replace('24', '32')}`;
+                            d = 32 / 3;
+                            break;
+                        case 36:
+                            n = `(9${splittedNote.replace('36', '64')}`;
+                            d = 64 / 9;
+                            break;
+                        case 48:
+                            n = `(3${splittedNote.replace('48', '16')}`;
+                            d = 16 / 3;
+                            break;
+                        case 72:
+                            n = `(9${splittedNote.replace('72', '32')}`;
+                            d = 32 / 9;
+                            break;
+                        case 96:
+                            n = `(3${splittedNote.replace('96', '8')}`;
+                            d = 8 / 3;
+                            break;
+                        case 144:
+                            n = `(9${splittedNote.replace('144', '16')}`;
+                            d = 16 / 9;
+                            break;
+                        case 192:
+                            n = `(3${splittedNote.replace('192', '4')}`;
+                            d = 4 / 3;
+                            break;
+                        default:
+                            return abc;
+                    }
+
+                    if (n.indexOf('.') !== -1) {
+                        n = n.replace(/^(.+?)\d+\.+$/, `$1${1.5 * parseInt(n.replace(/^.+?(\d+)\.+$/, '$1'), 10)}`);
+                    }
+
+                    if (n.indexOf('(') === -1) {
+                        totalDuration += parseInt(n.replace(/^.+?(\d+)\.*$/i, '$1'), 10);
+                    } else {
+                        totalDuration += d;
+                    }
+
+                    if (totalDuration >= 256) {
+                        n += ' | ';
+                        totalDuration = 0;
+                    }
+
+                    if (/R/i.test(n)) {
+                        abc += `${n} `;
+                        continue;
+                    }
+
+                    let o = '';
+
+                    switch (octave) {
+                        case 0:
+                            o = ',,,,';
+                            break;
+                        case 1:
+                            o = ',,,';
+                            break;
+                        case 2:
+                            o = ',,';
+                            break;
+                        case 3:
+                            o = ',';
+                            break;
+                        case 5:
+                            o = '\'';
+                            break;
+                        case 6:
+                            o = '\'\'';
+                            break;
+                        case 7:
+                            o = '\'\'\'';
+                            break;
+                        case 4 :
+                        default:
+                            break;
+                    }
+
+                    const matches = n.match(/^(\(\d+)?((?:[CDEFGAB][#+-]?)+)(.*)$/i);
+
+                    if (matches === null) {
+                        return abc;
+                    }
+
+                    const tuplet      = matches[1] ? matches[1] : '';
+                    const chordLength = matches[2].length;
+                    const restNote    = matches[3] ? matches[3] : '';
+
+                    let start = 0;
+
+                    if (tuplet.length > 0) {
+                        n = n.replace(/^(?:\(\d+)?((?:[CDEFGAB][#+-]?)+)(.*)$/i, '$1$2');
+                    }
+
+                    if (chordLength === 1) {
+                        chord += `${tuplet}${n.slice(0, 1)}${o}${restNote}`;
+                    } else if ((chordLength === 2) && /[#+-]/.test(n.charAt(1))) {
+                        chord += `${tuplet}${n.slice(1, 2)}${n.slice(0, 1)}${o}${restNote}`;
+                    } else {
+                        while (start < chordLength) {
+                            if (start === 0) {
+                                chord += `${tuplet}[`;
+                            }
+
+                            if (/[#+-]/.test(n.charAt(start + 1))) {
+                                chord += `${n.slice((start + 1), (start + 2))}${n.slice(start, (start + 1))}${o}`;
+                                start += 2;
+                            } else {
+                                chord += `${n.slice(start, (start + 1))}${o}`;
+                                start++;
+                            }
+
+                            if (start === chordLength) {
+                                chord += `]${restNote}`;
+                            }
+                        }
+                    }
+
+                    if (splittedNotes.length > 0) {
+                        chord += '&';
+                    } else {
+                        abc += `${chord} `;
+                    }
+                }
             }
         }
 
-        abc = abc.replace(/R/ig, 'z')
-                 .replace(/[#+]/ig, '#')
-                 .replace(/-/ig, 'b');
-
-        return abc;
+        return abc.replace(/R/ig, 'z')
+                  .replace(/[#+]/g, '^')
+                  .replace(/-/g, '_')
+                  .replace(/&/g, '-')
+                  .replace(/\s{2}/g, ' ');
     }
 
     /** @override */

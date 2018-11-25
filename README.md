@@ -56,8 +56,10 @@ $ npm install --save xsound
 
 ## Usage
 
+In the case of using CDN,
+
 ```HTML
-<script type="text/javascript" src="xsound.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js"></script>
 ```
 
 In the case of using ESModules for SSR ... etc,

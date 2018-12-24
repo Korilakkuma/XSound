@@ -167,8 +167,8 @@ export class Time extends Visualizer {
             // Draw grid and text (X axis)
             for (let i = 0, len = data.length; i < len; i++) {
                 if ((i % nTextInterval) === 0) {
-                    const x = Math.floor((i / len) * innerWidth) + this.styles.left;
-                    const t = `${Math.floor((i / this.sampleRate) * 1000)} ms`;
+                    const x = Math.ceil((i / len) * innerWidth) + this.styles.left;
+                    const t = `${Math.ceil((i / this.sampleRate) * 1000)} ms`;
 
                     // Draw grid
                     if (this.styles.grid !== 'none') {
@@ -322,8 +322,8 @@ export class Time extends Visualizer {
             // Draw grid and text (X axis)
             for (let i = 0, len = data.length; i < len; i++) {
                 if ((i % nTextInterval) === 0) {
-                    const x = Math.floor((i / len) * innerWidth) + this.styles.left;
-                    const t = `${Math.floor((i / this.sampleRate) * 1000)} ms`;
+                    const x = Math.ceil((i / len) * innerWidth) + this.styles.left;
+                    const t = `${Math.ceil((i / this.sampleRate) * 1000)} ms`;
 
                     // Draw grid
                     if (this.styles.grid !== 'none') {

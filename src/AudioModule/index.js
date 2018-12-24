@@ -240,13 +240,7 @@ export class AudioModule extends SoundModule {
 
                             this.currentTime += ((1 * this.source.playbackRate.value) / this.source.buffer.sampleRate);
 
-                            const index = Math.floor(this.currentTime * this.source.buffer.sampleRate);
-                            const n100msec = 0.100 * this.source.buffer.sampleRate;
-
-                            // Invoke callback every 100 msec
-                            if ((index % n100msec) === 0) {
-                                this.callbacks.update(this.source, this.currentTime);
-                            }
+                            this.callbacks.update(this.source, this.currentTime);
                         }
 
                         this.analyser.timeOverviewL.update(this.currentTime);

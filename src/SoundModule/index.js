@@ -35,69 +35,59 @@ export class SoundModule {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
-     *     This value is one of 256, 512, 1024, 2048, 4096, 8192, 16384.
+     */
+    constructor(context, bufferSize) {
+        this.init(context, bufferSize);
+    }
+
+    /**
+     * This method initials modules.
+     * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
+     * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
      *     However, the opportunity for designating buffer size is not so much.
      *     The reason why is that the constructor of `SoundModule` selects buffer size automaticly.
      *     This buffer size can be changed explicitly by calling `resize` method.
      */
-    constructor(context, bufferSize) {
+    init(context, bufferSize) {
         this.context    = context;
         this.sampleRate = context.sampleRate;
 
-        const userAgent = navigator.userAgent;
+        let size = parseInt(bufferSize, 10);
 
-        if (bufferSize !== undefined) {
-            switch (parseInt(bufferSize, 10)) {
-                case   256:
-                case   512:
-                case  1024:
-                case  2048:
-                case  4096:
-                case  8192:
-                case 16384:
-                    this.bufferSize = parseInt(bufferSize, 10);
-                    break;
-                default:
-                    return;
-            }
-        } else if (/(Win(dows )?NT 6\.2)/.test(userAgent)) {
-            this.bufferSize = 1024;  // Windows 8
-        } else if (/(Win(dows )?NT 6\.1)/.test(userAgent)) {
-            this.bufferSize = 1024;  // Windows 7
-        } else if (/(Win(dows )?NT 6\.0)/.test(userAgent)) {
-            this.bufferSize = 2048;  // Windows Vista
-        } else if (/Win(dows )?(NT 5\.1|XP)/.test(userAgent)) {
-            this.bufferSize = 4096;  // Windows XP
-        } else if (/Mac|PPC/.test(userAgent)) {
-            this.bufferSize = 1024;  // Mac OS X
-        } else if (/Linux/.test(userAgent)) {
-            this.bufferSize = 8192;  // Linux
-        } else if (/iPhone|iPad|iPod/.test(userAgent)) {
-            this.bufferSize = 2048;  // iOS
-        } else {
-            this.bufferSize = 16384;  // Otherwise
+        switch (size) {
+            case   256:
+            case   512:
+            case  1024:
+            case  2048:
+            case  4096:
+            case  8192:
+            case 16384:
+                break;
+            default:
+                size = 0;
+                break;
         }
 
         this.mastervolume = context.createGain();
-        this.processor    = context.createScriptProcessor(this.bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
+        this.processor    = context.createScriptProcessor(size, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
 
         this.analyser          = new Analyser(context);
-        this.recorder          = new Recorder(context, this.bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
-        this.session           = new Session(context, this.bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS, this.analyser);
-        this.compressor        = new Compressor(context, this.bufferSize);
-        this.distortion        = new Distortion(context, this.bufferSize);
-        this.wah               = new Wah(context, this.bufferSize);
-        this.equalizer         = new Equalizer(context, this.bufferSize);
-        this.filter            = new Filter(context, this.bufferSize);
-        this.autopanner        = context.createStereoPanner ? new Autopanner(context, this.bufferSize) : new AutopannerFallback(context, this.bufferSize);
-        this.tremolo           = new Tremolo(context, this.bufferSize);
-        this.ringmodulator     = new Ringmodulator(context, this.bufferSize);
-        this.phaser            = new Phaser(context, this.bufferSize);
-        this.flanger           = new Flanger(context, this.bufferSize);
-        this.chorus            = new Chorus(context, this.bufferSize);
-        this.delay             = new Delay(context, this.bufferSize);
-        this.reverb            = new Reverb(context, this.bufferSize);
-        this.panner            = new Panner(context, this.bufferSize);
+        this.recorder          = new Recorder(context, size, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
+        this.session           = new Session(context, size, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS, this.analyser);
+        this.compressor        = new Compressor(context, size);
+        this.distortion        = new Distortion(context, size);
+        this.wah               = new Wah(context, size);
+        this.equalizer         = new Equalizer(context, size);
+        this.filter            = new Filter(context, size);
+        this.autopanner        = context.createStereoPanner ? new Autopanner(context, size) : new AutopannerFallback(context, size);
+        this.tremolo           = new Tremolo(context, size);
+        this.ringmodulator     = new Ringmodulator(context, size);
+        this.phaser            = new Phaser(context, size);
+        this.flanger           = new Flanger(context, size);
+        this.chorus            = new Chorus(context, size);
+        this.delay             = new Delay(context, size);
+        this.reverb            = new Reverb(context, size);
+        this.panner            = new Panner(context, size);
         this.listener          = new Listener(context);
         this.envelopegenerator = new EnvelopeGenerator(context);  // for `OscillatorModule`, `OneshotModule`
 
@@ -176,11 +166,11 @@ export class SoundModule {
     /**
      * This method changes buffer size for `ScriptProcessorNode`.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
-     *     This value is one of 256, 512, 1024, 2048, 4096, 8192, 16384.
+     *     This value is one of 0, 256, 512, 1024, 2048, 4096, 8192, 16384.
      * @return {SoundModule} This is returned for method chain.
      */
     resize(bufferSize) {
-        this.processor = this.context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
+        this.init(this.context, bufferSize);
         return this;
     }
 

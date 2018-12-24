@@ -5,6 +5,8 @@
  * @constructor
  */
 export class Session {
+    static BUFFER_SIZE = 2048;
+
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
@@ -18,8 +20,9 @@ export class Session {
         this.context  = context;
         this.analyser = analyser;  // the instance of `Analyser`
 
-        this.sender   = context.createScriptProcessor(bufferSize, numberOfInputs, numberOfOutputs);
-        this.receiver = context.createScriptProcessor(bufferSize, numberOfInputs, numberOfOutputs);
+        // HACK: Fix buffer size on different environments
+        this.sender   = context.createScriptProcessor(Session.BUFFER_SIZE, numberOfInputs, numberOfOutputs);
+        this.receiver = context.createScriptProcessor(Session.BUFFER_SIZE, numberOfInputs, numberOfOutputs);
 
         this.websocket = null;  // for the instance of `WebSocket`
         this.paused    = true;  // for preventing from the duplicate `onaudioprocess` event (`start` method)

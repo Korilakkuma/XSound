@@ -104,6 +104,10 @@ export class MediaModule extends AudioModule {
             this.source = this.context.createMediaElementSource(this.media);
         }
 
+        if (this.autoplay) {
+            this.stop(() => this.start(this.media.currentTime), () => {});
+        }
+
         this.media.addEventListener('loadstart', event => {
             // To create the instance of `MediaElementAudioSourceNode` again causes error to occur
             if (!(this.source instanceof MediaElementAudioSourceNode)) {
@@ -319,14 +323,15 @@ export class MediaModule extends AudioModule {
                     };
                 }
             }).catch(() => {
-                this.stop();
+                this.stop(() => {
+                    if (this.autoplay) {
+                        this.media.muted  = this.muted = true;
+                        this.media.volume = 0;
+                    }
 
-                if (this.autoplay) {
-                    this.media.muted  = this.muted = true;
-                    this.media.volume = 0;
-                }
-
-                this.start(position, connects, processCallback);
+                    this.start(position, connects, processCallback);
+                }, () => {
+                });
             });
         }
 
@@ -335,21 +340,40 @@ export class MediaModule extends AudioModule {
 
     /**
      * This method stops media.
+     * @param {function} successCallback This argument is invoked when `HTMLMediaElement#play` is successful.
+     * @param {function} errorCallback This argument is invoked when `HTMLMediaElement#play` is failure.
      * @return {MediaModule} This is returned for method chain.
      * @override
      */
-    stop() {
+    stop(successCallback, errorCallback) {
         if ((this.source instanceof MediaElementAudioSourceNode) && !this.media.paused) {
-            this.media.pause();
+            // ref: https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+            this.media.play()
+                .then(() => {
+                    this.media.pause();
 
-            this.off(this.context.currentTime);
+                    this.off(this.context.currentTime);
 
-            this.analyser.stop('time');
-            this.analyser.stop('fft');
+                    this.analyser.stop('time');
+                    this.analyser.stop('fft');
 
-            // Stop `onaudioprocess` event
-            this.processor.disconnect(0);
-            this.processor.onaudioprocess = null;
+                    // Stop `onaudioprocess` event
+                    this.processor.disconnect(0);
+                    this.processor.onaudioprocess = null;
+
+                    if (Object.prototype.toString.call(successCallback) === '[object Function]') {
+                        successCallback();
+                    }
+
+                    return Promise.resolve();
+                })
+                .catch(error => {
+                    if (Object.prototype.toString.call(errorCallback) === '[object Function]') {
+                        errorCallback(error);
+                    }
+
+                    return Promise.reject(error);
+                });
         }
 
         return this;

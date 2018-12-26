@@ -97,6 +97,8 @@ export class MML {
         this.timerids  = [];  /** @type {Array.<number>} */
         this.prev      = [];  /** @type {Array.<object>} */
 
+        this.offset = 0;
+
         this.callbacks = {
             'start' : () => {},
             'stop'  : () => {},
@@ -135,9 +137,12 @@ export class MML {
      * This method parses MML string.
      * @param {Array.<OscillatorNode>|OscillatorModule|OneshotModule} source This argument is in order to select sound source.
      * @param {Array.<string>} mmls This argument is MML strings.
+     * @param {number} offset This argument is in order to correct the index of one-shot audio.
      * @return {Array.<Array.<object>>} This is returned as array that contains object for playing the MML.
      */
-    ready(source, mmls) {
+    ready(source, mmls, offset) {
+        this.offset = parseInt(offset, 10);
+
         if (this.source !== null) {
             this.stop();  // Stop the previous MML
         }
@@ -455,10 +460,10 @@ export class MML {
             } else if (this.source instanceof OneshotModule) {
                 for (let i = 0, len = sequence.indexes.length; i < len; i++) {
                     if (sequence.indexes[i] !== MML.REST) {
-                        this.source.start(sequence.indexes[i], connects, processCallback);
+                        this.source.start((sequence.indexes[i] + this.offset), connects, processCallback);
                     }
 
-                    this.callbacks.start(sequence, i);
+                    this.callbacks.start(sequence, i, this.offset);
                 }
             }
 
@@ -476,10 +481,10 @@ export class MML {
                 } else if (this.source instanceof OneshotModule) {
                     for (let i = 0, len = sequence.indexes.length; i < len; i++) {
                         if (sequence.indexes[i] !== MML.REST) {
-                            this.source.stop(sequence.indexes[i], processCallback);
+                            this.source.stop((sequence.indexes[i] + this.offset), processCallback);
                         }
 
-                        this.callbacks.stop(sequence, i);
+                        this.callbacks.stop(sequence, i, this.offset);
                     }
                 }
 
@@ -519,10 +524,10 @@ export class MML {
         } else if (this.source instanceof OneshotModule) {
             for (const index of sequence.indexes) {
                 if (index !== MML.REST) {
-                    this.source.stop(index, processCallback);
+                    this.source.stop((index + this.offset), processCallback);
                 }
 
-                this.callbacks.stop(sequence, index);
+                this.callbacks.stop(sequence, index, this.offset);
             }
         }
 

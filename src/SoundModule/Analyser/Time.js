@@ -116,8 +116,8 @@ export class Time extends Visualizer {
                         context.beginPath();
 
                         for (let i = 0, len = data.length; i < len; i++) {
-                            const x = Math.floor((i / len) * innerWidth) + this.styles.left;
-                            const y = Math.floor((1 - (data[i] / 255)) * innerHeight) + this.styles.top;
+                            const x = ((i / len) * innerWidth) + this.styles.left;
+                            const y = ((1 - (data[i] / 255)) * innerHeight) + this.styles.top;
 
                             if (i === 0) {
                                 context.moveTo((x + (this.styles.width / 2)), y);
@@ -137,8 +137,8 @@ export class Time extends Visualizer {
 
                         // Draw wave
                         for (let i = 0, len = data.length; i < len; i++) {
-                            const x = Math.floor((i / len) * innerWidth) + this.styles.left;
-                            const y = Math.floor((0.5 - (data[i] / 255)) * innerHeight);
+                            const x = ((i / len) * innerWidth) + this.styles.left;
+                            const y = (0.5 - (data[i] / 255)) * innerHeight;
 
                            // Set style
                            if (this.styles.wave === 'gradient') {
@@ -250,8 +250,8 @@ export class Time extends Visualizer {
                         let d = '';
 
                         for (let i = 0, len = data.length; i < len; i++) {
-                            const x = Math.floor((i / len) * innerWidth) + this.styles.left;
-                            const y = Math.floor((1 - (data[i] / 255)) * innerHeight) + this.styles.top;
+                            const x = ((i / len) * innerWidth) + this.styles.left;
+                            const y = ((1 - (data[i] / 255)) * innerHeight) + this.styles.top;
 
                             if (i === 0) {
                                 d += `M${x + (this.styles.width / 2)} ${y}`;
@@ -288,8 +288,8 @@ export class Time extends Visualizer {
                         for (let i = 0, len = data.length; i < len; i++) {
                             const rect = document.createElementNS(Visualizer.XMLNS, 'rect');
 
-                            const x = Math.floor((i / len) * innerWidth) + this.styles.left;
-                            const y = Math.floor(((data[i] / 255) - 0.5) * innerHeight);
+                            const x = ((i / len) * innerWidth) + this.styles.left;
+                            const y = ((data[i] / 255) - 0.5) * innerHeight;
 
                             rect.setAttribute('x',     x);
                             rect.setAttribute('y',     middle);

@@ -138,7 +138,7 @@ export class FFT extends Visualizer {
                 context.beginPath();
 
                 for (let i = 0; i < drawnSize; i++) {
-                    const x = Math.floor((i / drawnSize) * innerWidth) + this.styles.left;
+                    const x = ((i / drawnSize) * innerWidth) + this.styles.left;
                     const y = (Math.abs(data[i] - maxdB) * (innerHeight / range)) + this.styles.top;  // [dB] * [px / dB] = [px]
 
                     if (i === 0) {
@@ -165,8 +165,8 @@ export class FFT extends Visualizer {
 
                         // Draw wave
                         for (let i = 0; i < drawnSize; i++) {
-                            const x = Math.floor((i / drawnSize) * innerWidth) + this.styles.left;
-                            const y = Math.floor((1 - (data[i] / 255)) * innerHeight) + this.styles.top;
+                            const x = ((i / drawnSize) * innerWidth) + this.styles.left;
+                            const y = ((1 - (data[i] / 255)) * innerHeight) + this.styles.top;
 
                             if (i === 0) {
                                 context.moveTo((x + (this.styles.width / 2)), y);
@@ -186,8 +186,8 @@ export class FFT extends Visualizer {
 
                         // Draw wave
                         for (let i = 0; i < drawnSize; i++) {
-                            const x = Math.floor((i / drawnSize) * innerWidth) + this.styles.left;
-                            const y = -1 * Math.floor((data[i] / 255) * innerHeight);
+                            const x = ((i / drawnSize) * innerWidth) + this.styles.left;
+                            const y = -1 * ((data[i] / 255) * innerHeight);
 
                            // Set style
                            if (this.styles.wave === 'gradient') {

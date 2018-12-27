@@ -311,8 +311,8 @@ export class Visualizer {
 
                 for (let i = 0, len = data.length; i < len; i++) {
                     if ((nPlotInterval === null) || (nPlotInterval === undefined) || ((i % nPlotInterval) === 0)) {
-                        const x = Math.floor((i / len) * w) + this.styles.left;
-                        const y = Math.floor((1 - data[i]) * (h / 2)) + this.styles.top;
+                        const x = ((i / len) * w) + this.styles.left;
+                        const y = ((1 - data[i]) * (h / 2)) + this.styles.top;
 
                         if (i === 0) {
                             context.moveTo((x + (this.styles.width / 2)),  y);
@@ -334,8 +334,8 @@ export class Visualizer {
                 // Draw wave
                 for (let i = 0, len = data.length; i < len; i++) {
                     if ((nPlotInterval === null) || (nPlotInterval === undefined) || ((i % nPlotInterval) === 0)) {
-                        const x = Math.floor((i / len) * w) + this.styles.left;
-                        const y = -1 * Math.floor(data[i] * (h / 2));
+                        const x = ((i / len) * w) + this.styles.left;
+                        const y = -1 * (data[i] * (h / 2));
 
                         // Set style
                         if (this.styles.wave === 'gradient') {
@@ -389,8 +389,8 @@ export class Visualizer {
 
                 for (let i = 0, len = data.length; i < len; i++) {
                     if ((nPlotInterval === null) || (nPlotInterval === undefined) || ((i % nPlotInterval) === 0)) {
-                        const x = Math.floor((i / len) * w) + this.styles.left;
-                        const y = Math.floor((1 - data[i]) * (h / 2)) + this.styles.top;
+                        const x = ((i / len) * w) + this.styles.left;
+                        const y = ((1 - data[i]) * (h / 2)) + this.styles.top;
 
                         if (i === 0) {
                             d += `M${x + (this.styles.width / 2)} ${y}`;
@@ -427,8 +427,8 @@ export class Visualizer {
                     if ((nPlotInterval === null) || (nPlotInterval === undefined) || ((i % nPlotInterval) === 0)) {
                         const rect = document.createElementNS(Visualizer.XMLNS, 'rect');
 
-                        const x = Math.floor((i / len) * w) + this.styles.left;
-                        const y = Math.floor(data[i] * (innerHeight / 2));
+                        const x = ((i / len) * w) + this.styles.left;
+                        const y = data[i] * (innerHeight / 2);
 
                         rect.setAttribute('x',     x);
                         rect.setAttribute('y',     m);

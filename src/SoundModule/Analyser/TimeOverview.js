@@ -8,6 +8,8 @@ import { Visualizer } from './Visualizer';
  * @extends {Visualizer}
  */
 export class TimeOverview extends Visualizer {
+    static SVG_CURRENT_TIME_CLASS_NAME = 'xsound-svg-current-time';
+
     /**
      * @param {number} sampleRate This argument is sample rate.
      */
@@ -279,7 +281,7 @@ export class TimeOverview extends Visualizer {
         // This rectangle displays current time of audio
         const rect = document.createElementNS(Visualizer.XMLNS, 'rect');
 
-        rect.classList.add('svg-current-time');
+        rect.classList.add(TimeOverview.SVG_CURRENT_TIME_CLASS_NAME);
 
         rect.setAttribute('x',      this.styles.left);
         rect.setAttribute('y',      (this.styles.top + 1));
@@ -288,6 +290,8 @@ export class TimeOverview extends Visualizer {
 
         rect.setAttribute('stroke', 'none');
         rect.setAttribute('fill',   this.currentTime);
+
+        rect.setAttribute('aria-label', 'current time');
 
         svg.appendChild(rect);
 
@@ -330,12 +334,12 @@ export class TimeOverview extends Visualizer {
 
                 break;
             case Visualizer.SVG:
-                const rect = this.svg.querySelector('.svg-current-time');
+                const rect = this.svg.querySelector(`.${TimeOverview.SVG_CURRENT_TIME_CLASS_NAME}`);
 
                 if (rect instanceof SVGElement) {
                     const width      = parseInt(this.svg.getAttribute('width'), 10);
                     const innerWidth = width  - (this.styles.left + this.styles.right);
-                    const x          = Math.floor(((t * this.sampleRate) / this.length) * innerWidth);
+                    const x          = ((t * this.sampleRate) / this.length) * innerWidth;
 
                     rect.setAttribute('width', x);
                     // rect.setAttribute('transform', `translate(${x} 0)`);

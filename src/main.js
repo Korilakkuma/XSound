@@ -10,6 +10,7 @@ import { StreamModule } from './StreamModule';
 import { MixerModule } from './MixerModule';
 import { MIDI } from './MIDI';
 import { MML } from './MML';
+import { Effector } from './SoundModule/Effectors/Effector';
 import {
     ajax,
     convertTime,
@@ -103,6 +104,8 @@ if (IS_XSOUND) {
     XSound.read              = read;
     XSound.toFrequencies     = toFrequencies;
     XSound.toTextFile        = toTextFile;
+
+    XSound.Effector = Effector;
 
     /**
      * This class (static) method changes state ('running') of `AudioContext`.

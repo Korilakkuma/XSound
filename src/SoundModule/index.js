@@ -3,6 +3,7 @@
 import { Analyser } from './Analyser';
 import { Recorder } from './Recorder';
 import { Session } from './Session';
+import { Effector } from './Effectors/Effector';
 import { Compressor } from './Effectors/Compressor';
 import { Distortion } from './Effectors/Distortion';
 import { Wah } from './Effectors/Wah';
@@ -208,6 +209,30 @@ export class SoundModule {
     }
 
     /**
+     * This method installs customized effector.
+     * @param {string} name This argument is in order to select effector.
+     * @param {Effector} effector This argument is the subclass that extends `Effector` class.
+     * @return {SoundModule} This is returned for method chain.
+     */
+    install(name, effector) {
+        if (!(effector instanceof Effector)) {
+            return this;
+        }
+
+        if (String(name) in this) {
+            return this;
+        }
+
+        this[name] = effector;
+
+        if (this.modules.every(module => module !== effector)) {
+            this.modules.push(effector);
+        }
+
+        return this;
+    }
+
+    /**
      * This method connects nodes that are defined by this library and Web Audio API.
      * @param {AudioNode} source This argument is `AudioNode` for input of sound.
      * @param {Array.<Effector>} connects This argument is array for changing the default connection.
@@ -308,10 +333,8 @@ export class SoundModule {
 
                 // fall through
             default:
-                break;
+                return this[m];  // Installed effector
         }
-
-        return this;
     }
 
     /**

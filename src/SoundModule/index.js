@@ -3,23 +3,23 @@
 import { Analyser } from './Analyser';
 import { Recorder } from './Recorder';
 import { Session } from './Session';
-import { Compressor } from './Compressor';
-import { Distortion } from './Distortion';
-import { Wah } from './Wah';
-import { Equalizer } from './Equalizer';
-import { Filter } from './Filter';
-import { Autopanner } from './Autopanner';
-import { AutopannerFallback } from './AutopannerFallback';
-import { Tremolo } from './Tremolo';
-import { Ringmodulator } from './Ringmodulator';
-import { Phaser } from './Phaser';
-import { Flanger } from './Flanger';
-import { Chorus } from './Chorus';
-import { Delay } from './Delay';
-import { Reverb } from './Reverb';
-import { Panner } from './Panner';
-import { Listener } from './Listener';
-import { EnvelopeGenerator } from './EnvelopeGenerator';
+import { Compressor } from './Effectors/Compressor';
+import { Distortion } from './Effectors/Distortion';
+import { Wah } from './Effectors/Wah';
+import { Equalizer } from './Effectors/Equalizer';
+import { Filter } from './Effectors/Filter';
+import { Autopanner } from './Effectors/Autopanner';
+import { AutopannerFallback } from './Effectors/AutopannerFallback';
+import { Tremolo } from './Effectors/Tremolo';
+import { Ringmodulator } from './Effectors/Ringmodulator';
+import { Phaser } from './Effectors/Phaser';
+import { Flanger } from './Effectors/Flanger';
+import { Chorus } from './Effectors/Chorus';
+import { Delay } from './Effectors/Delay';
+import { Reverb } from './Effectors/Reverb';
+import { Panner } from './Effectors/Panner';
+import { Listener } from './Effectors/Listener';
+import { EnvelopeGenerator } from './Effectors/EnvelopeGenerator';
 
 /**
  * This class is superclass that is the top in this library.
@@ -310,6 +310,8 @@ export class SoundModule {
             default:
                 break;
         }
+
+        return this;
     }
 
     /**
@@ -361,7 +363,7 @@ export class SoundModule {
     }
 
     /**
-     * This method gets effecter's parameters as associative array.
+     * This method gets effector's parameters as associative array.
      * @return {object}
      */
     params() {
@@ -385,7 +387,7 @@ export class SoundModule {
     }
 
     /**
-     * This method gets effecter's parameters as JSON.
+     * This method gets effector's parameters as JSON.
      * @return {string}
      */
     toJSON() {

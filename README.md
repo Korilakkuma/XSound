@@ -68,32 +68,6 @@ In the case of using ESModules for SSR ... etc,
 import { XSound, X } from 'xsound';
 ```
 
-In the case of using WebSocket,
-
-```bash
-$ node xsound-server-session-websocket.js
-```
-
-or,
-
-```bash
-$ node xsound-server-session-ws.js
-```
-
-Default port number is 8000.  
-This port number can be changed by designating argument.  
-For example,
-
-```bash
-$ node xsound-server-session-websocket.js 8080
-```
-
-In the case of recording log, the path of log file must be designated by the 2nd argument.
-
-```bash
-$ node xsound-server-session-websocket.js 8080 websocket.log
-```
-
 ## Setup
 
 ```bash

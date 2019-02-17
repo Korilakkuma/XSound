@@ -3,7 +3,6 @@
 [![Build Status](https://travis-ci.org/Korilakkuma/XSound.svg?branch=master)](https://travis-ci.org/Korilakkuma/XSound)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![npm](https://img.shields.io/npm/dt/xsound.svg)](https://www.npmjs.com/package/xsound)
-![David](https://img.shields.io/david/Korilakkuma/XSound.svg)
 ![David Dev](https://img.shields.io/david/dev/Korilakkuma/XSound.svg)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/xsound/badge)](https://www.jsdelivr.com/package/npm/xsound)
   
@@ -66,32 +65,6 @@ In the case of using ESModules for SSR ... etc,
 
 ```JavaScript
 import { XSound, X } from 'xsound';
-```
-
-In the case of using WebSocket,
-
-```bash
-$ node xsound-server-session-websocket.js
-```
-
-or,
-
-```bash
-$ node xsound-server-session-ws.js
-```
-
-Default port number is 8000.  
-This port number can be changed by designating argument.  
-For example,
-
-```bash
-$ node xsound-server-session-websocket.js 8080
-```
-
-In the case of recording log, the path of log file must be designated by the 2nd argument.
-
-```bash
-$ node xsound-server-session-websocket.js 8080 websocket.log
 ```
 
 ## Setup

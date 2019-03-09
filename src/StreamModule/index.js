@@ -11,9 +11,10 @@ import { NoiseGate }  from './NoiseGate';
 export class StreamModule extends SoundModule {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
+     * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
      */
-    constructor(context) {
-        super(context);
+    constructor(context, bufferSize) {
+        super(context, bufferSize);
 
         // for the instance of `MediaStreamAudioSourceNode`
         this.source = null;

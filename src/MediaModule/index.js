@@ -16,9 +16,10 @@ export class MediaModule extends AudioModule {
 
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
+     * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
      */
-    constructor(context) {
-        super(context);
+    constructor(context, bufferSize) {
+        super(context, bufferSize);
 
         this.source = null;  // for the instance of `MediaElementAudioSourceNode`
         this.media  = null;  // for the instance of `HTMLMediaElement`

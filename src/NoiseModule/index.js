@@ -69,6 +69,8 @@ export class NoiseModule extends SoundModule {
 
     /** @override */
     start(connects) {
+        const startTime = this.context.currentTime;
+
         // Clear previous
         this.envelopegenerator.clear(true);
         this.processor.disconnect(0);
@@ -80,13 +82,15 @@ export class NoiseModule extends SoundModule {
         // ScriptProcessorNode (Input) -> GainNode (Envelope Generator)
         this.envelopegenerator.ready(0, this.processor);
 
-        this.envelopegenerator.start(this.context.currentTime);
+        this.envelopegenerator.start(startTime);
 
         if (!this.isAnalyser) {
             this.analyser.start('time');
             this.analyser.start('fft');
             this.isAnalyser = true;
         }
+
+        this.on(startTime);
 
         const bufferSize = this.processor.bufferSize;
 
@@ -168,7 +172,10 @@ export class NoiseModule extends SoundModule {
 
     /** @override */
     stop() {
-        this.envelopegenerator.stop(this.context.currentTime);
+        const stopTime = this.context.currentTime;
+
+        this.envelopegenerator.stop(stopTime);
+        this.off(stopTime);
 
         return this;
     }

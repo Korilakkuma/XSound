@@ -25,7 +25,7 @@ import { EnvelopeGenerator } from './Effectors/EnvelopeGenerator';
 /**
  * This class is superclass that is the top in this library.
  * This library's users do not create the instance of `SoundModule`.
- * This class is used for inherit in subclass (`OscillatorModule`, `OneshotModule`, `AudioModule`, `MediaModule`, `StreamModule`, `MixerModule`).
+ * This class is used for inherit in subclass (`OscillatorModule`, `OneshotModule`, `AudioModule`, `MediaModule`, `StreamModule`, `MixerModule`, `ProcessorModule`).
  * Therefore, this class defines the common properties for each sound sources.
  * @constructor
  */

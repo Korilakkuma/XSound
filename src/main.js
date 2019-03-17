@@ -8,6 +8,7 @@ import { AudioModule } from './AudioModule';
 import { MediaModule } from './MediaModule';
 import { StreamModule } from './StreamModule';
 import { MixerModule } from './MixerModule';
+import { ProcessorModule} from './ProcessorModule';
 import { MIDI } from './MIDI';
 import { MML } from './MML';
 import { Effector } from './SoundModule/Effectors/Effector';
@@ -48,15 +49,16 @@ if (IS_XSOUND) {
         'media'      : new MediaModule(audiocontext),
         'stream'     : new StreamModule(audiocontext),
         'mixer'      : new MixerModule(audiocontext),
+        'processor'  : new ProcessorModule(audiocontext),
         'midi'       : new MIDI(audiocontext),
         'mml'        : new MML(audiocontext)
     };
 
     /**
-     * This function is global object for getting the instance of `OscillatorModule` or `OneshotModule` or `NoiseModule` or `AudioModule` or `MediaModule` or `StreamModule` or `MixerModule` or `MIDI` or `MML` or `Oscillator`.
-     * @param {string} source This argument is one of 'oscillator', 'oneshot', 'noise', 'audio', 'media', 'stream', 'mixer', 'midi', 'mml'.
+     * This function is global object for getting the instance of `OscillatorModule` or `OneshotModule` or `NoiseModule` or `AudioModule` or `MediaModule` or `StreamModule` or `MixerModule` or `ProcessorModule` or `MIDI` or `MML` or `Oscillator`.
+     * @param {string} source This argument is one of 'oscillator', 'oneshot', 'noise', 'audio', 'media', 'stream', 'mixer', 'processor', 'midi', 'mml'.
      * @param {number} index This argument is in order to select one of some oscillators.
-     * @return {OscillatorModule|OneshotModule|NoiseModule|AudioModule|MediaModule|StreamModule|MixerModule|MIDI|MML|Oscillator}
+     * @return {OscillatorModule|OneshotModule|NoiseModule|AudioModule|MediaModule|StreamModule|MixerModule|ProcessorModule|MIDI|MML|Oscillator}
      */
     XSound = (source, index) => {
         const s = String(source).replace(/-/g, '').toLowerCase();
@@ -74,14 +76,15 @@ if (IS_XSOUND) {
                 }
 
                 return null;
-            case 'oneshot':
-            case 'noise'  :
-            case 'audio'  :
-            case 'media'  :
-            case 'stream' :
-            case 'mixer'  :
-            case 'midi'   :
-            case 'mml'    :
+            case 'oneshot'  :
+            case 'noise'    :
+            case 'audio'    :
+            case 'media'    :
+            case 'stream'   :
+            case 'mixer'    :
+            case 'processor':
+            case 'midi'     :
+            case 'mml'      :
                 return sources[s];
             default :
                 return null;
@@ -134,6 +137,7 @@ if (IS_XSOUND) {
             'media'      : new MediaModule(audiocontext),
             'stream'     : new StreamModule(audiocontext),
             'mixer'      : new MixerModule(audiocontext),
+            'processor'  : new ProcessorModule(audiocontext),
             'midi'       : new MIDI(audiocontext),
             'mml'        : new MML(audiocontext)
         };
@@ -154,14 +158,15 @@ if (IS_XSOUND) {
                     }
 
                     return null;
-                case 'oneshot':
-                case 'noise'  :
-                case 'audio'  :
-                case 'media'  :
-                case 'stream' :
-                case 'mixer'  :
-                case 'midi'   :
-                case 'mml'    :
+                case 'oneshot'  :
+                case 'noise'    :
+                case 'audio'    :
+                case 'media'    :
+                case 'stream'   :
+                case 'mixer'    :
+                case 'processor':
+                case 'midi'     :
+                case 'mml'      :
                     return clones[s];
                 default :
                     return null;

@@ -259,26 +259,22 @@ if (IS_XSOUND) {
         return '[XSound]';
     };
 
-    // for Chrome 70+
-    const userAgent = navigator.userAgent.toLowerCase();
+    // for Autoplay Policy
+    const setup = () => {
+        XSound.setup().then(() => {}).catch(() => {});
 
-    if ((userAgent.indexOf('chrome') !== -1) && (userAgent.indexOf('edge') === -1)) {
-        const setup = () => {
-            XSound.setup().then(() => {}).catch(() => {});
+        document.removeEventListener('click',      setup, true);
+        document.removeEventListener('mousedown',  setup, true);
+        document.removeEventListener('mouseup',    setup, true);
+        document.removeEventListener('touchstart', setup, true);
+        document.removeEventListener('touchend',   setup, true);
+    };
 
-            document.removeEventListener('click',      setup, true);
-            document.removeEventListener('mousedown',  setup, true);
-            document.removeEventListener('mouseup',    setup, true);
-            document.removeEventListener('touchstart', setup, true);
-            document.removeEventListener('touchend',   setup, true);
-        };
-
-        document.addEventListener('click',      setup, true);
-        document.addEventListener('mousedown',  setup, true);
-        document.addEventListener('mouseup',    setup, true);
-        document.addEventListener('touchstart', setup, true);
-        document.addEventListener('touchend',   setup, true);
-    }
+    document.addEventListener('click',      setup, true);
+    document.addEventListener('mousedown',  setup, true);
+    document.addEventListener('mouseup',    setup, true);
+    document.addEventListener('touchstart', setup, true);
+    document.addEventListener('touchend',   setup, true);
 
 } else {
     XSound = () => null;

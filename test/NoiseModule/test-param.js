@@ -51,9 +51,9 @@ describe('NoiseModule TEST', () => {
             });
         });
 
-        describe('param', () => {
+        describe('type', () => {
             afterEach(() => {
-                noiseModule.param('param', NoiseModule.WHITE_NOISE);
+                noiseModule.param('type', NoiseModule.WHITE_NOISE);
             });
 
             // Getter

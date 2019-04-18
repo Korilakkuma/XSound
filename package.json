@@ -1,6 +1,6 @@
 {
   "name": "xsound",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "description": "Web Audio API Library for Synthesizer, Effects, Visualization, Recording ... etc",
   "main": "build/xsound.js",
   "scripts": {
@@ -33,20 +33,20 @@
   "homepage": "https://korilakkuma.github.io/XSound/",
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.4.0",
+    "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "eslint": "^5.15.3",
+    "eslint": "^5.16.0",
     "eslint-cli": "^1.1.1",
-    "jasmine": "^3.3.1",
-    "karma": "^4.0.1",
+    "jasmine": "^3.4.0",
+    "karma": "^4.1.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^2.0.0",
     "karma-jasmine": "^2.0.1",
     "karma-webpack": "^3.0.5",
-    "webpack": "^4.29.6",
+    "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0"
   }
 }

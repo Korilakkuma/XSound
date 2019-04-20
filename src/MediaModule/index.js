@@ -46,6 +46,14 @@ export class MediaModule extends AudioModule {
      * @override
      */
     setup(media, formats, listeners, autoplay) {
+        this.envelopegenerator.setGenerator(0);
+        this.envelopegenerator.param({
+            'attack'  : 0,
+            'decay'   : 0.01,
+            'sustain' : 1,
+            'release' : 0.01
+        });
+
         // The argument is associative array ?
         if (Object.prototype.toString.call(arguments[0]) === '[object Object]') {
             const properties = arguments[0];
@@ -207,6 +215,11 @@ export class MediaModule extends AudioModule {
 
                         if ((v >= min) && (v <= max)) {
                             this.media.currentTime = v;
+
+                            const startTime = this.context.currentTime;
+
+                            this.envelopegenerator.start(startTime);
+                            this.envelopegenerator.stop(startTime + (this.media.duration - v) - this.envelopegenerator.param('release'));
                         }
                     }
 
@@ -286,13 +299,15 @@ export class MediaModule extends AudioModule {
      */
     start(position, connects, processCallback) {
         if ((this.source instanceof MediaElementAudioSourceNode) && this.media.paused) {
-            // MediaElementAudioSourceNode (Input) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
-            this.source.connect(this.processor);
+            // MediaElementAudioSourceNode (Input) -> GainNode (Envelope Generator) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
+            this.envelopegenerator.ready(0, this.source, this.processor);
             this.connect(this.processor, connects);
 
             const promise = this.media.play();
 
             promise.then(() => {
+                const startTime = this.context.currentTime;
+
                 const pos = parseFloat(position);
 
                 this.media.currentTime  = ((pos >= 0) && (pos <= this.media.duration)) ? pos : 0;
@@ -301,7 +316,10 @@ export class MediaModule extends AudioModule {
                 this.media.loop         = this.loop;
                 this.media.muted        = this.muted;
 
-                this.on(this.context.currentTime);
+                this.envelopegenerator.start(startTime);
+                this.envelopegenerator.stop(startTime + (this.media.duration - pos) - this.envelopegenerator.param('release'));
+
+                this.on(startTime);
 
                 this.analyser.start('time');
                 this.analyser.start('fft');

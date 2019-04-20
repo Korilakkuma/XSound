@@ -63,6 +63,14 @@ export class AudioModule extends SoundModule {
             }
         }
 
+        this.envelopegenerator.setGenerator(0);
+        this.envelopegenerator.param({
+            'attack'  : 0,
+            'decay'   : 0.01,
+            'sustain' : 1,
+            'release' : 0.01
+        });
+
         return this;
     }
 
@@ -208,8 +216,8 @@ export class AudioModule extends SoundModule {
             this.source.playbackRate.value = playbackRate;
             this.source.loop               = loop;
 
-            // AudioBufferSourceNode (Input) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
-            this.source.connect(this.processor);
+            // AudioBufferSourceNode (Input) -> GainNode (Envelope Generator) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
+            this.envelopegenerator.ready(0, this.source, this.processor);
             this.connect(this.processor, connects);
 
             this.source.start(startTime, pos, (this.buffer.duration - pos));
@@ -218,6 +226,9 @@ export class AudioModule extends SoundModule {
             this.analyser.start('fft');
 
             this.paused = false;
+
+            this.envelopegenerator.start(startTime);
+            this.envelopegenerator.stop(startTime + (this.buffer.duration - pos) - this.envelopegenerator.param('release'));
 
             this.on(startTime);
 
@@ -349,6 +360,50 @@ export class AudioModule extends SoundModule {
      */
     isPaused() {
         return this.paused;
+    }
+
+    /**
+     * This method is getter or setter for fade-in time.
+     * @param {number} time This argument is fade-in time. If this argument is omitted, This method is getter.
+     * @return {number|AudioModule} This is returned as fade-in time. Otherwise, this is returned for method chain.
+     */
+    fadeIn(time) {
+        if (time === undefined) {
+            return this.envelopegenerator.param('attack');
+        }
+
+        this.envelopegenerator.param('attack', time);
+
+        const startTime   = this.context.currentTime;
+        const currentTime = this.param('currentTime');
+        const duration    = this.param('duration');
+
+        this.envelopegenerator.start(startTime);
+        this.envelopegenerator.stop(startTime + (duration - currentTime) - this.envelopegenerator.param('release'));
+
+        return this;
+    }
+
+    /**
+     * This method is getter or setter for fade-out time.
+     * @param {number} time This argument is fade-out time. If this argument is omitted, This method is getter.
+     * @return {number|AudioModule} This is returned as fade-out time. Otherwise, this is returned for method chain.
+     */
+    fadeOut(time) {
+        if (time === undefined) {
+            return this.envelopegenerator.param('release');
+        }
+
+        this.envelopegenerator.param('release', time);
+
+        const startTime   = this.context.currentTime;
+        const currentTime = this.param('currentTime');
+        const duration    = this.param('duration');
+
+        this.envelopegenerator.start(startTime);
+        this.envelopegenerator.stop(startTime + (duration - currentTime) - this.envelopegenerator.param('release'));
+
+        return this;
     }
 
     /** @override */

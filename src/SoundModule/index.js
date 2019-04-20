@@ -115,7 +115,7 @@ export class SoundModule {
         this.reverb            = new Reverb(context, size);
         this.panner            = new Panner(context, size);
         this.listener          = new Listener(context);
-        this.envelopegenerator = new EnvelopeGenerator(context);  // for `OscillatorModule`, `OneshotModule`
+        this.envelopegenerator = new EnvelopeGenerator(context);
 
         // The default order for connection
         this.modules = [
@@ -312,7 +312,6 @@ export class SoundModule {
                 return this[m];
             case 'envelopegenerator':
             case 'eg'               :
-                // OscillatorModule, OneshotModule, NoiseModule
                 return this.envelopegenerator;
             case 'glide':
                 if (m in this) {

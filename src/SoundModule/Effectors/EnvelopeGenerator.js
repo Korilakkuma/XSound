@@ -164,7 +164,6 @@ export class EnvelopeGenerator {
 
             // in the case of mouseup on the way of Decay
             this.generators[activeIndex].gain.cancelScheduledValues(t3);
-            this.generators[activeIndex].gain.setValueAtTime(this.generators[activeIndex].gain.value, t3);
 
             // Release : `gain.value` gradually decreases to 0 during of Release time (t4) from assigned time (t3)
             this.generators[activeIndex].gain.setTargetAtTime(0, t3, t4);

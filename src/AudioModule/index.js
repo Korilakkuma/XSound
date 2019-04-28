@@ -113,6 +113,13 @@ export class AudioModule extends SoundModule {
 
                     if ((v >= min) && (v <= max)) {
                         this.source.playbackRate.value = v;
+
+                        const startTime    = this.context.currentTime;
+                        const currentTime  = this.param('currentTime');
+                        const duration     = this.param('duration');
+
+                        this.envelopegenerator.start(startTime);
+                        this.envelopegenerator.stop((startTime + ((duration - currentTime) / v)), true);
                     }
 
                     break;
@@ -228,7 +235,7 @@ export class AudioModule extends SoundModule {
             this.paused = false;
 
             this.envelopegenerator.start(startTime);
-            this.envelopegenerator.stop(startTime + (this.buffer.duration - pos) - this.envelopegenerator.param('release'));
+            this.envelopegenerator.stop((startTime + ((this.buffer.duration - pos) / this.source.playbackRate.value)), true);
 
             this.on(startTime);
 
@@ -374,12 +381,13 @@ export class AudioModule extends SoundModule {
 
         this.envelopegenerator.param('attack', time);
 
-        const startTime   = this.context.currentTime;
-        const currentTime = this.param('currentTime');
-        const duration    = this.param('duration');
+        const startTime    = this.context.currentTime;
+        const currentTime  = this.param('currentTime');
+        const duration     = this.param('duration');
+        const playbackRate = this.param('playbackRate');
 
         this.envelopegenerator.start(startTime);
-        this.envelopegenerator.stop(startTime + (duration - currentTime) - this.envelopegenerator.param('release'));
+        this.envelopegenerator.stop((startTime + ((duration - currentTime) / playbackRate)), true);
 
         return this;
     }
@@ -396,12 +404,13 @@ export class AudioModule extends SoundModule {
 
         this.envelopegenerator.param('release', time);
 
-        const startTime   = this.context.currentTime;
-        const currentTime = this.param('currentTime');
-        const duration    = this.param('duration');
+        const startTime    = this.context.currentTime;
+        const currentTime  = this.param('currentTime');
+        const duration     = this.param('duration');
+        const playbackRate = this.param('playbackRate');
 
         this.envelopegenerator.start(startTime);
-        this.envelopegenerator.stop(startTime + (duration - currentTime) - this.envelopegenerator.param('release'));
+        this.envelopegenerator.stop((startTime + ((duration - currentTime) / playbackRate)), true);
 
         return this;
     }

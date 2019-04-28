@@ -200,6 +200,13 @@ export class MediaModule extends AudioModule {
                         }
 
                         this.playbackRate = v;
+
+                        const startTime    = this.context.currentTime;
+                        const currentTime  = this.param('currentTime');
+                        const duration     = this.param('duration');
+
+                        this.envelopegenerator.start(startTime);
+                        this.envelopegenerator.stop((startTime + ((duration - currentTime) / v)), true);
                     }
 
                     break;
@@ -216,10 +223,12 @@ export class MediaModule extends AudioModule {
                         if ((v >= min) && (v <= max)) {
                             this.media.currentTime = v;
 
-                            const startTime = this.context.currentTime;
+                            const startTime    = this.context.currentTime;
+                            const duration     = this.param('duration');
+                            const playbackRate = this.param('playbackRate');
 
                             this.envelopegenerator.start(startTime);
-                            this.envelopegenerator.stop(startTime + (this.media.duration - v) - this.envelopegenerator.param('release'));
+                            this.envelopegenerator.stop((startTime + ((duration - v) / playbackRate)), true);
                         }
                     }
 
@@ -317,7 +326,7 @@ export class MediaModule extends AudioModule {
                 this.media.muted        = this.muted;
 
                 this.envelopegenerator.start(startTime);
-                this.envelopegenerator.stop(startTime + (this.media.duration - pos) - this.envelopegenerator.param('release'));
+                this.envelopegenerator.stop((startTime + ((this.media.duration - pos) / this.media.playbackRate)), true);
 
                 this.on(startTime);
 

@@ -144,9 +144,10 @@ export class EnvelopeGenerator {
     /**
      * This method changes gain (Attack or Decay or Sustain -> Release).
      * @param {number} stopTime This argument is the start time of Release.
+     * @param {boolean} useCurve This argument is to use different methods.
      * @return {EnvelopeGenerator} This is returned for method chain.
      */
-    stop(stopTime) {
+    stop(stopTime, useCurve) {
         let s = parseFloat(stopTime) - this.release;
 
         if (isNaN(s) || (s < this.context.currentTime)) {
@@ -166,7 +167,12 @@ export class EnvelopeGenerator {
             this.generators[activeIndex].gain.cancelScheduledValues(t3);
 
             // Release : `gain.value` gradually decreases to 0 during of Release time (t4) from assigned time (t3)
-            this.generators[activeIndex].gain.setTargetAtTime(0, t3, t4);
+            // NOTE: https://www.w3.org/TR/webaudio/#dom-audioparam-settargetattime
+            if (useCurve) {
+                this.generators[activeIndex].gain.setValueCurveAtTime(new Float32Array([1, 0.5, 0.25, 0]), t3, t4);
+            } else {
+                this.generators[activeIndex].gain.setTargetAtTime(0, t3, t4);
+            }
         }
 
         return this;

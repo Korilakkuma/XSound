@@ -290,9 +290,10 @@ export class Recorder {
      * @param {string|number} track This argument is the target track.
      * @param {number} numberOfChannels This argument is in order to select stereo or monaural of WAVE file. The default value is 2.
      * @param {number} qbit This argument is quantization bit of PCM. The default value is 16 (bit).
-     * @return {string} This is returned as Object URL or Data URL for WAVE file.
+     * @param {string} type This argument is one of 'blob', 'objecturl', 'base64', 'dataurl'.
+     * @return {Blob|string} This is returned as `Blob` or Object URL or Base64 or Data URL for WAVE file.
      */
-    create(track, numberOfChannels, qbit) {
+    create(track, numberOfChannels, qbit, type) {
         // on the way of recording ?
         if (this.activeTrack !== -1) {
             this.stop();
@@ -309,11 +310,9 @@ export class Recorder {
 
             soundLs = this.mixedLs;
             soundRs = this.mixedRs;
-        } else {
-            if (this.isTrack(track)) {
-                soundLs = this.trackLs[track - 1];
-                soundRs = this.trackRs[track - 1];
-            }
+        } else if (this.isTrack(track)) {
+            soundLs = this.trackLs[track];
+            soundRs = this.trackRs[track];
         }
 
         // Sound data exists ?
@@ -388,145 +387,154 @@ export class Recorder {
         // Create WAVE file (Object URL or Data URL)
         window.URL = window.URL || window.webkitURL || window.mozURL;
 
-        if (window.URL && window.URL.createObjectURL) {
-            // Object URL
+        const t = String(type).toLowerCase();
 
-            const waves = [];
+        switch (t) {
+            case 'base64' :
+            case 'dataurl':
+                let wave = '';
 
-            waves[0] = 0x52;  // 'R'
-            waves[1] = 0x49;  // 'I'
-            waves[2] = 0x46;  // 'F'
-            waves[3] = 0x46;  // 'F'
+                wave += 'RIFF';
+                wave += String.fromCharCode(((CHUNK_SIZE >> 0) & 0xFF), ((CHUNK_SIZE >> 8) & 0xFF), ((CHUNK_SIZE >> 16) & 0xFF), ((CHUNK_SIZE >> 24) & 0xFF));
+                wave += 'WAVE';
 
-            waves[4] = (CHUNK_SIZE >>  0) & 0xFF;
-            waves[5] = (CHUNK_SIZE >>  8) & 0xFF;
-            waves[6] = (CHUNK_SIZE >> 16) & 0xFF;
-            waves[7] = (CHUNK_SIZE >> 24) & 0xFF;
+                // fmt chunk
+                wave += `fmt ${String.fromCharCode(16, 0, 0, 0)}`;
+                wave += String.fromCharCode(1, 0);
 
-            waves[8]  = 0x57;  // 'W'
-            waves[9]  = 0x41;  // 'A'
-            waves[10] = 0x56;  // 'V'
-            waves[11] = 0x45;  // 'E'
+                // fmt chunk -> Channels (Monaural or Stereo)
+                wave += String.fromCharCode(CHANNEL, 0);
 
-            // fmt chunk
-            waves[12] = 0x66;  // 'f'
-            waves[13] = 0x6D;  // 'm'
-            waves[14] = 0x74;  // 't'
-            waves[15] = 0x20;  // ' '
+                // fmt chunk -> Sample rate
+                wave += String.fromCharCode(((RATE >> 0) & 0xFF), ((RATE >> 8) & 0xFF), ((RATE >> 16) & 0xFF), ((RATE >> 24) & 0xFF));
 
-            waves[16] = 16;
-            waves[17] =  0;
-            waves[18] =  0;
-            waves[19] =  0;
+                // fmt chunk -> Byte per second
+                wave += String.fromCharCode(((BPS >> 0) & 0xFF), ((BPS >> 8) & 0xFF), ((BPS >> 16) & 0xFF), ((BPS >> 24) & 0xFF));
 
-            waves[20] = 1;
-            waves[21] = 0;
+                // fmt chunk -> Block size
+                wave += String.fromCharCode((CHANNEL * (QBIT / 8)), 0);
 
-            // fmt chunk -> Channels (Monaural or Stereo)
-            waves[22] = CHANNEL;
-            waves[23] = 0;
+                // fmt chunk -> Byte per Sample
+                wave += String.fromCharCode(QBIT, 0);
 
-            // fmt chunk -> Sample rate
-            waves[24] = (RATE >>  0) & 0xFF;
-            waves[25] = (RATE >>  8) & 0xFF;
-            waves[26] = (RATE >> 16) & 0xFF;
-            waves[27] = (RATE >> 24) & 0xFF;
+                // data chunk
+                wave += 'data';
+                wave += String.fromCharCode(((DATA_SIZE >> 0) & 0xFF), ((DATA_SIZE >> 8) & 0xFF), ((DATA_SIZE >> 16) & 0xFF), ((DATA_SIZE >> 24) & 0xFF));
 
-            // fmt chunk -> Byte per second
-            waves[28] = (BPS >>  0) & 0xFF;
-            waves[29] = (BPS >>  8) & 0xFF;
-            waves[30] = (BPS >> 16) & 0xFF;
-            waves[31] = (BPS >> 24) & 0xFF;
-
-            // fmt chunk -> Block size
-            waves[32] = CHANNEL * (QBIT / 8);
-            waves[33] = 0;
-
-            // fmt chunk -> Byte per Sample
-            waves[34] = QBIT;
-            waves[35] = 0;
-
-            // data chunk
-            waves[36] = 0x64;  // 'd'
-            waves[37] = 0x61;  // 'a'
-            waves[38] = 0x74;  // 't
-            waves[39] = 0x61;  // 'a'
-
-            waves[40] = (DATA_SIZE >>  0) & 0xFF;
-            waves[41] = (DATA_SIZE >>  8) & 0xFF;
-            waves[42] = (DATA_SIZE >> 16) & 0xFF;
-            waves[43] = (DATA_SIZE >> 24) & 0xFF;
-
-            for (let i = 0; i < SIZE; i++) {
-                switch (QBIT) {
-                    case  8:
-                        waves[(RIFF_CHUNK - DATA_SIZE) + i] = sounds[i];
-                        break;
-                    case 16:
-                        // The byte order in WAVE file is little endian
-                        waves[(RIFF_CHUNK - DATA_SIZE) + (2 * i) + 0] = ((sounds[i] >> 0) & 0xFF);
-                        waves[(RIFF_CHUNK - DATA_SIZE) + (2 * i) + 1] = ((sounds[i] >> 8) & 0xFF);
-                        break;
-                    default:
-                        break;
+                for (let i = 0; i < SIZE; i++) {
+                    switch (QBIT) {
+                        case  8:
+                            wave += String.fromCharCode(sounds[i]);
+                            break;
+                        case 16:
+                            // The byte order in WAVE file is little endian
+                            wave += String.fromCharCode(((sounds[i] >> 0) & 0xFF), ((sounds[i] >> 8) & 0xFF));
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
 
-            const blob      = new Blob([new Uint8Array(waves)], { 'type' : 'audio/wav' });
-            const objectURL = window.URL.createObjectURL(blob);
+                const base64 = window.btoa(wave);
 
-            return objectURL;
+                if (t === 'base64') {
+                    return base64;
+                }
+
+                return `data:audio/wav;base64,${base64}`;
+            case 'blob'     :
+            case 'objecturl':
+            default         :
+                const waves = [];
+
+                waves[0] = 0x52;  // 'R'
+                waves[1] = 0x49;  // 'I'
+                waves[2] = 0x46;  // 'F'
+                waves[3] = 0x46;  // 'F'
+
+                waves[4] = (CHUNK_SIZE >>  0) & 0xFF;
+                waves[5] = (CHUNK_SIZE >>  8) & 0xFF;
+                waves[6] = (CHUNK_SIZE >> 16) & 0xFF;
+                waves[7] = (CHUNK_SIZE >> 24) & 0xFF;
+
+                waves[8]  = 0x57;  // 'W'
+                waves[9]  = 0x41;  // 'A'
+                waves[10] = 0x56;  // 'V'
+                waves[11] = 0x45;  // 'E'
+
+                // fmt chunk
+                waves[12] = 0x66;  // 'f'
+                waves[13] = 0x6D;  // 'm'
+                waves[14] = 0x74;  // 't'
+                waves[15] = 0x20;  // ' '
+
+                waves[16] = 16;
+                waves[17] =  0;
+                waves[18] =  0;
+                waves[19] =  0;
+
+                waves[20] = 1;
+                waves[21] = 0;
+
+                // fmt chunk -> Channels (Monaural or Stereo)
+                waves[22] = CHANNEL;
+                waves[23] = 0;
+
+                // fmt chunk -> Sample rate
+                waves[24] = (RATE >>  0) & 0xFF;
+                waves[25] = (RATE >>  8) & 0xFF;
+                waves[26] = (RATE >> 16) & 0xFF;
+                waves[27] = (RATE >> 24) & 0xFF;
+
+                // fmt chunk -> Byte per second
+                waves[28] = (BPS >>  0) & 0xFF;
+                waves[29] = (BPS >>  8) & 0xFF;
+                waves[30] = (BPS >> 16) & 0xFF;
+                waves[31] = (BPS >> 24) & 0xFF;
+
+                // fmt chunk -> Block size
+                waves[32] = CHANNEL * (QBIT / 8);
+                waves[33] = 0;
+
+                // fmt chunk -> Byte per Sample
+                waves[34] = QBIT;
+                waves[35] = 0;
+
+                // data chunk
+                waves[36] = 0x64;  // 'd'
+                waves[37] = 0x61;  // 'a'
+                waves[38] = 0x74;  // 't
+                waves[39] = 0x61;  // 'a'
+
+                waves[40] = (DATA_SIZE >>  0) & 0xFF;
+                waves[41] = (DATA_SIZE >>  8) & 0xFF;
+                waves[42] = (DATA_SIZE >> 16) & 0xFF;
+                waves[43] = (DATA_SIZE >> 24) & 0xFF;
+
+                for (let i = 0; i < SIZE; i++) {
+                    switch (QBIT) {
+                        case  8:
+                            waves[(RIFF_CHUNK - DATA_SIZE) + i] = sounds[i];
+                            break;
+                        case 16:
+                            // The byte order in WAVE file is little endian
+                            waves[(RIFF_CHUNK - DATA_SIZE) + (2 * i) + 0] = ((sounds[i] >> 0) & 0xFF);
+                            waves[(RIFF_CHUNK - DATA_SIZE) + (2 * i) + 1] = ((sounds[i] >> 8) & 0xFF);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                const blob = new Blob([new Uint8Array(waves)], { 'type' : 'audio/wav' });
+
+                if (t === 'blob') {
+                    return blob;
+                }
+
+                return window.URL.createObjectURL(blob);
         }
 
-        // Data URL
-
-        let wave = '';
-
-        wave += 'RIFF';
-        wave += String.fromCharCode(((CHUNK_SIZE >> 0) & 0xFF), ((CHUNK_SIZE >> 8) & 0xFF), ((CHUNK_SIZE >> 16) & 0xFF), ((CHUNK_SIZE >> 24) & 0xFF));
-        wave += 'WAVE';
-
-        // fmt chunk
-        wave += `fmt ${String.fromCharCode(16, 0, 0, 0)}`;
-        wave += String.fromCharCode(1, 0);
-
-        // fmt chunk -> Channels (Monaural or Stereo)
-        wave += String.fromCharCode(CHANNEL, 0);
-
-        // fmt chunk -> Sample rate
-        wave += String.fromCharCode(((RATE >> 0) & 0xFF), ((RATE >> 8) & 0xFF), ((RATE >> 16) & 0xFF), ((RATE >> 24) & 0xFF));
-
-        // fmt chunk -> Byte per second
-        wave += String.fromCharCode(((BPS >> 0) & 0xFF), ((BPS >> 8) & 0xFF), ((BPS >> 16) & 0xFF), ((BPS >> 24) & 0xFF));
-
-        // fmt chunk -> Block size
-        wave += String.fromCharCode((CHANNEL * (QBIT / 8)), 0);
-
-        // fmt chunk -> Byte per Sample
-        wave += String.fromCharCode(QBIT, 0);
-
-        // data chunk
-        wave += 'data';
-        wave += String.fromCharCode(((DATA_SIZE >> 0) & 0xFF), ((DATA_SIZE >> 8) & 0xFF), ((DATA_SIZE >> 16) & 0xFF), ((DATA_SIZE >> 24) & 0xFF));
-
-        for (let i = 0; i < SIZE; i++) {
-            switch (QBIT) {
-                case  8:
-                    wave += String.fromCharCode(sounds[i]);
-                    break;
-                case 16:
-                    // The byte order in WAVE file is little endian
-                    wave += String.fromCharCode(((sounds[i] >> 0) & 0xFF), ((sounds[i] >> 8) & 0xFF));
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        const base64  = window.btoa(wave);
-        const dataURL = `data:audio/wav;base64,${base64}`;
-
-        return dataURL;
     }
 
     /** @override */

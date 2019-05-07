@@ -6,8 +6,8 @@
   "scripts": {
     "clean": "rm -rf build",
     "lint": "eslint src",
-    "build": "npm run clean && webpack --mode production",
-    "build:watch": "npm run clean && webpack --watch --mode development",
+    "build": "npm run clean && webpack --progress --mode production",
+    "build:watch": "npm run clean && webpack --progress --watch --mode development",
     "test": "npm run lint && karma start",
     "docker-compose:build": "docker-compose build",
     "start": "docker-compose up -d",

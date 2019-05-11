@@ -189,6 +189,31 @@ export class Recorder {
     }
 
     /**
+     * This method flats recorded sounds in track.
+     * @param {string} channel This argument is either 'L' or 'R'.
+     * @param {number} track This argument is track number.
+     * @return {Float32Array} This is returned as array for flatten sound.
+     */
+    flatTrack(channel, track) {
+        if (!this.isTrack(track)) {
+            return null;
+        }
+
+        const tracks     = this[`track${channel}s`][track];
+        const bufferSize = this.processor.bufferSize;
+
+        const flattenTrack = new Float32Array(tracks.length * bufferSize);
+
+        for (let i = 0, len = tracks.length; i < len; i++) {
+            for (let j = 0; j < bufferSize; j++) {
+                flattenTrack[(i * bufferSize) + j] = tracks[i][j];
+            }
+        }
+
+        return flattenTrack;
+    }
+
+    /**
      * This method synthesizes recorded sounds in track.
      * @param {string} channel This argument is either 'L' or 'R'.
      * @return {Float32Array} This is returned as array for synthesized sound.
@@ -311,8 +336,8 @@ export class Recorder {
             soundLs = this.mixedLs;
             soundRs = this.mixedRs;
         } else if (this.isTrack(track)) {
-            soundLs = this.trackLs[track];
-            soundRs = this.trackRs[track];
+            soundLs = this.flatTrack('L', track);
+            soundRs = this.flatTrack('R', track);
         }
 
         // Sound data exists ?

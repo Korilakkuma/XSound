@@ -33,7 +33,6 @@
         html, body {
             width: 100%;
             height: 100vh;
-            overflow-x: hidden;
         }
 
         html {
@@ -44,7 +43,8 @@
             min-width: 320px;
         }
 
-        body > div {
+        header,
+        aside {
             display: -webkit-flex;
             display: flex;
             -webkit-flex-direction: column;
@@ -53,17 +53,89 @@
             align-items: center;
             -webkit-justify-content: center;
             justify-content: center;
-            margin-top: -4vh;
             height: 100vh;
+            overflow-x: hidden;
         }
 
-        header {
+        header > div {
             text-align: center;
+        }
+
+        header > a {
+            margin-top: 48px;
+            width: 6rem;
+            height: 4rem;
+            background: linear-gradient(to top right, rgba(0, 0, 0, 0) 50%, #c000c0 50.5%) no-repeat top left/50%  100%,
+                        linear-gradient(to top left,  rgba(0, 0, 0, 0) 50%, #c000c0 50.5%) no-repeat top right/50% 100%;
+            overflow: hidden;
+            text-indent: -9999rem;
+            text-decoration: none;
+        }
+
+        header > a:hover {
+            background: linear-gradient(to top right, rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top left/50%  100%,
+                        linear-gradient(to top left,  rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top right/50% 100%;
+        }
+
+        main > iframe {
+            width: 100%;
+            height: 1595px;
+        }
+
+        aside > img {
+            max-width: 100%;
+            transform: scale(0.5);
+        }
+
+        aside > section {
+            margin-top: 12px;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+        }
+
+        header h1 {
+            font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+            font-size: calc(64 * ((100vw - 320px) / (1280 - 320)) + 64px);
+            font-weight: lighter;
+            color: #c000c0;
+            text-shadow: -1px -1px 1px #000;
+        }
+
+        main h1 {
+            padding-bottom: 8px;
+            font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+            font-size: calc(32 * ((100vw - 320px) / (1280 - 320)) + 32px);
+            font-weight: lighter;
+            color: #c000c0;
+            text-align: center;
+            text-shadow: -1px -1px 1px #000;
+        }
+
+        aside > h1 {
+            font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+            font-size: calc(28 * ((100vw - 320px) / (1280 - 320)) + 28px);
+            font-weight: lighter;
+            color: #c000c0;
+            text-shadow: -1px -1px 1px #000;
+        }
+
+        aside > section > h1 {
+            font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+            font-size: calc(24 * ((100vw - 320px) / (1280 - 320)) + 24px);
+            font-weight: lighter;
+            color: #c000c0;
+            text-shadow: -1px -1px 1px #000;
         }
 
         h1 {
             font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
-            font-size: calc(64 * ((100vw - 320px) / (1280 - 320)) + 64px);
+            font-size: calc(32 * ((100vw - 320px) / (1280 - 320)) + 32px);
             font-weight: lighter;
             color: #c000c0;
             text-shadow: -1px -1px 1px #000;
@@ -97,23 +169,7 @@
             animation: fade-in 0.6s ease 1 normal 1s forwards;
         }
 
-        @keyframes translate-x {
-              0% { opacity: 0; transform: translateX(var(--translate-x)); }
-             50% { opacity: 1; transform: translateX(var(--translate-x)); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes translate-y {
-              0% { opacity: 0; transform: translateY(var(--translate-y)); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fade-in {
-              0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        main {
+        nav {
             display: -webkit-flex;
             display: flex;
             -webkit-flex-direction: row;
@@ -123,7 +179,7 @@
             margin-top: 48px;
         }
 
-        main > a {
+        nav > a {
             display: block;
             border: 2px solid #c000c0;
             padding: 12px;
@@ -133,30 +189,60 @@
             transition: all 0.4s ease;
         }
 
-        main > a:first-of-type {
+        nav > a:first-of-type {
             color: #ccc;
             background-color: #c000c0;
         }
 
-        main > a:last-of-type {
+        nav > a:last-of-type {
             margin-left: 12px;
             color: #c000c0;
             background-color: rgba(0, 0, 0, 0);
         }
 
-        main > a:first-of-type:hover {
+        nav > a:first-of-type:hover {
             border-color: #800080;
             background-color: #800080;
         }
 
-        main > a:last-of-type:hover {
+        nav > a:last-of-type:hover {
             border-color: #800080;
             color: #ccc;
             background-color: #800080;
         }
 
+        pre {
+            margin-left: 16px;
+            padding: 8px 16px;
+            width: 480px;  /* HACK */
+            font-size: 16px;
+            color: #212121;
+            background-color: #ccc;
+            overflow-x: auto;
+        }
+
+        button[type="button"] {
+            cursor: pointer;
+            margin-left: 16px;
+            border: none;
+            padding: 12px 16px;
+            font-size: 16px;
+            color: #ccc;
+            background-color: #c000c0;
+            transition: background-color 0.4s ease;
+        }
+
+        button[type="button"]:hover {
+            background-color: #800080;
+        }
+
+        button[type="button"]:focus {
+            outline: 1px dotted #c000c0;
+        }
+
         footer {
-            margin-top: 48px;
+            margin: 48px 0;
+            text-align: center;
         }
 
         footer > p {
@@ -188,25 +274,60 @@
             opacity: 0;
             animation: fade-in 0.6s ease 1 normal 2.2s forwards;
         }
+
+        @keyframes translate-x {
+              0% { opacity: 0; transform: translateX(var(--translate-x)); }
+             50% { opacity: 1; transform: translateX(var(--translate-x)); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes translate-y {
+              0% { opacity: 0; transform: translateY(var(--translate-y)); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fade-in {
+              0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
     </style>
 </head>
 <body>
-    <div>
-        <header>
+    <header>
+        <div>
             <h1><span role="presentation">X</span><span role="presentation">Sound</span></h1>
             <h2 class="translate-y">Web Audio API Library</h2>
             <h3 class="translate-y">Synthesizer, Effects, Visualization, Multi-Track Recording ...</h3>
-        </header>
-        <main class="fade-in-last">
+        </div>
+        <nav class="fade-in-last">
             <a href="https://github.com/Korilakkuma/XSound">Download v2.10.3</a>
             <a href="https://xsound.dev/">API Documentation</a>
-        </main>
-        <footer class="fade-in-last">
-            <p>
-                XSound maintained by <a href="https://github.com/Korilakkuma" target="_blank" rel="noopener noreferrer">Korilakkuma</a>
-            </p>
-        </footer>
-    </div>
+        </nav>
+        <a href="#xsound-demo" class="fade-in-last">Demo</a>
+    </header>
+    <main id="xsound-demo">
+        <h1>POWERFUL FEATURES !</h1>
+        <iframe src="https://xsound.app/" frameborder="no" scrolling="no"></iframe>
+    </main>
+    <aside>
+        <h1>Supported Browsers</h1>
+        <img src="images/supported-browsers.png" alt="Supported Browsers" />
+        <h1>Let's Begin !</h1>
+        <section>
+            <h1>NPM</h1>
+            <pre><code>$ npm install --save xsound</code></pre>
+            <button type="button" onclick="navigator.clipboard.writeText('npm install --save xsound')">COPY</button>
+        </section>
+        <section>
+            <h1>CDN</h1>
+            <pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+            <button type="button" onclick="navigator.clipboard.writeText('<script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js&quot;></script>')">COPY</button>
+        </section>
+    </aside>
+    <footer>
+        <p>XSound maintained by <a href="https://github.com/Korilakkuma" target="_blank" rel="noopener noreferrer">Korilakkuma</a></p>
+    </footer>
     <script type="text/javascript">
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -215,6 +336,21 @@
 
     ga('create', 'UA-41390233-1', 'auto');
     ga('send', 'pageview');
+
+
+    if (/iPod|iPhone|iPad|Android/.test(navigator.userAgent)) {
+        const iframe = document.querySelector('iframe');
+
+        iframe.removeAttribute('scrolling');
+        iframe.style.height = '100vh';
+
+        const pres = document.querySelectorAll('pre');
+
+        for (const pre of pres) {
+            pre.style.width = '112px';
+        }
+    }
+
     </script>
 </body>
 </html>

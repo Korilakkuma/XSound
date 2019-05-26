@@ -357,7 +357,8 @@ export class MML {
                         'frequencies' : frequencies,
                         'start'       : start,
                         'duration'    : duration,
-                        'stop'        : stop
+                        'stop'        : stop,
+                        'note'        : note
                     });
 
                     duration = 0;

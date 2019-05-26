@@ -8,6 +8,13 @@ import { OneshotModule } from '../OneshotModule';
  * @constructor
  */
 export class MML {
+    // The 12 equal temperament
+    //
+    // Min -> 27.5 Hz (A), Max -> 4186 Hz (C)
+    //
+    // A * 1.059463 -> A# (half up)
+    static FREQUENCY_RATIO   = Math.pow(2, (1 / 12));  // about 1.059463
+    static MIN_A             = 27.5;
     static ONE_MINUTES       = 60;  // sec
     static EQUAL_TEMPERAMENT = 12;
     static QUARTER_NOTE      = 4;
@@ -71,18 +78,7 @@ export class MML {
      *     For example, This value is between 0 and 88 in the case of piano.
      * @return {number} This is returned as frequency.
      */
-    static computeFrequency = index => {
-        // The 12 equal temperament
-        //
-        // Min -> 27.5 Hz (A), Max -> 4186 Hz (C)
-        //
-        // A * 1.059463 -> A# (half up)
-
-        const FREQUENCY_RATIO = Math.pow(2, (1 / 12));  // about 1.059463
-        const MIN_A           = 27.5;
-
-        return (index >= 0) ? (MIN_A * Math.pow(FREQUENCY_RATIO, index)) : -1;
-    };
+    static computeFrequency = index => (index >= 0) ? (MML.MIN_A * Math.pow(MML.FREQUENCY_RATIO, index)) : -1;
 
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
@@ -142,6 +138,10 @@ export class MML {
      */
     ready(source, mmls, offset) {
         this.offset = parseInt(offset, 10);
+
+        if (isNaN(this.offset) || (this.offset < 0)) {
+            this.offset = 0;
+        }
 
         if (this.source !== null) {
             this.stop();  // Stop the previous MML
@@ -448,44 +448,34 @@ export class MML {
                     this.source[i] = source;
                 }
 
-                for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                    this.callbacks.start(sequence, i);
-                }
+                this.callbacks.start(sequence);
             } else if (this.source instanceof OscillatorModule) {
                 this.source.start(sequence.frequencies, connects, processCallback);
-
-                for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                    this.callbacks.start(sequence, i);
-                }
+                this.callbacks.start(sequence);
             } else if (this.source instanceof OneshotModule) {
                 for (let i = 0, len = sequence.indexes.length; i < len; i++) {
                     if (sequence.indexes[i] !== MML.REST) {
                         this.source.start((sequence.indexes[i] + this.offset), connects, processCallback);
                     }
-
-                    this.callbacks.start(sequence, i, this.offset);
                 }
+
+                this.callbacks.start(sequence, this.offset);
             }
 
             this.timerids[p] = window.setTimeout(() => {
                 if (Array.isArray(this.source)) {
-                    for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                        this.callbacks.start(sequence, i);
-                    }
+                    this.callbacks.stop(sequence);
                 } else if (this.source instanceof OscillatorModule) {
                     this.source.stop();
-
-                    for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                        this.callbacks.stop(sequence, i);
-                    }
+                    this.callbacks.stop(sequence);
                 } else if (this.source instanceof OneshotModule) {
                     for (let i = 0, len = sequence.indexes.length; i < len; i++) {
                         if (sequence.indexes[i] !== MML.REST) {
                             this.source.stop((sequence.indexes[i] + this.offset), processCallback);
                         }
-
-                        this.callbacks.stop(sequence, i, this.offset);
                     }
+
+                    this.callbacks.stop(sequence, this.offset);
                 }
 
                 // for `MML#stop`
@@ -512,23 +502,18 @@ export class MML {
         }
 
         if (Array.isArray(this.source)) {
-            for (const index of sequence.indexes) {
-                this.callbacks.stop(sequence, index);
-            }
+            this.callbacks.stop(sequence);
         } else if (this.source instanceof OscillatorModule) {
             this.source.stop();
-
-            for (const index of sequence.indexes) {
-                this.callbacks.stop(sequence, index);
-            }
+            this.callbacks.stop(sequence);
         } else if (this.source instanceof OneshotModule) {
             for (const index of sequence.indexes) {
                 if (index !== MML.REST) {
                     this.source.stop((index + this.offset), processCallback);
                 }
-
-                this.callbacks.stop(sequence, index, this.offset);
             }
+
+            this.callbacks.stop(sequence, this.offset);
         }
 
         for (let i = 0, len = this.timerids.length; i < len; i++) {
@@ -831,7 +816,7 @@ export class MML {
             }
         }
 
-        return abc.replace(/R/ig, 'z')
+        return abc.replace(/R/gi, 'z')
                   .replace(/[#+]/g, '^')
                   .replace(/-/g, '_')
                   .replace(/&/g, '-')

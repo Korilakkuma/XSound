@@ -27,7 +27,7 @@
   "bugs": {
     "url": "https://github.com/Korilakkuma/XSound/issues"
   },
-  "homepage": "https://korilakkuma.github.io/XSound/",
+  "homepage": "https://xsound.jp/",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.4.4",

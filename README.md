@@ -1,4 +1,4 @@
-![XSound](./misc/xsound.png)
+<h1 style="font-famlily: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif; font-size: 144px; font-weight: normal; color: #c000c0; text-shadow: -1px -1px 1px #000;">XSound</h1>
 
 [![Build Status](https://travis-ci.org/Korilakkuma/XSound.svg?branch=master)](https://travis-ci.org/Korilakkuma/XSound)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
@@ -27,7 +27,9 @@ In concrete, XSound may be useful to implement the following features.
   
 XSound don't depend on other libraries or frameworks (For example, jQuery, React).
   
-![support-browsers](./misc/support-browsers.jpg)
+## Supported Browsers
+  
+<img src="./misc/supported-browsers.png" alt="Supported Browsers" style="max-width: 100%;" />
   
 ## Getting Started
 
@@ -39,7 +41,7 @@ X('oscillator').setup(true).ready().start(440);
   
 The application that uses XSound is in the following URLs.
   
-- [X Sound](https://korilakkuma.github.io/X-Sound/)
+- [X Sound](https://xsound.app/)
 - [x-piano](https://korilakkuma.github.io/x-piano/)
 - [Music V](https://weblike-curtaincall.ssl-lolipop.jp/portfolio-music-v/)
 - [Music Tweet](https://github.com/Korilakkuma/Music-Tweet)
@@ -73,19 +75,23 @@ import { XSound, X } from 'xsound';
 
 ```bash
 $ git clone git@github.com:Korilakkuma/XSound.git
-$ cd xsound
+$ cd XSound
 $ npm install
-$ npm run build
-$ npm run docker-compose:build
-$ npm start
+$ docker-compose up -d --build
+$ npm run build:watch
 ```
 
 ## API Documentation
   
-- [XSound API Documentation](https://korilakkuma.github.io/xsound-api/)
+- [XSound API Documentation](https://xsound.dev/)
+  
+## Pickups
+  
+- [9 libraries to kickstart your Web Audio stuff - DEV Community](https://dev.to/areknawo/9-libraries-to-kickstart-your-web-audio-stuff-460p)
+  - <blockquote>XSound is a batteries-included library for everything audio. From basic management and loading through streaming, effects, ending with visualizations and recording, this libraries provides almost everything! It also has nice, semi-chainable API with solid documentation.</blockquote>
+- [20 Useful Web Audio Javascript Libraries – Bashooka](https://bashooka.com/coding/web-audio-javascript-libraries/)
   
 ## License
   
-Copyright (c) 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018 Tomohiro IKEDA (Korilakkuma)  
-Released under the MIT license
+Released under the [MIT](https://github.com/Korilakkuma/XSound/blob/master/LICENSE) license
   

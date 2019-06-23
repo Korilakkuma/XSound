@@ -18,7 +18,7 @@ import {
     decode,
     exitFullscreen,
     file,
-    fullscreen,
+    requestFullscreen,
     read,
     toFrequencies,
     toTextFile
@@ -103,7 +103,7 @@ if (IS_XSOUND) {
     XSound.decode            = decode;
     XSound.exitFullscreen    = exitFullscreen;
     XSound.file              = file;
-    XSound.fullscreen        = fullscreen;
+    XSound.requestFullscreen = requestFullscreen;
     XSound.read              = read;
     XSound.toFrequencies     = toFrequencies;
     XSound.toTextFile        = toTextFile;

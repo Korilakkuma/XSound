@@ -130,21 +130,30 @@ export function decode(context, arrayBuffer, successCallback, errorCallback) {
 
 /**
  * This class (static) method shows `Element` in original size from full screen.
+ * @return {Promise} This is returned as `Promise`.
  */
 export function exitFullscreen() {
-    if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-    } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-    } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-    } else if (document.cancelFullScreen) {
-        document.cancelFullScreen();
-    } else if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else {
-        throw new Error('Cannot exit from full screen.');
+    if (document.exitFullscreen) {
+        return document.exitFullscreen();
     }
+
+    if (document.webkitCancelFullScreen) {
+        return document.webkitCancelFullScreen();
+    }
+
+    if (document.mozCancelFullScreen) {
+        return document.mozCancelFullScreen();
+    }
+
+    if (document.msExitFullscreen) {
+        return document.msExitFullscreen();
+    }
+
+    if (document.cancelFullScreen) {
+        return document.cancelFullScreen();
+    }
+
+    return Promise.reject('Cannot exit from full screen.');
 }
 
 /**
@@ -223,28 +232,6 @@ export function file(event, type, successCallback, errorCallback, progressCallba
         });
 
         return file;
-    }
-}
-
-/**
- * This class (static) method shows the designated `Element` in full screen.
- * @param {Element} element This argument is the instance of `Element` that is the target of full screen.
- */
-export function fullscreen(element) {
-    if (!(element instanceof Element)) {
-        return;
-    }
-
-    if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-    } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-    } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-    } else if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else {
-        throw new Error('Cannot change to full screen.');
     }
 }
 
@@ -347,6 +334,35 @@ export function read(file, type, successCallback, errorCallback, progressCallbac
     } else if (/text/i.test(type)) {
         reader.readAsText(file, 'UTF-8');
     }
+}
+
+/**
+ * This class (static) method shows the designated `Element` in full screen.
+ * @param {Element} element This argument is the instance of `Element` that is the target of full screen.
+ * @return {Promise} This is returned as `Promise`.
+ */
+export function requestFullscreen(element) {
+    if (!(element instanceof Element)) {
+        return Promise.reject('Invalid argument.');
+    }
+
+    if (element.requestFullscreen) {
+        return element.requestFullscreen();
+    }
+
+    if (element.webkitRequestFullscreen) {
+        return element.webkitRequestFullscreen();
+    }
+
+    if (element.mozRequestFullScreen) {
+        return element.mozRequestFullScreen();
+    }
+
+    if (element.msRequestFullscreen) {
+        return element.msRequestFullscreen();
+    }
+
+    return Promise.reject('Cannot change to full screen.');
 }
 
 /**

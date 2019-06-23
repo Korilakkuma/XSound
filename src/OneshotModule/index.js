@@ -333,7 +333,11 @@ export class OneshotModule extends SoundModule {
 
         const startTime = this.context.currentTime + this.times.start;
 
-        source.start(startTime);
+        if (source.loop) {
+            source.start(startTime, (startTime + source.loopStart), (source.loopEnd - startTime));
+        } else {
+            source.start(startTime);
+        }
 
         this.sources[selectedIndex] = source;
 

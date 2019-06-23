@@ -15,7 +15,7 @@
     <meta property="og:image" content="https://xsound.jp/images/icon.png" />
     <meta property="og:description" content="XSound - Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording ... -" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@xsoundjs" />
+    <meta name="twitter:site" content="@forever120527" />
     <link rel="canonical" href="https://xsound.jp/" />
     <link rel="icon" href="favicon.ico" />
     <link rel="apple-touch-icon-precomposed" href="images/icon.png" />
@@ -44,7 +44,7 @@
         }
 
         header,
-        aside {
+        main {
             display: -webkit-flex;
             display: flex;
             -webkit-flex-direction: column;
@@ -77,17 +77,12 @@
                         linear-gradient(to top left,  rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top right/50% 100%;
         }
 
-        main > iframe {
-            width: 100%;
-            height: 1595px;
-        }
-
-        aside > img {
+        main > img {
             max-width: 100%;
             transform: scale(0.5);
         }
 
-        aside > section {
+        main > section {
             margin-top: 12px;
             display: -webkit-flex;
             display: flex;
@@ -117,7 +112,7 @@
             text-shadow: -1px -1px 1px #000;
         }
 
-        aside > h1 {
+        main > h1 {
             font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
             font-size: calc(28 * ((100vw - 320px) / (1280 - 320)) + 28px);
             font-weight: lighter;
@@ -125,7 +120,7 @@
             text-shadow: -1px -1px 1px #000;
         }
 
-        aside > section > h1 {
+        main > section > h1 {
             font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
             font-size: calc(24 * ((100vw - 320px) / (1280 - 320)) + 24px);
             font-weight: lighter;
@@ -304,13 +299,15 @@
             <a href="https://github.com/Korilakkuma/XSound">Download v2.10.4</a>
             <a href="https://xsound.dev/">API Documentation</a>
         </nav>
-        <a href="#xsound-demo" class="fade-in-last">Demo</a>
+        <a href="#main" class="fade-in-last">main</a>
     </header>
+    <!--
     <main id="xsound-demo">
         <h1>POWERFUL FEATURES !</h1>
         <iframe src="https://xsound.app/" frameborder="no" scrolling="no"></iframe>
     </main>
-    <aside>
+    -->
+    <main id="main">
         <h1>Supported Browsers</h1>
         <img src="images/supported-browsers.png" alt="Supported Browsers" />
         <h1>Let's Begin !</h1>
@@ -324,7 +321,7 @@
             <pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js&quot;&gt;&lt;/script&gt;</code></pre>
             <button type="button" onclick="navigator.clipboard.writeText('<script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js&quot;></script>')">COPY</button>
         </section>
-    </aside>
+    </main>
     <footer>
         <p>XSound maintained by <a href="https://github.com/Korilakkuma" target="_blank" rel="noopener noreferrer">Korilakkuma</a></p>
     </footer>
@@ -336,21 +333,6 @@
 
     ga('create', 'UA-41390233-1', 'auto');
     ga('send', 'pageview');
-
-
-    if (/iPod|iPhone|iPad|Android/.test(navigator.userAgent)) {
-        const iframe = document.querySelector('iframe');
-
-        iframe.removeAttribute('scrolling');
-        iframe.style.height = '100vh';
-
-        const pres = document.querySelectorAll('pre');
-
-        for (const pre of pres) {
-            pre.style.width = '112px';
-        }
-    }
-
     </script>
 </body>
 </html>

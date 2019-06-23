@@ -3,18 +3,23 @@
 /**
  * This class (static) method gets audio data as `ArrayBuffer` by Ajax.
  * @param {string} url This argument is URL for audio resource.
+ * @param {type} string This argument is response type that is one of 'text', 'arraybuffer', 'blob', 'document', 'json'. The default value is 'arraybuffer'.
  * @param {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
  * @param {function} successCallback This argument is invoked as next process when reading file is successful.
  * @param {function} errorCallback This argument is invoked when error occurred.
  * @param {function} progressCallback This argument is invoked during receiving audio data.
  */
-export function ajax(url, timeout, successCallback, errorCallback, progressCallback) {
+export function ajax(url, type, timeout, successCallback, errorCallback, progressCallback) {
     // The argument is associative array ?
     if (Object.prototype.toString.call(arguments[0]) === '[object Object]') {
         const properties = arguments[0];
 
         if ('url' in properties) {
             url = properties.url;
+        }
+
+        if ('type' in properties) {
+            type = properties.type;
         }
 
         if ('timeout' in properties) {
@@ -63,17 +68,13 @@ export function ajax(url, timeout, successCallback, errorCallback, progressCallb
     };
 
     xhr.onload = event => {
-        if (xhr.status === 200) {
-            const arrayBuffer = xhr.response;
-
-            if ((arrayBuffer instanceof ArrayBuffer) && (Object.prototype.toString.call(successCallback) === '[object Function]')) {
-                successCallback(event, arrayBuffer);
-            }
+        if ((xhr.status === 200) && (Object.prototype.toString.call(successCallback) === '[object Function]')) {
+            successCallback(event, xhr.response);
         }
     };
 
     xhr.open('GET', url, true);
-    xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+    xhr.responseType = /text|arraybuffer|blob|document|json/.test(String(type).toLowerCase()) ? String(type).toLowerCase() : 'arraybuffer';
     xhr.send(null);
 }
 

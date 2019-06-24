@@ -8,6 +8,7 @@
     "lint": "eslint src",
     "build": "npm run clean && webpack --progress --mode production",
     "build:watch": "npm run clean && webpack --progress --watch --mode development",
+    "prepublish": "npm run build",
     "test": "npm run lint && karma start"
   },
   "repository": {

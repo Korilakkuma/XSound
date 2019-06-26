@@ -2,9 +2,12 @@ node_modules
 src
 test
 playground
+misc
 Dockerfile
+docker-compose.yml
 webpack.config.js
 karma.conf.js
+.github
 .babelrc
 .editorconfig
 .eslintrc

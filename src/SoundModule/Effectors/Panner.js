@@ -42,8 +42,21 @@ export class Panner extends Effector {
         this.panner.panningModel  = (typeof this.panner.panningModel  === 'string') ? 'HRTF'    : (this.panner.HRTF || 1);
         this.panner.distanceModel = (typeof this.panner.distanceModel === 'string') ? 'inverse' : (this.panner.INVERSE_DISTANCE || 1);
 
-        this.panner.setPosition(this.positions.x, this.positions.y, this.positions.z);
-        this.panner.setOrientation(this.orientations.x, this.orientations.y, this.orientations.z);
+        if ((this.panner.positionX instanceof AudioParam) && (this.panner.positionY instanceof AudioParam) && (this.panner.positionZ instanceof AudioParam)) {
+            this.panner.positionX.setValueAtTime(this.positions.x, context.currentTime);
+            this.panner.positionY.setValueAtTime(this.positions.y, context.currentTime);
+            this.panner.positionZ.setValueAtTime(this.positions.z, context.currentTime);
+        } else {
+            this.panner.setPosition(this.positions.x, this.positions.y, this.positions.z);
+        }
+
+        if ((this.panner.orientationX instanceof AudioParam) && (this.panner.orientationY instanceof AudioParam) && (this.panner.orientationZ instanceof AudioParam)) {
+            this.panner.orientationX.setValueAtTime(this.orientations.x, context.currentTime);
+            this.panner.orientationY.setValueAtTime(this.orientations.y, context.currentTime);
+            this.panner.orientationZ.setValueAtTime(this.orientations.z, context.currentTime);
+        } else {
+            this.panner.setOrientation(this.orientations.x, this.orientations.y, this.orientations.z);
+        }
 
         // `Panner` is not connected by default
         this.state(false);
@@ -73,7 +86,14 @@ export class Panner extends Effector {
 
                     if (!isNaN(v)) {
                         this.positions[k] = v;
-                        this.panner.setPosition(this.positions.x, this.positions.y, this.positions.z);
+
+                        if ((this.panner.positionX instanceof AudioParam) && (this.panner.positionY instanceof AudioParam) && (this.panner.positionZ instanceof AudioParam)) {
+                            this.panner.positionX.setValueAtTime(this.positions.x, this.context.currentTime);
+                            this.panner.positionY.setValueAtTime(this.positions.y, this.context.currentTime);
+                            this.panner.positionZ.setValueAtTime(this.positions.z, this.context.currentTime);
+                        } else {
+                            this.panner.setPosition(this.positions.x, this.positions.y, this.positions.z);
+                        }
                     }
 
                     break;
@@ -88,7 +108,14 @@ export class Panner extends Effector {
 
                     if (!isNaN(v)) {
                         this.orientations[k.charAt(1)] = v;
-                        this.panner.setOrientation(this.orientations.x, this.orientations.y, this.orientations.z);
+
+                        if ((this.panner.orientationX instanceof AudioParam) && (this.panner.orientationY instanceof AudioParam) && (this.panner.orientationZ instanceof AudioParam)) {
+                            this.panner.orientationX.setValueAtTime(this.orientations.x, this.context.currentTime);
+                            this.panner.orientationY.setValueAtTime(this.orientations.y, this.context.currentTime);
+                            this.panner.orientationZ.setValueAtTime(this.orientations.z, this.context.currentTime);
+                        } else {
+                            this.panner.setOrientation(this.orientations.x, this.orientations.y, this.orientations.z);
+                        }
                     }
 
                     break;
@@ -123,7 +150,7 @@ export class Panner extends Effector {
 
                     v = parseFloat(value);
 
-                    if (!isNaN(v)) {
+                    if (v >= 0) {
                         this.panner.rolloffFactor = v;
                     }
 
@@ -135,7 +162,7 @@ export class Panner extends Effector {
 
                     v = parseFloat(value);
 
-                    if (!isNaN(v)) {
+                    if ((v >= 0) && (v <= 360)) {
                         this.panner.coneInnerAngle = v;
                     }
 
@@ -147,13 +174,13 @@ export class Panner extends Effector {
 
                     v = parseFloat(value);
 
-                    if (!isNaN(v)) {
+                    if ((v >= 0) && (v <= 360)) {
                         this.panner.coneOuterAngle = v;
                     }
 
                     break;
                 case 'coneoutergain':
-                    if (value === undefined) {
+                    if ((v >= 0) && (v <= 1)) {
                         return this.panner.coneOuterGain;
                     }
 

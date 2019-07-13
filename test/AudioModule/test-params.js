@@ -24,7 +24,7 @@ describe('AudioModule TEST', () => {
                 'delay'             : { 'state' : false, 'time' : 0, 'dry' : 1, 'wet' : 0, 'tone' : 350, 'feedback' : 0 },
                 'reverb'            : { 'state' : false, 'dry' : 1, 'wet' : 0, 'tone' : 350 },
                 'panner'            : { 'state' : false, 'positions' : { 'x' : 0, 'y' : 0, 'z' : 0 }, 'orientations' : { 'x' : 1, 'y' : 0, 'z' : 0 }, 'refDistance' : 1, 'maxDistance' : 10000, 'rolloffFactor' : 1, 'coneInnerAngle' : 360, 'coneOuterAngle' : 360, 'coneOuterGain' : 0, 'panningModel' : 'HRTF', 'distanceModel' : 'inverse' },
-                'listener'          : { 'positions' : { 'x' : 0, 'y' : 0, 'z' : 0 }, 'fronts' : { 'x' : 0, 'y' : 0, 'z' : -1 }, 'ups' : { 'x' : 0, 'y' : 1, 'z' : 0 } },
+                'listener'          : { 'state' : true, 'positions' : { 'x' : 0, 'y' : 0, 'z' : 0 }, 'forwards' : { 'x' : 0, 'y' : 0, 'z' : -1 }, 'ups' : { 'x' : 0, 'y' : 1, 'z' : 0 } },
                 'envelopegenerator' : { 'attack' : 0.01, 'decay' : 0.3, 'sustain' : 0.5, 'release' : 1 }
             });
         });

@@ -114,7 +114,7 @@ export class SoundModule {
         this.delay             = new Delay(context, size);
         this.reverb            = new Reverb(context, size);
         this.panner            = new Panner(context, size);
-        this.listener          = new Listener(context);
+        this.listener          = new Listener(context, size);
         this.envelopegenerator = new EnvelopeGenerator(context);
 
         // The default order for connection

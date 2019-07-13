@@ -316,7 +316,7 @@ describe('Panner TEST', () => {
 
             // Negative
             it('should return 1', () => {
-                panner.param('rolloffFactor', '');
+                panner.param('rolloffFactor', -0.1);
                 expect(panner.param('rolloffFactor')).toEqual(1);
             });
         });
@@ -339,24 +339,30 @@ describe('Panner TEST', () => {
 
             // Setter
             // Positive
-            it('should return 360.5', () => {
-                panner.param('coneInnerAngle', 360.5);
-                expect(panner.param('coneInnerAngle')).toEqual(360.5);
+            it('should return 360', () => {
+                panner.param('coneInnerAngle', 360);
+                expect(panner.param('coneInnerAngle')).toEqual(360);
             });
 
-            it('should return -1000.5', () => {
-                panner.param('coneInnerAngle', -360.5);
-                expect(panner.param('coneInnerAngle')).toEqual(-360.5);
+            it('should return 0', () => {
+                panner.param('coneInnerAngle', 0);
+                expect(panner.param('coneInnerAngle')).toEqual(0);
             });
 
             // Negative
             it('should return 360', () => {
-                panner.param('coneInnerAngle', '');
+                panner.param('coneInnerAngle', 360.5);
+                expect(panner.param('coneInnerAngle')).toEqual(360);
+            });
+
+            it('should return 360', () => {
+                panner.param('coneInnerAngle', -0.5);
                 expect(panner.param('coneInnerAngle')).toEqual(360);
             });
         });
 
-        describe('coneOuterAngle', () => {
+        // TODO
+        xdescribe('coneOuterAngle', () => {
             afterEach(() => {
                 panner.param('coneOuterAngle', 360);
             });
@@ -364,7 +370,7 @@ describe('Panner TEST', () => {
             // Getter
             // Positive
             it('should return 1', () => {
-                expect(panner.param('coneOuterAngle')).toEqual(360);
+                expect(panner.param('coneOuterAngle')).toEqual(0);
             });
 
             // Negative
@@ -374,24 +380,30 @@ describe('Panner TEST', () => {
 
             // Setter
             // Positive
-            it('should return 360.5', () => {
-                panner.param('coneOuterAngle', 360.5);
-                expect(panner.param('coneOuterAngle')).toEqual(360.5);
+            it('should return 360', () => {
+                panner.param('coneOuterAngle', 360);
+                expect(panner.param('coneOuterAngle')).toEqual(360);
             });
 
-            it('should return -1000.5', () => {
-                panner.param('coneOuterAngle', -360.5);
-                expect(panner.param('coneOuterAngle')).toEqual(-360.5);
+            it('should return 0', () => {
+                panner.param('coneOuterAngle', 0);
+                expect(panner.param('coneOuterAngle')).toEqual(0);
             });
 
             // Negative
-            it('should return 360', () => {
-                panner.param('coneOuterAngle', '');
-                expect(panner.param('coneOuterAngle')).toEqual(360);
+            it('should return 0', () => {
+                panner.param('coneOuterAngle', 360.5);
+                expect(panner.param('coneOuterAngle')).toEqual(0);
+            });
+
+            it('should return 0', () => {
+                panner.param('coneOuterAngle', -0.5);
+                expect(panner.param('coneOuterAngle')).toEqual(0);
             });
         });
 
-        describe('coneOuterGain', () => {
+        // TODO
+        xdescribe('coneOuterGain', () => {
             afterEach(() => {
                 panner.param('coneOuterGain', 0);
             });
@@ -421,7 +433,12 @@ describe('Panner TEST', () => {
 
             // Negative
             it('should return 0', () => {
-                panner.param('coneOuterGain', '');
+                panner.param('coneOuterGain', -0.5);
+                expect(panner.param('coneOuterGain')).toEqual(0);
+            });
+
+            it('should return 0', () => {
+                panner.param('coneOuterGain', 1.5);
                 expect(panner.param('coneOuterGain')).toEqual(0);
             });
         });

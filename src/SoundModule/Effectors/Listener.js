@@ -1,25 +1,50 @@
 'use strict';
 
+import { Effector } from './Effector';
+
 /**
- * This private class defines property for audio listener.
- * These properties relate to properties of `PannerNode`.
+ * Effector's subclass
  * @constructor
+ * @extends {Effector}
  */
-export class Listener {
+export class Listener extends Effector {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */
-    constructor(context) {
+    constructor(context, bufferSize) {
+        super(context, bufferSize);
+
         // the instance of `AudioListener`
         this.listener = context.listener;
 
         // Set default value
         this.positions = { 'x' : 0, 'y' : 0, 'z' : 0 };
-        this.fronts    = { 'x' : 0, 'y' : 0, 'z' : -1 };
+        this.forwards  = { 'x' : 0, 'y' : 0, 'z' : -1 };
         this.ups       = { 'x' : 0, 'y' : 1, 'z' : 0 };
 
-        this.listener.setPosition(this.positions.x, this.positions.y, this.positions.z);
-        this.listener.setOrientation(this.fronts.x, this.fronts.y, this.fronts.z, this.ups.x, this.ups.y, this.ups.z);
+        if ((this.listener.positionX instanceof AudioParam) && (this.listener.positionY instanceof AudioParam) && (this.listener.positionZ instanceof AudioParam)) {
+            this.listener.positionX.setValueAtTime(this.positions.x, context.currentTime);
+            this.listener.positionY.setValueAtTime(this.positions.y, context.currentTime);
+            this.listener.positionZ.setValueAtTime(this.positions.z, context.currentTime);
+        } else {
+            this.listener.setPosition(this.positions.x, this.positions.y, this.positions.z);
+        }
+
+        if ((this.listener.forwardX instanceof AudioParam)
+            && (this.listener.forwardY instanceof AudioParam)
+            && (this.listener.forwardZ instanceof AudioParam)
+            && (this.listener.upX instanceof AudioParam)
+            && (this.listener.upY instanceof AudioParam)
+            && (this.listener.upZ instanceof AudioParam)) {
+            this.listener.forwardX.setValueAtTime(this.forwards.x, context.currentTime);
+            this.listener.forwardY.setValueAtTime(this.forwards.y, context.currentTime);
+            this.listener.forwardZ.setValueAtTime(this.forwards.z, context.currentTime);
+            this.listener.upX.setValueAtTime(this.ups.x, context.currentTime);
+            this.listener.upY.setValueAtTime(this.ups.y, context.currentTime);
+            this.listener.upZ.setValueAtTime(this.ups.z, context.currentTime);
+        } else {
+            this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
+        }
     }
 
     /**
@@ -52,7 +77,14 @@ export class Listener {
 
                     if (!isNaN(v)) {
                         this.positions[k] = v;
-                        this.listener.setPosition(this.positions.x, this.positions.y, this.positions.z);
+
+                        if ((this.listener.positionX instanceof AudioParam) && (this.listener.positionY instanceof AudioParam) && (this.listener.positionZ instanceof AudioParam)) {
+                            this.listener.positionX.setValueAtTime(this.positions.x, this.context.currentTime);
+                            this.listener.positionY.setValueAtTime(this.positions.y, this.context.currentTime);
+                            this.listener.positionZ.setValueAtTime(this.positions.z, this.context.currentTime);
+                        } else {
+                            this.listener.setPosition(this.positions.x, this.positions.y, this.positions.z);
+                        }
                     }
 
                     break;
@@ -60,14 +92,29 @@ export class Listener {
                 case 'fy':
                 case 'fz':
                     if (value === undefined) {
-                        return this.fronts[k.charAt(1)];
+                        return this.forwards[k.charAt(1)];
                     }
 
                     v = parseFloat(value);
 
                     if (!isNaN(v)) {
-                        this.fronts[k.charAt(1)] = v;
-                        this.listener.setOrientation(this.fronts.x, this.fronts.y, this.fronts.z, this.ups.x, this.ups.y, this.ups.z);
+                        this.forwards[k.charAt(1)] = v;
+
+                        if ((this.listener.forwardX instanceof AudioParam)
+                            && (this.listener.forwardY instanceof AudioParam)
+                            && (this.listener.forwardZ instanceof AudioParam)
+                            && (this.listener.upX instanceof AudioParam)
+                            && (this.listener.upY instanceof AudioParam)
+                            && (this.listener.upZ instanceof AudioParam)) {
+                            this.listener.forwardX.setValueAtTime(this.forwards.x, this.context.currentTime);
+                            this.listener.forwardY.setValueAtTime(this.forwards.y, this.context.currentTime);
+                            this.listener.forwardZ.setValueAtTime(this.forwards.z, this.context.currentTime);
+                            this.listener.upX.setValueAtTime(this.ups.x, this.context.currentTime);
+                            this.listener.upY.setValueAtTime(this.ups.y, this.context.currentTime);
+                            this.listener.upZ.setValueAtTime(this.ups.z, this.context.currentTime);
+                        } else {
+                            this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
+                        }
                     }
 
                     break;
@@ -82,7 +129,22 @@ export class Listener {
 
                     if (!isNaN(v)) {
                         this.ups[k.charAt(1)] = v;
-                        this.listener.setOrientation(this.fronts.x, this.fronts.y, this.fronts.z, this.ups.x, this.ups.y, this.ups.z);
+
+                        if ((this.listener.forwardX instanceof AudioParam)
+                            && (this.listener.forwardY instanceof AudioParam)
+                            && (this.listener.forwardZ instanceof AudioParam)
+                            && (this.listener.upX instanceof AudioParam)
+                            && (this.listener.upY instanceof AudioParam)
+                            && (this.listener.upZ instanceof AudioParam)) {
+                            this.listener.forwardX.setValueAtTime(this.forwards.x, this.context.currentTime);
+                            this.listener.forwardY.setValueAtTime(this.forwards.y, this.context.currentTime);
+                            this.listener.forwardZ.setValueAtTime(this.forwards.z, this.context.currentTime);
+                            this.listener.upX.setValueAtTime(this.ups.x, this.context.currentTime);
+                            this.listener.upY.setValueAtTime(this.ups.y, this.context.currentTime);
+                            this.listener.upZ.setValueAtTime(this.ups.z, this.context.currentTime);
+                        } else {
+                            this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
+                        }
                     }
 
                     break;
@@ -100,8 +162,9 @@ export class Listener {
      */
     params() {
         const params = {
+            'state'     : this.isActive,
             'positions' : this.positions,
-            'fronts'    : this.fronts,
+            'forwards'  : this.forwards,
             'ups'       : this.ups
         };
 

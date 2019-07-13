@@ -4,7 +4,7 @@ import { Listener } from '../../../../src/SoundModule/Effectors/Listener';
 
 describe('Listener TEST', () => {
     describe('Listener#param', () => {
-        const listener = new Listener(audiocontext);
+        const listener = new Listener(audiocontext, 1024);
 
         describe('x', () => {
             afterEach(() => {

@@ -415,6 +415,85 @@ export class AudioModule extends SoundModule {
         return this;
     }
 
+    /**
+     *  This method sprites audio.
+     *  @param {object} sprites This argument is the associative array that contains sprite times.
+     *  @return {object} This is returned as the associative array that contains sprited `AudioBuffer`.
+     */
+    sprite(sprites) {
+        if (!this.isBuffer()) {
+            return null;
+        }
+
+        if (Object.prototype.toString.call(sprites) !== '[object Object]') {
+            return null;
+        }
+
+        let dataLs = null;
+        let dataRs = null;
+
+        if (this.buffer.numberOfChannels > 0) {
+            dataLs = this.buffer.getChannelData(0);
+        }
+
+        if (this.buffer.numberOfChannels > 1) {
+            dataRs = this.buffer.getChannelData(1);
+        }
+
+        return Object.keys(sprites).reduce((audioBuffers, key) => {
+            const times = sprites[key];
+
+            if (!Array.isArray(times) || (times.length !== 2)) {
+                return;
+            }
+
+            const sampleRate = this.buffer.sampleRate;
+            const start      = times[0] * sampleRate;
+            const end        = times[1] * sampleRate;
+            const length     = end - start;
+
+            let spritedDataLs = null;
+            let spritedDataRs = null;
+            let buffer        = null;
+
+            switch (this.buffer.numberOfChannels) {
+                case 1:
+                    spritedDataLs = new Float32Array(length);
+
+                    for (let i = start; i < end; i++) {
+                        spritedDataLs[i - start] = dataLs[i];
+                    }
+
+                    buffer = this.context.createBuffer(1, length, sampleRate);
+
+                    buffer.copyToChannel(spritedDataLs, 0);
+
+                    audioBuffers[key] = buffer;
+
+                    return audioBuffers;
+                case 2:
+                    spritedDataLs = new Float32Array(length);
+                    spritedDataRs = new Float32Array(length);
+
+                    for (let i = start; i < end; i++) {
+                        spritedDataLs[i - start] = dataLs[i];
+                        spritedDataRs[i - start] = dataRs[i];
+                    }
+
+                    buffer = this.context.createBuffer(2, length, sampleRate);
+
+                    buffer.copyToChannel(spritedDataLs, 0);
+                    buffer.copyToChannel(spritedDataRs, 1);
+
+                    audioBuffers[key] = buffer;
+
+                    return audioBuffers;
+                default:
+                    return {};
+            }
+        }, {});
+    }
+
     /** @override */
     params() {
         const params = super.params();

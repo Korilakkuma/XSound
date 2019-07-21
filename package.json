@@ -1,7 +1,7 @@
 {
   "name": "xsound",
-  "version": "2.12.0",
-  "description": "Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording ... etc",
+  "version": "2.13.0",
+  "description": "Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Sprite ... etc",
   "main": "build/xsound.js",
   "scripts": {
     "clean": "rm -rf build",

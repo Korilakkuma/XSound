@@ -6,7 +6,7 @@
 ![David Dev](https://img.shields.io/david/dev/Korilakkuma/XSound.svg)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/xsound/badge)](https://www.jsdelivr.com/package/npm/xsound)
   
-Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording ... etc
+Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Sprite ... etc
   
 ## Overview
   
@@ -24,6 +24,7 @@ In concrete, XSound may be useful to implement the following features.
 - Visualization (Overview in Time Domain / Time Domain / Spectrum)
 - Multi-Track Recording (Create WAVE file)
 - Session (by WebSocket)
+- Audio Sprite
   
 XSound don't depend on other libraries or frameworks (For example, jQuery, React).
   

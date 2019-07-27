@@ -448,9 +448,13 @@ export class AudioModule extends SoundModule {
             }
 
             const sampleRate = this.buffer.sampleRate;
-            const start      = times[0] * sampleRate;
-            const end        = times[1] * sampleRate;
+            const start      = parseInt((times[0] * sampleRate), 10);
+            const end        = parseInt((times[1] * sampleRate), 10);
             const length     = end - start;
+
+            if (isNaN(length) || (length <= 0)) {
+                return null;
+            }
 
             let spritedDataLs = null;
             let spritedDataRs = null;

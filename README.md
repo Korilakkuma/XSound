@@ -24,7 +24,7 @@ In concrete, XSound may be useful to implement the following features.
 - Visualization (Overview in Time Domain / Time Domain / Spectrum)
 - Multi-Track Recording (Create WAVE file)
 - Session (by WebSocket)
-- Audio Sprite
+- Visual Audio Sprite
   
 XSound don't depend on other libraries or frameworks (For example, jQuery, React).
   

@@ -196,19 +196,26 @@ export class AudioModule extends SoundModule {
 
     /**
      * This method starts audio from the designated time.
-     * @param {number} position This argument is the time that audio is started at. The default value is 0.
+     * @param {number} startTime This argument is the time that audio is started at. The default value is 0.
+     * @param {number} endTime This argument is the time that audio is ended at. The default value is audio duration.
      * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @return {AudioModule} This is returned for method chain.
      * @override
      */
-    start(position, connects, processCallback) {
+    start(startTime, endTime, connects, processCallback) {
         if ((this.buffer instanceof AudioBuffer) && this.paused) {
-            const startTime = this.context.currentTime;
+            // This value is `AudioContext#currentTime`
+            const currentTime = this.context.currentTime;
 
-            const pos = parseFloat(position);
+            const start = parseFloat(startTime);
+            const end   = parseFloat(endTime);
 
-            this.currentTime = ((pos >= 0) && (pos <= this.buffer.duration)) ? pos : 0;
+            if (end >= 0) {
+                this.currentTime = ((start >= 0) && (start <= end)) ? start : 0;
+            } else {
+                this.currentTime = ((start >= 0) && (start <= this.buffer.duration)) ? start : 0;
+            }
 
             const playbackRate = this.source.playbackRate.value;
             const loop         = this.source.loop;
@@ -222,22 +229,33 @@ export class AudioModule extends SoundModule {
             this.source.buffer             = this.buffer;
             this.source.playbackRate.value = playbackRate;
             this.source.loop               = loop;
+            this.source.loopStart          = this.currentTime;
+            this.source.loopEnd            = (end >= 0) ? end : this.buffer.duration;
 
             // AudioBufferSourceNode (Input) -> GainNode (Envelope Generator) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
             this.envelopegenerator.ready(0, this.source, this.processor);
             this.connect(this.processor, connects);
 
-            this.source.start(startTime, pos, (this.buffer.duration - pos));
+            if (end >= 0) {
+                this.source.start(currentTime, this.currentTime, (end - start));
+            } else {
+                this.source.start(currentTime, this.currentTime, (this.buffer.duration - this.currentTime));
+            }
 
             this.analyser.start('time');
             this.analyser.start('fft');
 
             this.paused = false;
 
-            this.envelopegenerator.start(startTime);
-            this.envelopegenerator.stop((startTime + ((this.buffer.duration - pos) / this.source.playbackRate.value)), true);
+            this.envelopegenerator.start(currentTime);
 
-            this.on(startTime);
+            if (end >= 0) {
+                this.envelopegenerator.stop((currentTime + ((end - start) / this.source.playbackRate.value)), true);
+            } else {
+                this.envelopegenerator.stop((currentTime + ((this.buffer.duration - start) / this.source.playbackRate.value)), true);
+            }
+
+            this.on(currentTime);
 
             this.callbacks.start(this.source, this.currentTime);
 
@@ -252,7 +270,7 @@ export class AudioModule extends SoundModule {
                     const outputLs = event.outputBuffer.getChannelData(0);
                     const outputRs = event.outputBuffer.getChannelData(1);
 
-                    if (this.currentTime < Math.floor(this.source.buffer.duration)) {
+                    if (this.currentTime < Math.floor(this.source.loopEnd)) {
                         for (let i = 0; i < bufferSize; i++) {
                             outputLs[i] = this.vocalcanceler.start(inputLs[i], inputRs[i]);
                             outputRs[i] = this.vocalcanceler.start(inputRs[i], inputLs[i]);
@@ -262,11 +280,22 @@ export class AudioModule extends SoundModule {
                             this.callbacks.update(this.source, this.currentTime);
                         }
 
-                        this.analyser.timeOverviewL.update(this.currentTime);
-                        this.analyser.timeOverviewR.update(this.currentTime);
+                        if (this.analyser.timeOverviewL.param('mode') === 'update') {
+                            this.analyser.timeOverviewL.update(this.currentTime);
+                        }
+
+                        if (this.analyser.timeOverviewR.param('mode') === 'update') {
+                            this.analyser.timeOverviewR.update(this.currentTime);
+                        }
                     } else {
                         if (this.source.loop) {
-                            this.currentTime = 0;
+                            this.stop();
+
+                            if ((this.analyser.timeOverviewL.param('mode') === 'sprite') || (this.analyser.timeOverviewR.param('mode') === 'sprite')) {
+                                this.start(this.source.loopStart, this.source.loopEnd, connects, processCallback);
+                            } else {
+                                this.start(0, this.buffer.duration, connects, processCallback);
+                            }
                         } else {
                             this.end();
                         }
@@ -318,14 +347,15 @@ export class AudioModule extends SoundModule {
 
     /**
      * This method starts or stops audio according to audio state.
-     * @param {number} position This argument is the time that audio is started at. The default value is 0.
+     * @param {number} startTime This argument is the time that audio is started at. The default value is 0.
+     * @param {number} endTime This argument is the time that audio is ended at. The default value is audio duration.
      * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @return {AudioModule} This is returned for method chain.
      */
-    toggle(position, connects, processCallback) {
+    toggle(startTime, endTime, connects, processCallback) {
         if (this.paused) {
-            this.start(position, connects, processCallback);
+            this.start(startTime, endTime, connects, processCallback);
         } else {
             this.stop();
         }

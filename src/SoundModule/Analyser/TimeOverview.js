@@ -9,6 +9,8 @@ import { Visualizer } from './Visualizer';
  */
 export class TimeOverview extends Visualizer {
     static SVG_CURRENT_TIME_CLASS_NAME = 'xsound-svg-current-time';
+    static DRAG_MODE_UPDATE = 'update';
+    static DRAG_MODE_SPRITE = 'sprite';
 
     /**
      * @param {number} sampleRate This argument is sample rate.
@@ -23,6 +25,13 @@ export class TimeOverview extends Visualizer {
         this.currentTime  = 'rgba(0, 0, 0, 0.5)';  // This style is used for the rectangle that displays current time of audio
         this.plotInterval = 0.0625;                // Draw wave at intervals of this value [sec]
         this.textInterval = 60;                    // Draw text at intervals of this value [sec]
+
+        this.isDown = false;
+
+        this.mode = TimeOverview.DRAG_MODE_UPDATE;  // or 'sprite'
+
+        this.offsetX   = 0;  // for Audio Sprite
+        this.startTime = 0;  // for Audio Sprite
     }
 
     /** @override */
@@ -62,6 +71,18 @@ export class TimeOverview extends Visualizer {
 
                     if (v > 0) {
                         this[k.replace('interval', 'Interval')] = v;
+                    }
+
+                    break;
+                case 'mode':
+                    if (value === undefined) {
+                        return this.mode;
+                    }
+
+                    v = String(value).toLowerCase();
+
+                    if ((v === TimeOverview.DRAG_MODE_UPDATE) || (v === TimeOverview.DRAG_MODE_SPRITE)) {
+                        this.mode = v;
                     }
 
                     break;
@@ -283,15 +304,10 @@ export class TimeOverview extends Visualizer {
 
         rect.classList.add(TimeOverview.SVG_CURRENT_TIME_CLASS_NAME);
 
-        rect.setAttribute('x',      this.styles.left);
-        rect.setAttribute('y',      (this.styles.top + 1));
-        // rect.setAttribute('width',  1);
+        rect.setAttribute('y', (this.styles.top + 1));
         rect.setAttribute('height', (innerHeight - 1));
-
         rect.setAttribute('stroke', 'none');
-        rect.setAttribute('fill',   this.currentTime);
-
-        rect.setAttribute('aria-label', 'current time');
+        rect.setAttribute('fill', this.currentTime);
 
         svg.appendChild(rect);
 
@@ -329,7 +345,16 @@ export class TimeOverview extends Visualizer {
                     context.putImageData(this.savedImage, 0, 0);
 
                     context.fillStyle = this.currentTime;
-                    context.fillRect(this.styles.left, (this.styles.top + 1), x, (innerHeight - 1));
+
+                    if (this.mode === TimeOverview.DRAG_MODE_UPDATE) {
+                        context.fillRect(this.styles.left, (this.styles.top + 1), x, (innerHeight - 1));
+                    } else if (this.mode === TimeOverview.DRAG_MODE_SPRITE) {
+                        if (x >= this.offsetX) {
+                            context.fillRect((this.styles.left + this.offsetX), (this.styles.top + 1), Math.abs(x - this.offsetX), (innerHeight - 1));
+                        } else {
+                            context.fillRect((this.styles.left + x), (this.styles.top + 1), Math.abs(x - this.offsetX), (innerHeight - 1));
+                        }
+                    }
                 }
 
                 break;
@@ -341,8 +366,21 @@ export class TimeOverview extends Visualizer {
                     const innerWidth = width  - (this.styles.left + this.styles.right);
                     const x          = ((t * this.sampleRate) / this.length) * innerWidth;
 
-                    rect.setAttribute('width', x);
-                    // rect.setAttribute('transform', `translate(${x} 0)`);
+                    if (this.mode === TimeOverview.DRAG_MODE_UPDATE) {
+                        rect.setAttribute('x', this.styles.left);
+                        rect.setAttribute('width', x);
+                        // rect.setAttribute('transform', `translate(${x} 0)`);
+                        rect.setAttribute('aria-label', 'current time');
+                    } else if (this.mode === TimeOverview.DRAG_MODE_SPRITE) {
+                        if (x >= this.offsetX) {
+                            rect.setAttribute('x', (this.styles.left + this.offsetX));
+                        } else {
+                            rect.setAttribute('x', (this.styles.left + x));
+                        }
+
+                        rect.setAttribute('width', Math.abs(x - this.offsetX));
+                        rect.setAttribute('aria-label', 'sprite time');
+                    }
                 }
 
                 break;
@@ -387,36 +425,31 @@ export class TimeOverview extends Visualizer {
                 return this;
         }
 
-        let isDown = false;
+        this.callback = Object.prototype.toString.call(callback) === '[object Function]' ? callback : () => {};
 
-        drawNode.addEventListener(start, event => {
-            this.draw(this.getOffsetX(event), callback);
-            isDown = true;
-        }, true);
+        this.onStart = this.onStart.bind(this);
+        this.onMove  = this.onMove.bind(this);
+        this.onEnd   = this.onEnd.bind(this);
 
-        drawNode.addEventListener(move, event => {
-            if (isDown) {
-                event.preventDefault();  // for Touch Panel
-                this.draw(this.getOffsetX(event), callback);
-            }
-        }, true);
+        drawNode.removeEventListener(start, this.onStart, true);
+        drawNode.removeEventListener(move, this.onMove, true);
+        window.removeEventListener(end, this.onEnd, true);
 
-        window.addEventListener(end, () => {
-            if (isDown) {
-                isDown = false;
-            }
-        }, true);
+        drawNode.addEventListener(start, this.onStart, true);
+        drawNode.addEventListener(move, this.onMove, true);
+        window.addEventListener(end, this.onEnd, true);
 
         return this;
     }
 
     /**
      * This method draws the rectangle for current time of audio.
+     * @param {Event} event This argument is the instance of `Event`.
      * @param {number} offsetX This argument is X coordinate on Canvas or SVG.
      * @param {function} callback This argument is invoked when the rectangle is drawn.
      * @return {TimeOverview} This is returned for method chain.
      */
-    draw(offsetX, callback) {
+    draw(event, type, offsetX) {
         let offsetLeft = 0;
         let width      = 0;
 
@@ -444,13 +477,62 @@ export class TimeOverview extends Visualizer {
         const plot = (x / width) * this.length;
         const time = plot / this.sampleRate;
 
+        if ((this.mode === TimeOverview.DRAG_MODE_SPRITE) && ((type === 'mousedown') || (type === 'touchstart'))) {
+            this.offsetX   = x;
+            this.startTime = time;
+        }
+
         this.update(time);
 
-        if (Object.prototype.toString.call(callback) === '[object Function]') {
-            callback(time);
+        if (this.mode === TimeOverview.DRAG_MODE_UPDATE) {
+            this.callback(event, time);
+        } else if (this.mode === TimeOverview.DRAG_MODE_SPRITE) {
+            if (this.startTime < time) {
+                this.callback(event, this.startTime, time);
+            } else if (this.startTime > time) {
+                this.callback(event, time, this.startTime);
+            }
         }
 
         return this;
+    }
+
+    /**
+     * This method is event listener for drawing the rectangle.
+     * @param {Event} event This argument is the instance of `Event`.
+     */
+    onStart(event) {
+        this.draw(event, event.type, this.getOffsetX(event));
+        this.isDown = true;
+    }
+
+    /**
+     * This method is event listener for drawing the rectangle.
+     * @param {Event} event This argument is the instance of `Event`.
+     */
+    onMove(event) {
+        if (!this.isDown) {
+            return;
+        }
+
+        event.preventDefault();  // for Touch Panel
+        this.draw(event, event.type, this.getOffsetX(event));
+    }
+
+    /**
+     * This method is event listener for drawing the rectangle.
+     * @param {Event} event This argument is the instance of `Event`.
+     */
+    onEnd(event) {
+        if (!this.isDown) {
+            return;
+        }
+
+        this.draw(event, event.type, this.getOffsetX(event));
+
+        this.isDown    = false;
+        this.offsetX   = 0;
+        this.startTime = 0;
     }
 
     /**

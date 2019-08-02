@@ -29,6 +29,29 @@ describe('TimeOverview TEST', () => {
             });
         });
 
+        describe('sprite', () => {
+            afterEach(() => {
+                timeOverview.param('sprite', 'rgba(255, 255, 255, 0.25)');
+            });
+
+            // Getter
+            // Positive
+            it('should return "rgba(255, 255, 255, 0.25)"', () => {
+                expect(timeOverview.param('sprite')).toEqual('rgba(255, 255, 255, 0.25)');
+            });
+
+            // Negative
+            it('should return the instance of `TimeOverview`', () => {
+                expect(timeOverview.param('')).toEqual(jasmine.any(TimeOverview));
+            });
+
+            // Setter
+            it('should return "#cc0000"', () => {
+                timeOverview.param('sprite', '#cc0000');
+                expect(timeOverview.param('sprite')).toEqual('#cc0000');
+            });
+        });
+
         describe('plotInterval', () => {
             afterEach(() => {
                 timeOverview.param('plotInterval', 0.0625);

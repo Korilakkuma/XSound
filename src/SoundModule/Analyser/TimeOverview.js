@@ -9,6 +9,7 @@ import { Visualizer } from './Visualizer';
  */
 export class TimeOverview extends Visualizer {
     static SVG_CURRENT_TIME_CLASS_NAME = 'xsound-svg-current-time';
+    static SVG_SPRITE_CLASS_NAME       = 'xsound-svg-sprite';
     static DRAG_MODE_UPDATE = 'update';
     static DRAG_MODE_SPRITE = 'sprite';
 
@@ -22,16 +23,19 @@ export class TimeOverview extends Visualizer {
         this.savedImage = null;
         this.length     = 0;
 
-        this.currentTime  = 'rgba(0, 0, 0, 0.5)';  // This style is used for the rectangle that displays current time of audio
-        this.plotInterval = 0.0625;                // Draw wave at intervals of this value [sec]
-        this.textInterval = 60;                    // Draw text at intervals of this value [sec]
+        this.currentTime  = 'rgba(0, 0, 0, 0.5)';         // This style is used for the rectangle that displays current time of audio
+        this.sprite       = 'rgba(255, 255, 255, 0.25)';  // This style is used for the rectangle that displays sprite range
+        this.plotInterval = 0.0625;                       // Draw wave at intervals of this value [sec]
+        this.textInterval = 60;                           // Draw text at intervals of this value [sec]
 
         this.isDown = false;
 
         this.mode = TimeOverview.DRAG_MODE_UPDATE;  // or 'sprite'
 
-        this.offsetX   = 0;  // for Audio Sprite
-        this.startTime = 0;  // for Audio Sprite
+        // for Audio Sprite
+        this.offsetX   = 0;
+        this.startTime = 0;
+        this.endTime   = 0;
     }
 
     /** @override */
@@ -61,6 +65,14 @@ export class TimeOverview extends Visualizer {
                     this.currentTime = String(value).toLowerCase();
 
                     break;
+                case 'sprite':
+                    if (value === undefined) {
+                        return this.sprite;
+                    }
+
+                    this.sprite = String(value).toLowerCase();
+
+                    break;
                 case 'plotinterval':
                 case 'textinterval':
                     if (value === undefined) {
@@ -83,6 +95,19 @@ export class TimeOverview extends Visualizer {
 
                     if ((v === TimeOverview.DRAG_MODE_UPDATE) || (v === TimeOverview.DRAG_MODE_SPRITE)) {
                         this.mode = v;
+
+                        // Clear for Audio Sprite
+                        this.offsetX   = 0;
+                        this.startTime = 0;
+                        this.endTime   = 0;
+
+                        if (this.svg instanceof SVGElement) {
+                            const rect = this.svg.querySelector(`.${TimeOverview.SVG_SPRITE_CLASS_NAME}`);
+
+                            if (rect instanceof SVGElement) {
+                                this.svg.removeChild(rect);
+                            }
+                        }
                     }
 
                     break;
@@ -344,11 +369,23 @@ export class TimeOverview extends Visualizer {
                     context.clearRect(0, 0, width, height);
                     context.putImageData(this.savedImage, 0, 0);
 
-                    context.fillStyle = this.currentTime;
-
                     if (this.mode === TimeOverview.DRAG_MODE_UPDATE) {
+                        context.fillStyle = this.currentTime;
                         context.fillRect(this.styles.left, (this.styles.top + 1), x, (innerHeight - 1));
                     } else if (this.mode === TimeOverview.DRAG_MODE_SPRITE) {
+                        if (this.endTime !== 0) {
+                            const baseX = Math.floor(((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.length) * innerWidth);
+                            context.fillStyle = this.sprite;
+
+                            if (x >= this.offsetX) {
+                                context.fillRect((this.styles.left + this.offsetX), (this.styles.top + 1), baseX, (innerHeight - 1));
+                            } else {
+                                context.fillRect((this.styles.left + this.offsetX - baseX), (this.styles.top + 1), baseX, (innerHeight - 1));
+                            }
+                        }
+
+                        context.fillStyle = this.currentTime;
+
                         if (x >= this.offsetX) {
                             context.fillRect((this.styles.left + this.offsetX), (this.styles.top + 1), Math.abs(x - this.offsetX), (innerHeight - 1));
                         } else {
@@ -372,6 +409,35 @@ export class TimeOverview extends Visualizer {
                         // rect.setAttribute('transform', `translate(${x} 0)`);
                         rect.setAttribute('aria-label', 'current time');
                     } else if (this.mode === TimeOverview.DRAG_MODE_SPRITE) {
+                        if (this.endTime !== 0) {
+                            const baseRect = document.createElementNS(Visualizer.XMLNS, 'rect');
+
+                            baseRect.classList.add(TimeOverview.SVG_SPRITE_CLASS_NAME);
+
+                            if (this.svg.lastElementChild.previousElementSibling instanceof SVGElement) {
+                                this.svg.removeChild(this.svg.lastElementChild.previousElementSibling);
+                            }
+
+                            const baseX = Math.floor(((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.length) * innerWidth);
+
+                            baseRect.setAttribute('y', (this.styles.top + 1));
+                            baseRect.setAttribute('height', rect.getAttribute('height'));
+                            baseRect.setAttribute('stroke', 'none');
+                            baseRect.setAttribute('fill', this.sprite);
+                            baseRect.setAttribute('aria-label', 'current time');
+
+                            if (x >= this.offsetX) {
+                                baseRect.setAttribute('x', (this.styles.left + this.offsetX));
+                            } else {
+                                baseRect.setAttribute('x', (this.styles.left + this.offsetX - baseX));
+                            }
+
+                            baseRect.setAttribute('width', baseX);
+
+                            this.svg.appendChild(baseRect);
+                            this.svg.appendChild(rect);
+                        }
+
                         if (x >= this.offsetX) {
                             rect.setAttribute('x', (this.styles.left + this.offsetX));
                         } else {
@@ -480,6 +546,11 @@ export class TimeOverview extends Visualizer {
         if ((this.mode === TimeOverview.DRAG_MODE_SPRITE) && ((type === 'mousedown') || (type === 'touchstart'))) {
             this.offsetX   = x;
             this.startTime = time;
+            this.endTime   = 0;
+        }
+
+        if ((this.mode === TimeOverview.DRAG_MODE_SPRITE) && ((type === 'mouseup') || (type === 'touchend'))) {
+            this.endTime = time;
         }
 
         this.update(time);
@@ -530,9 +601,7 @@ export class TimeOverview extends Visualizer {
 
         this.draw(event, event.type, this.getOffsetX(event));
 
-        this.isDown    = false;
-        this.offsetX   = 0;
-        this.startTime = 0;
+        this.isDown = false;
     }
 
     /**

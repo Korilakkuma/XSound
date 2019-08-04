@@ -280,13 +280,8 @@ export class AudioModule extends SoundModule {
                             this.callbacks.update(this.source, this.currentTime);
                         }
 
-                        if (this.analyser.timeOverviewL.param('mode') === 'update') {
-                            this.analyser.timeOverviewL.update(this.currentTime);
-                        }
-
-                        if (this.analyser.timeOverviewR.param('mode') === 'update') {
-                            this.analyser.timeOverviewR.update(this.currentTime);
-                        }
+                        this.analyser.timeOverviewL.update(this.currentTime);
+                        this.analyser.timeOverviewR.update(this.currentTime);
                     } else {
                         if (this.source.loop) {
                             this.stop();

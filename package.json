@@ -1,6 +1,6 @@
 {
   "name": "xsound",
-  "version": "2.13.2",
+  "version": "2.13.3",
   "description": "Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording, Visual Audio Sprite ... etc",
   "main": "build/xsound.js",
   "scripts": {
@@ -44,7 +44,7 @@
     "karma-cli": "^2.0.0",
     "karma-jasmine": "^2.0.1",
     "karma-webpack": "^4.0.2",
-    "webpack": "^4.39.0",
+    "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6"
   }
 }

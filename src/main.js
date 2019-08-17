@@ -26,7 +26,20 @@ import {
 
 const global = (typeof window !== 'undefined') ? window : {};
 
+// for legacy browsers
 global.AudioContext = global.AudioContext || global.webkitAudioContext;
+global.MediaSource  = global.MediaSource  || global.WebkitMediaSource;
+global.URL          = global.URL          || global.webkitURL || global.mozURL;
+
+global.requestAnimationFrame = global.requestAnimationFrame       ||
+                               global.webkitRequestAnimationFrame ||
+                               global.mozRequestAnimationFrame    ||
+                               (callback => global.setTimeout(callback, (1000 / 60)));
+
+global.cancelAnimationFrame = global.cancelAnimationFrame       ||
+                              global.webkitCancelAnimationFrame ||
+                              global.mozCancelAnimationFrame    ||
+                              global.clearTimeout;
 
 let XSound;
 

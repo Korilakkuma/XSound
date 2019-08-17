@@ -113,8 +113,14 @@ export class MediaModule extends AudioModule {
             this.source = this.context.createMediaElementSource(this.media);
         }
 
-        if (this.autoplay) {
-            this.stop(() => this.start(this.media.currentTime), () => {});
+        if (this.autoplay && this.media.src) {
+            this.context.resume()
+                .then(() => {
+                    this.start(this.media.currentTime);
+                })
+                .catch(() => {
+                    throw new Error('Autoplay is failed');
+                });
         }
 
         this.media.addEventListener('loadstart', event => {
@@ -307,7 +313,7 @@ export class MediaModule extends AudioModule {
      * @override
      */
     start(position, connects, processCallback) {
-        if ((this.source instanceof MediaElementAudioSourceNode) && this.media.paused) {
+        if (this.source instanceof MediaElementAudioSourceNode) {
             // MediaElementAudioSourceNode (Input) -> GainNode (Envelope Generator) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
             this.envelopegenerator.ready(0, this.source, this.processor);
             this.connect(this.processor, connects);
@@ -374,7 +380,7 @@ export class MediaModule extends AudioModule {
      * @override
      */
     stop(successCallback, errorCallback) {
-        if ((this.source instanceof MediaElementAudioSourceNode) && !this.media.paused) {
+        if (this.source instanceof MediaElementAudioSourceNode) {
             // ref: https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
             this.media.play()
                 .then(() => {

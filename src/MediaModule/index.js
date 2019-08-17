@@ -25,14 +25,21 @@ export class MediaModule extends AudioModule {
         this.media  = null;  // for the instance of `HTMLMediaElement`
         this.ext    = '';    // 'wav', 'ogg', 'mp3, 'webm', 'ogv', 'mp4' ...etc
 
+        // for Audio Streaming
+        this.mse      = null;  // for the instance of `MediaSource`
+        this.sb       = null;  // for the instance of `SourceBuffer`
+        this.file     = '';
+        this.mimeType = '';
+
         this.playbackRate = 1;
         this.controls     = false;
         this.loop         = false;
         this.muted        = false;
         this.autoplay     = false;
 
-        // The keys are the event interfaces that are defined by `HTMLMediaElement`.
-        // For example, `loadstart`, `loadedmetadata`, `loadeddata`, `canplay`, `canplaythrough`, `timeupdate`, `ended` ...etc
+        // The keys are the event interfaces that are defined by `HTMLMediaElement` or `MediaSource` or `SourceBuffer`.
+        // For example, `loadstart`, `loadedmetadata`, `loadeddata`, `canplay`, `canplaythrough`, `timeupdate`, `ended`,
+        // `sourceopen`, `sourceended`, `sourceclose`, `updateend`, `error` ... etc
         this.listeners = {};
     }
 
@@ -212,7 +219,11 @@ export class MediaModule extends AudioModule {
                         const duration    = this.param('duration');
 
                         this.envelopegenerator.start(startTime);
-                        this.envelopegenerator.stop((startTime + ((duration - currentTime) / v)), true);
+
+                        // `duration` is infinite in the case of audio streaming
+                        if (isFinite(duration)) {
+                            this.envelopegenerator.stop((startTime + ((duration - currentTime) / v)), true);
+                        }
                     }
 
                     break;
@@ -234,7 +245,11 @@ export class MediaModule extends AudioModule {
                             const playbackRate = this.param('playbackRate');
 
                             this.envelopegenerator.start(startTime);
-                            this.envelopegenerator.stop((startTime + ((duration - v) / playbackRate)), true);
+
+                            // `duration` is infinite in the case of audio streaming
+                            if (isFinite(duration)) {
+                                this.envelopegenerator.stop((startTime + ((duration - v) / playbackRate)), true);
+                            }
                         }
                     }
 
@@ -284,21 +299,57 @@ export class MediaModule extends AudioModule {
     /**
      * This method prepares for playing the media anytime after loading the media resource.
      * @param {string} source This argument is path name or `Data URL` or `Object URL` for the media resource.
+     * @param {string} mimeType This argument is required in the case of audio streaming.
      * @return {MediaModule} This is returned for method chain.
      * @override
      */
-    ready(source) {
+    ready(source, mimeType) {
         const src = String(source);
 
+        if (this.mse && (this.mse.readyState === 'open')) {
+            this.mse.endOfStream();
+            window.URL.revokeObjectURL(this.media.src);
+
+            this.mse.removeEventListener('sourceopen',  this.onSourceOpen,  false);
+            this.mse.removeEventListener('sourceended', this.onSourceEnded, false);
+            this.mse.removeEventListener('sourceclose', this.onSourceClose, false);
+
+            this.sb.removeEventListener('updateend', this.onSourceBufferUpdateEnd, false);
+            this.sb.removeEventListener('error',     this.onSourceBufferError,     false);
+        }
+
         try {
-            // `Data URL` or `Object URL` ?
-            if ((src.indexOf('data:') !== -1) || (src.indexOf('blob:') !== -1) || (this.ext === '')) {
-                this.media.src = src;  // `Data URL` or `Object URL` or Full path
+            if (mimeType) {
+                // Audio Streaming
+                if (!MediaSource || !MediaSource.isTypeSupported(mimeType)) {
+                    throw new Error('This Browser does not support `MediaSource` or MIME type');
+                }
+
+                this.media.removeAttribute('src');
+
+                this.media.load();
+
+                this.mse       = new MediaSource();
+                this.media.src = window.URL.createObjectURL(this.mse);
+                this.mimeType  = mimeType;
+                this.file      = src;
+
+                this.onSourceOpen  = this.onSourceOpen.bind(this);
+                this.onSourceEnded = this.onSourceEnded.bind(this);
+                this.onSourceClose = this.onSourceClose.bind(this);
+
+                this.mse.addEventListener('sourceopen',  this.onSourceOpen,  false);
+                this.mse.addEventListener('sourceended', this.onSourceEnded, false);
+                this.mse.addEventListener('sourceclose', this.onSourceClose, false);
+            } else if ((src.indexOf('data:') !== -1) || (src.indexOf('blob:') !== -1) || (this.ext === '')) {
+                // `Data URL` or `Object URL` or Full path
+                this.media.src = src;
             } else {
-                this.media.src = `${src}.${this.ext}`;  // Path
+                // Path
+                this.media.src = `${src}.${this.ext}`;
             }
         } catch (error) {
-            throw new Error('The designated resource cannot be loaded.');
+            throw new Error(error.message);
         }
 
         return this;
@@ -332,7 +383,11 @@ export class MediaModule extends AudioModule {
                 this.media.muted        = this.muted;
 
                 this.envelopegenerator.start(startTime);
-                this.envelopegenerator.stop((startTime + ((this.media.duration - pos) / this.media.playbackRate)), true);
+
+                // `duration` is infinite in the case of audio streaming
+                if (isFinite(this.media.duration)) {
+                    this.envelopegenerator.stop((startTime + ((this.media.duration - pos) / this.media.playbackRate)), true);
+                }
 
                 this.on(startTime);
 
@@ -464,6 +519,81 @@ export class MediaModule extends AudioModule {
      */
     isPaused() {
         return (this.media instanceof HTMLMediaElement) ? this.media.paused : true;
+    }
+
+    /**
+     * This method is event listener for `MediaSource`
+     * @param {Event} event This argument is the instance of `Event`.
+     */
+    onSourceOpen(event) {
+        this.sb = this.mse.addSourceBuffer(this.mimeType);
+
+        this.sb.mode = 'sequence';
+
+        this.onSourceBufferUpdateEnd = this.onSourceBufferUpdateEnd.bind(this);
+        this.onSourceBufferError     = this.onSourceBufferError.bind(this);
+
+        this.sb.addEventListener('updateend', this.onSourceBufferUpdateEnd, false);
+        this.sb.addEventListener('error',     this.onSourceBufferError,     false);
+
+        if ('sourceopen' in this.listeners) {
+            this.listeners.sourceopen(event);
+        }
+
+        const request = new Request(this.file);
+
+        fetch(request)
+            .then(response => {
+                return response.arrayBuffer();
+            })
+            .then(data => {
+                this.sb.appendBuffer(data);
+            })
+            .catch(error => {
+                if ('error' in this.listeners) {
+                    this.listeners.error(event, error);
+                }
+            });
+    }
+
+    /**
+     * This method is event listener for `MediaSource`
+     * @param {Event} event This argument is the instance of `Event`.
+     */
+    onSourceEnded(event) {
+        if ('sourceended' in this.listeners) {
+            this.listeners.sourceended(event);
+        }
+    }
+
+    /**
+     * This method is event listener for `MediaSource`
+     * @param {Event} event This argument is the instance of `Event`.
+     */
+    onSourceClose(event) {
+        if ('sourceclose' in this.listeners) {
+            this.listeners.sourceclose(event);
+        }
+    }
+
+    /**
+     * This method is event listener for `SourceBuffer`
+     * @param {Event} event This argument is the instance of `Event`.
+     */
+    onSourceBufferUpdateEnd(event) {
+        if ('updateend' in this.listeners) {
+            this.listeners.updateend(event);
+        }
+    }
+
+    /**
+     * This method is event listener for `SourceBuffer`
+     * @param {Event} event This argument is the instance of `Event`.
+     */
+    onSourceBufferError(event) {
+        if ('error' in this.listeners) {
+            this.listeners.error(event);
+        }
     }
 
     /** @override */

@@ -13,16 +13,6 @@ export class Analyser {
      * @param {AudioContext} context This argument is This argument is in order to use the interfaces of Web Audio API.
      */
     constructor(context) {
-        window.requestAnimationFrame = window.requestAnimationFrame       ||
-                                       window.webkitRequestAnimationFrame ||
-                                       window.mozRequestAnimationFrame    ||
-                                       (callback => window.setTimeout(callback, (1000 / 60)));
-
-        window.cancelAnimationFrame = window.cancelAnimationFrame       ||
-                                      window.webkitCancelAnimationFrame ||
-                                      window.mozCancelAnimationFrame    ||
-                                      window.clearTimeout;
-
         this.analyser = context.createAnalyser();
         this.input    = context.createGain();
 

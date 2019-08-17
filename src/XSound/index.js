@@ -219,7 +219,6 @@ export function file(event, type, successCallback, errorCallback, progressCallba
         throw new Error('Please upload audio or video file.');
     } else {
         if (/objecturl/i.test(type)) {
-            window.URL = window.URL || window.webkitURL || window.mozURL;
             return window.URL.createObjectURL(file);
         }
 

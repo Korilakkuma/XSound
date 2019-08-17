@@ -410,8 +410,6 @@ export class Recorder {
         }
 
         // Create WAVE file (Object URL or Data URL)
-        window.URL = window.URL || window.webkitURL || window.mozURL;
-
         const t = String(type).toLowerCase();
 
         switch (t) {

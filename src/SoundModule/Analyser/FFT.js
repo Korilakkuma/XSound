@@ -192,7 +192,7 @@ export class FFT extends Visualizer {
                            // Set style
                            if (this.styles.wave === 'gradient') {
                                 const upside   = innerHeight + this.styles.top;
-                                const gradient = context.createLinearGradient(0 , upside, 0, (upside + y));
+                                const gradient = context.createLinearGradient(0, upside, 0, (upside + y));
 
                                 for (const gradients of this.styles.grad) {
                                     gradient.addColorStop(gradients.offset, gradients.color);
@@ -401,7 +401,7 @@ export class FFT extends Visualizer {
                         }
 
                         for (let i = 0; i < drawnSize; i++) {
-                            let rect = document.createElementNS(Visualizer.XMLNS, 'rect');
+                            const rect = document.createElementNS(Visualizer.XMLNS, 'rect');
 
                             const x = Math.floor((i / drawnSize) * innerWidth) + this.styles.left;
                             const y = Math.floor((data[i] / 255) * innerHeight);

@@ -143,7 +143,7 @@ export class Time extends Visualizer {
                            // Set style
                            if (this.styles.wave === 'gradient') {
                                 const upside   = (innerHeight / 2) + this.styles.top;
-                                const gradient = context.createLinearGradient(0 , upside, 0, (upside + y));
+                                const gradient = context.createLinearGradient(0, upside, 0, (upside + y));
 
                                 for (const gradients of this.styles.grad) {
                                     gradient.addColorStop(gradients.offset, gradients.color);

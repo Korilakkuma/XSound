@@ -175,7 +175,7 @@ export class MML {
         while (mmls.length > 0) {
             const mml = String(mmls.shift());
 
-            /** @type {Array.<object>}*/
+            /** @type {Array.<object>} */
             const sequences = [];
 
             const notes = mml.match(MML.REGEXP_MML);

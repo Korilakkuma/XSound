@@ -98,12 +98,12 @@ export class Oscillator {
                             if ((reals instanceof Float32Array) && (imags instanceof Float32Array)) {
                                 const MAX_SIZE = 4096;  // This size is defined by specification
 
-                                if (reals.length > MAX_SIZE) {reals = reals.subarray(0, MAX_SIZE);}
-                                if (imags.length > MAX_SIZE) {imags = imags.subarray(0, MAX_SIZE);}
+                                if (reals.length > MAX_SIZE) { reals = reals.subarray(0, MAX_SIZE); }
+                                if (imags.length > MAX_SIZE) { imags = imags.subarray(0, MAX_SIZE); }
 
                                 // The 1st value is fixed by 0 (This is is defined by specification)
-                                if (reals[0] !== 0) {reals[0] = 0;}
-                                if (imags[0] !== 0) {imags[0] = 0;}
+                                if (reals[0] !== 0) { reals[0] = 0; }
+                                if (imags[0] !== 0) { imags[0] = 0; }
 
                                 const periodicWave = this.context.createPeriodicWave(reals, imags);
 

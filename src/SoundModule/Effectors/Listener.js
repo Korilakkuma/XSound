@@ -30,12 +30,12 @@ export class Listener extends Effector {
             this.listener.setPosition(this.positions.x, this.positions.y, this.positions.z);
         }
 
-        if ((this.listener.forwardX instanceof AudioParam)
-            && (this.listener.forwardY instanceof AudioParam)
-            && (this.listener.forwardZ instanceof AudioParam)
-            && (this.listener.upX instanceof AudioParam)
-            && (this.listener.upY instanceof AudioParam)
-            && (this.listener.upZ instanceof AudioParam)) {
+        if ((this.listener.forwardX instanceof AudioParam) &&
+            (this.listener.forwardY instanceof AudioParam) &&
+            (this.listener.forwardZ instanceof AudioParam) &&
+            (this.listener.upX instanceof AudioParam) &&
+            (this.listener.upY instanceof AudioParam) &&
+            (this.listener.upZ instanceof AudioParam)) {
             this.listener.forwardX.setValueAtTime(this.forwards.x, context.currentTime);
             this.listener.forwardY.setValueAtTime(this.forwards.y, context.currentTime);
             this.listener.forwardZ.setValueAtTime(this.forwards.z, context.currentTime);
@@ -100,12 +100,12 @@ export class Listener extends Effector {
                     if (!isNaN(v)) {
                         this.forwards[k.charAt(1)] = v;
 
-                        if ((this.listener.forwardX instanceof AudioParam)
-                            && (this.listener.forwardY instanceof AudioParam)
-                            && (this.listener.forwardZ instanceof AudioParam)
-                            && (this.listener.upX instanceof AudioParam)
-                            && (this.listener.upY instanceof AudioParam)
-                            && (this.listener.upZ instanceof AudioParam)) {
+                        if ((this.listener.forwardX instanceof AudioParam) &&
+                            (this.listener.forwardY instanceof AudioParam) &&
+                            (this.listener.forwardZ instanceof AudioParam) &&
+                            (this.listener.upX instanceof AudioParam) &&
+                            (this.listener.upY instanceof AudioParam) &&
+                            (this.listener.upZ instanceof AudioParam)) {
                             this.listener.forwardX.setValueAtTime(this.forwards.x, this.context.currentTime);
                             this.listener.forwardY.setValueAtTime(this.forwards.y, this.context.currentTime);
                             this.listener.forwardZ.setValueAtTime(this.forwards.z, this.context.currentTime);
@@ -130,12 +130,12 @@ export class Listener extends Effector {
                     if (!isNaN(v)) {
                         this.ups[k.charAt(1)] = v;
 
-                        if ((this.listener.forwardX instanceof AudioParam)
-                            && (this.listener.forwardY instanceof AudioParam)
-                            && (this.listener.forwardZ instanceof AudioParam)
-                            && (this.listener.upX instanceof AudioParam)
-                            && (this.listener.upY instanceof AudioParam)
-                            && (this.listener.upZ instanceof AudioParam)) {
+                        if ((this.listener.forwardX instanceof AudioParam) &&
+                            (this.listener.forwardY instanceof AudioParam) &&
+                            (this.listener.forwardZ instanceof AudioParam) &&
+                            (this.listener.upX instanceof AudioParam) &&
+                            (this.listener.upY instanceof AudioParam) &&
+                            (this.listener.upZ instanceof AudioParam)) {
                             this.listener.forwardX.setValueAtTime(this.forwards.x, this.context.currentTime);
                             this.listener.forwardY.setValueAtTime(this.forwards.y, this.context.currentTime);
                             this.listener.forwardZ.setValueAtTime(this.forwards.z, this.context.currentTime);

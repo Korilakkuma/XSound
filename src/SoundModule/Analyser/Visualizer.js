@@ -293,9 +293,9 @@ export class Visualizer {
         let h = parseInt(innerHeight, 10);
         let m = parseInt(middle, 10);
 
-        if (isNaN(w)) {w = 0;}
-        if (isNaN(h)) {h = 0;}
-        if (isNaN(m)) {m = 0;}
+        if (isNaN(w)) { w = 0; }
+        if (isNaN(h)) { h = 0; }
+        if (isNaN(m)) { m = 0; }
 
         // Begin drawing
         switch (this.styles.shape) {
@@ -376,9 +376,9 @@ export class Visualizer {
         let h = parseInt(innerHeight, 10);
         let m = parseInt(middle, 10);
 
-        if (isNaN(w)) {w = 0;}
-        if (isNaN(h)) {h = 0;}
-        if (isNaN(m)) {m = 0;}
+        if (isNaN(w)) { w = 0; }
+        if (isNaN(h)) { h = 0; }
+        if (isNaN(m)) { m = 0; }
 
         switch (this.styles.shape) {
             case 'line':

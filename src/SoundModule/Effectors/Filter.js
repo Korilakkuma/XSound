@@ -131,7 +131,7 @@ export class Filter extends Effector {
                     max = 1;
 
                     if ((v >= min) && (v <= max)) {
-                        this.range= v;
+                        this.range = v;
                     }
 
                     break;

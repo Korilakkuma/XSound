@@ -537,8 +537,8 @@ export class TimeOverview extends Visualizer {
         width -= (this.styles.left + this.styles.right);
 
         // Exceed ?
-        if (x < 0)     {x = 0;}
-        if (x > width) {x = width;}
+        if (x < 0)     { x = 0; }
+        if (x > width) { x = width; }
 
         const plot = (x / width) * this.length;
         const time = plot / this.sampleRate;

@@ -134,4 +134,3 @@ export class Equalizer extends Effector {
         return '[SoundModule Equalizer]';
     }
 }
-

@@ -45,8 +45,8 @@ export class Recorder {
             this.trackLs = new Array(this.numberOfTracks);
             this.trackRs = new Array(this.numberOfTracks);
 
-            for (let i = 0; i < n; i++) {this.trackLs[i] = [];}  // n x array
-            for (let i = 0; i < n; i++) {this.trackRs[i] = [];}  // n x array
+            for (let i = 0; i < n; i++) { this.trackLs[i] = []; }  // n x array
+            for (let i = 0; i < n; i++) { this.trackRs[i] = []; }  // n x array
         } else {
             this.numberOfTracks = 1;
 
@@ -298,8 +298,8 @@ export class Recorder {
         }
 
         if (String(track).toLowerCase() === 'all') {
-            for (const track of this.trackLs) {track.length = 0;}
-            for (const track of this.trackRs) {track.length = 0;}
+            for (const track of this.trackLs) { track.length = 0; }
+            for (const track of this.trackRs) { track.length = 0; }
         } else {
             if (this.isTrack(track)) {
                 this.trackLs[track].length = 0;
@@ -377,8 +377,8 @@ export class Recorder {
                     }
 
                     // for preventing from clipping
-                    if (binary > (Math.pow(2, 8) - 1)) {binary = (Math.pow(2, 8) - 1);}
-                    if (binary < (Math.pow(2, 0) - 1)) {binary = (Math.pow(2, 0) - 1);}
+                    if (binary > (Math.pow(2, 8) - 1)) { binary = (Math.pow(2, 8) - 1); }
+                    if (binary < (Math.pow(2, 0) - 1)) { binary = (Math.pow(2, 0) - 1); }
 
                     sounds[i] = binary;
                 }
@@ -398,8 +398,8 @@ export class Recorder {
                     }
 
                     // for preventing from clipping
-                    if (binary > (+Math.pow(2, 15) - 1)) {binary =  Math.pow(2, 15) - 1;}
-                    if (binary < (-Math.pow(2, 15) - 1)) {binary = -Math.pow(2, 15) - 1;}
+                    if (binary > (+Math.pow(2, 15) - 1)) { binary =  Math.pow(2, 15) - 1; }
+                    if (binary < (-Math.pow(2, 15) - 1)) { binary = -Math.pow(2, 15) - 1; }
 
                     sounds[i] = binary;
                 }
@@ -557,7 +557,6 @@ export class Recorder {
 
                 return window.URL.createObjectURL(blob);
         }
-
     }
 
     /** @override */

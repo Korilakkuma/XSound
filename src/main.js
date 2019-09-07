@@ -8,7 +8,7 @@ import { AudioModule } from './AudioModule';
 import { MediaModule } from './MediaModule';
 import { StreamModule } from './StreamModule';
 import { MixerModule } from './MixerModule';
-import { ProcessorModule} from './ProcessorModule';
+import { ProcessorModule } from './ProcessorModule';
 import { MIDI } from './MIDI';
 import { MML } from './MML';
 import { Effector } from './SoundModule/Effectors/Effector';
@@ -288,7 +288,6 @@ if (IS_XSOUND) {
     document.addEventListener('mouseup',    setup, true);
     document.addEventListener('touchstart', setup, true);
     document.addEventListener('touchend',   setup, true);
-
 } else {
     XSound = () => null;
 

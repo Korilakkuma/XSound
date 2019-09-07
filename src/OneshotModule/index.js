@@ -112,7 +112,7 @@ export class OneshotModule extends SoundModule {
             settings[i].loop   = ('loop' in settings[i]) ? Boolean(settings[i].loop) : false;
             settings[i].start  = (('start' in settings[i]) && (settings[i].start >= 0)) ? parseFloat(settings[i].start) : 0;
             settings[i].end    = (('end' in settings[i]) && (settings[i].end >= 0)) ? parseFloat(settings[i].end) : 0;
-            settings[i].volume = (('volume' in settings[i]) && (settings[i].volume >=0) && (settings[i].volume <= 1)) ? parseFloat(settings[i].volume) : 1;
+            settings[i].volume = (('volume' in settings[i]) && (settings[i].volume >= 0) && (settings[i].volume <= 1)) ? parseFloat(settings[i].volume) : 1;
 
             this.isStops[i] = true;
             this.volumes[i] = this.context.createGain();
@@ -414,7 +414,7 @@ export class OneshotModule extends SoundModule {
             return this;
         }
 
-        const bufferIndex= this.settings[selectedIndex].buffer;
+        const bufferIndex = this.settings[selectedIndex].buffer;
 
         if (!((this.buffers[bufferIndex] instanceof AudioBuffer) && (this.sources[selectedIndex] instanceof AudioBufferSourceNode))) {
             return this;

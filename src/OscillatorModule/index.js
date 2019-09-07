@@ -48,7 +48,7 @@ export class OscillatorModule extends SoundModule {
             states = [states];
         }
 
-        for (let i = 0, len = states.length ; i < len; i++) {
+        for (let i = 0, len = states.length; i < len; i++) {
             this.sources[i] = new Oscillator(this.context, Boolean(states[i]));
             this.envelopegenerator.setGenerator(i);
         }

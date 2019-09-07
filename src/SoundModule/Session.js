@@ -152,8 +152,8 @@ export class Session {
                     const outputLs = event.outputBuffer.getChannelData(0);
                     const outputRs = event.outputBuffer.getChannelData(1);
 
-                    if (bufferLs instanceof Float32Array) {outputLs.set(bufferLs);}
-                    if (bufferRs instanceof Float32Array) {outputRs.set(bufferRs);}
+                    if (bufferLs instanceof Float32Array) { outputLs.set(bufferLs); }
+                    if (bufferRs instanceof Float32Array) { outputRs.set(bufferRs); }
 
                     // bufferLs = null;
                     // bufferRs = null;

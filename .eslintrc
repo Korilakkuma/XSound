@@ -6,17 +6,26 @@
     "browser": true
   },
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "standard"
   ],
   "rules": {
+    "indent": 0,
+    "key-spacing": 0,
+    "no-case-declarations": 0,
     "no-console": 1,
     "no-constant-condition": 0,
     "no-else-return": 2,
-    "radix": 1,
+    "no-multi-spaces": 0,
+    "no-unneeded-ternary": 0,
     "no-unused-vars": [1, {"vars": "all", "args": "after-used"}],
-    "quotes": [2, "single"],
-    "semi": [2, "always"],
     "no-var": 1,
-    "no-case-declarations": 0
+    "prefer-promise-reject-errors": 0,
+    "quotes": [2, "single"],
+    "quote-props": 0,
+    "radix": 1,
+    "semi": [2, "always"],
+    "space-before-function-paren": 0,
+    "template-curly-spacing" : 0
   }
 }

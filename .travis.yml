@@ -11,4 +11,5 @@ before_install:
   - export CHROME_BIN=google-chrome-stable
   - export DISPLAY=:99.0
 script:
+  - npm run lint
   - karma start --single-run

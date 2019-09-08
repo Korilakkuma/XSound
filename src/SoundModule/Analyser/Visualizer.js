@@ -55,8 +55,7 @@ export class Visualizer {
             'font'   : {
                 'family' : 'Arial',
                 'size'   : '13px',
-                'style'  : 'normal',
-                'weight' : 'normal'
+                'style'  : 'normal'
             },
             'width'  : 1.5,
             'cap'    : 'round',
@@ -167,7 +166,7 @@ export class Visualizer {
 
                 if (Object.prototype.toString.call(value) === '[object Object]') {
                     for (const prop in value) {
-                        if (/family|size|style|weight/i.test(prop)) {
+                        if (/(?:family|size|style)/i.test(prop)) {
                             this.styles.font[prop] = String(value[prop]);
                         }
                     }
@@ -488,9 +487,9 @@ export class Visualizer {
      * @return {string} This is returned as string for font.
      */
     createFontString() {
-        const { size, style, weight, family } = this.styles.font;
+        const { size, style, family } = this.styles.font;
 
-        return `${size} ${style} ${weight} "${family}"`;
+        return `${style} ${size} "${family}"`;
     }
 
     /** @abstract */

@@ -160,8 +160,7 @@ describe('Visualizer TEST', () => {
                 visualizer.param('font', {
                     'family' : 'Arial',
                     'size'   : '13px',
-                    'style'  : 'normal',
-                    'weight' : 'normal'
+                    'style'  : 'normal'
                 });
             });
 
@@ -171,8 +170,7 @@ describe('Visualizer TEST', () => {
                 expect(visualizer.param('font')).toEqual({
                     'family' : 'Arial',
                     'size'   : '13px',
-                    'style'  : 'normal',
-                    'weight' : 'normal'
+                    'style'  : 'normal'
                 });
             });
 
@@ -187,15 +185,13 @@ describe('Visualizer TEST', () => {
                 visualizer.param('font', {
                     'family' : 'Helvetica',
                     'size'   : '16px',
-                    'style'  : 'italic',
-                    'weight' : 'lighter'
+                    'style'  : 'italic'
                 });
 
                 expect(visualizer.param('font')).toEqual({
                     'family' : 'Helvetica',
                     'size'   : '16px',
-                    'style'  : 'italic',
-                    'weight' : 'lighter'
+                    'style'  : 'italic'
                 });
             });
 
@@ -204,8 +200,7 @@ describe('Visualizer TEST', () => {
                 expect(visualizer.param('font')).toEqual({
                     'family' : 'Helvetica',
                     'size'   : '13px',
-                    'style'  : 'normal',
-                    'weight' : 'normal'
+                    'style'  : 'normal'
                 });
             });
 
@@ -221,8 +216,7 @@ describe('Visualizer TEST', () => {
                 expect(visualizer.param('font')).toEqual({
                     'family' : 'Arial',
                     'size'   : '13px',
-                    'style'  : 'normal',
-                    'weight' : 'normal'
+                    'style'  : 'normal'
                 });
             });
         });

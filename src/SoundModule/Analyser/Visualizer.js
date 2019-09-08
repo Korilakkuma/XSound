@@ -500,6 +500,21 @@ export class Visualizer {
     drawBySVG() {
     }
 
+    /**
+     * This method clears graphics.
+     */
+    clear() {
+      if (this.context) {
+        const { width, height } = this.canvas;
+
+        this.context.clearRect(0, 0, width, height);
+      }
+
+      if (this.svg) {
+        this.svg.innerHTML = '';
+      }
+    }
+
     /** @override */
     toString() {
         return '[SoundModule Analyser Visualizer]';

@@ -6,8 +6,8 @@ describe('Visualizer TEST', () => {
     describe('Visualizer#createFontString', () => {
         const visualizer = new Visualizer(audiocontext.sampleRate);
 
-        it('should return "13px normal normal "Arial""', () => {
-            expect(visualizer.createFontString()).toEqual('13px normal normal "Arial"');
+        it('should return "normal 13px "Arial""', () => {
+            expect(visualizer.createFontString()).toEqual('normal 13px "Arial"');
         });
     });
 });

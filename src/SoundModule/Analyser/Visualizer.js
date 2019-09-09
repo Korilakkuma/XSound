@@ -513,6 +513,8 @@ export class Visualizer {
       if (this.svg) {
         this.svg.innerHTML = '';
       }
+
+      return this;
     }
 
     /** @override */

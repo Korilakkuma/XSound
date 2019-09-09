@@ -182,7 +182,7 @@ export class MML {
 
             if (notes === null) {
                 this.callbacks.error(MML.ERROR_STRING, '');
-                return;
+                return this;
             }
 
             let indexes     = [];
@@ -202,28 +202,28 @@ export class MML {
                 if (MML.REGEXP_TEMPO.test(note)) {
                     const bpm = parseInt(note.slice(1), 10);
 
-                    if (bpm > 0) {
-                        timeOf4note = MML.ONE_MINUTES / bpm;
-                    } else {
+                    if (bpm <= 0) {
                         this.callbacks.error(MML.ERROR_TEMPO, note);
-                        return;
+                        return this;
                     }
+
+                    timeOf4note = MML.ONE_MINUTES / bpm;
                 } else if (MML.REGEXP_OCTAVE.test(note)) {
                     octave = parseInt(note.slice(1), 10);
 
                     if (octave < 0) {
                         this.callbacks.error(MML.ERROR_OCTAVE, note);
-                        return;
+                        return this;
                     }
                 } else if (MML.REGEXP_NOTE.test(note)) {
                     if (timeOf4note === null) {
                         this.callbacks.error(MML.ERROR_TEMPO, note);
-                        return;
+                        return this;
                     }
 
                     if (octave === null) {
                         this.callbacks.error(MML.ERROR_OCTAVE, note);
-                        return;
+                        return this;
                     }
 
                     const chord = note.match(MML.REGEXP_CHORD)[1];
@@ -261,7 +261,7 @@ export class MML {
                         // Validation
                         if (index < 0) {
                             this.callbacks.error(MML.ERROR_NOTE, note);
-                            return;
+                            return this;
                         }
 
                         indexes.push(index);
@@ -275,7 +275,7 @@ export class MML {
                         // Validation
                         if (frequency === -1) {
                             this.callbacks.error(MML.ERROR_NOTE, note);
-                            return;
+                            return this;
                         }
 
                         frequencies.push(frequency);

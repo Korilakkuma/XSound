@@ -147,10 +147,7 @@ export class MML {
             this.stop();  // Stop the previous MML
         }
 
-        // Clear
-        this.sequences.length = 0;
-        this.timerids.length  = 0;
-        this.prev.length      = 0;
+        this.clear();
 
         if (Array.isArray(source)) {
             for (const s of source) {
@@ -822,6 +819,17 @@ export class MML {
                   .replace(/-/g, '_')
                   .replace(/&/g, '-')
                   .replace(/\s{2}/g, ' ');
+    }
+
+    /**
+     * This method clears sequences;
+     */
+    clear() {
+        this.sequences.length = 0;
+        this.timerids.length  = 0;
+        this.prev.length      = 0;
+
+        return this;
     }
 
     /** @override */

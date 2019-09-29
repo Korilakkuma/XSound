@@ -112,9 +112,9 @@ describe('Distortion TEST', () => {
                 expect(distortion.param('drive')).toEqual(0.5);
             });
 
-            it('should return 1', () => {
-                distortion.param('drive', 1);
-                expect(distortion.param('drive')).toEqual(1);
+            it('should return 100', () => {
+                distortion.param('drive', 100);
+                expect(distortion.param('drive')).toEqual(100);
             });
 
             it('should return 0', () => {
@@ -123,8 +123,8 @@ describe('Distortion TEST', () => {
             });
 
             // Negative
-            it('should return 1', () => {
-                distortion.param('drive', 1.1);
+            it('should return 100', () => {
+                distortion.param('drive', 101);
                 expect(distortion.param('drive')).toEqual(1);
             });
 

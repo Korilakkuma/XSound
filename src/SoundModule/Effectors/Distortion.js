@@ -154,7 +154,7 @@ export class Distortion extends Effector {
 
                     v   = parseFloat(value);
                     min = 0;
-                    max = 1;
+                    max = 100;
 
                     if ((v >= min) && (v <= max)) {
                         this.drive.gain.value = v;

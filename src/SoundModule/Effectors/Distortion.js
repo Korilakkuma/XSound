@@ -15,11 +15,11 @@ export class Distortion extends Effector {
     static FUZZ       = 'fuzz';
 
     static AMOUNTS = {
-        'CLEAN'      : 0.0,
-        'CRUNCH'     : 0.5,
-        'OVERDRIVE'  : 0.7,
-        'DISTORTION' : 0.8,
-        'FUZZ'       : 0.9
+        'CLEAN'      : 0.00,
+        'CRUNCH'     : 0.20,
+        'OVERDRIVE'  : 0.50,
+        'DISTORTION' : 0.80,
+        'FUZZ'       : 0.99
     };
 
     /**

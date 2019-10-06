@@ -23,7 +23,7 @@ export class Effector {
         this.lfo       = context.createOscillator();
         this.depth     = context.createGain();
         this.rate      = this.lfo.frequency;
-        this.processor = context.createScriptProcessor(bufferSize, 1, 2);
+        this.processor = context.createScriptProcessor(bufferSize, 2, 2);
 
         // for legacy browsers
         this.lfo.start = this.lfo.start || this.lfo.noteOn;

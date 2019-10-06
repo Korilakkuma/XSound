@@ -8,11 +8,13 @@ import { Effector } from './Effector';
  * @extends {Effector}
  */
 export class Distortion extends Effector {
-    static CLEAN      = 'clean';
-    static CRUNCH     = 'crunch';
-    static OVERDRIVE  = 'overdrive';
-    static DISTORTION = 'distortion';
-    static FUZZ       = 'fuzz';
+    static CLEAN           = 'clean';
+    static CRUNCH          = 'crunch';
+    static OVERDRIVE       = 'overdrive';
+    static TURBOOVERDRIVE  = 'turbooverdrive';
+    static DISTORTION      = 'distortion';
+    static TURBODISTORTION = 'turbodistortion';
+    static FUZZ            = 'fuzz';
 
     static AMOUNTS = {
         'CLEAN'      : 0.00,
@@ -115,8 +117,16 @@ export class Distortion extends Effector {
                             this.type = Distortion.OVERDRIVE;
                             curve = Distortion.createCurve(Distortion.AMOUNTS.OVERDRIVE, this.numberOfSamples);
                             break;
+                        case Distortion.TURBOOVERDRIVE:
+                            this.type = Distortion.TURBOOVERDRIVE;
+                            curve = null;
+                            break;
                         case Distortion.DISTORTION:
                             this.type = Distortion.DISTORTION;
+                            curve = Distortion.createCurve(Distortion.AMOUNTS.DISTORTION, this.numberOfSamples);
+                            break;
+                        case Distortion.TURBODISTORTION:
+                            this.type = Distortion.TURBODISTORTION;
                             curve = Distortion.createCurve(Distortion.AMOUNTS.DISTORTION, this.numberOfSamples);
                             break;
                         case Distortion.FUZZ:
@@ -188,9 +198,10 @@ export class Distortion extends Effector {
     connect() {
         // Clear connection
         this.input.disconnect(0);
-        this.distortion.disconnect(0);
-        this.drive.disconnect(0);
         this.color.disconnect(0);
+        this.drive.disconnect(0);
+        this.distortion.disconnect(0);
+        this.processor.disconnect(0);
         this.tone.disconnect(0);
 
         if (this.isActive) {
@@ -198,15 +209,72 @@ export class Distortion extends Effector {
 
             // GainNode (Input) -> BiquadFilterNode (Color) -> WaveShaperNode (Distortion) -> GainNode (Drive) -> BiquadFilterNode (Tone) -> GainNode (Output)
             this.input.connect(this.color);
-            this.color.connect(this.distortion);
-            this.distortion.connect(this.drive);
-            this.drive.connect(this.tone);
+            this.color.connect(this.drive);
+            this.drive.connect(this.distortion);
+            this.distortion.connect(this.processor);
+            this.processor.connect(this.tone);
             this.tone.connect(this.output);
         } else {
             // Effect OFF
 
             // GainNode (Input) -> GainNode (Output)
             this.input.connect(this.output);
+        }
+
+        return this;
+    }
+
+    /** @override */
+    start() {
+        if (this.isActive) {
+            const bufferSize = this.processor.bufferSize;
+
+            this.processor.onaudioprocess = event => {
+                const inputLs  = event.inputBuffer.getChannelData(0);
+                const inputRs  = event.inputBuffer.getChannelData(1);
+                const outputLs = event.outputBuffer.getChannelData(0);
+                const outputRs = event.outputBuffer.getChannelData(1);
+
+                if ((this.type === Distortion.TURBOOVERDRIVE) || (this.type === Distortion.TURBODISTORTION)) {
+                    for (let i = 0; i < bufferSize; i++) {
+                        switch (this.type) {
+                            case Distortion.TURBOOVERDRIVE:
+                                outputLs[i] = inputLs[i] >= 0 ? Math.atan(inputLs[i]) / (Math.PI / 2) : 0.1 * (Math.atan(inputLs[i]) / (Math.PI / 2));
+                                outputRs[i] = inputRs[i] >= 0 ? Math.atan(inputRs[i]) / (Math.PI / 2) : 0.1 * (Math.atan(inputRs[i]) / (Math.PI / 2));
+                                break;
+                            case Distortion.TURBODISTORTION:
+                                outputLs[i] = Math.abs(inputLs[i]);
+                                outputRs[i] = Math.abs(inputRs[i]);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                } else {
+                    outputLs.set(inputLs);
+                    outputRs.set(inputRs);
+                }
+            };
+        }
+
+        return this;
+    }
+
+    /** @override */
+    stop() {
+        // Effector's state is active ?
+        if (this.isActive) {
+            // Stop `onaudioprocess` event
+            this.processor.disconnect(0);
+            this.processor.onaudioprocess = null;
+
+            // Connect nodes again
+            this.input.connect(this.color);
+            this.color.connect(this.drive);
+            this.drive.connect(this.distortion);
+            this.distortion.connect(this.processor);
+            this.processor.connect(this.tone);
+            this.tone.connect(this.output);
         }
 
         return this;

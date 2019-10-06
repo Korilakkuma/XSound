@@ -38,8 +38,18 @@ describe('Distortion TEST', () => {
                 expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
             });
 
+            it('should return `null`', () => {
+                distortion.param('curve', 'turbooverdrive');
+                expect(distortion.param('curve')).toBeNull();
+            });
+
             it('should return the instance of `Float32Array`', () => {
                 distortion.param('curve', 'distortion');
+                expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
+            });
+
+            it('should return the instance of `Float32Array`', () => {
+                distortion.param('curve', 'turbodistortion');
                 expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
             });
 

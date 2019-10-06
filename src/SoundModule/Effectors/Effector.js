@@ -43,13 +43,16 @@ export class Effector {
      * @abstract
      */
     param() {
+      return this;
     }
 
     /**
      * This abstract method connects nodes according to state.
+     * @return {Effector} This is returned for method chain.
      * @abstract
      */
     connect() {
+      return this;
     }
 
     /**

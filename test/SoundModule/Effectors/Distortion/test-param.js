@@ -38,18 +38,8 @@ describe('Distortion TEST', () => {
                 expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
             });
 
-            it('should return `null`', () => {
-                distortion.param('curve', 'turbooverdrive');
-                expect(distortion.param('curve')).toBeNull();
-            });
-
             it('should return the instance of `Float32Array`', () => {
                 distortion.param('curve', 'distortion');
-                expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
-            });
-
-            it('should return the instance of `Float32Array`', () => {
-                distortion.param('curve', 'turbodistortion');
                 expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
             });
 
@@ -61,6 +51,46 @@ describe('Distortion TEST', () => {
             it('should return the instance of `Float32Array`', () => {
                 distortion.param('curve', new Float32Array([1, 1.5, 2]));
                 expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
+            });
+        });
+
+        describe('amount', () => {
+            afterEach(() => {
+                distortion.param('amount', 0.5);
+            });
+
+            // Getter
+            // Positive
+            it('should return 0.5', () => {
+                expect(distortion.param('amount')).toEqual(0.5);
+            });
+
+            // Negative
+            it('should return the instance of `Distortion`', () => {
+                expect(distortion.param('')).toEqual(jasmine.any(Distortion));
+            });
+
+            // Setter
+            // Positive
+            it('should return 0.95', () => {
+                distortion.param('amount', 0.95);
+                expect(distortion.param('amount')).toEqual(0.95);
+            });
+
+            it('should return 0.05', () => {
+                distortion.param('amount', 0.05);
+                expect(distortion.param('amount')).toEqual(0.05);
+            });
+
+            // Negative
+            it('should return 1', () => {
+                distortion.param('amount', 1);
+                expect(distortion.param('amount')).toEqual(0.5);
+            });
+
+            it('should return 0', () => {
+                distortion.param('amount', 0);
+                expect(distortion.param('amount')).toEqual(0.5);
             });
         });
 

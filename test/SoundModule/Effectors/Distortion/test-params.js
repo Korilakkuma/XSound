@@ -10,6 +10,7 @@ describe('Distortion TEST', () => {
             expect(distortion.params()).toEqual({
                 'state'   : false,
                 'curve'   : 'clean',
+                'amount'  : 0.5,
                 'samples' : 4096,
                 'drive'   : 1,
                 'color'   : 350,

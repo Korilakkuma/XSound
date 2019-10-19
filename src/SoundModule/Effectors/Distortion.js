@@ -8,39 +8,111 @@ import { Effector } from './Effector';
  * @extends {Effector}
  */
 export class Distortion extends Effector {
-    static CLEAN           = 'clean';
-    static CRUNCH          = 'crunch';
-    static OVERDRIVE       = 'overdrive';
-    static TURBOOVERDRIVE  = 'turbooverdrive';
-    static DISTORTION      = 'distortion';
-    static TURBODISTORTION = 'turbodistortion';
-    static FUZZ            = 'fuzz';
-
-    static AMOUNTS = {
-        'CLEAN'      : 0.00,
-        'CRUNCH'     : 0.20,
-        'OVERDRIVE'  : 0.50,
-        'DISTORTION' : 0.80,
-        'FUZZ'       : 0.99
-    };
+    static CLEAN      = 'clean';
+    static CRUNCH     = 'crunch';
+    static OVERDRIVE  = 'overdrive';
+    static DISTORTION = 'distortion';
+    static FUZZ       = 'fuzz';
 
     /**
      * This class (static) method creates the instance of `Float32Array` for distortion.
+     * @param {string} type This argument is one of 'clean', 'crunch', 'overdrive', 'distortion', 'fuzz'.
      * @param {number} amount This argument is the depth of distortion.
      * @param {number} numberOfSamples This argument is the size of `Float32Array`.
      * @return {Float32Array|null} This is `curve` property in `WaveShaperNode`.
      */
-    static createCurve = (amount, numberOfSamples) => {
+    static createCurve = (type, amount, numberOfSamples) => {
+        // This algorithms are from https://github.com/Theodeus/tuna/blob/master/tuna.js#L1301,L1359
         if ((amount > 0) && (amount < 1)) {
             const curves = new Float32Array(numberOfSamples);
 
-            const k = (2 * amount) / (1 - amount);
+            let x   = 0;
+            let y   = 0;
+            let a   = 0;
+            let k   = 0;
+            let abx = 0;
 
-            for (let i = 0; i < numberOfSamples; i++) {
-                // LINEAR INTERPOLATION: x := (c - a) * (z - y) / (b - a) + y
-                // a = 0, b = 2048, z = 1, y = -1, c = i
-                const x = (((i - 0) * (1 - (-1))) / (numberOfSamples - 0)) + (-1);
-                curves[i] = ((1 + k) * x) / (1 + k * Math.abs(x));
+            switch (type) {
+                case Distortion.CRUNCH:
+                    a = 1 - amount > 0.99 ? 0.99 : 1 - amount;
+
+                    for (let i = 0; i < numberOfSamples; i++) {
+                        x = i * 2 / numberOfSamples - 1;
+                        abx = Math.abs(x);
+
+                        if (abx < a) {
+                            y = abx;
+                        } else if (abx > a) {
+                            y = a + (abx - a) / (1 + Math.pow((abx - a) / (1 - a), 2));
+                        } else if (abx > 1) {
+                            y = abx;
+                        }
+
+                        curves[i] = (x === 0 ? 1 : Math.abs(x) / x) * y * (1 / ((a + 1) / 2));
+                    }
+
+                    /*
+                    const a    = 2 + Math.round(amount * 14);
+                    const bits = Math.round(Math.pow(2, a - 1));
+
+                    let x = 0;
+
+                    for (let i = 0; i < numberOfSamples; i++) {
+                        x = i * 2 / numberOfSamples - 1;
+                        curves[i] = Math.round(x * bits) / bits;
+                    }
+                    */
+
+                    break;
+                case Distortion.OVERDRIVE:
+                    k = (2 * amount) / (1 - amount);
+
+                    for (let i = 0; i < numberOfSamples; i++) {
+                        // LINEAR INTERPOLATION: x := (c - a) * (z - y) / (b - a) + y
+                        // a = 0, b = 2048, z = 1, y = -1, c = i
+                        const x = (((i - 0) * (1 - (-1))) / (numberOfSamples - 0)) + (-1);
+                        curves[i] = ((1 + k) * x) / (1 + k * Math.abs(x));
+                    }
+
+                    /*
+                    let x = 0;
+
+                    for (let i = 0; i < numberOfSamples; i++) {
+                        x = i * 2 / numberOfSamples - 1;
+
+                        if (x < -0.08905) {
+                            curves[i] = (-3 / 4) * (1 - (Math.pow((1 - (Math.abs(x) - 0.032857)), 12)) + (1 / 3) * (Math.abs(x) - 0.032847)) + 0.01;
+                        } else if (x >= -0.08905 && x < 0.320018) {
+                            curves[i] = (-6.153 * (x * x)) + 3.9375 * x;
+                        } else {
+                            curves[i] = 0.630035;
+                        }
+                    }
+                    */
+
+                    break;
+                case Distortion.DISTORTION:
+                    a = 1 - amount;
+
+                    for (let i = 0; i < numberOfSamples; i++) {
+                        x = i * 2 / numberOfSamples - 1;
+                        y = x < 0 ? -Math.pow(Math.abs(x), a + 0.04) : Math.pow(x, a);
+                        curves[i] = (Math.exp(2 * y) - Math.exp(-2 * y)) / (Math.exp(2 * y) + Math.exp(-2 * y));
+                    }
+
+                    break;
+                case Distortion.FUZZ:
+                    for (let i = 0; i < numberOfSamples; i++) {
+                        x = ((i * 2) / numberOfSamples) - 1;
+                        y = ((0.5 * Math.pow((x + 1.4), 2)) - 1) * y >= 0 ? 5.8 : 1.2;
+
+                        curves[i] = (Math.exp(y) - Math.exp(-y)) / (Math.exp(y) + Math.exp(-y));
+                    }
+
+                    break;
+                case Distortion.CLEAN:
+                default:
+                    return null;
             }
 
             return curves;
@@ -65,6 +137,7 @@ export class Distortion extends Effector {
         this.type = Distortion.CLEAN;
 
         // for creating curve
+        this.amount          = 0.5;
         this.numberOfSamples = 4096;
 
         // Initialize parameters
@@ -107,31 +180,23 @@ export class Distortion extends Effector {
                     switch (String(value).toLowerCase()) {
                         case Distortion.CLEAN:
                             this.type = Distortion.CLEAN;
-                            curve = Distortion.createCurve(Distortion.AMOUNTS.CLEAN, this.numberOfSamples);
+                            curve = Distortion.createCurve(Distortion.CLEAN, this.amount, this.numberOfSamples);
                             break;
                         case Distortion.CRUNCH:
                             this.type = Distortion.CRUNCH;
-                            curve = Distortion.createCurve(Distortion.AMOUNTS.CRUNCH, this.numberOfSamples);
+                            curve = Distortion.createCurve(Distortion.CRUNCH, this.amount, this.numberOfSamples);
                             break;
                         case Distortion.OVERDRIVE:
                             this.type = Distortion.OVERDRIVE;
-                            curve = Distortion.createCurve(Distortion.AMOUNTS.OVERDRIVE, this.numberOfSamples);
-                            break;
-                        case Distortion.TURBOOVERDRIVE:
-                            this.type = Distortion.TURBOOVERDRIVE;
-                            curve = null;
+                            curve = Distortion.createCurve(Distortion.OVERDRIVE, this.amount, this.numberOfSamples);
                             break;
                         case Distortion.DISTORTION:
                             this.type = Distortion.DISTORTION;
-                            curve = Distortion.createCurve(Distortion.AMOUNTS.DISTORTION, this.numberOfSamples);
-                            break;
-                        case Distortion.TURBODISTORTION:
-                            this.type = Distortion.TURBODISTORTION;
-                            curve = Distortion.createCurve(Distortion.AMOUNTS.DISTORTION, this.numberOfSamples);
+                            curve = Distortion.createCurve(Distortion.DISTORTION, this.amount, this.numberOfSamples);
                             break;
                         case Distortion.FUZZ:
                             this.type = Distortion.FUZZ;
-                            curve = Distortion.createCurve(Distortion.AMOUNTS.FUZZ, this.numberOfSamples);
+                            curve = Distortion.createCurve(Distortion.FUZZ, this.amount, this.numberOfSamples);
                             break;
                         default:
                             if (value instanceof Float32Array) {
@@ -142,6 +207,19 @@ export class Distortion extends Effector {
                     }
 
                     this.distortion.curve = curve;
+
+                    break;
+                case 'amount':
+                    if (value === undefined) {
+                        return this.amount;
+                    }
+
+                    v = parseFloat(value);
+
+                    if ((v > 0) && (v < 1)) {
+                        this.amount = v;
+                        this.param('curve', this.type);
+                    }
 
                     break;
                 case 'samples':
@@ -201,7 +279,6 @@ export class Distortion extends Effector {
         this.color.disconnect(0);
         this.drive.disconnect(0);
         this.distortion.disconnect(0);
-        this.processor.disconnect(0);
         this.tone.disconnect(0);
 
         if (this.isActive) {
@@ -211,8 +288,7 @@ export class Distortion extends Effector {
             this.input.connect(this.color);
             this.color.connect(this.drive);
             this.drive.connect(this.distortion);
-            this.distortion.connect(this.processor);
-            this.processor.connect(this.tone);
+            this.distortion.connect(this.tone);
             this.tone.connect(this.output);
         } else {
             // Effect OFF
@@ -225,66 +301,11 @@ export class Distortion extends Effector {
     }
 
     /** @override */
-    start() {
-        if (this.isActive) {
-            const bufferSize = this.processor.bufferSize;
-
-            this.processor.onaudioprocess = event => {
-                const inputLs  = event.inputBuffer.getChannelData(0);
-                const inputRs  = event.inputBuffer.getChannelData(1);
-                const outputLs = event.outputBuffer.getChannelData(0);
-                const outputRs = event.outputBuffer.getChannelData(1);
-
-                if ((this.type === Distortion.TURBOOVERDRIVE) || (this.type === Distortion.TURBODISTORTION)) {
-                    for (let i = 0; i < bufferSize; i++) {
-                        switch (this.type) {
-                            case Distortion.TURBOOVERDRIVE:
-                                outputLs[i] = inputLs[i] >= 0 ? Math.atan(inputLs[i]) / (Math.PI / 2) : 0.1 * (Math.atan(inputLs[i]) / (Math.PI / 2));
-                                outputRs[i] = inputRs[i] >= 0 ? Math.atan(inputRs[i]) / (Math.PI / 2) : 0.1 * (Math.atan(inputRs[i]) / (Math.PI / 2));
-                                break;
-                            case Distortion.TURBODISTORTION:
-                                outputLs[i] = Math.abs(inputLs[i]);
-                                outputRs[i] = Math.abs(inputRs[i]);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                } else {
-                    outputLs.set(inputLs);
-                    outputRs.set(inputRs);
-                }
-            };
-        }
-
-        return this;
-    }
-
-    /** @override */
-    stop() {
-        // Effector's state is active ?
-        if (this.isActive) {
-            // Stop `onaudioprocess` event
-            this.processor.disconnect(0);
-            this.processor.onaudioprocess = null;
-
-            // Connect nodes again
-            this.input.connect(this.color);
-            this.color.connect(this.drive);
-            this.drive.connect(this.distortion);
-            this.distortion.connect(this.processor);
-            this.processor.connect(this.tone);
-            this.tone.connect(this.output);
-        }
-
-        return this;
-    }
-
-    /** @override */
     params() {
         const params = {
             'state'   : this.isActive,
             'curve'   : this.type,
+            'amount'  : this.amount,
             'samples' : this.numberOfSamples,
             'drive'   : this.drive.gain.value,
             'color'   : this.color.frequency.value,

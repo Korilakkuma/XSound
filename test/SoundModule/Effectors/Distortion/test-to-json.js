@@ -7,7 +7,7 @@ describe('Distortion TEST', () => {
         const distortion = new Distortion(audiocontext, 1024);
 
         it('should return JSON', () => {
-            expect(distortion.toJSON()).toEqual('{"state":false,"curve":"clean","samples":4096,"drive":1,"color":350,"tone":350}');
+            expect(distortion.toJSON()).toEqual('{"state":false,"curve":"clean","amount":0.5,"samples":4096,"drive":1,"color":350,"tone":350}');
         });
     });
 });

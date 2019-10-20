@@ -6,6 +6,30 @@ describe('Wah TEST', () => {
     describe('Wah#param', () => {
         const wah = new Wah(audiocontext, 1024);
 
+        describe('auto', () => {
+            afterEach(() => {
+                wah.param('auto', false);
+            });
+
+
+            // Getter
+            // Positive
+            it('should return `false`', () => {
+                expect(wah.param('auto')).toBeFalsy();
+            });
+
+            // Negative
+            it('should return the instance of `Wah`', () => {
+                expect(wah.param('')).toEqual(jasmine.any(Wah));
+            });
+
+            // Setter
+            it('should return `true`', () => {
+                wah.param('auto', true);
+                expect(wah.param('auto')).toBeTruthy();
+            });
+        });
+
         describe('cutoff', () => {
             afterEach(() => {
                 wah.param('cutoff', 350);

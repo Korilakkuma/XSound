@@ -9,6 +9,7 @@ describe('Wah TEST', () => {
         it('should return associative array', () => {
             expect(wah.params()).toEqual({
                 'state'     : false,
+                'auto'      : false,
                 'cutoff'    : 350,
                 'depth'     : 0,
                 'rate'      : 0,

@@ -11,7 +11,7 @@ describe('SoundModule TEST', () => {
                 'mastervolume'      : 1,
                 'compressor'        : { 'state' : true, 'threshold' : -24, 'knee' : 30, 'ratio' : 12, 'attack' : 0.003000000026077032, 'release' : 0.25 },
                 'distortion'        : { 'state' : false, 'curve' : 'clean', 'amount' : 0.5, 'samples' : 4096, 'drive' : 1, 'color' : 350, 'tone' : 350 },
-                'wah'               : { 'state' : false, 'cutoff' : 350, 'depth' : 0, 'rate' : 0, 'resonance' : 1 },
+                'wah'               : { 'state' : false, 'auto' : false, 'cutoff' : 350, 'depth' : 0, 'rate' : 0, 'resonance' : 1 },
                 'equalizer'         : { 'state' : false, 'bass' : 0, 'middle' : 0, 'treble' : 0, 'presence' : 0 },
                 'filter'            : { 'state' : false, 'type' : 'lowpass', 'frequency' : 350, 'Q' : 1, 'gain' : 0, 'range' : 0.1, 'attack' : 0.01, 'decay' : 0.3, 'sustain' : 1, 'release' : 1 },
                 'tremolo'           : { 'state' : false, 'depth' : 0, 'rate' : 0, 'wave' : 'sine' },

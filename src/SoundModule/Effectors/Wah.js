@@ -70,7 +70,7 @@ export class Wah extends Effector {
                 case 'frequency':
                 case 'cutoff'   :
                     if (value === undefined) {
-                        return this.lowpass.frequency.value;
+                        return this.autoWah ? this.sensitivity.frequency.value : this.lowpass.frequency.value;
                     }
 
                     v   = parseFloat(value);
@@ -118,7 +118,7 @@ export class Wah extends Effector {
                     break;
                 case 'resonance':
                     if (value === undefined) {
-                        return this.lowpass.Q.value;
+                        return this.autoWah ? this.sensitivity.Q.value : this.lowpass.Q.value;
                     }
 
                     v   = parseFloat(value);

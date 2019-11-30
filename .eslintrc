@@ -10,7 +10,10 @@
     "standard"
   ],
   "rules": {
-    "indent": 0,
+    "indent": [2, 4, {
+      "ignoredNodes": ["TemplateLiteral"],
+      "SwitchCase": 1,
+    }],
     "key-spacing": 0,
     "no-case-declarations": 0,
     "no-console": 1,

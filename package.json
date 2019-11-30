@@ -12,6 +12,11 @@
     "prepublish": "npm run build",
     "test": "npm run lint && karma start"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run fix"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Korilakkuma/XSound.git"
@@ -44,6 +49,7 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.1.0",
     "jasmine": "^3.5.0",
     "karma": "^4.4.1",
     "karma-chrome-launcher": "^3.1.0",

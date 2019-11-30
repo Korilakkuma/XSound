@@ -43,7 +43,7 @@ export class Effector {
      * @abstract
      */
     param() {
-      return this;
+        return this;
     }
 
     /**
@@ -52,7 +52,7 @@ export class Effector {
      * @abstract
      */
     connect() {
-      return this;
+        return this;
     }
 
     /**
@@ -104,7 +104,7 @@ export class Effector {
             // Create the instance of `OscillatorNode` again
             this.lfo = this.context.createOscillator();
 
-           // for legacy browsers
+            // for legacy browsers
             this.lfo.start = this.lfo.start || this.lfo.noteOn;
             this.lfo.stop  = this.lfo.stop  || this.lfo.noteOff;
 

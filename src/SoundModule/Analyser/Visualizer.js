@@ -504,17 +504,17 @@ export class Visualizer {
      * This method clears graphics.
      */
     clear() {
-      if (this.context) {
-        const { width, height } = this.canvas;
+        if (this.context) {
+            const { width, height } = this.canvas;
 
-        this.context.clearRect(0, 0, width, height);
-      }
+            this.context.clearRect(0, 0, width, height);
+        }
 
-      if (this.svg) {
-        this.svg.innerHTML = '';
-      }
+        if (this.svg) {
+            this.svg.innerHTML = '';
+        }
 
-      return this;
+        return this;
     }
 
     /** @override */

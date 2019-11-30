@@ -222,9 +222,9 @@ export class Filter extends Effector {
         if (this.isActive) {
             let s = parseFloat(stopTime) - this.release;
 
-           if (isNaN(s) || (s < this.context.currentTime)) {
-               s = this.context.currentTime;
-           }
+            if (isNaN(s) || (s < this.context.currentTime)) {
+                s = this.context.currentTime;
+            }
 
             const t3 = s;
             const t4 = this.release;

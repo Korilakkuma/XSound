@@ -2,6 +2,7 @@
 
 import { OscillatorModule } from '../OscillatorModule';
 import { OneshotModule } from '../OneshotModule';
+import { NoiseModule } from '../NoiseModule';
 
 /**
  * This class defines properties for playing the MML (Music Macro Language).
@@ -86,7 +87,7 @@ export class MML {
     constructor(context) {
         this.context = context;
 
-        // for the array of `OscillatorNode` or `OscillatorModule` or `OneshotModule`
+        // for the array of `OscillatorNode` or `OscillatorModule` or `OneshotModule` or `NoiseModule`
         this.source = null;
 
         this.sequences = [];  /** @type {Array.<Array.<object>>} */
@@ -131,7 +132,7 @@ export class MML {
 
     /**
      * This method parses MML string.
-     * @param {Array.<OscillatorNode>|OscillatorModule|OneshotModule} source This argument is in order to select sound source.
+     * @param {Array.<OscillatorNode>|OscillatorModule|OneshotModule|NoiseModule} source This argument is in order to select sound source.
      * @param {Array.<string>} mmls This argument is MML strings.
      * @param {number} offset This argument is in order to correct the index of one-shot audio.
      * @return {Array.<Array.<object>>} This is returned as array that contains object for playing the MML.
@@ -159,7 +160,7 @@ export class MML {
             this.source = source;
         } else if (source instanceof OscillatorNode) {
             this.source = [source];
-        } else if ((source instanceof OscillatorModule) || (source instanceof OneshotModule)) {
+        } else if ((source instanceof OscillatorModule) || (source instanceof OneshotModule) || (source instanceof NoiseModule)) {
             this.source = source;
         } else {
             return this;
@@ -458,6 +459,9 @@ export class MML {
                 }
 
                 this.callbacks.start(sequence, this.offset);
+            } else if (this.source instanceof NoiseModule) {
+                this.source.start(connects);
+                this.callbacks.start(sequence);
             }
 
             this.timerids[p] = window.setTimeout(() => {
@@ -474,6 +478,9 @@ export class MML {
                     }
 
                     this.callbacks.stop(sequence, this.offset);
+                } else if (this.source instanceof NoiseModule) {
+                    this.source.stop();
+                    this.callbacks.stop(sequence);
                 }
 
                 // for `MML#stop`
@@ -512,6 +519,9 @@ export class MML {
             }
 
             this.callbacks.stop(sequence, this.offset);
+        } else if (this.source instanceof NoiseModule) {
+            this.source.stop();
+            this.callbacks.stop(sequence);
         }
 
         for (let i = 0, len = this.timerids.length; i < len; i++) {

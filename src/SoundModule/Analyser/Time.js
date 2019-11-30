@@ -130,18 +130,18 @@ export class Time extends Visualizer {
 
                         break;
                     case 'rect':
-                       // Set style
-                       if (this.styles.wave !== 'gradient') {
-                           context.fillStyle = this.styles.wave;
-                       }
+                        // Set style
+                        if (this.styles.wave !== 'gradient') {
+                            context.fillStyle = this.styles.wave;
+                        }
 
                         // Draw wave
                         for (let i = 0, len = data.length; i < len; i++) {
                             const x = ((i / len) * innerWidth) + this.styles.left;
                             const y = (0.5 - (data[i] / 255)) * innerHeight;
 
-                           // Set style
-                           if (this.styles.wave === 'gradient') {
+                            // Set style
+                            if (this.styles.wave === 'gradient') {
                                 const upside   = (innerHeight / 2) + this.styles.top;
                                 const gradient = context.createLinearGradient(0, upside, 0, (upside + y));
 

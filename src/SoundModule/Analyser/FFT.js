@@ -179,18 +179,18 @@ export class FFT extends Visualizer {
 
                         break;
                     case 'rect':
-                       // Set style
-                       if (this.styles.wave !== 'gradient') {
-                           context.fillStyle = this.styles.wave;
-                       }
+                        // Set style
+                        if (this.styles.wave !== 'gradient') {
+                            context.fillStyle = this.styles.wave;
+                        }
 
                         // Draw wave
                         for (let i = 0; i < drawnSize; i++) {
                             const x = ((i / drawnSize) * innerWidth) + this.styles.left;
                             const y = -1 * ((data[i] / 255) * innerHeight);
 
-                           // Set style
-                           if (this.styles.wave === 'gradient') {
+                            // Set style
+                            if (this.styles.wave === 'gradient') {
                                 const upside   = innerHeight + this.styles.top;
                                 const gradient = context.createLinearGradient(0, upside, 0, (upside + y));
 

@@ -825,10 +825,10 @@ export class MML {
         }
 
         return abc.replace(/R/gi, 'z')
-                  .replace(/[#+]/g, '^')
-                  .replace(/-/g, '_')
-                  .replace(/&/g, '-')
-                  .replace(/\s{2}/g, ' ');
+            .replace(/[#+]/g, '^')
+            .replace(/-/g, '_')
+            .replace(/&/g, '-')
+            .replace(/\s{2}/g, ' ');
     }
 
     /**

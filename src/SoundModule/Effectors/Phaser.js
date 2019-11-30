@@ -217,12 +217,12 @@ export class Phaser extends Effector {
         super.stop(stopTime, releaseTime);
 
         if (this.isActive) {
-           // Connect nodes again
-           this.lfo.connect(this.depth);
+            // Connect nodes again
+            this.lfo.connect(this.depth);
 
-           for (let i = 0; i < Phaser.MAXIMUM_STAGES; i++) {
-               this.depth.connect(this.filters[i].frequency);
-           }
+            for (let i = 0; i < Phaser.MAXIMUM_STAGES; i++) {
+                this.depth.connect(this.filters[i].frequency);
+            }
         }
 
         return this;

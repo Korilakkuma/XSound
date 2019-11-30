@@ -97,7 +97,7 @@ export class OneshotModule extends SoundModule {
 
         for (let i = 0, len = settings.length; i < len; i++) {
             if ('buffer' in settings[i]) {
-               const buffer = parseInt(settings[i].buffer, 10);
+                const buffer = parseInt(settings[i].buffer, 10);
 
                 if ((buffer >= 0) && (buffer < this.buffers.length)) {
                     settings[i].buffer = buffer;

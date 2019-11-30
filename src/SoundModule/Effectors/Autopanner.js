@@ -48,7 +48,7 @@ export class Autopanner extends Effector {
             switch (k) {
                 case 'depth':
                     if (value === undefined) {
-                       return this.depth.gain.value;
+                        return this.depth.gain.value;
                     }
 
                     v   = parseFloat(value);
@@ -62,7 +62,7 @@ export class Autopanner extends Effector {
                     break;
                 case 'rate':
                     if (value === undefined) {
-                       return this.rate.value;
+                        return this.rate.value;
                     }
 
                     v   = parseFloat(value);

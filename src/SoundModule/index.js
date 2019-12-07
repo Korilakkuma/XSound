@@ -7,6 +7,7 @@ import { Effector } from './Effectors/Effector';
 import { Compressor } from './Effectors/Compressor';
 import { Distortion } from './Effectors/Distortion';
 import { Wah } from './Effectors/Wah';
+import { PitchShifter } from './Effectors/PitchShifter';
 import { Equalizer } from './Effectors/Equalizer';
 import { Filter } from './Effectors/Filter';
 import { Autopanner } from './Effectors/Autopanner';
@@ -103,6 +104,7 @@ export class SoundModule {
         this.compressor        = new Compressor(context, size);
         this.distortion        = new Distortion(context, size);
         this.wah               = new Wah(context, size);
+        this.pitchshifter      = new PitchShifter(context, size);
         this.equalizer         = new Equalizer(context, size);
         this.filter            = new Filter(context, size);
         this.autopanner        = context.createStereoPanner ? new Autopanner(context, size) : new AutopannerFallback(context, size);
@@ -122,6 +124,7 @@ export class SoundModule {
             this.compressor,
             this.distortion,
             this.wah,
+            this.pitchshifter,
             this.equalizer,
             this.filter,
             this.autopanner,
@@ -297,6 +300,7 @@ export class SoundModule {
             case 'compressor'   :
             case 'distortion'   :
             case 'wah'          :
+            case 'pitchshifter' :
             case 'equalizer'    :
             case 'filter'       :
             case 'autopanner'   :

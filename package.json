@@ -35,6 +35,9 @@
     "url": "https://github.com/Korilakkuma/XSound/issues"
   },
   "homepage": "https://xsound.jp/",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.6.4",

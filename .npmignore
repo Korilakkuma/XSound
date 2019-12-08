@@ -8,6 +8,7 @@ docker-compose.yml
 webpack.config.js
 karma.conf.js
 .github
+.dockerignore
 .babelrc
 .editorconfig
 .eslintrc

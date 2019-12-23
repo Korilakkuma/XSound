@@ -1,6 +1,6 @@
 {
   "name": "xsound",
-  "version": "2.18.0",
+  "version": "2.18.1",
   "description": "Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ... etc",
   "main": "build/xsound.js",
   "scripts": {
@@ -43,26 +43,26 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.7.5",
+    "@babel/core": "^7.7.7",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "eslint-cli": "^1.1.1",
     "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "husky": "^3.1.0",
+    "husky": "^4.0.1",
     "jasmine": "^3.5.0",
     "karma": "^4.4.1",
     "karma-chrome-launcher": "^3.1.0",
     "karma-cli": "^2.0.0",
-    "karma-jasmine": "^2.0.1",
+    "karma-jasmine": "^3.0.1",
     "karma-webpack": "^4.0.2",
-    "webpack": "^4.41.2",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
 }

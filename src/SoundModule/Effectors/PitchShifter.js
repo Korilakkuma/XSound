@@ -8,14 +8,145 @@ import { Effector } from './Effector';
  * @extends {Effector}
  */
 export class PitchShifter extends Effector {
-    static J = 48;
+    /**
+     * This class (static) method executes FFT.
+     * @param {Float32Array} reals This argument is the instance of `Float32Array` for real number.
+     * @param {Float32Array} imags This argument is the instance of `Float32Array` for imaginary number.
+     * @param {number} size This argument is FFT size (power of two).
+     */
+    static FFT(reals, imags, size) {
+        const pow2 = n => Math.pow(2, n);
 
-    static sinc(x) {
-        if (x === 0) {
-            return 1;
+        const indexes = new Float32Array(size);
+
+        const numberOfStages = Math.log2(size);
+
+        for (let stage = 1; stage <= numberOfStages; stage++) {
+            for (let i = 0; i < pow2(stage - 1); i++) {
+                const rest = numberOfStages - stage;
+
+                for (let j = 0; j < pow2(rest); j++) {
+                    const n = i * pow2(rest + 1) + j;
+                    const m = pow2(rest) + n;
+                    const r = j * pow2(stage - 1);
+
+                    const areal = reals[n];
+                    const aimag = imags[n];
+                    const breal = reals[m];
+                    const bimag = imags[m];
+                    const creal = Math.cos((2.0 * Math.PI * r) / size);
+                    const cimag = -1 * Math.sin((2.0 * Math.PI * r) / size);
+
+                    if (stage < numberOfStages) {
+                        reals[n] = areal + breal;
+                        imags[n] = aimag + bimag;
+                        reals[m] = (creal * (areal - breal)) - (cimag * (aimag - bimag));
+                        imags[m] = (creal * (aimag - bimag)) + (cimag * (areal - breal));
+                    } else {
+                        reals[n] = areal + breal;
+                        imags[n] = aimag + bimag;
+                        reals[m] = areal - breal;
+                        imags[m] = aimag - bimag;
+                    }
+                }
+            }
         }
 
-        return Math.sin(x) / x;
+        for (let stage = 1; stage <= numberOfStages; stage++) {
+            const rest = numberOfStages - stage;
+
+            for (let i = 0; i < pow2(stage - 1); i++) {
+                indexes[pow2(stage - 1) + i] = indexes[i] + pow2(rest);
+            }
+        }
+
+        for (let k = 0; k < size; k++) {
+            if (indexes[k] <= k) {
+                continue;
+            }
+
+            const real = reals[indexes[k]];
+            const imag = imags[indexes[k]];
+
+            reals[indexes[k]] = reals[k];
+            imags[indexes[k]] = imags[k];
+
+            reals[k] = real;
+            imags[k] = imag;
+        }
+    }
+
+    /**
+     * This class (static) method executes IFFT.
+     * @param {Float32Array} reals This argument is the instance of `Float32Array` for real number.
+     * @param {Float32Array} imags This argument is the instance of `Float32Array` for imaginary number.
+     * @param {number} size This argument is IFFT size (power of two).
+     */
+    static IFFT(reals, imags, size) {
+        const pow2 = n => Math.pow(2.0, n);
+
+        const indexes = new Float32Array(size);
+
+        const numberOfStages = Math.log2(size);
+
+        for (let stage = 1; stage <= numberOfStages; stage++) {
+            for (let i = 0; i < pow2(stage - 1); i++) {
+                const rest = numberOfStages - stage;
+
+                for (let j = 0; j < pow2(rest, 2); j++) {
+                    const n = i * pow2(rest + 1) + j;
+                    const m = pow2(rest) + n;
+                    const r = j * pow2(stage - 1);
+
+                    const areal = reals[n];
+                    const aimag = imags[n];
+                    const breal = reals[m];
+                    const bimag = imags[m];
+                    const creal = Math.cos((2.0 * Math.PI * r) / size);
+                    const cimag = Math.sin((2.0 * Math.PI * r) / size);
+
+                    if (stage < numberOfStages) {
+                        reals[n] = areal + breal;
+                        imags[n] = aimag + bimag;
+                        reals[m] = (creal * (areal - breal)) - (cimag * (aimag - bimag));
+                        imags[m] = (creal * (aimag - bimag)) + (cimag * (areal - breal));
+                    } else {
+                        reals[n] = areal + breal;
+                        imags[n] = aimag + bimag;
+                        reals[m] = areal - breal;
+                        imags[m] = aimag - bimag;
+                    }
+                }
+            }
+        }
+
+        for (let stage = 1; stage <= numberOfStages; stage++) {
+            const rest = numberOfStages - stage;
+
+            for (let i = 0; i < pow2(stage - 1); i++) {
+                indexes[pow2(stage - 1) + i] = indexes[i] + pow2(rest);
+            }
+        }
+
+        for (let k = 0; k < size; k++) {
+            if (indexes[k] <= k) {
+                continue;
+            }
+
+            const real = reals[indexes[k]];
+            const imag = imags[indexes[k]];
+
+            reals[indexes[k]] = reals[k];
+            imags[indexes[k]] = imags[k];
+
+            reals[k] = real;
+            imags[k] = imag;
+        }
+
+        for (let k = 0; k < size; k++) {
+            reals[k] /= size;
+            imags[k] /= size;
+        }
     }
 
     /**
@@ -99,24 +230,42 @@ export class PitchShifter extends Effector {
                 const outputLs = event.outputBuffer.getChannelData(0);
                 const outputRs = event.outputBuffer.getChannelData(1);
 
-                if (this.isActive) {
+                if (this.isActive && (this.pitch !== 1)) {
+                    const realLs = new Float32Array(inputLs);
+                    const realRs = new Float32Array(inputRs);
+                    const imagLs = new Float32Array(bufferSize);
+                    const imagRs = new Float32Array(bufferSize);
+
+                    PitchShifter.FFT(realLs, imagLs, bufferSize);
+                    PitchShifter.FFT(realRs, imagRs, bufferSize);
+
+                    const arealLs = new Float32Array(bufferSize);
+                    const arealRs = new Float32Array(bufferSize);
+                    const aimagLs = new Float32Array(bufferSize);
+                    const aimagRs = new Float32Array(bufferSize);
+
                     for (let i = 0; i < bufferSize; i++) {
-                        const t      = this.pitch * i;
-                        const offset = Math.floor(t);
+                        const offset = Math.floor(this.pitch * i);
 
-                        let outputL = 0;
-                        let outputR = 0;
+                        let eq = 1;
 
-                        for (let j = offset - (PitchShifter.J / 2); j <= offset + (PitchShifter.J / 2); j++) {
-                            if ((j > 0) && (j < bufferSize)) {
-                                outputL += inputLs[j] * PitchShifter.sinc(Math.PI * (t - j));
-                                outputR += inputRs[j] * PitchShifter.sinc(Math.PI * (t - j));
-                            }
+                        if (i > (bufferSize / 2)) {
+                            eq = 0;
                         }
 
-                        outputLs[i] = outputL;
-                        outputRs[i] = outputR;
+                        if ((offset >= 0) && (offset < bufferSize)) {
+                            arealLs[offset] += eq * realLs[i];
+                            aimagLs[offset] += eq * imagLs[i];
+                            arealRs[offset] += eq * realRs[i];
+                            aimagRs[offset] += eq * imagRs[i];
+                        }
                     }
+
+                    PitchShifter.IFFT(arealLs, aimagLs, bufferSize);
+                    PitchShifter.IFFT(arealRs, aimagRs, bufferSize);
+
+                    outputLs.set(arealLs);
+                    outputRs.set(arealRs);
                 } else {
                     outputLs.set(inputLs);
                     outputRs.set(inputRs);

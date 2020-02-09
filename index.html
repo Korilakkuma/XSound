@@ -270,6 +270,10 @@
             animation: fade-in 0.6s ease 1 normal 2.2s forwards;
         }
 
+        .-highlight {
+            animation: highlight 0.2s linear 1 normal 0s backwards;
+        }
+
         @keyframes translate-x {
               0% { opacity: 0; transform: translateX(var(--translate-x)); }
              50% { opacity: 1; transform: translateX(var(--translate-x)); }
@@ -286,6 +290,11 @@
             100% { opacity: 1; }
         }
 
+        @keyframes highlight {
+              0% { background-color: #eee; }
+             50% { background-color: #c000c0; }
+            100% { background-color: #eee; }
+        }
     </style>
 </head>
 <body>
@@ -314,13 +323,13 @@
         <h1>Let's Begin !</h1>
         <section>
             <h1>NPM</h1>
-            <pre><code>$ npm install --save xsound</code></pre>
-            <button type="button" onclick="navigator.clipboard.writeText('npm install --save xsound')">COPY</button>
+            <pre id="pre-npm"><code>$ npm install --save xsound</code></pre>
+            <button id="button-npm" type="button">COPY</button>
         </section>
         <section>
             <h1>CDN</h1>
-            <pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js&quot;&gt;&lt;/script&gt;</code></pre>
-            <button type="button" onclick="navigator.clipboard.writeText('<script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js&quot;></script>')">COPY</button>
+            <pre id="pre-cdn"><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+            <button id="button-cdn" type="button">COPY</button>
         </section>
     </main>
     <footer>
@@ -334,6 +343,42 @@
 
     ga('create', 'UA-41390233-1', 'auto');
     ga('send', 'pageview');
+    </script>
+    <script type="text/javascript">
+    const preNpm = document.getElementById('pre-npm');
+    const preCdn = document.getElementById('pre-cdn');
+
+    preNpm.addEventListener('animationend', (event) => {
+        event.currentTarget.classList.remove('-highlight');
+    }, false);
+
+    preCdn.addEventListener('animationend', (event) => {
+        event.currentTarget.classList.remove('-highlight');
+    }, false);
+
+    document.getElementById('button-npm').addEventListener('mousedown', () => {
+        if (!navigator.clipboard) {
+            return;
+        }
+
+        navigator.clipboard.writeText('npm install --save xsound')
+            .then(() => {
+                preNpm.classList.add('-highlight');
+            })
+            .catch(console.error);
+    }, false);
+
+    document.getElementById('button-cdn').addEventListener('mousedown', () => {
+        if (!navigator.clipboard) {
+            return;
+        }
+
+        navigator.clipboard.writeText('<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js" />')
+            .then(() => {
+                preCdn.classList.add('-highlight');
+            })
+            .catch(console.error);
+    }, false);
     </script>
 </body>
 </html>

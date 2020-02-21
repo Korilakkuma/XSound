@@ -2,6 +2,7 @@
 
 import { SoundModule } from '../SoundModule';
 import { NoiseGate }  from './NoiseGate';
+import { NoiseSuppressor }  from './NoiseSuppressor';
 
 /**
  * This class defines properties that processes sound data from WebRTC in Web Audio API.
@@ -34,7 +35,8 @@ export class StreamModule extends SoundModule {
 
         this.isStop = true;
 
-        this.noisegate = new NoiseGate();
+        this.noisegate       = new NoiseGate();
+        this.noisesuppressor = new NoiseSuppressor();
     }
 
     /**
@@ -165,6 +167,9 @@ export class StreamModule extends SoundModule {
                         outputLs[i] = this.noisegate.start(inputLs[i]);
                         outputRs[i] = this.noisegate.start(inputRs[i]);
                     }
+
+                    this.noisesuppressor.start(inputLs, outputLs, bufferSize);
+                    this.noisesuppressor.start(inputRs, outputRs, bufferSize);
                 };
             }
         };
@@ -245,10 +250,9 @@ export class StreamModule extends SoundModule {
         const params = super.params();
 
         params.stream = {
-            'output'    : this.output,
-            'noisegate' : {
-                'level' : this.noisegate.param('level')
-            }
+            'output'          : this.output,
+            'noisegate'       : { 'level'     : this.noisegate.param('level') },
+            'noisesuppressor' : { 'threshold' : this.noisesuppressor.param('threshold') }
         };
 
         return params;

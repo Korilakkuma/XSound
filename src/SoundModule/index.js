@@ -329,7 +329,8 @@ export class SoundModule {
                 }
 
                 // fall through
-            case 'noisegate':
+            case 'noisegate'      :
+            case 'noisesuppressor':
                 if (m in this) {
                     return this[m];  // StreamModule
                 }

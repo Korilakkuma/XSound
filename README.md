@@ -79,8 +79,9 @@ import { XSound, X } from 'xsound';
 $ git clone git@github.com:Korilakkuma/XSound.git
 $ cd XSound
 $ npm install
-$ docker-compose up -d --build
-$ npm run build:watch
+$ npm run build
+$ npm run dev
+$ open http://localhost:8080/playground/
 ```
 
 ## API Documentation

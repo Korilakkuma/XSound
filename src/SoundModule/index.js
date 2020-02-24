@@ -288,7 +288,7 @@ export class SoundModule {
     /**
      * This method gets the instance of module that is defined by this library. This method enables to access the instance of module by unified call.
      * @param {string} module This argument is module's name.
-     * @return {Analyser|Recorder|Session|Effector|Listener|EnvelopeGenerator|Glide|VocalCanceler|NoiseGate} This value is the instance of module.
+     * @return {Analyser|Recorder|Session|Effector|Listener|EnvelopeGenerator|Glide|VocalCanceler|NoiseGate|NoiseSuppressor} This value is the instance of module.
      */
     module(module) {
         const m = String(module).replace(/-/g, '').toLowerCase();

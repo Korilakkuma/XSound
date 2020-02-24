@@ -9,6 +9,7 @@ describe('SoundModule TEST', () => {
         it('should return associative array', () => {
             expect(soundModule.params()).toEqual({
                 'mastervolume'      : 1,
+                'stereo'            : { 'state' : false, 'time' : 0 },
                 'compressor'        : { 'state' : true, 'threshold' : -24, 'knee' : 30, 'ratio' : 12, 'attack' : 0.003000000026077032, 'release' : 0.25 },
                 'distortion'        : { 'state' : false, 'curve' : 'clean', 'amount' : 0.5, 'samples' : 4096, 'drive' : 1, 'color' : 350, 'tone' : 350 },
                 'wah'               : { 'state' : false, 'auto' : false, 'cutoff' : 350, 'depth' : 0, 'rate' : 0, 'resonance' : 1 },

@@ -4,6 +4,7 @@ import { Analyser } from './Analyser';
 import { Recorder } from './Recorder';
 import { Session } from './Session';
 import { Effector } from './Effectors/Effector';
+import { Stereo } from './Effectors/Stereo';
 import { Compressor } from './Effectors/Compressor';
 import { Distortion } from './Effectors/Distortion';
 import { Wah } from './Effectors/Wah';
@@ -101,6 +102,7 @@ export class SoundModule {
         this.analyser          = new Analyser(context);
         this.recorder          = new Recorder(context, size, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
         this.session           = new Session(context, size, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS, this.analyser);
+        this.stereo            = new Stereo(context, size);
         this.compressor        = new Compressor(context, size);
         this.distortion        = new Distortion(context, size);
         this.wah               = new Wah(context, size);
@@ -121,6 +123,7 @@ export class SoundModule {
 
         // The default order for connection
         this.modules = [
+            this.stereo,
             this.compressor,
             this.distortion,
             this.wah,
@@ -297,6 +300,7 @@ export class SoundModule {
             case 'analyser'     :
             case 'recorder'     :
             case 'session'      :
+            case 'stereo'       :
             case 'compressor'   :
             case 'distortion'   :
             case 'wah'          :
@@ -353,6 +357,7 @@ export class SoundModule {
             s = this.context.currentTime;
         }
 
+        this.stereo.start(s);
         this.chorus.start(s);
         this.flanger.start(s);
         this.phaser.start(s);
@@ -377,6 +382,7 @@ export class SoundModule {
             s = this.context.currentTime;
         }
 
+        this.stereo.stop(s);
         this.chorus.stop(s);
         this.flanger.stop(s);
         this.phaser.stop(s);

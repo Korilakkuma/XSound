@@ -17,8 +17,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run fix"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -65,6 +71,7 @@
     "karma-cli": "^2.0.0",
     "karma-jasmine": "^3.1.1",
     "karma-webpack": "^4.0.2",
+    "lint-staged": "^10.1.2",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

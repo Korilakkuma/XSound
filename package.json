@@ -11,6 +11,7 @@
     "lint": "eslint src",
     "fix": "eslint src --fix",
     "build": "npm run clean && webpack --progress --mode production",
+    "watch": "npm run clean && webpack --progress --watch",
     "dev": "webpack-dev-server --progress",
     "prepublish": "npm run build",
     "test": "npm run lint && karma start"

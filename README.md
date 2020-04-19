@@ -76,12 +76,25 @@ import { XSound, X } from 'xsound';
 
 ## Setup
 
+### Use Webpack Dev Server
+
 ```bash
 $ git clone git@github.com:Korilakkuma/XSound.git
 $ cd XSound
 $ npm install
 $ npm run build
 $ npm run dev
+$ open http://localhost:8080/playground/
+```
+
+### Use Docker
+
+```bash
+$ git clone git@github.com:Korilakkuma/XSound.git
+$ cd XSound
+$ npm install
+$ npm run watch
+$ docker-compose up -d --build
 $ open http://localhost:8080/playground/
 ```
 

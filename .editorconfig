@@ -13,6 +13,6 @@ indent_size = 4
 [*.md]
 trim_trailing_whitespace = false
 
-[{package.json, .babelrc, .eslintrc, .travis.yml}]
+[{package.json, .babelrc, .eslintrc}]
 indent_style = space
 indent_size = 2

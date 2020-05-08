@@ -9,6 +9,18 @@
     "eslint:recommended",
     "standard"
   ],
+  "globals": {
+    "X": "readonly",
+    "audiocontext": "readonly",
+    "describe": "readonly",
+    "xdescribe": "readonly",
+    "beforeEach": "readonly",
+    "afterEach": "readonly",
+    "it": "readonly",
+    "xit": "readonly",
+    "jasmine": "readonly",
+    "expect": "readonly"
+  },
   "rules": {
     "indent": [2, 4, {
       "ignoredNodes": ["TemplateLiteral"],

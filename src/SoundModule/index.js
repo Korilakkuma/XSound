@@ -144,6 +144,7 @@ export class SoundModule {
 
     /** @abstract */
     setup() {
+        return this;
     }
 
     /**
@@ -181,18 +182,22 @@ export class SoundModule {
 
     /** @abstract */
     ready() {
+        return this;
     }
 
     /** @abstract */
     start() {
+        return this;
     }
 
     /** @abstract */
     stop() {
+        return this;
     }
 
     /** @abstract */
     get() {
+        return this;
     }
 
     /**

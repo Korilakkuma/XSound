@@ -19,6 +19,7 @@ export class ProcessorModule extends SoundModule {
      * This method sets the instance of `ScriptProcessorNode` or `AudioWorkletNode`.
      * @param {ScriptProcessorNode|AudioWorkletNode} processor This argument is the instance of `ScriptProcessorNode` or `AudioWorkletNode`.
      * @return {ProcessorModule} This is returned for method chain.
+     * @override
      */
     setup(processor) {
         if ((processor instanceof ScriptProcessorNode) || (processor instanceof AudioWorkletNode)) {
@@ -33,6 +34,7 @@ export class ProcessorModule extends SoundModule {
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
      * @return {ProcessorModule} This is returned for method chain.
+     * @override
      */
     start(processCallback, connects) {
         const startTime = this.context.currentTime;
@@ -65,11 +67,11 @@ export class ProcessorModule extends SoundModule {
         return this;
     }
 
-    /** @override */
     /**
      * This method stops `onaudioprocess` event in the instance of `ScriptProcessorNode`.
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessodNode`.
      * @return {ProcessorModule} This is returned for method chain.
+     * @override
      */
     stop(processCallback) {
         const stopTime = this.context.currentTime;

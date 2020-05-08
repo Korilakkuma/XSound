@@ -8,8 +8,8 @@
   "main": "build/xsound.js",
   "scripts": {
     "clean": "rm -rf build",
-    "lint": "eslint src",
-    "fix": "eslint src --fix",
+    "lint": "eslint src test",
+    "fix": "eslint --fix src test",
     "build": "npm run clean && webpack --progress --mode production",
     "watch": "npm run clean && webpack --progress --watch",
     "dev": "webpack-dev-server --progress",
@@ -22,7 +22,7 @@
     }
   },
   "lint-staged": {
-    "*.js": [
+    "{src,test}/**/*.js": [
       "eslint --fix"
     ]
   },

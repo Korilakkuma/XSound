@@ -30,6 +30,13 @@ header h1 {
 }
 
 main {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+
     margin: 48px auto;
     max-width: 1280px;
     width: 90%;
@@ -40,7 +47,8 @@ main a {
     padding: 12px 24px;
     color: #fff;
     text-decoration: none;
-    background-color: #c000c0;
+    text-transform: uppercase;
+    background-color: #c0c;
     transition: background-color 0.4s ease;
 }
 
@@ -53,9 +61,88 @@ main a:focus {
 }
 
 .CodeMirror {
-    height: 100vh;
+    min-width: 932px;
+    height: auto;
     font-family: "Source Code Pro", monospace;
     color: #666;
+}
+
+fieldset {
+    margin-left: 24px;
+    border: none;
+}
+
+legend {
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+fieldset > div {
+    margin-top: 12px;
+}
+
+fieldset > div:last-child {
+    overflow-x: scroll;
+    width: 368px;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 12px 16px;
+    color: #fff;
+    background-color: #c0c;
+    text-transform: uppercase;
+    transition: background-color 0.4s ease;
+}
+
+button:hover {
+    background-color: #800080;
+}
+
+button:focus {
+    outline: 1px dotted #800080;
+}
+
+select {
+    -webkit-appearance: none;
+    cursor: pointer;
+    border: 2px solid #eee;
+    padding: 12px 16px;
+    width: 100%;
+    background-color: #fff;
+    transition: background-color 0.4s ease;
+}
+
+select:hover {
+    background-color: #eee;
+}
+
+select:focus {
+    outline: 1px dotted #999;
+}
+
+input[type="file"] {
+    cursor: pointer;
+}
+
+input[type="file"]:focus {
+    outline: 1px dotted #999;
+}
+
+input[type="text"] {
+    padding: 12px 16px;
+    background-color: #fff;
+    transition: background-color 0.4s ease;
+}
+
+input[type="text"]:focus {
+    outline: 1px dotted #999;
+    background-color: #eee;
+}
+
+canvas {
+    background-color: #000;
 }
 
 footer {
@@ -79,5 +166,3 @@ footer a:hover {
     color: #800080;
     text-decoration: underline;
 }
-
-

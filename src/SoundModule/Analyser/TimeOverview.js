@@ -534,6 +534,10 @@ export class TimeOverview extends Visualizer {
 
         let x = offsetX - (offsetLeft + this.styles.left);
 
+        if (this.canvas.parentNode instanceof Element) {
+            x += this.canvas.parentNode.scrollLeft;
+        }
+
         width -= (this.styles.left + this.styles.right);
 
         // Exceed ?

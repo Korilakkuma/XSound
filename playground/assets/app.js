@@ -12,7 +12,7 @@
 
     editor.save();
 
-    document.querySelector('[role="button"]').addEventListener('click', event => {
+    document.querySelector('[href="#run"]').addEventListener('click', (event) => {
         event.preventDefault();
 
         editor.save();
@@ -22,13 +22,25 @@
         executor();
     }, false);
 
-    document.querySelector('[role="button"]').addEventListener('dragstart', event => {
+    document.querySelector('[href="#clear"]').addEventListener('click', (event) => {
+        event.preventDefault();
+        editor.setValue('');
+        editor.clearHistory();
+    }, false);
+
+    document.querySelector('[href="#run"]').addEventListener('dragstart', (event) => {
+        event.preventDefault();
+    }, false);
+
+    document.querySelector('[href="#clear"]').addEventListener('dragstart', (event) => {
         event.preventDefault();
     }, false);
 
     window.addEventListener('load', () => {
         if (localStorage.getItem(STORAGE_KEY)) {
-            textarea.value = localStorage.getItem(STORAGE_KEY);
+            editor.setValue('');
+            editor.clearHistory();
+            editor.setValue(localStorage.getItem(STORAGE_KEY));
         }
     }, true);
 

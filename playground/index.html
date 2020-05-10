@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>Playground | XSound</title>
-        <meta name="author" content="Tomohiro IKEDA, rilakkuma3xjapan" />
+        <meta name="author" content="Tomohiro IKEDA, rilakkuma3xjapan, Korilakkuma" />
         <meta name="description" content="XSound - Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ... -" />
         <meta name="keywords" content="XSound, XSound API, Web Audio API, Web Audio API Library, Web Audio Library" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, shrink-to-fit=no, viewport-fit=cover" />
@@ -29,10 +29,138 @@
         </header>
         <main>
             <div>
-                <a href="#" role="button">RUN</a>
-                <a href="https://korilakkuma.github.io/xsound-api/" target="_blank" rel="noopener noreferrer">API Documentation</a>
+                <div>
+                    <a href="#run" role="button">Run</a>
+                    <a href="#clear" role="button">Clear</a>
+                    <a href="https://korilakkuma.github.io/xsound-api/" target="_blank" rel="noopener noreferrer">API Documentation</a>
+                </div>
+                <textarea>/**
+ * for Oscillator
+ */
+X(&apos;oscillator&apos;).setup([true, false]);
+
+let key   = &apos;&apos;;
+let value = null;
+
+document.getElementById(&apos;button-start&apos;).onclick = () =&gt; {
+    X(&apos;oscillator&apos;).start(440);
+};
+
+document.getElementById(&apos;button-stop&apos;).onclick = () =&gt; {
+    X(&apos;oscillator&apos;).stop();
+};
+
+document.getElementById(&apos;select-type&apos;).onchange = (event) =&gt; {
+    for (let i = 0, len = X(&apos;oscillator&apos;).length(); i &lt; len; i++) {
+        X(&apos;oscillator&apos;).get(i).param(&apos;type&apos;, event.currentTarget.value);
+    }
+};
+
+/**
+ * for Audio
+ */
+
+X(&apos;audio&apos;).setup({
+    decode: () =&gt; {
+        console.log(&apos;Decoding ...&apos;);
+    },
+    ready: () =&gt; {
+        X(&apos;audio&apos;).start();
+    }
+});
+
+X(&apos;audio&apos;)
+    .module(&apos;analyser&apos;)
+    .domain(&apos;time-overview-L&apos;)
+    .setup(document.querySelector(&apos;canvas&apos;))
+    .param({
+        shape: 'rect',
+        wave : 'gradient',
+        grad : [
+            { offset: 0, color: 'rgba(0, 128, 255, 1.0)' },
+            { offset: 1, color: 'rgba(0,   0, 255, 1.0)' }
+        ],
+        font : {
+            family: 'Arial',
+            size  : '12px',
+            style : 'normal',
+            weight: 'normal'
+        },
+        width: 0.5
+    })
+    .state(true)
+    .drag((event, startTime) =&gt; {
+        X(&apos;audio&apos;).param(&apos;currentTime&apos;, startTime);
+    });
+
+const uploadButton = document.getElementById(&apos;button-uploader&apos;);
+const fileUploader = document.querySelector(&apos;[type=&quot;file&quot;]&apos;);
+
+uploadButton.onclick = () =&gt; {
+    fileUploader.click();
+};
+
+fileUploader.onchange = (event) =&gt; {
+    try {
+        const file = X.file({
+            event   : event,
+            type    : &apos;ArrayBuffer&apos;,
+            success : (event, arrayBuffer) =&gt; {
+                X(&apos;audio&apos;).ready(arrayBuffer);
+            },
+            error   : (error) =&gt; {
+                alert(error.message);
+            },
+            progress: (event) =&gt; {
+                if (event.lengthComputable &amp;&amp; (event.total &gt; 0)) {
+                    console.log(`${Math.floor((event.loaded / event.total) * 100)}%`);
+                }
+            }
+        });
+
+        uploadButton.textContent = file.name;
+    } catch (error) {
+        alert(error.message);
+    }
+};
+
+/**
+ * for Parameters
+ */
+document.getElementById(&apos;text-param-key&apos;).onblur = (event) =&gt; {
+    key = event.currentTarget.value;
+};
+
+document.getElementById(&apos;text-param-value&apos;).onblur = (event) =&gt; {
+    X(&apos;oscillator&apos;).param(key, parseFloat(event.currentTarget.value));
+    X(&apos;audio&apos;).param(key, parseFloat(event.currentTarget.value));
+};</textarea>
             </div>
-            <textarea>X(&apos;oscillator&apos;).setup(true).ready(5, 10).start(440).stop();</textarea>
+            <fieldset>
+                <legend>Input Forms</legend>
+                <div>
+                    <button type="button" id="button-start">Start</button>
+                    <button type="button" id="button-stop">Stop</button>
+                    <button type="button" id="button-uploader">Upload</button>
+                    <input type="file" accept="audio/*" hidden />
+                </div>
+                <div>
+                    <select id="select-type">
+                        <option value="">Select Type</option>
+                        <option value="sine" selected>sine</option>
+                        <option value="square">square</option>
+                        <option value="sawtooth">sawtooth</option>
+                        <option value="triangle">triangle</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="text-param-key" placeholder="Type Parameter Key" />
+                    <input type="text" id="text-param-value" placeholder="Type Parameter value" />
+                </div>
+                <div>
+                    <canvas width="1200" height="150"></canvas>
+                </div>
+            </fieldset>
         </main>
         <footer>
             <p>XSound maintained by <a href="https://github.com/Korilakkuma/XSound">Korilakkuma</a></p>

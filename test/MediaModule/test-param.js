@@ -79,7 +79,6 @@ describe('MediaModule TEST', () => {
                 mediaModule.param('playbackRate', 0.4999999);
                 expect(mediaModule.param('playbackRate')).toEqual(1);
             });
-
         });
 
         describe('loop', () => {

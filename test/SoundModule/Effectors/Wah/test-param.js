@@ -11,7 +11,6 @@ describe('Wah TEST', () => {
                 wah.param('auto', false);
             });
 
-
             // Getter
             // Positive
             it('should return `false`', () => {

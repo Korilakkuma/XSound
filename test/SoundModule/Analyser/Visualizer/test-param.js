@@ -152,7 +152,6 @@ describe('Visualizer TEST', () => {
                     { 'offset' : 1, 'color' : 'rgba(0, 0, 255, 1.0)'   }
                 ]);
             });
-
         });
 
         describe('font', () => {

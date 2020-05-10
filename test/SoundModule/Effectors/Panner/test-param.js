@@ -143,7 +143,6 @@ describe('Panner TEST', () => {
                 panner.param('ox', '');
                 expect(panner.param('ox')).toEqual(1);
             });
-
         });
 
         describe('oy', () => {

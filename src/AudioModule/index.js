@@ -236,7 +236,9 @@ export class AudioModule extends SoundModule {
             this.envelopegenerator.ready(0, this.source, this.processor);
             this.connect(this.processor, connects);
 
-            if (end >= 0) {
+            if (isNaN(start)) {
+                this.source.start(currentTime);
+            } else if (end >= 0) {
                 this.source.start(currentTime, this.currentTime, (end - start));
             } else {
                 this.source.start(currentTime, this.currentTime, (this.buffer.duration - this.currentTime));

@@ -24,7 +24,7 @@ html {
 }
 
 header,
-main {
+.section {
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: column;
@@ -41,7 +41,8 @@ header > div {
     text-align: center;
 }
 
-header > a {
+header > a,
+main > a {
     margin-top: 48px;
     width: 6rem;
     height: 4rem;
@@ -52,17 +53,18 @@ header > a {
     text-decoration: none;
 }
 
-header > a:hover {
+header > a:hover,
+main > a:hover {
     background: linear-gradient(to top right, rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top left/50%  100%,
                 linear-gradient(to top left,  rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top right/50% 100%;
 }
 
-main > img {
+.section > img {
     max-width: 100%;
     transform: scale(0.5);
 }
 
-main > section {
+.section > section {
     margin-top: 12px;
     display: -webkit-flex;
     display: flex;
@@ -82,7 +84,7 @@ header h1 {
     text-shadow: -1px -1px 1px #000;
 }
 
-main h1 {
+.section h1 {
     padding-bottom: 8px;
     font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
     font-size: calc(32 * ((100vw - 320px) / (1280 - 320)) + 32px);
@@ -92,7 +94,7 @@ main h1 {
     text-shadow: -1px -1px 1px #000;
 }
 
-main > h1 {
+.section > h1 {
     font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
     font-size: calc(28 * ((100vw - 320px) / (1280 - 320)) + 28px);
     font-weight: lighter;
@@ -100,7 +102,7 @@ main > h1 {
     text-shadow: -1px -1px 1px #000;
 }
 
-main > section > h1 {
+.section > section > h1 {
     font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
     font-size: calc(24 * ((100vw - 320px) / (1280 - 320)) + 24px);
     font-weight: lighter;

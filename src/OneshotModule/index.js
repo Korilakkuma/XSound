@@ -301,12 +301,14 @@ export class OneshotModule extends SoundModule {
             return this;
         }
 
-        // the instance of `AudioBufferSourceNode` already exists ?
-        if (this.sources[selectedIndex] instanceof AudioBufferSourceNode) {
-            this.sources[selectedIndex].stop(this.context.currentTime);
-            this.sources[selectedIndex].disconnect(0);
-            this.sources[selectedIndex] = null;
-        }
+        // The following code is unnecessary, because `AudioBufferSourceNode` is the target of garbage collection in the case of no references and no sound
+        // (If there is this code, application cannot repeat hits).
+
+        // if (this.sources[selectedIndex] instanceof AudioBufferSourceNode) {
+        //     this.sources[selectedIndex].stop(this.context.currentTime);
+        //     this.sources[selectedIndex].disconnect(0);
+        //     this.sources[selectedIndex] = null;
+        // }
 
         const source = this.context.createBufferSource();
 

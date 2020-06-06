@@ -248,13 +248,24 @@ export class Analyser {
 
     /**
      * This method selects domain for drawing.
-     * @param {string} domain This argument is one of 'timeOverviewL', 'timeOverviewR', 'time', 'fft'.
+     * @param {string} domain This argument is one of 'timeoverview', 'timeOverviewL', 'timeOverviewR', 'time', 'fft'.
+     * @param {number} channel This argument is number greater than or equal to 0.
      * @return {TimeOverview|Time|FFT|Analyser} This value is the instance of selected class.
      */
-    domain(domain) {
+    domain(domain, channel) {
         const d = String(domain).replace(/-/g, '').toLowerCase();
+        const c = parseInt(channel, 10);
 
         switch (d) {
+            case 'timeoverview':
+                switch (c) {
+                    case 0:
+                        return this.timeOverviewL;
+                    case 1:
+                        return this.timeOverviewR;
+                    default:
+                        return this;
+                }
             case 'timeoverviewl':
             case 'timeoverviewr':
                 return this[`timeOverview${d.slice(-1).toUpperCase()}`];

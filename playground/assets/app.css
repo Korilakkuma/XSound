@@ -131,6 +131,7 @@ input[type="file"]:focus {
 }
 
 input[type="text"] {
+    border: 2px solid #eee;
     padding: 12px 16px;
     background-color: #fff;
     transition: background-color 0.4s ease;

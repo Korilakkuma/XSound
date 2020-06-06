@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
     <head>
         <meta charset="UTF-8" />
         <title>Playground | XSound</title>
@@ -43,7 +43,7 @@ let key   = &apos;&apos;;
 let value = null;
 
 document.getElementById(&apos;button-start&apos;).onclick = () =&gt; {
-    X(&apos;oscillator&apos;).start(440);
+    X(&apos;oscillator&apos;).start([440, 880]);
 };
 
 document.getElementById(&apos;button-stop&apos;).onclick = () =&gt; {
@@ -65,13 +65,13 @@ X(&apos;audio&apos;).setup({
         console.log(&apos;Decoding ...&apos;);
     },
     ready: () =&gt; {
-        X(&apos;audio&apos;).start();
+        X(&apos;audio&apos;).start(0);
     }
 });
 
 X(&apos;audio&apos;)
     .module(&apos;analyser&apos;)
-    .domain(&apos;time-overview-L&apos;)
+    .domain(&apos;timeoverview&apos;, 0)
     .setup(document.querySelector(&apos;canvas&apos;))
     .param({
         shape: 'rect',
@@ -167,7 +167,7 @@ document.getElementById(&apos;text-param-value&apos;).onblur = (event) =&gt; {
         </footer>
         <script type="text/javascript" src="lib/codemirror.js"></script>
         <script type="text/javascript" src="lib/javascript.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js"></script>
+        <script type="text/javascript" src="../build/xsound.js"></script>
         <script type="text/javascript" src="assets/app.js"></script>
     </body>
 </html>

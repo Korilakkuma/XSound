@@ -56,7 +56,9 @@ Now, I'm creating website for Web Audio API. Please refer to the following site 
   
 ## Playground
 
-[![Playground](https://user-images.githubusercontent.com/4006693/81501150-aaf2fe00-9311-11ea-8ee8-a2fdc6850602.gif)](https://xsound.jp/playground)
+You can view overview on [YouTube](https://www.youtube.com/watch?v=zqdmoB8VICY).
+
+[![Playground](./misc/playground.gif)](https://xsound.jp/playground)
 
 ## Installation
 

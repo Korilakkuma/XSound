@@ -835,6 +835,10 @@ export class MML {
      * This method clears sequences;
      */
     clear() {
+        for (let i = 0, len = this.timerids.length; i < len; i++) {
+            window.clearTimeout(this.timerids[i]);
+        }
+
         this.sequences.length = 0;
         this.timerids.length  = 0;
         this.prev.length      = 0;

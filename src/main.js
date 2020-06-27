@@ -13,6 +13,8 @@ import { MIDI } from './MIDI';
 import { MML } from './MML';
 import { Effector } from './SoundModule/Effectors/Effector';
 import {
+    FFT,
+    IFFT,
     ajax,
     convertTime,
     decode,
@@ -111,6 +113,8 @@ if (IS_XSOUND) {
     XSound.SAMPLE_RATE       = audiocontext.sampleRate;
     XSound.NUMBER_OF_INPUTS  = SoundModule.NUMBER_OF_INPUTS;
     XSound.NUMBER_OF_OUTPUTS = SoundModule.NUMBER_OF_OUTPUTS;
+    XSound.FFT               = FFT;
+    XSound.IFFT              = IFFT;
     XSound.ajax              = ajax;
     XSound.convertTime       = convertTime;
     XSound.decode            = decode;

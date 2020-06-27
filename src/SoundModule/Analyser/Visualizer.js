@@ -494,10 +494,12 @@ export class Visualizer {
 
     /** @abstract */
     drawOnCanvas() {
+        return this;
     }
 
     /** @abstract */
     drawBySVG() {
+        return this;
     }
 
     /**

@@ -230,7 +230,7 @@ export function convertTime(time) {
     if (t >= 0) {
         const m  = Math.floor(t / 60);
         const s  = Math.floor(t % 60);
-        const ms = t - parseInt(t, 10);
+        const ms = t - Math.floor(t);
 
         return {
             'minutes'      : m,

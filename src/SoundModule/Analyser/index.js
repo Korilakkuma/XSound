@@ -127,15 +127,44 @@ export class Analyser {
     /**
      * This method creates data for drawing and executes drawing.
      * @param {string} domain This argument is one of 'timeOverviewL', 'timeOverviewR', 'time', 'fft'.
+     * @param {number} channel This argument is number greater than or equal to 0.
      * @param {AudioBuffer} buffer This argument is the instance of `AudioBuffer`. The data for drawing audio wave in overview of time domain is gotten from this argument.
      * @return {Analyser} This is returned for method chain.
      */
-    start(domain, buffer) {
+    start(domain, channel, buffer) {
         const d = String(domain).replace(/-/g, '').toLowerCase();
+        const c = parseInt(channel, 10);
 
         let data = null;
 
         switch (d) {
+            case 'timeoverview':
+                switch (c) {
+                    case 0:
+                        if (buffer instanceof AudioBuffer) {
+                            if (buffer.numberOfChannels > c) {
+                                data = new Float32Array(buffer.length);
+                                data.set(buffer.getChannelData(c));
+                                this.timeOverviewL.start(data);
+                            }
+                        }
+
+                        break;
+                    case 1:
+                        if (buffer instanceof AudioBuffer) {
+                            if (buffer.numberOfChannels > c) {
+                                data = new Float32Array(buffer.length);
+                                data.set(buffer.getChannelData(c));
+                                this.timeOverviewR.start(data);
+                            }
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+
+                break;
             case 'timeoverviewl':
                 if (buffer instanceof AudioBuffer) {
                     if (buffer.numberOfChannels > 0) {

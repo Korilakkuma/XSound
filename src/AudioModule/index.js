@@ -180,8 +180,8 @@ export class AudioModule extends SoundModule {
             const successCallback = buffer => {
                 this.buffer = buffer;
 
-                this.analyser.start('timeOverviewL', buffer);
-                this.analyser.start('timeOverviewR', buffer);
+                this.analyser.start('timeoverview', 0, buffer);
+                this.analyser.start('timeoverview', 1, buffer);
 
                 this.callbacks.ready(buffer);
             };
@@ -282,13 +282,13 @@ export class AudioModule extends SoundModule {
                             this.callbacks.update(this.source, this.currentTime);
                         }
 
-                        this.analyser.timeOverviewL.update(this.currentTime);
-                        this.analyser.timeOverviewR.update(this.currentTime);
+                        this.analyser.domain('timeoverview', 0).update(this.currentTime);
+                        this.analyser.domain('timeoverview', 1).update(this.currentTime);
                     } else {
                         if (this.source.loop) {
                             this.stop();
 
-                            if ((this.analyser.timeOverviewL.param('mode') === 'sprite') || (this.analyser.timeOverviewR.param('mode') === 'sprite')) {
+                            if ((this.analyser.domain('timeoverview', 0).param('mode') === 'sprite') || (this.analyser.domain('timeoverview', 1).param('mode') === 'sprite')) {
                                 this.start(this.source.loopStart, this.source.loopEnd, connects, processCallback);
                             } else {
                                 this.start(0, this.buffer.duration, connects, processCallback);

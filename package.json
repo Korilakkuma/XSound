@@ -1,6 +1,6 @@
 {
   "name": "xsound",
-  "version": "2.19.7",
+  "version": "2.19.8",
   "engines": {
     "node": ">=10.19.0 <12.0.0"
   },
@@ -52,29 +52,29 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.10.2",
+    "@babel/core": "^7.10.3",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
-    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-env": "^7.10.3",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "eslint": "^7.2.0",
+    "eslint": "^7.3.1",
     "eslint-cli": "^1.1.1",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.5",
     "jasmine": "^3.5.0",
-    "karma": "^5.0.9",
+    "karma": "^5.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-cli": "^2.0.0",
     "karma-jasmine": "^3.3.1",
     "karma-webpack": "^4.0.2",
-    "lint-staged": "^10.2.9",
+    "lint-staged": "^10.2.11",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   }
 }

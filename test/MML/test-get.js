@@ -9,8 +9,29 @@ describe('MML TEST', () => {
 
         mml.ready(new OscillatorModule(audiocontext), ['T74  O4  AF+DB2 AEB4 G+4 AF+C+2&AF+C+8 F+8 A8 R4', 'T74  O2  B2  O3  C+2 D1  O2  B2  O3  C+2 D2 E2  O2  A1 E1 F+2 E2  O3  DD1 EE1&EE1']);
 
+        it('should return the string as MML', () => {
+            const actual   = mml.get(0, true);
+            const expected = 'T74  O4  AF+DB2 AEB4 G+4 AF+C+2&AF+C+8 F+8 A8 R4';
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should return the string as MML', () => {
+            const actual   = mml.get(1, true);
+            const expected = 'T74  O2  B2  O3  C+2 D1  O2  B2  O3  C+2 D2 E2  O2  A1 E1 F+2 E2  O3  DD1 EE1&EE1';
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should return the array that contains string as MML', () => {
+            const actual   = mml.get(-1, true);
+            const expected = ['T74  O4  AF+DB2 AEB4 G+4 AF+C+2&AF+C+8 F+8 A8 R4', 'T74  O2  B2  O3  C+2 D1  O2  B2  O3  C+2 D2 E2  O2  A1 E1 F+2 E2  O3  DD1 EE1&EE1'];
+
+            expect(actual).toEqual(expected);
+        });
+
         it('should return the array that contains performance information', () => {
-            const actual   = mml.get(0);
+            const actual   = mml.get(0, false);
             const expected = [
                 { 'indexes' : ['R'],            'frequencies' : [0],                                                                            'start' : 6.081081081081081,  'duration' : 0.8108108108108109,  'stop' : 6.891891891891891,  'note' : 'R4' },
                 { 'indexes' : [48],             'frequencies' : [440.00000000000017],                                                           'start' : 5.675675675675675,  'duration' : 0.40540540540540543, 'stop' : 6.081081081081081,  'note' : 'A8' },
@@ -37,7 +58,7 @@ describe('MML TEST', () => {
         });
 
         it('should return the array that contains performance information', () => {
-            const actual = mml.get(1);
+            const actual = mml.get(1, false);
             const expected = [
                 { 'indexes' : [31, 19], 'frequencies' : [164.81377845643502, 82.40688922821751], 'start' : 25.94594594594594,  'duration' : 6.486486486486487,  'stop' : 32.43243243243243,  'note' : 'EE1&EE1' },
                 { 'indexes' : [29, 17], 'frequencies' : [146.83238395870382, 73.41619197935191], 'start' : 22.702702702702698, 'duration' : 3.2432432432432434, 'stop' : 25.94594594594594,  'note' : 'DD1' },

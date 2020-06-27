@@ -90,11 +90,14 @@ export class MML {
         // for the array of `OscillatorNode` or `OscillatorModule` or `OneshotModule` or `NoiseModule`
         this.source = null;
 
+        this.mmls      = [];  /** @type {Array.<string> */
         this.sequences = [];  /** @type {Array.<Array.<object>>} */
         this.timerids  = [];  /** @type {Array.<number>} */
         this.prev      = [];  /** @type {Array.<object>} */
 
         this.offset = 0;
+
+        this.next = 0;  // for higlight MML
 
         this.callbacks = {
             'start' : () => {},
@@ -169,6 +172,8 @@ export class MML {
         if (!Array.isArray(mmls)) {
             mmls = [mmls];
         }
+
+        this.mmls = mmls.slice(0);  // Shallow copy
 
         while (mmls.length > 0) {
             const mml = String(mmls.shift());
@@ -378,11 +383,12 @@ export class MML {
     /**
      * This method starts the designated MML part. Moreover, this method schedules next sound.
      * @param {number} part This argument is the part of MML.
+     * @param {boolean} higlight This argument is `true` in the case of surrounding by `span.x-highlight`.
      * @param {Array.<Effector>|Array.<AudioNode>} connects This argument is the array for changing the default connection.
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @return {MML} This is returned for method chain.
      */
-    start(part, connects, processCallback) {
+    start(part, higlight, connects, processCallback) {
         const p = parseInt(part, 10);
 
         if ((p >= 0) && (p < this.sequences.length)) {
@@ -464,6 +470,22 @@ export class MML {
                 this.callbacks.start(sequence);
             }
 
+            if (higlight) {
+                const prev    = this.mmls[p].slice(0, this.next);
+                const current = this.mmls[p].slice(this.next).replace(sequence.note, `<span class="x-higlight">${sequence.note}</span>`);
+
+                this.mmls[p] = `${prev}${current}`;
+
+                this.next += this.mmls[p].slice(this.next).indexOf('</span>') + '</span>'.length;
+            } else {
+                const prev    = this.mmls[p].slice(0, this.next);
+                const current = sequence.note;
+
+                this.mmls[p] = `${prev}${current}`;
+
+                this.next += current.length;
+            }
+
             this.timerids[p] = window.setTimeout(() => {
                 if (Array.isArray(this.source)) {
                     this.callbacks.stop(sequence);
@@ -487,7 +509,7 @@ export class MML {
                 this.prev = sequence;
 
                 // Start next sound by recursive call
-                this.start(p, connects, processCallback);
+                this.start(p, higlight, connects, processCallback);
             }, (sequence.duration * 1000));
         }
 
@@ -533,12 +555,17 @@ export class MML {
     }
 
     /**
-     * This method gets the array that contains object for playing the MML.
-     * @param {number} index This argument is required in the case of designating sequence.
-     * @return {Array.<Array.<object>>|Array.<object>}
+     * This method gets the array that contains string or object for playing the MML.
+     * @param {number} index This argument is required in the case of designating MML part or sequence object.
+     * @param {boolean} asMML This argument is 'mml' in the case of getting string or array as MML.
+     * @return {Array.<string>|string|Array.<Array.<object>>|Array.<object>}
      */
-    get(index) {
+    get(index, asMML) {
         const i = parseInt(index, 10);
+
+        if (asMML) {
+            return ((i >= 0) && (i < this.mmls.length)) ? this.mmls[i] : this.mmls;
+        }
 
         return ((i >= 0) && (i < this.sequences.length)) ? this.sequences[i] : this.sequences;
     }
@@ -832,16 +859,20 @@ export class MML {
     }
 
     /**
-     * This method clears sequences;
+     * This method clears sequences.
+     * @return {MML} This is returned for method chain.
      */
     clear() {
         for (let i = 0, len = this.timerids.length; i < len; i++) {
             window.clearTimeout(this.timerids[i]);
         }
 
+        this.mmls.length      = 0;
         this.sequences.length = 0;
         this.timerids.length  = 0;
         this.prev.length      = 0;
+
+        this.next = 0;
 
         return this;
     }

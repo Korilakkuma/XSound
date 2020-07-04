@@ -90,14 +90,15 @@ export class MML {
         // for the array of `OscillatorNode` or `OscillatorModule` or `OneshotModule` or `NoiseModule`
         this.source = null;
 
-        this.mmls      = [];  /** @type {Array.<string> */
-        this.sequences = [];  /** @type {Array.<Array.<object>>} */
-        this.timerids  = [];  /** @type {Array.<number>} */
-        this.prev      = [];  /** @type {Array.<object>} */
+        this.mmls             = [];  /** @type {Array.<string> */
+        this.sequences        = [];  /** @type {Array.<Array.<object>>} */
+        this.timerids         = [];  /** @type {Array.<number>} */
+        this.currentPositions = [];  /** @type {Array.<number>} */
+
+        // Previous sequence
+        this.prev = null;
 
         this.offset = 0;
-
-        this.next = 0;  // for higlight MML
 
         this.callbacks = {
             'start' : () => {},
@@ -374,6 +375,7 @@ export class MML {
 
                 this.sequences.push(sequences);
                 this.timerids.push(null);
+                this.currentPositions.push(0);
             }
         }
 
@@ -383,12 +385,12 @@ export class MML {
     /**
      * This method starts the designated MML part. Moreover, this method schedules next sound.
      * @param {number} part This argument is the part of MML.
-     * @param {boolean} higlight This argument is `true` in the case of surrounding by `span.x-highlight`.
+     * @param {boolean} highlight This argument is `true` in the case of surrounding by `span.x-highlight`.
      * @param {Array.<Effector>|Array.<AudioNode>} connects This argument is the array for changing the default connection.
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @return {MML} This is returned for method chain.
      */
-    start(part, higlight, connects, processCallback) {
+    start(part, highlight, connects, processCallback) {
         const p = parseInt(part, 10);
 
         if ((p >= 0) && (p < this.sequences.length)) {
@@ -405,6 +407,22 @@ export class MML {
             }
 
             const sequence = this.sequences[p].pop();
+
+            if (highlight) {
+                const prev    = this.mmls[p].slice(0, this.currentPositions[p]);
+                const current = this.mmls[p].slice(this.currentPositions[p]).replace(sequence.note, `<span class="x-highlight">${sequence.note}</span>`);
+
+                this.mmls[p] = `${prev}${current}`;
+
+                this.currentPositions[p] += this.mmls[p].slice(this.currentPositions[p]).indexOf('</span>') + '</span>'.length;
+            } else {
+                const prev    = this.mmls[p].slice(0, this.currentPositions[p]);
+                const current = sequence.note;
+
+                this.mmls[p] = `${prev}${current}`;
+
+                this.currentPositions[p] += current.length;
+            }
 
             if (Array.isArray(this.source)) {
                 for (let i = 0, len = this.source.length; i < len; i++) {
@@ -470,22 +488,6 @@ export class MML {
                 this.callbacks.start(sequence);
             }
 
-            if (higlight) {
-                const prev    = this.mmls[p].slice(0, this.next);
-                const current = this.mmls[p].slice(this.next).replace(sequence.note, `<span class="x-higlight">${sequence.note}</span>`);
-
-                this.mmls[p] = `${prev}${current}`;
-
-                this.next += this.mmls[p].slice(this.next).indexOf('</span>') + '</span>'.length;
-            } else {
-                const prev    = this.mmls[p].slice(0, this.next);
-                const current = sequence.note;
-
-                this.mmls[p] = `${prev}${current}`;
-
-                this.next += current.length;
-            }
-
             this.timerids[p] = window.setTimeout(() => {
                 if (Array.isArray(this.source)) {
                     this.callbacks.stop(sequence);
@@ -509,7 +511,7 @@ export class MML {
                 this.prev = sequence;
 
                 // Start next sound by recursive call
-                this.start(p, higlight, connects, processCallback);
+                this.start(p, highlight, connects, processCallback);
             }, (sequence.duration * 1000));
         }
 
@@ -524,7 +526,7 @@ export class MML {
     stop(processCallback) {
         const sequence = this.prev;
 
-        if (sequence.length === 0) {
+        if ((sequence === null) || (sequence.length === 0)) {
             return this;
         }
 
@@ -867,12 +869,12 @@ export class MML {
             window.clearTimeout(this.timerids[i]);
         }
 
-        this.mmls.length      = 0;
-        this.sequences.length = 0;
-        this.timerids.length  = 0;
-        this.prev.length      = 0;
+        this.mmls.length             = 0;
+        this.sequences.length        = 0;
+        this.timerids.length         = 0;
+        this.currentPositions.length = 0;
 
-        this.next = 0;
+        this.prev = null;
 
         return this;
     }

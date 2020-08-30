@@ -19,6 +19,10 @@ export class Reverb extends Effector {
     constructor(context, bufferSize) {
         super(context, bufferSize);
 
+        // If the error is at least 1, this method aborts the all of connections.
+        // Therefore, this flag are shared with the all instances of `XMLHttpRequest`.
+        this.isLoadError = false;
+
         this.rirs      = [];
         this.convolver = context.createConvolver();
         this.dry       = context.createGain();
@@ -213,89 +217,97 @@ export class Reverb extends Effector {
 
         this.rirs = new Array(rirs.length);
 
-        // If the error is at least 1, this method aborts the all of connections.
-        // Therefore, this flag are shared with the all instances of `XMLHttpRequest`.
-        let isError = false;
-
         const t = parseInt(timeout, 10);
-
-        // Get `ArrayBuffer` by Ajax -> Create the instances of `AudioBuffer`
-        const load = (url, index) => {
-            const xhr = new XMLHttpRequest();
-
-            xhr.timeout = (t > 0) ? t : 60000;
-
-            xhr.ontimeout = event => {
-                if (!isError && (Object.prototype.toString.call(errorCallback) === '[object Function]')) {
-                    errorCallback(event, Reverb.ERROR_AJAX_TIMEOUT);
-                }
-
-                isError = true;
-            };
-
-            xhr.onprogresss = event => {
-                if (isError) {
-                    xhr.abort();
-                } else if (Object.prototype.toString.call(progressCallback) === '[object Function]') {
-                    progressCallback(event);
-                }
-            };
-
-            xhr.onerror = event => {
-                if (!isError && (Object.prototype.toString.call(errorCallback) === '[object Function]')) {
-                    errorCallback(event, Reverb.ERROR_AJAX);
-                }
-
-                isError = true;
-            };
-
-            xhr.onload = event => {
-                if (xhr.status === 200) {
-                    const arrayBuffer = xhr.response;
-
-                    if (!(arrayBuffer instanceof ArrayBuffer)) {
-                        return;
-                    }
-
-                    const decodeSuccessCallback = audioBuffer => {
-                        this.rirs[index] = audioBuffer;
-
-                        // The creating the instances of `AudioBuffer` has completed ?
-                        for (let i = 0, len = this.rirs.length; i < len; i++) {
-                            if (this.rirs[i] === undefined) {
-                                return;
-                            }
-                        }
-
-                        if (Object.prototype.toString.call(successCallback) === '[object Function]') {
-                            successCallback(event);
-                        }
-                    };
-
-                    const decodeErrorCallback = error => {
-                        if (Object.prototype.toString.call(errorCallback) === '[object Function]') {
-                            errorCallback(error, Reverb.ERROR_DECODE);
-                        }
-                    };
-
-                    this.context.decodeAudioData(arrayBuffer, decodeSuccessCallback, decodeErrorCallback);
-                }
-            };
-
-            xhr.open('GET', url, true);
-            xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
-            xhr.send(null);
-        };
 
         for (let i = 0, len = rirs.length; i < len; i++) {
             if (typeof rirs[i] === 'string') {
                 // Get the instances of `AudioBuffer` from the designated URLs.
-                load(rirs[i], i);
+                this.load(rirs[i], i, t, successCallback, errorCallback, progressCallback);
             } else if (rirs[i] instanceof AudioBuffer) {
                 // Get the instances of `AudioBuffer` directly
                 this.rirs[i] = rirs[i];
             }
         }
+
+        return this;
+    }
+
+    /**
+     * This method gets `ArrayBuffer` and creates the instances of `AudioBuffer`.
+     * @param {string} url This argument is resource URL for one-shot audio.
+     * @param {number} index This argument is in order to assign the instance of `AudioBuffer`.
+     * @param {number} timeout This argument is Ajax timeout.
+     * @param {function} successCallback This argument is invoked as next process when reading file is successful.
+     * @param {function} errorCallback This argument is invoked when error occurred.
+     * @param {function} progressCallback This argument is invoked during receiving audio data.
+     * @return {Reverb} This is returned for method chain.
+     */
+    load(url, index, timeout, successCallback, errorCallback, progressCallback) {
+        const xhr = new XMLHttpRequest();
+
+        xhr.timeout = (timeout > 0) ? timeout : 60000;
+
+        xhr.ontimeout = event => {
+            if (!this.isLoadError && (Object.prototype.toString.call(errorCallback) === '[object Function]')) {
+                errorCallback(event, Reverb.ERROR_AJAX_TIMEOUT);
+            }
+
+            this.isLoadError = true;
+        };
+
+        xhr.onprogress = event => {
+            if (this.isLoadError) {
+                xhr.abort();
+            } else if (Object.prototype.toString.call(progressCallback) === '[object Function]') {
+                progressCallback(event);
+            }
+        };
+
+        xhr.onerror = event => {
+            if (!this.isLoadError && (Object.prototype.toString.call(errorCallback) === '[object Function]')) {
+                errorCallback(event, Reverb.ERROR_AJAX);
+            }
+
+            this.isLoadError = true;
+        };
+
+        // Success
+        xhr.onload = event => {
+            if (xhr.status === 200) {
+                const arrayBuffer = xhr.response;
+
+                if (!(arrayBuffer instanceof ArrayBuffer)) {
+                    return;
+                }
+
+                const decodeSuccessCallback = audioBuffer => {
+                    this.rirs[index] = audioBuffer;
+
+                    // The creating the instances of `AudioBuffer` has completed ?
+                    for (const rir of this.rirs) {
+                        if (rir === undefined) {
+                            return;
+                        }
+                    }
+
+                    if (Object.prototype.toString.call(successCallback) === '[object Function]') {
+                        successCallback(event);
+                    }
+                };
+
+                const decodeErrorCallback = error => {
+                    if (Object.prototype.toString.call(errorCallback) === '[object Function]') {
+                        errorCallback(error, Reverb.ERROR_DECODE);
+                    }
+                };
+
+                this.context.decodeAudioData(arrayBuffer, decodeSuccessCallback, decodeErrorCallback);
+            }
+        };
+
+        xhr.open('GET', url, true);
+        xhr.responseType = 'arraybuffer';  // XMLHttpRequest Level 2
+        xhr.send(null);
 
         return this;
     }

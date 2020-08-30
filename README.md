@@ -88,7 +88,6 @@ import { XSound, X } from 'xsound';
 $ git clone git@github.com:Korilakkuma/XSound.git
 $ cd XSound
 $ npm install
-$ npm run build
 $ npm run dev
 $ open http://localhost:8080/playground/
 ```

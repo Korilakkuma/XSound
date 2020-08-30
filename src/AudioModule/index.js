@@ -177,13 +177,15 @@ export class AudioModule extends SoundModule {
      */
     ready(arrayBuffer) {
         if (arrayBuffer instanceof ArrayBuffer) {
+            this.buffer = null;
+
             const successCallback = buffer => {
                 this.buffer = buffer;
 
-                this.analyser.start('timeoverview', 0, buffer);
-                this.analyser.start('timeoverview', 1, buffer);
+                this.analyser.start('timeoverview', 0, this.buffer);
+                this.analyser.start('timeoverview', 1, this.buffer);
 
-                this.callbacks.ready(buffer);
+                this.callbacks.ready(this.buffer);
             };
 
             this.context.decodeAudioData(arrayBuffer, successCallback, this.callbacks.error);

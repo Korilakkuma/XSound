@@ -24,8 +24,8 @@ export class OscillatorModule extends SoundModule {
 
         // for scheduling
         this.times = {
-            'start' : 0,
-            'stop'  : 0
+            'start'    : 0,
+            'duration' : 0
         };
 
         // This flag determines whether sound wave is drawn
@@ -82,16 +82,16 @@ export class OscillatorModule extends SoundModule {
     /**
      * This method schedules the time of start and stop.
      * @param {number} startTime This argument is the start time. The default value is 0.
-     * @param {number} stopTime This argument is the stop time. The default value is 0.
+     * @param {number} duration This argument is duration. The default value is greater than or equal to start time.
      * @return {OscillatorModule} This is returned for method chain.
      * @override
      */
-    ready(startTime, stopTime) {
-        const st = parseFloat(startTime);
-        const sp = parseFloat(stopTime);
+    ready(startTime, duration) {
+        const s = parseFloat(startTime);
+        const d = parseFloat(duration);
 
-        this.times.start = (st >=  0) ? st : 0;
-        this.times.stop  = (sp >= st) ? sp : 0;
+        this.times.start    = (s >= 0) ? s : 0;
+        this.times.duration = (d >= s) ? d : s;
 
         this.envelopegenerator.clear(true);
 
@@ -200,7 +200,7 @@ export class OscillatorModule extends SoundModule {
      * @override
      */
     stop() {
-        const stopTime = this.context.currentTime + this.times.stop;
+        const stopTime = this.context.currentTime + this.times.duration;
 
         // Attack or Decay or Sustain -> Release
         this.envelopegenerator.stop(stopTime);

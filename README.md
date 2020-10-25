@@ -36,8 +36,71 @@ XSound don't depend on other libraries or frameworks (For example, jQuery, React
   
 ## Getting Started
 
+In the case of using as **full stack** (For example, use oscillator) ...
+
 ```JavaScript
 X('oscillator').setup(true).ready().start(440);
+```
+
+or, in the case of using as **module base** (For example, use chorus effector) ...
+
+```JavaScript
+// The instance of `AudioContext`
+const context = X.get();
+
+// Create the instance of `Chorus` that is defined by XSound
+// (The 2nd argument is buffer size for `ScriptProcessorNode`)
+const chorus = new X.Chorus(context, 0);
+
+const oscillator = context.createOscillator();
+
+// The instance that is defined by XSound has connectors for input and output
+oscillator.connect(chorus.INPUT);
+chorus.OUTPUT.connect(context.destination);
+
+// Set parameters for chorus
+chorus.param({
+  time : 0.025,
+  depth: 0.5,
+  rate : 2.5,
+  mix  : 0.5
+})
+
+// Activate
+chorus.state(true);
+
+oscillator.start(0);
+```
+
+XSound enable to using the following classes (Refer to [API Documentation](https://xsound.dev/) for details).
+
+```TypeScript
+type BufferSize = 0 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384;
+
+// Effectors
+X.Autopanner(context: AudioContext, size: BufferSize);
+X.Chorus(context: AudioContext, size: BufferSize);
+X.Compressor(context: AudioContext, size: BufferSize);
+X.Delay(context: AudioContext, size: BufferSize);
+X.Distortion(context: AudioContext, size: BufferSize);
+X.Equalizer(context: AudioContext, size: BufferSize);
+X.Filter(context: AudioContext, size: BufferSize);
+X.Flanger(context: AudioContext, size: BufferSize);
+X.Listener(context: AudioContext, size: BufferSize);
+X.Panner(context: AudioContext, size: BufferSize);
+X.Phaser(context: AudioContext, size: BufferSize);
+X.PitchShifter(context: AudioContext, size: BufferSize);
+X.Reverb(context: AudioContext, size: BufferSize);
+X.Ringmodulator(context: AudioContext, size: BufferSize);
+X.Stereo(context: AudioContext, size, size: BufferSize);
+X.Tremolo(context: AudioContext, size: BufferSize);
+X.Wah(context: AudioContext, size: BufferSize);
+
+X.Analyser(context: AudioContext);
+
+X.Recorder(context: AudioContext, size: BufferSize, numberOfInputs: number, numberOfOutputs: number);
+
+X.Session(context: AudioContext, size: BufferSize, numberOfInputs: number, numberOfOutputs, analyser: X.Analyser);
 ```
 
 ## Demo

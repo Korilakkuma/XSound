@@ -1,15 +1,19 @@
 'use strict';
 
+import { Connectable } from '../../interfaces/Connectable';
+
 /**
  * This private class defines common properties for effector classes.
  * @constructor
  */
-export class Effector {
+export class Effector extends Connectable {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
      */
     constructor(context, bufferSize) {
+        super();
+
         this.isActive = true;
 
         this.context = context;
@@ -163,6 +167,16 @@ export class Effector {
      */
     toJSON() {
         return JSON.stringify(this.params());
+    }
+
+    /** @override */
+    get INPUT() {
+        return this.input;
+    }
+
+    /** @override */
+    get OUTPUT() {
+        return this.output;
     }
 
     /** @override */

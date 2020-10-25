@@ -11,7 +11,27 @@ import { MixerModule } from './MixerModule';
 import { ProcessorModule } from './ProcessorModule';
 import { MIDI } from './MIDI';
 import { MML } from './MML';
+import { Analyser } from './SoundModule/Analyser';
+import { Recorder } from './SoundModule/Recorder';
+import { Session } from './SoundModule/Session';
 import { Effector } from './SoundModule/Effectors/Effector';
+import { Autopanner } from './SoundModule/Effectors/Autopanner';
+import { Chorus } from './SoundModule/Effectors/Chorus';
+import { Compressor } from './SoundModule/Effectors/Compressor';
+import { Delay } from './SoundModule/Effectors/Delay';
+import { Distortion } from './SoundModule/Effectors/Distortion';
+import { Equalizer } from './SoundModule/Effectors/Equalizer';
+import { Filter } from './SoundModule/Effectors/Filter';
+import { Flanger } from './SoundModule/Effectors/Flanger';
+import { Listener } from './SoundModule/Effectors/Listener';
+import { Panner } from './SoundModule/Effectors/Panner';
+import { Phaser } from './SoundModule/Effectors/Phaser';
+import { PitchShifter } from './SoundModule/Effectors/PitchShifter';
+import { Reverb } from './SoundModule/Effectors/Reverb';
+import { Ringmodulator } from './SoundModule/Effectors/Ringmodulator';
+import { Stereo } from './SoundModule/Effectors/Stereo';
+import { Tremolo } from './SoundModule/Effectors/Tremolo';
+import { Wah } from './SoundModule/Effectors/Wah';
 import {
     FFT,
     IFFT,
@@ -125,7 +145,28 @@ if (IS_XSOUND) {
     XSound.toFrequencies     = toFrequencies;
     XSound.toTextFile        = toTextFile;
 
-    XSound.Effector = Effector;
+    XSound.Analyser = Analyser;
+    XSound.Recorder = Recorder;
+    XSound.Session  = Session;
+
+    XSound.Effector      = Effector;
+    XSound.Autopanner    = Autopanner;
+    XSound.Chorus        = Chorus;
+    XSound.Compressor    = Compressor;
+    XSound.Delay         = Delay;
+    XSound.Distortion    = Distortion;
+    XSound.Equalizer     = Equalizer;
+    XSound.Filter        = Filter;
+    XSound.Flanger       = Flanger;
+    XSound.Listener      = Listener;
+    XSound.Panner        = Panner;
+    XSound.Phaser        = Phaser;
+    XSound.PitchShifter  = PitchShifter;
+    XSound.Reverb        = Reverb;
+    XSound.Ringmodulator = Ringmodulator;
+    XSound.Stereo        = Stereo;
+    XSound.Tremolo       = Tremolo;
+    XSound.Wah           = Wah;
 
     /**
      * This class (static) method changes state ('running') of `AudioContext`.

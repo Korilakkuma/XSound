@@ -1,10 +1,12 @@
 'use strict';
 
+import { Connectable } from '../interfaces/Connectable';
+
 /**
  * This private class defines properties for multi track recording.
  * @constructor
  */
-export class Recorder {
+export class Recorder extends Connectable {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
@@ -12,6 +14,8 @@ export class Recorder {
      * @param {number} numberOfOutputs This argument the number of outputs for `ScriptProcessorNode`.
      */
     constructor(context, bufferSize, numberOfInputs, numberOfOutputs) {
+        super();
+
         this.sampleRate = context.sampleRate;
 
         this.context   = context;
@@ -557,6 +561,16 @@ export class Recorder {
 
                 return window.URL.createObjectURL(blob);
         }
+    }
+
+    /** @override */
+    get INPUT() {
+        return this.processor;
+    }
+
+    /** @override */
+    get OUTPUT() {
+        return this.processor;
     }
 
     /** @override */

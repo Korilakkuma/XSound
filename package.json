@@ -34,6 +34,9 @@
     "type": "git",
     "url": "https://github.com/Korilakkuma/XSound.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "keywords": [
     "XSound",
     "JavaScript",

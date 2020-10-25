@@ -1,10 +1,12 @@
 'use strict';
 
+import { Connectable } from '../interfaces/Connectable';
+
 /**
  * This private class defines properties for sound session on network.
  * @constructor
  */
-export class Session {
+export class Session extends Connectable {
     static BUFFER_SIZE = 2048;
 
     /**
@@ -15,6 +17,8 @@ export class Session {
      * @param {Analyser} analyser This argument is the instance of `Analyser`.
      */
     constructor(context, bufferSize, numberOfInputs, numberOfOutputs, analyser) {
+        super();
+
         this.isActive = false;
 
         this.context  = context;
@@ -300,6 +304,16 @@ export class Session {
      */
     get() {
         return this.websocket;
+    }
+
+    /** @override */
+    get INPUT() {
+        return this.sender;
+    }
+
+    /** @override */
+    get OUTPUT() {
+        return this.sender;
     }
 
     /** @override */

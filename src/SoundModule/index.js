@@ -4,25 +4,25 @@ import { Analyser } from './Analyser';
 import { Recorder } from './Recorder';
 import { Session } from './Session';
 import { Effector } from './Effectors/Effector';
-import { Stereo } from './Effectors/Stereo';
-import { Compressor } from './Effectors/Compressor';
-import { Distortion } from './Effectors/Distortion';
-import { Wah } from './Effectors/Wah';
-import { PitchShifter } from './Effectors/PitchShifter';
-import { Equalizer } from './Effectors/Equalizer';
-import { Filter } from './Effectors/Filter';
 import { Autopanner } from './Effectors/Autopanner';
 import { AutopannerFallback } from './Effectors/AutopannerFallback';
-import { Tremolo } from './Effectors/Tremolo';
-import { Ringmodulator } from './Effectors/Ringmodulator';
-import { Phaser } from './Effectors/Phaser';
-import { Flanger } from './Effectors/Flanger';
 import { Chorus } from './Effectors/Chorus';
+import { Compressor } from './Effectors/Compressor';
 import { Delay } from './Effectors/Delay';
-import { Reverb } from './Effectors/Reverb';
-import { Panner } from './Effectors/Panner';
-import { Listener } from './Effectors/Listener';
+import { Distortion } from './Effectors/Distortion';
 import { EnvelopeGenerator } from './Effectors/EnvelopeGenerator';
+import { Equalizer } from './Effectors/Equalizer';
+import { Filter } from './Effectors/Filter';
+import { Flanger } from './Effectors/Flanger';
+import { Listener } from './Effectors/Listener';
+import { Panner } from './Effectors/Panner';
+import { Phaser } from './Effectors/Phaser';
+import { PitchShifter } from './Effectors/PitchShifter';
+import { Reverb } from './Effectors/Reverb';
+import { Ringmodulator } from './Effectors/Ringmodulator';
+import { Stereo } from './Effectors/Stereo';
+import { Tremolo } from './Effectors/Tremolo';
+import { Wah } from './Effectors/Wah';
 
 /**
  * This class is superclass that is the top in this library.
@@ -59,18 +59,18 @@ export class SoundModule {
             this.processor.disconnect(0);
             this.processor = null;
 
-            this.analyser.input.disconnect(0);
+            this.analyser.INPUT.disconnect(0);
             this.analyser = null;
 
-            this.recorder.processor.disconnect(0);
+            this.recorder.INPUT.disconnect(0);
             this.recorder = null;
 
-            this.session.sender.disconnect(0);
+            this.session.INPUT.disconnect(0);
             this.session  = null;
 
             this.modules.forEach(module => {
-                module.input.disconnect(0);
-                module.output.disconnect(0);
+                module.INPUT.disconnect(0);
+                module.OUTPUT.disconnect(0);
                 module = null;
             });
 
@@ -260,35 +260,35 @@ export class SoundModule {
         source.disconnect(0);  // Clear connection
 
         if (this.modules.length > 0) {
-            source.connect(this.modules[0].input);
+            source.connect(this.modules[0].INPUT);
         } else {
             source.connect(this.mastervolume);
         }
 
         for (let i = 0, len = this.modules.length; i < len; i++) {
             // Clear connection
-            this.modules[i].output.disconnect(0);
+            this.modules[i].OUTPUT.disconnect(0);
 
             if (i < (this.modules.length - 1)) {
                 // Connect to next node
-                this.modules[i].output.connect(this.modules[i + 1].input);
+                this.modules[i].OUTPUT.connect(this.modules[i + 1].INPUT);
             } else {
-                this.modules[i].output.connect(this.mastervolume);
+                this.modules[i].OUTPUT.connect(this.mastervolume);
             }
         }
 
         this.mastervolume.connect(this.context.destination);
 
         // for analyser
-        this.mastervolume.connect(this.analyser.input);
+        this.mastervolume.connect(this.analyser.INPUT);
 
         // for recording
-        this.mastervolume.connect(this.recorder.processor);
-        this.recorder.processor.connect(this.context.destination);
+        this.mastervolume.connect(this.recorder.INPUT);
+        this.recorder.INPUT.connect(this.context.destination);
 
         // for session
-        this.mastervolume.connect(this.session.sender);
-        this.session.sender.connect(this.context.destination);
+        this.mastervolume.connect(this.session.INPUT);
+        this.session.INPUT.connect(this.context.destination);
 
         return this;
     }

@@ -1,5 +1,6 @@
 'use strict';
 
+import { Connectable } from '../../interfaces/Connectable';
 import { TimeOverview } from './TimeOverview';
 import { Time } from './Time';
 import { FFT } from './FFT';
@@ -8,11 +9,13 @@ import { FFT } from './FFT';
  * This private class manages 3 private classes (`TimeOverview`, `Time`, `FFT`) for drawing sound wave.
  * @constructor
  */
-export class Analyser {
+export class Analyser extends Connectable {
     /**
      * @param {AudioContext} context This argument is This argument is in order to use the interfaces of Web Audio API.
      */
     constructor(context) {
+        super();
+
         this.analyser = context.createAnalyser();
         this.input    = context.createGain();
 
@@ -312,6 +315,16 @@ export class Analyser {
      */
     get() {
         return this.analyser;
+    }
+
+    /** @override */
+    get INPUT() {
+        return this.input;
+    }
+
+    /** @override */
+    get OUTPUT() {
+        return this.input;
     }
 
     /** @override */

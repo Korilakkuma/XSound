@@ -473,7 +473,7 @@ export class AudioModule extends SoundModule {
             const times = sprites[key];
 
             if (!Array.isArray(times) || (times.length !== 2)) {
-                return;
+                return audioBuffers;
             }
 
             const sampleRate = this.buffer.sampleRate;
@@ -482,7 +482,7 @@ export class AudioModule extends SoundModule {
             const length     = end - start;
 
             if (isNaN(length) || (length <= 0)) {
-                return null;
+                return audioBuffers;
             }
 
             let spritedDataLs = null;
@@ -522,7 +522,7 @@ export class AudioModule extends SoundModule {
 
                     return audioBuffers;
                 default:
-                    return {};
+                    return audioBuffers;
             }
         }, {});
     }

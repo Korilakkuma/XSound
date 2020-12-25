@@ -219,6 +219,7 @@ button[type="button"]:focus {
 
 footer {
     margin: 48px 0;
+    padding-bottom: 48px;
     text-align: center;
 }
 

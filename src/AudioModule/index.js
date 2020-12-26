@@ -170,17 +170,17 @@ export class AudioModule extends SoundModule {
     }
 
     /**
-     * This method creates the instance of `AudioBuffer` from `ArrayBuffer`.
-     * @param {ArrayBuffer} arrayBuffer This argument is the instance of `ArrayBuffer`.
+     * This method creates the instance of `AudioBuffer` from `ArrayBuffer` or sets the instanceof `AudioBuffer`.
+     * @param {ArrayBuffer|AudioBuffer} buffer This argument is the instance of `ArrayBuffer` or `AudioBuffer`.
      * @return {AudioModule} This is returned for method chain.
      * @override
      */
-    ready(arrayBuffer) {
-        if (arrayBuffer instanceof ArrayBuffer) {
+    ready(buffer) {
+        if (buffer instanceof ArrayBuffer) {
             this.buffer = null;
 
-            const successCallback = buffer => {
-                this.buffer = buffer;
+            const successCallback = b => {
+                this.buffer = b;
 
                 this.analyser.start('timeoverview', 0, this.buffer);
                 this.analyser.start('timeoverview', 1, this.buffer);
@@ -188,9 +188,11 @@ export class AudioModule extends SoundModule {
                 this.callbacks.ready(this.buffer);
             };
 
-            this.context.decodeAudioData(arrayBuffer, successCallback, this.callbacks.error);
+            this.context.decodeAudioData(buffer, successCallback, this.callbacks.error);
 
-            this.callbacks.decode(arrayBuffer);
+            this.callbacks.decode(buffer);
+        } else if (buffer instanceof AudioBuffer) {
+            this.buffer = buffer;
         }
 
         return this;
@@ -445,6 +447,84 @@ export class AudioModule extends SoundModule {
     }
 
     /**
+     *  This method slices the instance of `AudioBuffer`.
+     *  @param {number} startTime This argument is start time [sec] on `AudioBuffer`.
+     *  @param {number} endTime This argument is end time [sec] on `AudioBuffer`.
+     *  @return {AudioBuffer} This is returned as sliced `AudioBuffer`.
+     */
+    slice(startTime, endTime) {
+        if (!this.isBuffer()) {
+            return null;
+        }
+
+        const {
+            sampleRate,
+            length,
+            numberOfChannels
+        } = this.buffer;
+
+        let start = Math.floor(startTime * sampleRate);
+        let end   = Math.floor(endTime * sampleRate);
+
+        if (isNaN(start) || (start < 0)) {
+            start = 0;
+        }
+
+        if (isNaN(end) || (end > length)) {
+            end = length;
+        }
+
+        let dataLs = null;
+        let dataRs = null;
+
+        if (numberOfChannels > 0) {
+            dataLs = this.buffer.getChannelData(0);
+        }
+
+        if (numberOfChannels > 1) {
+            dataRs = this.buffer.getChannelData(1);
+        }
+
+        let bufferLs = null;
+        let bufferRs = null;
+        let buffer   = null;
+
+        const bufferSize = end - start;
+
+        switch (numberOfChannels) {
+            case 1:
+                bufferLs = new Float32Array(bufferSize);
+
+                for (let i = start; i < end; i++) {
+                    bufferLs[i - start] = dataLs[i];
+                }
+
+                buffer = this.context.createBuffer(1, bufferSize, sampleRate);
+
+                buffer.copyToChannel(bufferLs, 0);
+
+                return buffer;
+            case 2:
+                bufferLs = new Float32Array(bufferSize);
+                bufferRs = new Float32Array(bufferSize);
+
+                for (let i = start; i < end; i++) {
+                    bufferLs[i - start] = dataLs[i];
+                    bufferRs[i - start] = dataRs[i];
+                }
+
+                buffer = this.context.createBuffer(2, bufferSize, sampleRate);
+
+                buffer.copyToChannel(bufferLs, 0);
+                buffer.copyToChannel(bufferRs, 1);
+
+                return buffer;
+            default:
+                return null;
+        }
+    }
+
+    /**
      *  This method sprites audio.
      *  @param {object} sprites This argument is the associative array that contains sprite times.
      *  @return {object} This is returned as the associative array that contains sprited `AudioBuffer`.
@@ -458,17 +538,6 @@ export class AudioModule extends SoundModule {
             return null;
         }
 
-        let dataLs = null;
-        let dataRs = null;
-
-        if (this.buffer.numberOfChannels > 0) {
-            dataLs = this.buffer.getChannelData(0);
-        }
-
-        if (this.buffer.numberOfChannels > 1) {
-            dataRs = this.buffer.getChannelData(1);
-        }
-
         return Object.keys(sprites).reduce((audioBuffers, key) => {
             const times = sprites[key];
 
@@ -476,54 +545,9 @@ export class AudioModule extends SoundModule {
                 return audioBuffers;
             }
 
-            const sampleRate = this.buffer.sampleRate;
-            const start      = parseInt((times[0] * sampleRate), 10);
-            const end        = parseInt((times[1] * sampleRate), 10);
-            const length     = end - start;
+            audioBuffers[key] = this.slice(parseFloat(times[0]), parseFloat(times[1]));
 
-            if (isNaN(length) || (length <= 0)) {
-                return audioBuffers;
-            }
-
-            let spritedDataLs = null;
-            let spritedDataRs = null;
-            let buffer        = null;
-
-            switch (this.buffer.numberOfChannels) {
-                case 1:
-                    spritedDataLs = new Float32Array(length);
-
-                    for (let i = start; i < end; i++) {
-                        spritedDataLs[i - start] = dataLs[i];
-                    }
-
-                    buffer = this.context.createBuffer(1, length, sampleRate);
-
-                    buffer.copyToChannel(spritedDataLs, 0);
-
-                    audioBuffers[key] = buffer;
-
-                    return audioBuffers;
-                case 2:
-                    spritedDataLs = new Float32Array(length);
-                    spritedDataRs = new Float32Array(length);
-
-                    for (let i = start; i < end; i++) {
-                        spritedDataLs[i - start] = dataLs[i];
-                        spritedDataRs[i - start] = dataRs[i];
-                    }
-
-                    buffer = this.context.createBuffer(2, length, sampleRate);
-
-                    buffer.copyToChannel(spritedDataLs, 0);
-                    buffer.copyToChannel(spritedDataRs, 1);
-
-                    audioBuffers[key] = buffer;
-
-                    return audioBuffers;
-                default:
-                    return audioBuffers;
-            }
+            return audioBuffers;
         }, {});
     }
 

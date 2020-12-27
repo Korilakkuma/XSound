@@ -35,25 +35,48 @@
                     <a href="https://korilakkuma.github.io/xsound-api/" target="_blank" rel="noopener noreferrer">API Documentation</a>
                 </div>
                 <textarea>/**
- * for Oscillator
+ * for Oscillator or Custom Oscillator
  */
 X(&apos;oscillator&apos;).setup([true, false]);
+
+X(&apos;processor&apos;)
+    .setup(&apos;custom-oscillator&apos;)
+    .ready(&apos;./assets/worklet.js&apos;)
+    .then(() =&gt; {
+        X(&apos;processor&apos;).onMessage((event) =&gt; {
+            console.dir(event);
+        });
+    })
+    .catch(console.error);
 
 let key   = &apos;&apos;;
 let value = null;
 
 document.getElementById(&apos;button-start&apos;).onclick = () =&gt; {
     X(&apos;oscillator&apos;).start([440, 880]);
+
+    // X(&apos;processor&apos;).start();
+
+    const currentTime = X.getCurrentTime();
+    const audioParam  = X(&apos;processor&apos;).param(&apos;frequency&apos;);
+
+    audioParam.setValueAtTime(440, currentTime);
+    audioParam.linearRampToValueAtTime(880, currentTime + 0.5);
 };
 
 document.getElementById(&apos;button-stop&apos;).onclick = () =&gt; {
     X(&apos;oscillator&apos;).stop();
+    // X(&apos;processor&apos;).stop();
 };
 
 document.getElementById(&apos;select-type&apos;).onchange = (event) =&gt; {
+    const type = event.currentTarget.value;
+
     for (let i = 0, len = X(&apos;oscillator&apos;).length(); i &lt; len; i++) {
-        X(&apos;oscillator&apos;).get(i).param(&apos;type&apos;, event.currentTarget.value);
+        X(&apos;oscillator&apos;).get(i).param(&apos;type&apos;, type);
     }
+
+    X(&apos;processor&apos;).postMessage(type);
 };
 
 /**

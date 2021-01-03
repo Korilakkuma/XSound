@@ -17,13 +17,14 @@ export class ProcessorModule extends SoundModule {
         this.options   = {};
         this.moduleURL = '';
         this.promise   = null;
+        this.map       = null;  // Polyfill for `AudioParamMap`
 
         this.runAnalyser = false;
     }
 
     /**
      * This method sets registered processor and options for `AudioWorkletNode` constructor.
-     * @param {string} name This argument is he name of the `AudioWorkletProcessor` this node will be based on.
+     * @param {string} name This argument is the name of the `AudioWorkletProcessor` this node will be based on.
      * @param {object} options This argument is an object based on the `AudioWorkletNodeOptions` dictionary.
      * @return {ProcessorModule} This is returned for method chain.
      * @override
@@ -38,6 +39,7 @@ export class ProcessorModule extends SoundModule {
         if (!window.AudioWorkletNode) {
             // Polyfill
             this.processor = this.context.createScriptProcessor(this.bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
+            this.map       = new Map();
         }
 
         return this;
@@ -74,7 +76,7 @@ export class ProcessorModule extends SoundModule {
     }
 
     /**
-     * This method starts worklet.
+     * This method starts sound by connecting to `AudioDestinationNode`.
      * @param {function} processCallback This argument is in order to set `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
      * @return {ProcessorModule} This is returned as method chain.
@@ -115,7 +117,7 @@ export class ProcessorModule extends SoundModule {
     }
 
     /**
-     * This method stops envelope generator, effectors and `onaudioprocess` event if use `ScriptProcessorNode`.
+     * This method stops sound by disconnecting to `AudioDestinationNode`.
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @return {ProcessorModule} This is returned for method chain.
      * @override
@@ -149,12 +151,29 @@ export class ProcessorModule extends SoundModule {
 
     /**
      * This method sets the event handler that is invoked when the port receives a message.
-     * @param {function|null} This argument is invoked when the port receives a message.
+     * @param {function} This argument is invoked when the port receives a message.
      * @return {ProcessorModule} This is returned for method chain.
      */
     onMessage(callback) {
         if (this.processor instanceof AudioWorkletNode) {
-            this.processor.port.onmessage = callback;
+            if ((Object.prototype.toString.call(callback) === '[object Function]') || (callback === null)) {
+                this.processor.port.onmessage = callback;
+            }
+        }
+
+        return this;
+    }
+
+    /**
+     * This method sets the event handler that is invoked when it receives a message that cannot be deserialized.
+     * @param {function} This argument is invoked when it receives a message that cannot be deserialized.
+     * @return {ProcessorModule} This is returned for method chain.
+     */
+    onMessageError(callback) {
+        if (this.processor instanceof AudioWorkletNode) {
+            if ((Object.prototype.toString.call(callback) === '[object Function]') || (callback === null)) {
+                this.processor.port.onmessageerror = callback;
+            }
         }
 
         return this;
@@ -169,13 +188,13 @@ export class ProcessorModule extends SoundModule {
             return this.processor.parameters;
         }
 
-        return new Map();
+        return this.map;
     }
 
     /**
      * This method gets the instance of `AudioParam` that is defined by `AudioParamDescriptor`.
-     * @param {string} This argument is the designated key for getting as `AudioParam`.
-     * @return {AudioParam|null} This is returned as `AudioParam` (or `null`).
+     * @param {string} This argument is the key for getting as `AudioParam`.
+     * @return {AudioParam} This is returned as `AudioParam`.
      */
     param(key) {
         if (this.processor instanceof AudioWorkletNode) {
@@ -186,7 +205,7 @@ export class ProcessorModule extends SoundModule {
     }
 
     /**
-     * This method gets the instance of `AudioWorkletNode` (or `ScriptProcessorNode`);
+     * This method gets the instance of `AudioWorkletNode` (or `ScriptProcessorNode`).
      * @return {AudioWorkletNode|ScriptProcessorNode}
      * @override
      */

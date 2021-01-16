@@ -2,6 +2,7 @@
     const STORAGE_KEY = 'xsound-playground';
 
     const textarea = document.querySelector('textarea');
+    const ui       = document.getElementById('ui');
 
     const editor = CodeMirror.fromTextArea(textarea, {
         mode        : 'javascript',
@@ -20,6 +21,10 @@
         const executor = new Function(textarea.value);
 
         executor();
+
+        if (ui.hasAttribute('hidden')) {
+            ui.removeAttribute('hidden');
+        }
     }, false);
 
     document.querySelector('[href="#clear"]').addEventListener('click', (event) => {

@@ -62,6 +62,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "copy-webpack-plugin": "^7.0.0",
     "eslint": "^7.19.0",
     "eslint-cli": "^1.1.1",
     "eslint-config-standard": "^16.0.2",

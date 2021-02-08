@@ -1,5 +1,6 @@
-const webpack     = require('webpack');
-const packageJson = require('./package.json');
+const webpack           = require('webpack');
+const packageJson       = require('./package.json');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const {
   name,
@@ -28,6 +29,11 @@ module.exports = {
   plugins: process.env.NODE_ENV === 'production' ? [
     new webpack.BannerPlugin({
       banner: `${name} v${version} | ${author} | license: ${license}`
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: './src/main.d.ts', to: './xsound.d.ts' }
+      ]
     })
   ] : [],
   devtool: 'source-map'

@@ -72,7 +72,7 @@ chorus.state(true);
 oscillator.start(0);
 ```
 
-XSound enable to using the following classes (Refer to [API Documentation](https://xsound.dev/) for details).
+XSound enable to using the following classes (Refer to [API Documentation](https://xsound.dev) for details).
 
 ```TypeScript
 type BufferSize = 0 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384;
@@ -107,7 +107,7 @@ X.Session(context: AudioContext, size: BufferSize, numberOfInputs: number, numbe
   
 The application that uses XSound is in the following URLs.
   
-- [XSound.app](https://xsound.app/)
+- [XSound.app](https://xsound.app)
 - [x-piano](https://korilakkuma.github.io/x-piano/)
 - [Music V](https://weblike-curtaincall.ssl-lolipop.jp/portfolio-music-v/)
 - [Music Tweet](https://github.com/Korilakkuma/Music-Tweet)

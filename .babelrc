@@ -4,7 +4,7 @@
       "@babel/preset-env",
       {
         "targets": {
-          "edge": "80"
+          "ie": "11"
         }
       }
     ]

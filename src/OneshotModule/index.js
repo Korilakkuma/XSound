@@ -189,7 +189,7 @@ export class OneshotModule extends SoundModule {
     /**
      * This method schedules the time of start and stop.
      * @param {number} startTime This argument is the start time. The default value is 0.
-     * @param {number} duration This argument is duration. The default value is greater than or equal to start time.
+     * @param {number} duration This argument is duration. The default value is 0.
      * @return {OneshotModule} This is returned for method chain.
      * @override
      */
@@ -198,7 +198,7 @@ export class OneshotModule extends SoundModule {
         const d = parseFloat(duration);
 
         this.times.start    = (s >= 0) ? s : 0;
-        this.times.duration = (d >= s) ? d : s;
+        this.times.duration = (d >= 0) ? d : 0;
 
         this.envelopegenerator.clear(false);
 
@@ -353,7 +353,7 @@ export class OneshotModule extends SoundModule {
             return this;
         }
 
-        const stopTime = this.context.currentTime + this.times.duration;
+        const stopTime = this.context.currentTime + this.times.start + this.times.duration;
 
         // Attack or Decay or Sustain -> Release
         this.envelopegenerator.stop(stopTime);

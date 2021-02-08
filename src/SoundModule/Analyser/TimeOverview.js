@@ -32,10 +32,13 @@ export class TimeOverview extends Visualizer {
 
         this.mode = TimeOverview.DRAG_MODE_UPDATE;  // or 'sprite'
 
-        // for Audio Sprite
         this.offsetX   = 0;
         this.startTime = 0;
         this.endTime   = 0;
+
+        this.onStart = this.onStart.bind(this);
+        this.onMove  = this.onMove.bind(this);
+        this.onEnd   = this.onEnd.bind(this);
     }
 
     /** @override */
@@ -493,10 +496,6 @@ export class TimeOverview extends Visualizer {
 
         this.callback = Object.prototype.toString.call(callback) === '[object Function]' ? callback : () => {};
 
-        this.onStart = this.onStart.bind(this);
-        this.onMove  = this.onMove.bind(this);
-        this.onEnd   = this.onEnd.bind(this);
-
         drawNode.removeEventListener(start, this.onStart, true);
         drawNode.removeEventListener(move, this.onMove, true);
         window.removeEventListener(end, this.onEnd, true);
@@ -547,26 +546,22 @@ export class TimeOverview extends Visualizer {
         const plot = (x / width) * this.length;
         const time = plot / this.sampleRate;
 
-        if ((this.mode === TimeOverview.DRAG_MODE_SPRITE) && ((type === 'mousedown') || (type === 'touchstart'))) {
+        if ((type === 'mousedown') || (type === 'touchstart')) {
             this.offsetX   = x;
             this.startTime = time;
             this.endTime   = 0;
         }
 
-        if ((this.mode === TimeOverview.DRAG_MODE_SPRITE) && ((type === 'mouseup') || (type === 'touchend'))) {
+        if ((type === 'mouseup') || (type === 'touchend')) {
             this.endTime = time;
         }
 
         this.update(time);
 
-        if (this.mode === TimeOverview.DRAG_MODE_UPDATE) {
-            this.callback(event, time);
-        } else if (this.mode === TimeOverview.DRAG_MODE_SPRITE) {
-            if (this.startTime < time) {
-                this.callback(event, this.startTime, time);
-            } else if (this.startTime > time) {
-                this.callback(event, time, this.startTime);
-            }
+        if (this.startTime <= time) {
+            this.callback(event, this.startTime, time, this.mode);
+        } else if (this.startTime > time) {
+            this.callback(event, time, this.startTime, this.mode);
         }
 
         return this;

@@ -112,12 +112,12 @@ export class StreamModule extends SoundModule {
      * This method starts streaming.
      * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
-     * @return {StreamModule} This is returned for method chain.
+     * @return {Promise} This is returned as `Promise` of `getUserMedia`.
      * @override
      */
     start(connects, processCallback) {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            throw new Error('Cannot use WebRTC.');
+            return Promise.reject('Cannot use WebRTC.');
         }
 
         const bufferSize = this.processor.bufferSize;
@@ -176,18 +176,17 @@ export class StreamModule extends SoundModule {
 
         this.isStop = false;
 
-        navigator.mediaDevices.getUserMedia(this.constraints).then(stream => {
-            if (this.isStop) {
-                return;
-            }
+        return navigator.mediaDevices.getUserMedia(this.constraints)
+            .then(stream => {
+                if (this.isStop) {
+                    return;
+                }
 
-            start(stream, connects, processCallback);
-            this.callbacks.stream(stream);
-        }).catch(error => {
-            this.callbacks.error(error);
-        });
-
-        return this;
+                start(stream, connects, processCallback);
+                this.callbacks.stream(stream);
+            }).catch(error => {
+                this.callbacks.error(error);
+            });
     }
 
     /**

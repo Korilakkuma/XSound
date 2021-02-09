@@ -17,8 +17,8 @@ export class StreamModule extends SoundModule {
     constructor(context, bufferSize) {
         super(context, bufferSize);
 
-        // for the instance of `MediaStreamAudioSourceNode`
-        this.source = null;
+        this.source = null;  // for the instance of `MediaStreamAudioSourceNode`
+        this.stream = null;  // for the instance of `MediaStream`
 
         // for `navigator.mediaDevices.getUserMedia`
         this.constraints = {
@@ -125,6 +125,7 @@ export class StreamModule extends SoundModule {
         let isAnalyser = false;
 
         const start = (stream, connects, processCallback) => {
+            this.stream = stream;
             this.source = this.context.createMediaStreamSource(stream);
 
             // MediaStreamAudioSourceNode (Input) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
@@ -221,6 +222,15 @@ export class StreamModule extends SoundModule {
     }
 
     /**
+     * This method gets the instance of `MediaStream`.
+     * @return {MediaStream}
+     * @override
+     */
+    getStream() {
+        return this.stream;
+    }
+
+    /**
      * This method starts or stops streaming according to current state.
      * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
      * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
@@ -231,6 +241,40 @@ export class StreamModule extends SoundModule {
             this.stop();
         } else {
             this.start(connects, processCallback);
+        }
+
+        return this;
+    }
+
+    /**
+     * This method stops microphone and camera by stopping the instances of `MediaStreamTrack`.
+     * @param {boolean} clearVideo This argument is in order to stop video (camera) if it is `true`.
+     * @return {StreamModule} This is returned for method chain.
+     * @override
+     */
+    clear(clearVideo) {
+        if (this.stream === null) {
+            return this;
+        }
+
+        this.stop();
+
+        // Get the instance of `MediaStreamTrack` for audio
+        const audioTracks = this.stream.getAudioTracks();
+
+        for (const audioTrack of audioTracks) {
+            audioTrack.stop();
+        }
+
+        if (clearVideo) {
+            // Get the instance of `MediaStreamTrack` for video
+            const videoTracks = this.stream.getVideoTracks();
+
+            for (const videoTrack of videoTracks) {
+                videoTrack.stop();
+            }
+
+            this.stream = null;
         }
 
         return this;

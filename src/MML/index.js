@@ -37,7 +37,7 @@ export class MML {
      * @param {string} pitchname This argument is pitch name.
      * @return {number|string} This is returned as index that is computed by octave and pitch name.
      */
-    static computeIndex = (octave, pitchname) => {
+    static computeIndex(octave, pitchname) {
         let index = 0;
 
         switch (pitchname) {
@@ -71,7 +71,7 @@ export class MML {
         const computedIndex = (MML.EQUAL_TEMPERAMENT * (octave - 1)) + index;
 
         return (computedIndex >= 0) ? computedIndex : -1;
-    };
+    }
 
     /**
      * This class (static) method computes frequency from the index that corresponds to the 12 equal temperament.
@@ -79,7 +79,9 @@ export class MML {
      *     For example, This value is between 0 and 88 in the case of piano.
      * @return {number} This is returned as frequency.
      */
-    static computeFrequency = index => (index >= 0) ? (MML.MIN_A * Math.pow(MML.FREQUENCY_RATIO, index)) : -1;
+    static computeFrequency(index) {
+        return (index >= 0) ? (MML.MIN_A * Math.pow(MML.FREQUENCY_RATIO, index)) : -1;
+    }
 
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.

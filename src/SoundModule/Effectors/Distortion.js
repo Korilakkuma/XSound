@@ -21,7 +21,7 @@ export class Distortion extends Effector {
      * @param {number} numberOfSamples This argument is the size of `Float32Array`.
      * @return {Float32Array|null} This is `curve` property in `WaveShaperNode`.
      */
-    static createCurve = (type, amount, numberOfSamples) => {
+    static createCurve(type, amount, numberOfSamples) {
         // This algorithms are from https://github.com/Theodeus/tuna/blob/master/tuna.js#L1301,L1359
         if ((amount > 0) && (amount < 1)) {
             const curves = new Float32Array(numberOfSamples);
@@ -119,7 +119,7 @@ export class Distortion extends Effector {
         }
 
         return null;  // Clean sound (default value)
-    };
+    }
 
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.

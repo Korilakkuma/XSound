@@ -149,12 +149,6 @@ export class MML {
             this.offset = 0;
         }
 
-        if (this.source !== null) {
-            this.stop();  // Stop the previous MML
-        }
-
-        this.clear();
-
         if (Array.isArray(source)) {
             for (const s of source) {
                 if (!(s instanceof OscillatorNode)) {
@@ -167,13 +161,18 @@ export class MML {
             this.source = [source];
         } else if ((source instanceof OscillatorModule) || (source instanceof OneshotModule) || (source instanceof NoiseModule)) {
             this.source = source;
-        } else {
-            return this;
+        }
+
+        if (!Array.isArray(mmls) && MML.REGEXP_MML.test(mmls)) {
+            mmls = [mmls];
         }
 
         if (!Array.isArray(mmls)) {
-            mmls = [mmls];
+            return this;
         }
+
+        this.stop();
+        this.clear();
 
         this.mmls = mmls.slice(0);  // Shallow copy
 
@@ -376,11 +375,9 @@ export class MML {
             }
 
             if (sequences.length > 0) {
-                // `start` method gets element by `pop` for performance
-                sequences.reverse();
-
                 this.sequences.push(sequences);
                 this.timerids.push(null);
+                this.currentIndexes.push(0);
                 this.currentPositions.push(0);
             }
         }
@@ -412,7 +409,9 @@ export class MML {
                 return this;
             }
 
-            const sequence = this.sequences[p].pop();
+            const sequence = this.sequences[p][this.currentIndexes[p]];
+
+            this.currentIndexes[p]++;
 
             if (highlight) {
                 const prev    = this.mmls[p].slice(0, this.currentPositions[p]);

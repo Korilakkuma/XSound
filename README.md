@@ -179,5 +179,5 @@ $ open http://localhost:8080/playground/
   
 ## License
   
-Released under the [MIT](https://github.com/Korilakkuma/XSound/blob/master/LICENSE) license
+Released under the [MIT](https://github.com/Korilakkuma/XSound/blob/main/LICENSE) license
   

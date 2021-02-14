@@ -93,6 +93,7 @@ export class MML {
         this.mmls             = [];  /** @type {Array.<string> */
         this.sequences        = [];  /** @type {Array.<Array.<object>>} */
         this.timerids         = [];  /** @type {Array.<number>} */
+        this.currentIndexes   = [];  /** @type {Array.<number>} */
         this.currentPositions = [];  /** @type {Array.<number>} */
 
         // Previous sequence
@@ -620,6 +621,33 @@ export class MML {
     }
 
     /**
+     * This method gets or sets current sequence index.
+     * @param {number} part This argument is the part of MML.
+     * @param {number} index If this argument is number, this is new sequence index.
+     *     If this argument is omitted, this method is getter for current sequence index.
+     * @return {number|MML} This is returned as current sequence index. Otherwise, this is returned for method chain.
+     */
+    currentIndex(part, index) {
+        const p = parseInt(part, 10);
+
+        if ((p < 0) || (p >= this.currentIndexes.length)) {
+            return this;
+        }
+
+        if (index === undefined) {
+            return this.currentIndexes[p];
+        }
+
+        const i = parseInt(index, 10);
+
+        if (i >= 0 && i < this.sequences[p].length) {
+            this.currentIndexes[p] = i;
+        }
+
+        return this;
+    }
+
+    /**
      * This method converts MML to ABC Notation.
      * @param {string} mml This argument is MML string.
      * @param {number} X This argument is file number in ABC Notation.
@@ -877,6 +905,7 @@ export class MML {
         this.mmls.length             = 0;
         this.sequences.length        = 0;
         this.timerids.length         = 0;
+        this.currentIndexes.length   = 0;
         this.currentPositions.length = 0;
 
         this.prev = null;

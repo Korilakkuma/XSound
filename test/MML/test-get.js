@@ -33,7 +33,7 @@ describe('MML TEST', () => {
         it('should return the array that contains performance information', () => {
             const actual   = mml.get(0, false);
             const expected = [
-                { 'indexes' : ['R'],            'frequencies' : [0],                                                                            'start' : 6.081081081081081,  'duration' : 0.8108108108108109,  'stop' : 6.891891891891891,  'note' : 'R4' },
+                { 'indexes' : [-1],             'frequencies' : [0],                                                                            'start' : 6.081081081081081,  'duration' : 0.8108108108108109,  'stop' : 6.891891891891891,  'note' : 'R4' },
                 { 'indexes' : [48],             'frequencies' : [440.00000000000017],                                                           'start' : 5.675675675675675,  'duration' : 0.40540540540540543, 'stop' : 6.081081081081081,  'note' : 'A8' },
                 { 'indexes' : [45],             'frequencies' : [369.9944227116345],                                                            'start' : 5.27027027027027,   'duration' : 0.40540540540540543, 'stop' : 5.675675675675675,  'note' : 'F+8' },
                 { 'indexes' : [48, 45, 40],     'frequencies' : [440.00000000000017, 369.9944227116345, 277.1826309768722],                     'start' : 3.2432432432432434, 'duration' : 2.027027027027027,   'stop' : 5.27027027027027,   'note' : 'AF+C+2&AF+C+8' },
@@ -94,7 +94,7 @@ describe('MML TEST', () => {
             const actual = mml.get();
             const expected = [
                 [
-                    { 'indexes' : ['R'],            'frequencies' : [0],                                                                            'start' : 6.081081081081081,  'duration' : 0.8108108108108109,  'stop' : 6.891891891891891,  'note' : 'R4' },
+                    { 'indexes' : [-1],             'frequencies' : [0],                                                                            'start' : 6.081081081081081,  'duration' : 0.8108108108108109,  'stop' : 6.891891891891891,  'note' : 'R4' },
                     { 'indexes' : [48],             'frequencies' : [440.00000000000017],                                                           'start' : 5.675675675675675,  'duration' : 0.40540540540540543, 'stop' : 6.081081081081081,  'note' : 'A8' },
                     { 'indexes' : [45],             'frequencies' : [369.9944227116345],                                                            'start' : 5.27027027027027,   'duration' : 0.40540540540540543, 'stop' : 5.675675675675675,  'note' : 'F+8' },
                     { 'indexes' : [48, 45, 40],     'frequencies' : [440.00000000000017, 369.9944227116345, 277.1826309768722],                     'start' : 3.2432432432432434, 'duration' : 2.027027027027027,   'stop' : 5.27027027027027,   'note' : 'AF+C+2&AF+C+8' },

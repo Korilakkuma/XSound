@@ -25,7 +25,7 @@ export class MML {
     static REGEXP_NOTE       = /(?:(?:[CDEFGABR][#+-]?)+)(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)(?:&(?:[CDEFGABR][#+-]?)+(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?)*/i;
     static REGEXP_CHORD      = /((?:[CDEFGABR][#+-]?)+)(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?.*/i;
     static REGEXP_DURATION   = /(?:[CDEFGABR][#+-]?)+((?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?.*)/i;
-    static REST              = 'R';
+    static REST              = -1;
     static ERROR_STRING      = 'MML';
     static ERROR_TEMPO       = 'TEMPO';
     static ERROR_OCTAVE      = 'OCTAVE';
@@ -62,7 +62,7 @@ export class MML {
             case 'B':
                 index = 14;
                 break;
-            case MML.REST:
+            case 'R':
                 return MML.REST;
             default :
                 break;
@@ -238,6 +238,11 @@ export class MML {
                         const pitchname = chord.charAt(i);
 
                         let index = MML.computeIndex(octave, pitchname.toUpperCase());
+
+                        if (index === MML.REST) {
+                            indexes.push(index);
+                            continue;
+                        }
 
                         // Half up or Half down (Sharp or Flat) ?
                         switch (chord.charAt(i + 1)) {

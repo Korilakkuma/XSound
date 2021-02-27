@@ -13,7 +13,7 @@
     "fix": "eslint --fix src test",
     "build": "npm run clean && NODE_ENV=production webpack --progress --mode production",
     "watch": "npm run clean && webpack --progress --watch",
-    "dev": "webpack-dev-server --progress",
+    "dev": "webpack-cli serve --progress",
     "test": "npm run lint && karma start",
     "changelog": "generate-changelog",
     "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'chore: Update CHANGELOG' && npm version patch && git push && git push origin --tags",

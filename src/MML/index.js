@@ -1,5 +1,7 @@
 'use strict';
 
+import { Tokenizer } from './Tokenizer';
+import { TreeConstructor } from './TreeConstructor';
 import { OscillatorModule } from '../OscillatorModule';
 import { OneshotModule } from '../OneshotModule';
 import { NoiseModule } from '../NoiseModule';
@@ -9,80 +11,6 @@ import { NoiseModule } from '../NoiseModule';
  * @constructor
  */
 export class MML {
-    // The 12 equal temperament
-    //
-    // Min -> 27.5 Hz (A), Max -> 4186 Hz (C)
-    //
-    // A * 1.059463 -> A# (half up)
-    static FREQUENCY_RATIO   = Math.pow(2, (1 / 12));  // about 1.059463
-    static MIN_A             = 27.5;
-    static ONE_MINUTES       = 60;  // sec
-    static EQUAL_TEMPERAMENT = 12;
-    static QUARTER_NOTE      = 4;
-    static REGEXP_MML        = /\s*(?:T\d+)\s*|\s*(?:O\d+)\s*|\s*(?:(?:[CDEFGABR][#+-]?)+(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?)(?:&(?:[CDEFGABR][#+-]?)+(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?)*\s*/gi;
-    static REGEXP_TEMPO      = /T\d+/i;
-    static REGEXP_OCTAVE     = /O\d+/i;
-    static REGEXP_NOTE       = /(?:(?:[CDEFGABR][#+-]?)+)(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)(?:&(?:[CDEFGABR][#+-]?)+(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?)*/i;
-    static REGEXP_CHORD      = /((?:[CDEFGABR][#+-]?)+)(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?.*/i;
-    static REGEXP_DURATION   = /(?:[CDEFGABR][#+-]?)+((?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?.*)/i;
-    static REST              = -1;
-    static ERROR_STRING      = 'MML';
-    static ERROR_TEMPO       = 'TEMPO';
-    static ERROR_OCTAVE      = 'OCTAVE';
-    static ERROR_NOTE        = 'NOTE';
-
-    /**
-     * This class (static) method computes index by octave and pitch name.
-     * @param {number} octave This argument is octave.
-     * @param {string} pitchname This argument is pitch name.
-     * @return {number|string} This is returned as index that is computed by octave and pitch name.
-     */
-    static computeIndex(octave, pitchname) {
-        let index = 0;
-
-        switch (pitchname) {
-            case 'C':
-                index = 3;
-                break;
-            case 'D':
-                index = 5;
-                break;
-            case 'E':
-                index = 7;
-                break;
-            case 'F':
-                index = 8;
-                break;
-            case 'G':
-                index = 10;
-                break;
-            case 'A':
-                index = 12;
-                break;
-            case 'B':
-                index = 14;
-                break;
-            case 'R':
-                return MML.REST;
-            default :
-                break;
-        }
-
-        const computedIndex = (MML.EQUAL_TEMPERAMENT * (octave - 1)) + index;
-
-        return (computedIndex >= 0) ? computedIndex : -1;
-    }
-
-    /**
-     * This class (static) method computes frequency from the index that corresponds to the 12 equal temperament.
-     * @param {number} index This argument is the index that corresponds to the 12 equal temperament.
-     *     For example, This value is between 0 and 88 in the case of piano.
-     * @return {number} This is returned as frequency.
-     */
-    static computeFrequency(index) {
-        return (index >= 0) ? (MML.MIN_A * Math.pow(MML.FREQUENCY_RATIO, index)) : -1;
-    }
-
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      */
@@ -165,7 +93,7 @@ export class MML {
             this.source = source;
         }
 
-        if (!Array.isArray(mmls) && MML.REGEXP_MML.test(mmls)) {
+        if (!Array.isArray(mmls) && (typeof mmls === 'string')) {
             mmls = [mmls];
         }
 
@@ -178,210 +106,15 @@ export class MML {
 
         this.mmls = mmls.slice(0);  // Shallow copy
 
-        while (mmls.length > 0) {
-            const mml = String(mmls.shift());
+        for (const mml of mmls) {
+            this.timerids.push(null);
+            this.currentIndexes.push(0);
+            this.currentPositions.push(0);
 
-            /** @type {Array.<object>} */
-            const sequences = [];
+            const tokenizer       = new Tokenizer(mml);
+            const treeConstructor = new TreeConstructor(tokenizer);
 
-            const notes = mml.match(MML.REGEXP_MML);
-
-            if (notes === null) {
-                this.callbacks.error(MML.ERROR_STRING, '');
-                return this;
-            }
-
-            let indexes     = [];
-            let frequencies = [];
-
-            let start    = 0;
-            let duration = 0;
-            let stop     = 0;
-
-            let currentTime = 0;
-            let timeOf4note = null;
-            let octave      = null;
-
-            while (notes.length > 0) {
-                const note = notes.shift().trim();
-
-                if (MML.REGEXP_TEMPO.test(note)) {
-                    const bpm = parseInt(note.slice(1), 10);
-
-                    if (bpm <= 0) {
-                        this.callbacks.error(MML.ERROR_TEMPO, note);
-                        return this;
-                    }
-
-                    timeOf4note = MML.ONE_MINUTES / bpm;
-                } else if (MML.REGEXP_OCTAVE.test(note)) {
-                    octave = parseInt(note.slice(1), 10);
-
-                    if (octave < 0) {
-                        this.callbacks.error(MML.ERROR_OCTAVE, note);
-                        return this;
-                    }
-                } else if (MML.REGEXP_NOTE.test(note)) {
-                    if (timeOf4note === null) {
-                        this.callbacks.error(MML.ERROR_TEMPO, note);
-                        return this;
-                    }
-
-                    if (octave === null) {
-                        this.callbacks.error(MML.ERROR_OCTAVE, note);
-                        return this;
-                    }
-
-                    const chord = note.match(MML.REGEXP_CHORD)[1];
-
-                    indexes = [];
-
-                    for (let i = 0, len = chord.length; i < len; i++) {
-                        const pitchname = chord.charAt(i);
-
-                        let index = MML.computeIndex(octave, pitchname.toUpperCase());
-
-                        if (index === MML.REST) {
-                            indexes.push(index);
-                            continue;
-                        }
-
-                        // Half up or Half down (Sharp or Flat) ?
-                        switch (chord.charAt(i + 1)) {
-                            case '#':
-                            case '+':
-                                // Half up (Sharp)
-                                index++;
-                                i++;
-                                break;
-                            case '-':
-                                // Half down (Flat)
-                                index--;
-                                i++;
-                                break;
-                            default:
-                                // Normal (Natural)
-                                break;
-                        }
-
-                        // in the case of chord
-                        if (index >= indexes[0]) {
-                            index -= MML.EQUAL_TEMPERAMENT;
-                        }
-
-                        // Validation
-                        if (index < 0) {
-                            this.callbacks.error(MML.ERROR_NOTE, note);
-                            return this;
-                        }
-
-                        indexes.push(index);
-                    }
-
-                    frequencies = [];
-
-                    for (const index of indexes) {
-                        const frequency = (index !== MML.REST) ? MML.computeFrequency(index) : 0;
-
-                        // Validation
-                        if (frequency === -1) {
-                            this.callbacks.error(MML.ERROR_NOTE, note);
-                            return this;
-                        }
-
-                        frequencies.push(frequency);
-                    }
-
-                    const durations = note.split('&');  // Tie
-
-                    while (durations.length > 0) {
-                        const d = durations.shift().match(MML.REGEXP_DURATION)[1];
-
-                        switch (parseInt(d, 10)) {
-                            case   1:
-                            case   2:
-                            case   4:
-                            case   8:
-                            case  16:
-                            case  32:
-                            case  64:
-                            case 128:
-                            case 256:
-                                const numOf4note = MML.QUARTER_NOTE / parseInt(d, 10);
-
-                                // a dotted note ?
-                                duration += (d.indexOf('.') !== -1) ? ((1.5 * numOf4note) * timeOf4note) : (numOf4note * timeOf4note);
-                                break;
-                            case   6:
-                                // Triplet of half note
-                                duration += (2 * timeOf4note) / 3;
-                                break;
-                            case  12:
-                                // Triplet of quarter note
-                                duration += timeOf4note / 3;
-                                break;
-                            case  18:
-                                // Nonuplet of half note
-                                duration += (2 * timeOf4note) / 9;
-                                break;
-                            case  24:
-                                // Triplet of 8th note
-                                duration += (0.5 * timeOf4note) / 3;
-                                break;
-                            case  36:
-                                // Nonuplet of quarter note
-                                duration += timeOf4note / 9;
-                                break;
-                            case  48:
-                                // Triplet of 16th note
-                                duration += (0.25 * timeOf4note) / 3;
-                                break;
-                            case  72:
-                                // Nonuplet of 8th note
-                                duration += (0.5 * timeOf4note) / 9;
-                                break;
-                            case  96:
-                                // Triplet of 32th note
-                                duration += (0.125 * timeOf4note) / 3;
-                                break;
-                            case 144:
-                                // Nonuplet of 16th note
-                                duration += (0.25 * timeOf4note) / 9;
-                                break;
-                            case 192:
-                                // Triplet of 64th note
-                                duration += (0.0625 * timeOf4note) / 3;
-                                break;
-                            default:
-                                this.callbacks.error(MML.ERROR_NOTE, note);
-                                break;
-                        }
-                    }
-
-                    start = currentTime;
-                    stop  = start + duration;
-
-                    currentTime += duration;
-
-                    sequences.push({
-                        'indexes'     : indexes,
-                        'frequencies' : frequencies,
-                        'start'       : start,
-                        'duration'    : duration,
-                        'stop'        : stop,
-                        'note'        : note
-                    });
-
-                    duration = 0;
-                }
-            }
-
-            if (sequences.length > 0) {
-                this.sequences.push(sequences);
-                this.timerids.push(null);
-                this.currentIndexes.push(0);
-                this.currentPositions.push(0);
-            }
+            this.sequences.push(treeConstructor.toSequences());
         }
 
         return this;
@@ -484,7 +217,7 @@ export class MML {
                 this.callbacks.start(sequence);
             } else if (this.source instanceof OneshotModule) {
                 for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                    if (sequence.indexes[i] !== MML.REST) {
+                    if (sequence.indexes[i] !== -1) {
                         this.source.start((sequence.indexes[i] + this.offset), connects, processCallback);
                     }
                 }
@@ -503,7 +236,7 @@ export class MML {
                     this.callbacks.stop(sequence);
                 } else if (this.source instanceof OneshotModule) {
                     for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                        if (sequence.indexes[i] !== MML.REST) {
+                        if (sequence.indexes[i] !== -1) {
                             this.source.stop((sequence.indexes[i] + this.offset), processCallback);
                         }
                     }
@@ -544,7 +277,7 @@ export class MML {
             this.callbacks.stop(sequence);
         } else if (this.source instanceof OneshotModule) {
             for (const index of sequence.indexes) {
-                if (index !== MML.REST) {
+                if (index !== -1) {
                     this.source.stop((index + this.offset), processCallback);
                 }
             }
@@ -667,136 +400,121 @@ export class MML {
         abc += `L:${L ? L : '1/256'}\n`;
         abc += `K:${K ? K : ''}\n`;
 
-        const notes = mml.match(MML.REGEXP_MML);
+        const tokenizer       = new Tokenizer(mml);
+        const treeConstructor = new TreeConstructor(tokenizer);
 
-        if (notes === null) {
-            return abc;
-        }
+        const parsedMMLs = treeConstructor.parse();
 
         let octave        = null;
         let totalDuration = 0;
 
-        while (notes.length > 0) {
-            const note = notes.shift().trim();
+        while (parsedMMLs.length > 0) {
+            const { syntax, token, digits } = parsedMMLs.shift();
 
-            if (MML.REGEXP_TEMPO.test(note)) {
-                const Q = parseInt(note.slice(1), 10);
+            if (token === Tokenizer.TEMPO) {
+                const Q = digits[0].digit;
 
-                if (Q > 0) {
-                    abc += `Q:1/4=${Q}\n`;
-                } else {
+                if (Q <= 0) {
                     return abc;
                 }
-            } else if (MML.REGEXP_OCTAVE.test(note)) {
-                octave = parseInt(note.slice(1), 10);
+
+                abc += `Q:1/4=${Q}\n`;
+            } else if (token === Tokenizer.OCTAVE) {
+                octave = digits[0].digit;
 
                 if (octave < 0) {
                     return abc;
                 }
-            } else if (MML.REGEXP_NOTE.test(note)) {
-                if (octave === null) {
-                    return abc;
-                }
-
-                let splittedNotes = null;
-
-                if (note.indexOf('&') === -1) {
-                    splittedNotes = [note];
-                } else {
-                    splittedNotes = note.split('&');
-                }
-
+            } else if (digits) {
                 let chord = '';
 
-                while (splittedNotes.length > 0) {
-                    const splittedNote = splittedNotes.shift();
-
-                    const duration = parseInt(splittedNote.replace(/^.+?(\d+)\.*$/, '$1'), 10);
+                for (let i = 0, len = digits.length; i < digits; i++) {
+                    const duration = digits[i].digit;
 
                     let n = '';
                     let d = 0;
 
                     switch (duration) {
                         case 1:
-                            n = splittedNote.replace('1', '256');
+                            n = syntax.replace('1', '256');
                             break;
                         case 2:
-                            n = splittedNote.replace('2', '128');
+                            n = syntax.replace('2', '128');
                             break;
                         case 4:
-                            n = splittedNote.replace('4', '64');
+                            n = syntax.replace('4', '64');
                             break;
                         case 8:
-                            n = splittedNote.replace('8', '32');
+                            n = syntax.replace('8', '32');
                             break;
                         case 16:
-                            n = splittedNote.replace('16', '16');
+                            n = syntax.replace('16', '16');
                             break;
                         case 32:
-                            n = splittedNote.replace('32', '8');
+                            n = syntax.replace('32', '8');
                             break;
                         case 64:
-                            n = splittedNote.replace('64', '4');
+                            n = syntax.replace('64', '4');
                             break;
                         case 128:
-                            n = splittedNote.replace('128', '2');
+                            n = syntax.replace('128', '2');
                             break;
                         case 256:
-                            n = splittedNote.replace('256', '1');
+                            n = syntax.replace('256', '1');
                             break;
                         // Tuplet
                         case 6:
-                            n = `(3${splittedNote.replace('6', '128')}`;
+                            n = `(3${syntax.replace('6', '128')}`;
                             d = 128 / 3;
                             break;
                         case 12:
-                            n = `(3${splittedNote.replace('12', '64')}`;
+                            n = `(3${syntax.replace('12', '64')}`;
                             d = 64 / 3;
                             break;
                         case 18:
-                            n = `(9${splittedNote.replace('18', '128')}`;
+                            n = `(9${syntax.replace('18', '128')}`;
                             d = 128 / 9;
                             break;
                         case 24:
-                            n = `(3${splittedNote.replace('24', '32')}`;
+                            n = `(3${syntax.replace('24', '32')}`;
                             d = 32 / 3;
                             break;
                         case 36:
-                            n = `(9${splittedNote.replace('36', '64')}`;
+                            n = `(9${syntax.replace('36', '64')}`;
                             d = 64 / 9;
                             break;
                         case 48:
-                            n = `(3${splittedNote.replace('48', '16')}`;
+                            n = `(3${syntax.replace('48', '16')}`;
                             d = 16 / 3;
                             break;
                         case 72:
-                            n = `(9${splittedNote.replace('72', '32')}`;
+                            n = `(9${syntax.replace('72', '32')}`;
                             d = 32 / 9;
                             break;
                         case 96:
-                            n = `(3${splittedNote.replace('96', '8')}`;
+                            n = `(3${syntax.replace('96', '8')}`;
                             d = 8 / 3;
                             break;
                         case 144:
-                            n = `(9${splittedNote.replace('144', '16')}`;
+                            n = `(9${syntax.replace('144', '16')}`;
                             d = 16 / 9;
                             break;
                         case 192:
-                            n = `(3${splittedNote.replace('192', '4')}`;
+                            n = `(3${syntax.replace('192', '4')}`;
                             d = 4 / 3;
                             break;
                         default:
                             return abc;
                     }
 
-                    if (n.indexOf('.') !== -1) {
+                    if (digits[i].dot) {
                         n = n.replace(/^(.+?)\d+\.+$/, `$1${1.5 * parseInt(n.replace(/^.+?(\d+)\.+$/, '$1'), 10)}`);
                     }
 
-                    if (n.indexOf('(') === -1) {
-                        totalDuration += parseInt(n.replace(/^.+?(\d+)\.*$/i, '$1'), 10);
-                    } else {
+                    if (n.includes('(')) {
                         totalDuration += d;
+                    } else {
+                        totalDuration += parseInt(n.replace(/^.+?(\d+)\.*$/i, '$1'), 10);
                     }
 
                     if (totalDuration >= 256) {
@@ -804,7 +522,7 @@ export class MML {
                         totalDuration = 0;
                     }
 
-                    if (/R/i.test(n)) {
+                    if (n === Tokenizer.R) {
                         abc += `${n} `;
                         continue;
                     }
@@ -878,7 +596,7 @@ export class MML {
                         }
                     }
 
-                    if (splittedNotes.length > 0) {
+                    if ((i === 0) && (len === 2)) {
                         chord += '&';
                     } else {
                         abc += `${chord} `;

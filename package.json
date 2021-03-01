@@ -15,10 +15,9 @@
     "watch": "npm run clean && webpack --progress --watch",
     "dev": "webpack-cli serve --progress",
     "test": "npm run lint && karma start",
-    "changelog": "generate-changelog",
-    "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'chore: Update CHANGELOG' && npm version patch && git push && git push origin --tags",
-    "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'chore: Update CHANGELOG' && npm version minor && git push && git push origin --tags",
-    "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'chore: Update CHANGELOG' && npm version major && git push && git push origin --tags",
+    "release:patch": "npm version patch && git push && git push origin --tags",
+    "release:minor": "npm version minor && git push && git push origin --tags",
+    "release:major": "npm version major && git push && git push origin --tags",
     "prepublish": "npm run build"
   },
   "husky": {

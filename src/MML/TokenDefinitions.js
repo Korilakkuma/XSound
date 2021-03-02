@@ -45,5 +45,6 @@ export const TokenTypes = {
     'NUMBER' : 5,
     'TIE'    : 6,
     'SPACE'  : 7,
-    'EOS'    : 8
+    'EOS'    : 8,
+    'UNKNOWN': 9
 };

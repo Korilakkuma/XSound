@@ -1,31 +1,18 @@
 'use strict';
 
-import { TokenMap, TokenTypes } from './TokenDefinitions';
-
 /**
  * This class has token type, token data and token value if token is number.
  * @constructor
  */
 export class Token {
     /**
-     * @param {TokenTypes|string} token This argument is the token that is defined by `TokenTypes`.
-     *     Otherwise, this is chords or digits.
+     * @param {TokenTypes} type This argument is the one of enumeration values that is defined by `TokenTypes`.
+     * @param {string} token This argument is a string that constructs of token.
      */
-    constructor(token) {
+    constructor(type, token) {
+        this.type  = type;
         this.token = token;
-
-        const value = parseInt(token, 10);
-
-        if (token && isNaN(value)) {
-            this.type  = TokenTypes[TokenMap.get(token.charAt(0))];
-            this.value = null;
-        } else if (token) {
-            this.type  = TokenTypes.NUMBER;
-            this.value = value;
-        } else {
-            this.type  = TokenTypes[TokenMap.get(token)];
-            this.value = null;
-        }
+        this.value = parseInt(token, 10);
     }
 
     /**
@@ -46,6 +33,6 @@ export class Token {
      * This method is getter for token value if token is number.
      */
     getValue() {
-        return this.value;
+        return isNaN(this.value) ? null : this.value;
     }
 }

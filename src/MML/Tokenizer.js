@@ -35,7 +35,7 @@ export class Tokenizer {
         }
 
         if (TokenTypes[TokenMap.get(token)] === TokenTypes.EOS) {
-            return new Token(token);
+            return new Token(TokenTypes.EOS, token);
         }
 
         this.notes.length   = 0;
@@ -43,9 +43,9 @@ export class Tokenizer {
 
         switch (TokenTypes[TokenMap.get(token)]) {
             case TokenTypes.TEMPO:
-                return new Token(token);
+                return new Token(TokenTypes.TEMPO, token);
             case TokenTypes.OCTAVE:
-                return new Token(token);
+                return new Token(TokenTypes.OCTAVE, token);
             case TokenTypes.NOTE:
                 this.notes.push(token);
 
@@ -58,12 +58,12 @@ export class Tokenizer {
                     token = this.tokens.pop();
                 }
 
-                // Look-back
+                // Look-behind
                 this.tokens.push(token);
 
-                return new Token(this.notes.join(''));
+                return new Token(TokenTypes.NOTE, this.notes.join(''));
             case TokenTypes.REST:
-                return new Token(token);
+                return new Token(TokenTypes.REST, token);
             case TokenTypes.NUMBER:
                 this.numbers.push(token);
 
@@ -76,14 +76,14 @@ export class Tokenizer {
                     token = this.tokens.pop();
                 }
 
-                // Look-back
+                // Look-behind
                 this.tokens.push(token);
 
-                return new Token(this.numbers.join(''));
+                return new Token(TokenTypes.NUMBER, this.numbers.join(''));
             case TokenTypes.TIE:
-                return new Token(token);
+                return new Token(TokenTypes.TIE, token);
             default:
-                return new Token(token);
+                return new Token(TokenTypes.UNKNOWN, token);
         }
     }
 }

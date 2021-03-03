@@ -128,7 +128,7 @@ export class Sequencer {
                 case TokenTypes.OCTAVE:
                     octave = value;
 
-                    if (octave <= 0) {
+                    if (octave < 0) {
                         throw new Error(`Octave (${octave}) is greater than 0`);
                     }
 

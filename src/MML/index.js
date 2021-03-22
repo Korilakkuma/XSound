@@ -1,6 +1,6 @@
 'use strict';
 
-import { TokenTypes } from './TokenDefinitions';
+import { TokenTypes } from './Token';
 import { Tokenizer } from './Tokenizer';
 import { TreeConstructor } from './TreeConstructor';
 import { Sequencer } from './Sequencer';
@@ -22,7 +22,7 @@ export class MML {
         // for the array of `OscillatorNode` or `OscillatorModule` or `OneshotModule` or `NoiseModule`
         this.source = null;
 
-        this.mmls             = [];  /** @type {Array.<string> */
+        this.mmls             = [];  /** @type {Array.<string>} */
         this.sequences        = [];  /** @type {Array.<Array.<object>>} */
         this.timerids         = [];  /** @type {Array.<number>} */
         this.currentIndexes   = [];  /** @type {Array.<number>} */
@@ -106,7 +106,7 @@ export class MML {
         this.stop();
         this.clear();
 
-        this.mmls = mmls.slice(0);  // Shallow copy
+        this.mmls = mmls;
 
         for (const mml of mmls) {
             this.timerids.push(null);
@@ -410,112 +410,115 @@ export class MML {
         const tokenizer       = new Tokenizer(mml);
         const treeConstructor = new TreeConstructor(tokenizer);
 
-        const parsedMMLs = treeConstructor.parse();
+        const trees = treeConstructor.parse();
 
         let octave        = null;
         let totalDuration = 0;
 
-        while (parsedMMLs.length > 0) {
-            const tokens = parsedMMLs.shift();
+        while (trees.length > 0) {
+            const tree     = trees.shift();
+            const operator = tree.getOperator();
+            const left     = tree.getLeft();
 
-            if (tokens[0].getType() === TokenTypes.TEMPO) {
-                const Q = tokens[1].getValue();
+            if (operator.getType() === TokenTypes.TEMPO) {
+                const Q = left.getOperator().getValue();
 
                 if (Q <= 0) {
                     return abc;
                 }
 
                 abc += `Q:1/4=${Q}\n`;
-            } else if (tokens[0].getType() === TokenTypes.OCTAVE) {
-                octave = tokens[1].getValue();
+            } else if (operator.getType() === TokenTypes.OCTAVE) {
+                octave = left.getOperator().getValue();
 
                 if (octave < 0) {
                     return abc;
                 }
             } else {
+                const token    = operator.getToken();
+                const digits   = left.getOperator().getToken();
+                const duration = left.getOperator().getValue();
+
                 let chord = '';
 
-                for (let i = 0, len = tokens.length - 1; i < len; i++) {
-                    const token    = tokens[i + 1].getToken();
-                    const duration = tokens[i + 1].getValue();
-
+                for (let i = 0, len = token.length - 1; i < len; i++) {
                     let n = '';
                     let d = 0;
 
                     switch (duration) {
                         case 1:
-                            n = token.replace('1', '256');
+                            n = digits.replace('1', '256');
                             break;
                         case 2:
-                            n = token.replace('2', '128');
+                            n = digits.replace('2', '128');
                             break;
                         case 4:
-                            n = token.replace('4', '64');
+                            n = digits.replace('4', '64');
                             break;
                         case 8:
-                            n = token.replace('8', '32');
+                            n = digits.replace('8', '32');
                             break;
                         case 16:
-                            n = token.replace('16', '16');
+                            n = digits.replace('16', '16');
                             break;
                         case 32:
-                            n = token.replace('32', '8');
+                            n = digits.replace('32', '8');
                             break;
                         case 64:
-                            n = token.replace('64', '4');
+                            n = digits.replace('64', '4');
                             break;
                         case 128:
-                            n = token.replace('128', '2');
+                            n = digits.replace('128', '2');
                             break;
                         case 256:
-                            n = token.replace('256', '1');
+                            n = digits.replace('256', '1');
                             break;
                         // Tuplet
                         case 6:
-                            n = `(3${token.replace('6', '128')}`;
+                            n = `(3${digits.replace('6', '128')}`;
                             d = 128 / 3;
                             break;
                         case 12:
-                            n = `(3${token.replace('12', '64')}`;
+                            n = `(3${digits.replace('12', '64')}`;
                             d = 64 / 3;
                             break;
                         case 18:
-                            n = `(9${token.replace('18', '128')}`;
+                            n = `(9${digits.replace('18', '128')}`;
                             d = 128 / 9;
                             break;
                         case 24:
-                            n = `(3${token.replace('24', '32')}`;
+                            n = `(3${digits.replace('24', '32')}`;
                             d = 32 / 3;
                             break;
                         case 36:
-                            n = `(9${token.replace('36', '64')}`;
+                            n = `(9${digits.replace('36', '64')}`;
                             d = 64 / 9;
                             break;
                         case 48:
-                            n = `(3${token.replace('48', '16')}`;
+                            n = `(3${digits.replace('48', '16')}`;
                             d = 16 / 3;
                             break;
                         case 72:
-                            n = `(9${token.replace('72', '32')}`;
+                            n = `(9${digits.replace('72', '32')}`;
                             d = 32 / 9;
                             break;
                         case 96:
-                            n = `(3${token.replace('96', '8')}`;
+                            n = `(3${digits.replace('96', '8')}`;
                             d = 8 / 3;
                             break;
                         case 144:
-                            n = `(9${token.replace('144', '16')}`;
+                            n = `(9${digits.replace('144', '16')}`;
                             d = 16 / 9;
                             break;
                         case 192:
-                            n = `(3${token.replace('192', '4')}`;
+                            n = `(3${digits.replace('192', '4')}`;
                             d = 4 / 3;
                             break;
                         default:
                             return abc;
                     }
 
-                    if (token.includes(Sequencer.DOT)) {
+                    if (digits.includes(Sequencer.DOT)) {
                         n = n.replace(/^(.+?)\d+\.+$/, `$1${1.5 * parseInt(n.replace(/^.+?(\d+)\.+$/, '$1'), 10)}`);
                     }
 

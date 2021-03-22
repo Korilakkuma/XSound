@@ -1,9 +1,10 @@
 'use strict';
 
-import { TokenTypes } from './TokenDefinitions';
+import { TokenTypes } from './Token';
+import { Tree } from './Tree';
 
 /**
- * This class is Tree Construction for MML (Music Macro Language).
+ * This class is Tree Construction (syntax tree) for MML (Music Macro Language).
  * @constructor
  */
 export class TreeConstructor {
@@ -12,75 +13,116 @@ export class TreeConstructor {
      */
     constructor(tokenizer) {
         this.tokenizer  = tokenizer;  // The instance of `Tokenizer`
-        this.stackOfMML = [];         /** @type Array.<Array.<Token>> */
+        this.syntaxTree = [];         /** @type Array.<Tree> */
     }
 
     /**
      * This method executes tree construction (parsing) from tokens.
-     * @return {Array.<Array.<Token>>} This is returned as syntax tree.
+     * @return {Array.<Tree>} This is returned as syntax tree.
      */
     parse() {
-        let token         = this.tokenizer.get();
-        let nextToken     = this.tokenizer.get();
-        let nextNextToken = this.tokenizer.get();
+        let token     = this.tokenizer.get();
+        let nextToken = this.tokenizer.get();
 
-        while (token.getType() !== TokenTypes.EOS) {
+        while (true) {
             switch (token.getType()) {
                 case TokenTypes.TEMPO:
-                    if (nextToken.getType() !== TokenTypes.NUMBER) {
-                        return [];
+                    if (nextToken.getType() === TokenTypes.NUMBER) {
+                        const left = new Tree(nextToken, null, null);  // Leaf
+                        const tree = new Tree(token, left, null);
+
+                        // /T\d+/
+                        this.syntaxTree.push(tree);
                     }
 
-                    // /T\d+/
-                    this.stackOfMML.push([token, nextToken]);
                     break;
                 case TokenTypes.OCTAVE:
-                    if (nextToken.getType() !== TokenTypes.NUMBER) {
-                        return [];
+                    if ((this.syntaxTree.length > 0) && (nextToken.getType() === TokenTypes.NUMBER)) {
+                        const left = new Tree(nextToken, null, null);  // Leaf
+                        const tree = new Tree(token, left, null);
+
+                        const parentNode = this.syntaxTree[this.syntaxTree.length - 1];
+
+                        parentNode.concat(tree);
+
+                        // /O\d+/
+                        this.syntaxTree.push(tree);
                     }
 
-                    // /O\d+/
-                    this.stackOfMML.push([token, nextToken]);
                     break;
                 case TokenTypes.NOTE:
-                    if (nextToken.getType() !== TokenTypes.NUMBER) {
-                        return [];
+                    if ((this.syntaxTree.length > 0) && (nextToken.getType() === TokenTypes.NUMBER)) {
+                        const left = new Tree(nextToken, null, null);  // Leaf
+                        const tree = new Tree(token, left, null);
+
+                        const parentNode = this.syntaxTree[this.syntaxTree.length - 1];
+
+                        parentNode.concat(tree);
+
+                        // /([CDEFGAB]+(+|-)?)+\d+\.?/
+                        this.syntaxTree.push(tree);
                     }
 
-                    // /([CDEFGAB]+(+|-)?)+\d+\.?/
-                    this.stackOfMML.push([token, nextToken]);
                     break;
                 case TokenTypes.REST:
-                    if (nextToken.getType() !== TokenTypes.NUMBER) {
-                        return [];
+                    if ((this.syntaxTree.length > 0) && (nextToken.getType() === TokenTypes.NUMBER)) {
+                        const left  = new Tree(nextToken, null, null);  // Leaf
+                        const tree  = new Tree(token, left, null);
+
+                        const parentNode = this.syntaxTree[this.syntaxTree.length - 1];
+
+                        parentNode.concat(tree);
+
+                        // /R\d+/
+                        this.syntaxTree.push(tree);
                     }
 
-                    // /R\d+/
-                    this.stackOfMML.push([token, nextToken]);
                     break;
                 case TokenTypes.NUMBER:
                     // Noop
                     break;
                 case TokenTypes.TIE:
-                    // /&/
-                    this.stackOfMML.push([token]);
+                    if (this.syntaxTree.length > 0) {
+                        const tree = new Tree(token, null, null);
+
+                        const parentNode = this.syntaxTree[this.syntaxTree.length - 1];
+
+                        parentNode.concat(tree);
+
+                        // /&/
+                        this.syntaxTree.push(tree);
+                    }
+
                     break;
+                case TokenTypes.EOS:
+                    if (this.syntaxTree.length > 0) {
+                        const tree = new Tree(token, null, null);
+
+                        const parentNode = this.syntaxTree[this.syntaxTree.length - 1];
+
+                        parentNode.concat(tree);
+
+                        this.syntaxTree.push(tree);
+                    } else {
+                        const tree = new Tree(token, null, null);
+
+                        this.syntaxTree.push(tree);
+                    }
+
+                    return this.syntaxTree;
                 default:
-                    return [];
+                    return this.syntaxTree;
             }
 
-            token         = nextToken;
-            nextToken     = nextNextToken;
-            nextNextToken = this.tokenizer.get();
+            token     = nextToken;
+            nextToken = this.tokenizer.get();
         }
-
-        return this.stackOfMML;
     }
 
     /**
      * This method releases the memory that stack has.
      */
     free() {
-        this.stackOfMML.length = 0;
+        this.syntaxTree.length = 0;
     }
 }

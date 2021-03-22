@@ -1,7 +1,6 @@
 'use strict';
 
-import { TokenTypes } from '../../../src/MML/TokenDefinitions';
-import { Token } from '../../../src/MML/Token';
+import { TokenTypes, Token } from '../../../src/MML/Token';
 import { Tokenizer } from '../../../src/MML/Tokenizer';
 
 describe('Tokenizer', () => {

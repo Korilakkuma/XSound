@@ -1,7 +1,6 @@
 'use strict';
 
-import { TokenMap, TokenTypes } from './TokenDefinitions';
-import { Token } from './Token';
+import { TokenMap, TokenTypes, Token } from './Token';
 
 /**
  * This class is Tokenization for MML (Music Macro Language).

@@ -37,6 +37,11 @@ header,
     overflow: hidden;
 }
 
+header,
+aside {
+    background-color: #000;
+}
+
 header > div {
     text-align: center;
 }

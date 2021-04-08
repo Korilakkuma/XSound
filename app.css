@@ -47,19 +47,35 @@ header > div {
 }
 
 header > a,
-main > a {
+main > a,
+aside > a {
     margin-top: 48px;
     width: 6rem;
     height: 4rem;
     background: linear-gradient(to top right, rgba(0, 0, 0, 0) 50%, #c000c0 50.5%) no-repeat top left/50%  100%,
                 linear-gradient(to top left,  rgba(0, 0, 0, 0) 50%, #c000c0 50.5%) no-repeat top right/50% 100%;
-    overflow: hidden;
-    text-indent: -9999rem;
     text-decoration: none;
+
+    /* off left */
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+aside > a {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1;
+    width: 2rem;
+    height: 1.5rem;
+    text-align: right;
+    transform: rotate(180deg);
 }
 
 header > a:hover,
-main > a:hover {
+main > a:hover,
+aside > a:hover {
     background: linear-gradient(to top right, rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top left/50%  100%,
                 linear-gradient(to top left,  rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top right/50% 100%;
 }

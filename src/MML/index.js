@@ -1,15 +1,13 @@
 'use strict';
 
+import { Part } from './Part';
 import { TokenTypes } from './Token';
 import { Tokenizer } from './Tokenizer';
 import { TreeConstructor } from './TreeConstructor';
 import { Sequencer } from './Sequencer';
-import { OscillatorModule } from '../OscillatorModule';
-import { OneshotModule } from '../OneshotModule';
-import { NoiseModule } from '../NoiseModule';
 
 /**
- * This class defines properties for playing the MML (Music Macro Language).
+ * This class manages the instances of `Part` for playing the MML (Music Macro Language).
  * @constructor
  */
 export class MML {
@@ -19,19 +17,7 @@ export class MML {
     constructor(context) {
         this.context = context;
 
-        // for the array of `OscillatorNode` or `OscillatorModule` or `OneshotModule` or `NoiseModule`
-        this.source = null;
-
-        this.mmls             = [];  /** @type {Array.<string>} */
-        this.sequences        = [];  /** @type {Array.<Array.<object>>} */
-        this.timerids         = [];  /** @type {Array.<number>} */
-        this.currentIndexes   = [];  /** @type {Array.<number>} */
-        this.currentPositions = [];  /** @type {Array.<number>} */
-
-        // Previous sequence
-        this.prev = null;
-
-        this.offset = 0;
+        this.parts = [];  /** @type {Array.<Part>} */
 
         this.callbacks = {
             'start' : () => {},
@@ -69,32 +55,12 @@ export class MML {
 
     /**
      * This method parses MML string.
-     * @param {Array.<OscillatorNode>|OscillatorModule|OneshotModule|NoiseModule} source This argument is in order to select sound source.
+     * @param {OscillatorModule|OneshotModule|NoiseModule} source This argument is in order to select sound source.
      * @param {Array.<string>} mmls This argument is MML strings.
      * @param {number} offset This argument is in order to correct the index of one-shot audio.
-     * @return {Array.<Array.<object>>} This is returned as array that contains object for playing the MML.
+     * @return {Array.<Array.<Sequence>>} This is returned as array that contains `Sequence` for playing the MML.
      */
     ready(source, mmls, offset) {
-        this.offset = parseInt(offset, 10);
-
-        if (isNaN(this.offset) || (this.offset < 0)) {
-            this.offset = 0;
-        }
-
-        if (Array.isArray(source)) {
-            for (const s of source) {
-                if (!(s instanceof OscillatorNode)) {
-                    return this;
-                }
-            }
-
-            this.source = source;
-        } else if (source instanceof OscillatorNode) {
-            this.source = [source];
-        } else if ((source instanceof OscillatorModule) || (source instanceof OneshotModule) || (source instanceof NoiseModule)) {
-            this.source = source;
-        }
-
         if (!Array.isArray(mmls) && (typeof mmls === 'string')) {
             mmls = [mmls];
         }
@@ -109,157 +75,31 @@ export class MML {
         this.mmls = mmls;
 
         for (const mml of mmls) {
-            this.timerids.push(null);
-            this.currentIndexes.push(0);
-            this.currentPositions.push(0);
-
             const tokenizer       = new Tokenizer(mml);
             const treeConstructor = new TreeConstructor(tokenizer);
             const sequencer       = new Sequencer(treeConstructor);
+            const sequence        = sequencer.get();
 
-            this.sequences.push(sequencer.get());
+            this.parts.push(new Part(this.context, source, mml, sequence, this.callbacks, offset));
         }
 
         return this;
     }
 
     /**
-     * This method starts the designated MML part. Moreover, this method schedules next sound.
+     * This method starts the designated MML part. Moreover, this method schedules next sequence.
      * @param {number} part This argument is the part of MML.
      * @param {boolean} highlight This argument is `true` in the case of surrounding by `span.x-highlight`.
      * @param {Array.<Effector>|Array.<AudioNode>} connects This argument is the array for changing the default connection.
-     * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @return {MML} This is returned for method chain.
      */
-    start(part, highlight, connects, processCallback) {
+    start(part, highlight, connects) {
         const p = parseInt(part, 10);
 
-        if ((p >= 0) && (p < this.sequences.length)) {
-            if (!Array.isArray(this.sequences[p])) {
-                return this;
-            }
+        if ((p >= 0) && (p < this.parts.length)) {
+            const part = this.parts[p];
 
-            // End ?
-            if (this.sequences[p].length === 0) {
-                this.stop(processCallback);
-                this.callbacks.ended();
-
-                return this;
-            }
-
-            const sequence = this.sequences[p][this.currentIndexes[p]];
-
-            this.currentIndexes[p]++;
-
-            if (!sequence) {
-                return this;
-            }
-
-            if (highlight) {
-                const prev    = this.mmls[p].slice(0, this.currentPositions[p]);
-                const current = this.mmls[p].slice(this.currentPositions[p]).replace(sequence.note, `<span class="x-highlight">${sequence.note}</span>`);
-
-                this.mmls[p] = `${prev}${current}`;
-
-                this.currentPositions[p] += this.mmls[p].slice(this.currentPositions[p]).indexOf('</span>') + '</span>'.length;
-            } else {
-                const prev    = this.mmls[p].slice(0, this.currentPositions[p]);
-                const current = sequence.note;
-
-                this.mmls[p] = `${prev}${current}`;
-
-                this.currentPositions[p] += current.length;
-            }
-
-            if (Array.isArray(this.source)) {
-                for (let i = 0, len = this.source.length; i < len; i++) {
-                    let source = this.source[i];
-
-                    const type   = source.type;
-                    const detune = source.detune.value;
-
-                    source = this.context.createOscillator();
-
-                    // for legacy browsers
-                    source.start = source.start || source.noteOn;
-                    source.stop  = source.stop  || source.noteOff;
-
-                    source.type            = type;
-                    source.frequency.value = sequence.frequencies[i];
-                    source.detune.value    = detune;
-
-                    if (Array.isArray(connects)) {
-                        // OscillatorNode (Input) -> AudioNode -> ... -> AudioNode -> AudioDestinationNode (Output)
-                        source.connect(connects[0]);
-
-                        for (let j = 0, num = connects.length; j < num; j++) {
-                            const node = connects[j];
-
-                            if (j < (num - 1)) {
-                                const next = connects[j + 1];
-
-                                if (!((node instanceof AudioNode) && (next instanceof AudioNode))) {
-                                    return this;
-                                }
-
-                                node.connect(next);
-                            } else {
-                                node.connect(this.context.destination);
-                            }
-                        }
-                    } else {
-                        // OscillatorNode (Input) -> AudioDestinationNode (Output)
-                        source.connect(this.context.destination);
-                    }
-
-                    source.start(this.context.currentTime);
-                    source.stop(this.context.currentTime + sequence.duration);
-
-                    this.source[i] = source;
-                }
-
-                this.callbacks.start(sequence);
-            } else if (this.source instanceof OscillatorModule) {
-                this.source.start(sequence.frequencies, connects, processCallback);
-                this.callbacks.start(sequence);
-            } else if (this.source instanceof OneshotModule) {
-                for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                    if (sequence.indexes[i] !== -1) {
-                        this.source.start((sequence.indexes[i] + this.offset), connects, processCallback);
-                    }
-                }
-
-                this.callbacks.start(sequence, this.offset);
-            } else if (this.source instanceof NoiseModule) {
-                this.source.start(connects);
-                this.callbacks.start(sequence);
-            }
-
-            this.timerids[p] = window.setTimeout(() => {
-                if (Array.isArray(this.source)) {
-                    this.callbacks.stop(sequence);
-                } else if (this.source instanceof OscillatorModule) {
-                    this.source.stop();
-                    this.callbacks.stop(sequence);
-                } else if (this.source instanceof OneshotModule) {
-                    for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                        if (sequence.indexes[i] !== -1) {
-                            this.source.stop((sequence.indexes[i] + this.offset), processCallback);
-                        }
-                    }
-
-                    this.callbacks.stop(sequence, this.offset);
-                } else if (this.source instanceof NoiseModule) {
-                    this.source.stop();
-                    this.callbacks.stop(sequence);
-                }
-
-                // for `MML#stop`
-                this.prev = sequence;
-
-                // Start next sound by recursive call
-                this.start(p, highlight, connects, processCallback);
-            }, (sequence.duration * 1000));
+            part.start(highlight, connects);
         }
 
         return this;
@@ -267,37 +107,11 @@ export class MML {
 
     /**
      * This method stops the all of MML parts.
-     * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @return {MML} This is returned for method chain.
      */
-    stop(processCallback) {
-        const sequence = this.prev;
-
-        if ((sequence === null) || (sequence.length === 0)) {
-            return this;
-        }
-
-        if (Array.isArray(this.source)) {
-            this.callbacks.stop(sequence);
-        } else if (this.source instanceof OscillatorModule) {
-            this.source.stop();
-            this.callbacks.stop(sequence);
-        } else if (this.source instanceof OneshotModule) {
-            for (const index of sequence.indexes) {
-                if (index !== -1) {
-                    this.source.stop((index + this.offset), processCallback);
-                }
-            }
-
-            this.callbacks.stop(sequence, this.offset);
-        } else if (this.source instanceof NoiseModule) {
-            this.source.stop();
-            this.callbacks.stop(sequence);
-        }
-
-        for (let i = 0, len = this.timerids.length; i < len; i++) {
-            window.clearTimeout(this.timerids[i]);
-            this.timerids[i] = null;
+    stop() {
+        for (const part of this.parts) {
+            part.stop();
         }
 
         return this;
@@ -312,23 +126,30 @@ export class MML {
     get(index, asMML) {
         const i = parseInt(index, 10);
 
-        if (asMML) {
-            return ((i >= 0) && (i < this.mmls.length)) ? this.mmls[i] : this.mmls;
+        const mmls      = [];
+        const sequences = [];
+
+        for (const part of this.parts) {
+            mmls.push(part.getMML());
+            sequences.push(part.getSequence());
         }
 
-        return ((i >= 0) && (i < this.sequences.length)) ? this.sequences[i] : this.sequences;
+        if (asMML) {
+            return ((i >= 0) && (i < this.parts.length)) ? this.parts[i].getMML() : mmls;
+        }
+
+        return ((i >= 0) && (i < this.parts.length)) ? this.parts[i].getSequence() : sequences;
     }
 
     /**
      * This method starts or stops MML according to state.
      * @param {number} part This argument is the part of MML.
      * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
-     * @param {function} processCallback This argument is in order to change `onaudioprocess` event handler in the instance of `ScriptProcessorNode`.
      * @return {MML} This is returned for method chain.
      */
-    toggle(part, connects, processCallback) {
+    toggle(part, connects) {
         if (this.isPaused()) {
-            this.start(part, connects, processCallback);
+            this.start(part, connects);
         } else {
             this.stop();
         }
@@ -337,28 +158,19 @@ export class MML {
     }
 
     /**
-     * This method determines whether the array that is used to play the MML exists.
-     * @return {boolean} If the array exists, this value is `true`. Otherwise, this value is `false`.
+     * This method determines whether the sequences exist.
+     * @return {boolean} If the sequences exist, this value is `true`. Otherwise, this value is `false`.
      */
     isSequences() {
-        return Array.isArray(this.sequences[0]);
+        return (this.parts.length > 0) && this.parts.every(part => part.hasSequence());
     }
 
     /**
-     * This method determines whether the MML is paused.
-     * @return {boolean} If the MML is paused, this value is `true`. Otherwise, this value is `false`.
+     * This method determines whether the MMLs are paused.
+     * @return {boolean} If the MMLs are paused, this value is `true`. Otherwise, this value is `false`.
      */
     isPaused() {
-        for (const timerid of this.timerids) {
-            if ((timerid === null) || (timerid === undefined)) {
-                // Next timer
-            } else {
-                // Playing the MML
-                return false;
-            }
-        }
-
-        return true;
+        return (this.parts.length === 0) || this.parts.every(part => part.paused());
     }
 
     /**
@@ -371,19 +183,15 @@ export class MML {
     currentIndex(part, index) {
         const p = parseInt(part, 10);
 
-        if ((p < 0) || (p >= this.currentIndexes.length)) {
+        if ((p < 0) || (p >= this.parts.length)) {
             return this;
         }
 
         if (index === undefined) {
-            return this.currentIndexes[p];
+            return this.parts[p].getCurrentIndex();
         }
 
-        const i = parseInt(index, 10);
-
-        if (i >= 0 && i < this.sequences[p].length) {
-            this.currentIndexes[p] = i;
-        }
+        this.parts[p].setCurrentIndex(index);
 
         return this;
     }
@@ -624,21 +432,12 @@ export class MML {
     }
 
     /**
-     * This method clears sequences.
+     * This method clears the instances of `Part`.
      * @return {MML} This is returned for method chain.
      */
     clear() {
-        for (let i = 0, len = this.timerids.length; i < len; i++) {
-            window.clearTimeout(this.timerids[i]);
-        }
-
-        this.mmls.length             = 0;
-        this.sequences.length        = 0;
-        this.timerids.length         = 0;
-        this.currentIndexes.length   = 0;
-        this.currentPositions.length = 0;
-
-        this.prev = null;
+        // Garbage Collection
+        this.parts.length = 0;
 
         return this;
     }

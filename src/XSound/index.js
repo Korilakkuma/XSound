@@ -300,7 +300,7 @@ export function exitFullscreen() {
 /**
  * This class (static) method gets the instance of `File` (extends `Blob`).
  * @param {Event} event This argument is the instance of Event by Drag & Drop or `<input type="file">`.
- * @param {string} type This argument is one of 'ArrayBuffer', 'DataURL', 'ObjectURL', 'Text'.
+ * @param {string} type This argument is one of 'ArrayBuffer', 'DataURL', 'ObjectURL', 'Text', 'JSON'.
  * @param {function} successCallback This argument is invoked as next process when reading file is successful.
  * @param {function} errorCallback This argument is invoked when reading file failed.
  * @param {function} progressCallback This argument is invoked as `onprogress` event handler in the instance of `FileReader`.
@@ -354,8 +354,10 @@ export function file(event, type, successCallback, errorCallback, progressCallba
 
     if (!(file instanceof File)) {
         throw new Error('Please upload file.');
-    } else if ((/text/i.test(type)) && (file.type.indexOf('text') === -1)) {
+    } else if ((/text/i.test(type)) && !file.type.includes('text')) {
         throw new Error('Please upload text file.');
+    } else if (/json/i.test(type) && !file.type.includes('application/json')) {
+        throw new Error('Please upload JSON file.');
     } else if ((/arraybuffer|dataurl/i.test(type)) && !/audio|video/.test(file.type)) {
         throw new Error('Please upload audio or video file.');
     } else {
@@ -459,7 +461,7 @@ export function read(file, type, successCallback, errorCallback, progressCallbac
             let result = reader.result;
 
             // Escape `<script>` in the case of text
-            if ((typeof result === 'string') && (result.indexOf('data:') === -1) && (result.indexOf('blob:') === -1)) {
+            if ((typeof result === 'string') && !result.includes('data:') && !result.indexOf('blob:')) {
                 result = result.replace(/<(\/?script.*?)>/gi, '&lt;$1&gt;');
             }
 
@@ -471,7 +473,7 @@ export function read(file, type, successCallback, errorCallback, progressCallbac
         reader.readAsArrayBuffer(file);
     } else if (/dataurl/i.test(type)) {
         reader.readAsDataURL(file);
-    } else if (/text/i.test(type)) {
+    } else if (/text|json/i.test(type)) {
         reader.readAsText(file, 'UTF-8');
     }
 }

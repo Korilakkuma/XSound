@@ -1,4 +1,4 @@
-<h1 style="font-famlily: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif; font-size: 144px; font-weight: normal; color: #c000c0; text-shadow: -1px -1px 1px #000;">XSound</h1>
+[![XSound - Powerful Audio Features Easily ! -](./misc/xsound-social-preview.png)](https://xsound.jp)
 
 [![Node.js CI](https://github.com/Korilakkuma/XSound/workflows/Node.js%20CI/badge.svg)](https://github.com/Korilakkuma/XSound/actions?query=workflow%3A%22Node.js+CI%22)
 ![node-current](https://img.shields.io/node/v/xsound?color=brightgreen)
@@ -11,8 +11,8 @@ Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recor
   
 ## Overview
   
-XSound is Multifunctional Library for Web Audio API.  
-In concrete, XSound may be useful to implement the following features.
+XSound gives Web Developers Powerful Audio Features Easily !  
+In concrete, XSound is useful to implement the following features.
   
 - Create Sound
 - Play the One-Shot Audio

@@ -98,7 +98,7 @@ aside > a:hover {
     justify-content: flex-start;
 }
 
-header h1 {
+h1 {
     font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
     font-size: calc(64 * ((100vw - 320px) / (1280 - 320)) + 64px);
     font-weight: lighter;
@@ -106,17 +106,7 @@ header h1 {
     text-shadow: -1px -1px 1px #000;
 }
 
-.section h1 {
-    padding-bottom: 8px;
-    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
-    font-size: calc(32 * ((100vw - 320px) / (1280 - 320)) + 32px);
-    font-weight: lighter;
-    color: #c000c0;
-    text-align: center;
-    text-shadow: -1px -1px 1px #000;
-}
-
-.section > h1 {
+.section > h2 {
     font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
     font-size: calc(28 * ((100vw - 320px) / (1280 - 320)) + 28px);
     font-weight: lighter;
@@ -124,7 +114,8 @@ header h1 {
     text-shadow: -1px -1px 1px #000;
 }
 
-.section > section > h1 {
+header h2,
+.section > section > h2 {
     font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
     font-size: calc(24 * ((100vw - 320px) / (1280 - 320)) + 24px);
     font-weight: lighter;
@@ -132,25 +123,17 @@ header h1 {
     text-shadow: -1px -1px 1px #000;
 }
 
-h1 {
-    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
-    font-size: calc(32 * ((100vw - 320px) / (1280 - 320)) + 32px);
-    font-weight: lighter;
-    color: #c000c0;
-    text-shadow: -1px -1px 1px #000;
+header h3 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #ccc;
 }
 
-h2 {
+h3 {
     font-size: 2rem;
     font-weight: 300;
     color: #c000c0;
     text-shadow: -1px -1px 1px #000;
-}
-
-h3 {
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: #ccc;
 }
 
 h1 > span {

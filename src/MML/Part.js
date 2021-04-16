@@ -1,5 +1,8 @@
 'use strict';
 
+import { Tokenizer } from './Tokenizer';
+import { TreeConstructor } from './TreeConstructor';
+import { Sequencer } from './Sequencer';
 import { OscillatorModule } from '../OscillatorModule';
 import { OneshotModule } from '../OneshotModule';
 import { NoiseModule } from '../NoiseModule';
@@ -10,20 +13,15 @@ import { NoiseModule } from '../NoiseModule';
  */
 export class Part {
     /**
-     * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
      * @param {OscillatorModule|OneshotModule|NoiseModule} source This argument is in order to select sound source.
      * @param {string} mml This argument is MML string.
      * @param {number} offset This argument is in order to correct the index of one-shot audio.
-     * @param {Sequence} sequence This argument is the last played sequence.
-     * @param {Object.<function>} callbacks This argument is callback functions.
+     * @param {object.<function>} callbacks This argument is callback functions.
      * @param {number} offset This argument is in order to correct the index of one-shot audio.
      */
-    constructor(context, source, mml, sequence, callbacks, offset) {
-        this.context = context;
-
+    constructor(source, mml, callbacks, offset) {
         this.source          = null;  /** @type {OscillatorModule|OneshotModule|NoiseModule} */
         this.mml             = '';
-        this.sequence        = [];    /** @type {Array.<Sequence>} */
         this.previous        = null;  /** @type {Sequence} */
         this.timerid         = null;  /** @type {number} */
         this.currentIndex    = 0;     /** @type {number} */
@@ -36,10 +34,6 @@ export class Part {
 
         if (typeof mml === 'string') {
             this.mml = mml;
-        }
-
-        if (Array.isArray(sequence)) {
-            this.sequence = sequence;
         }
 
         this.callbacks = {
@@ -66,6 +60,12 @@ export class Part {
         if (!isNaN(o) && (o >= 0)) {
             this.offset = o;
         }
+
+        const tokenizer       = new Tokenizer(mml);
+        const treeConstructor = new TreeConstructor(tokenizer);
+        const sequencer       = new Sequencer(treeConstructor);
+
+        this.sequences = sequencer.get(this.callbacks.error);
     }
 
     /**
@@ -99,46 +99,7 @@ export class Part {
             this.currentPosition += current.length;
         }
 
-        if (this.source === null) {
-            for (const frequency of sequence.frequencies) {
-                const source = this.context.createOscillator();
-
-                // for legacy browsers
-                source.start = source.start || source.noteOn;
-                source.stop  = source.stop  || source.noteOff;
-
-                source.frequency.value = frequency;
-
-                if (Array.isArray(connects)) {
-                    // OscillatorNode (Input) -> AudioNode -> ... -> AudioNode -> AudioDestinationNode (Output)
-                    source.connect(connects[0]);
-
-                    for (let j = 0, num = connects.length; j < num; j++) {
-                        const node = connects[j];
-
-                        if (j < (num - 1)) {
-                            const next = connects[j + 1];
-
-                            if (!((node instanceof AudioNode) && (next instanceof AudioNode))) {
-                                return;
-                            }
-
-                            node.connect(next);
-                        } else {
-                            node.connect(this.context.destination);
-                        }
-                    }
-                } else {
-                    // OscillatorNode (Input) -> AudioDestinationNode (Output)
-                    source.connect(this.context.destination);
-                }
-
-                source.start(this.context.currentTime);
-                source.stop(this.context.currentTime + sequence.duration);
-            }
-
-            this.callbacks.start(sequence);
-        } else if (this.source instanceof OscillatorModule) {
+        if (this.source instanceof OscillatorModule) {
             this.source.start(sequence.frequencies);
             this.callbacks.start(sequence);
         } else if (this.source instanceof OneshotModule) {
@@ -155,9 +116,7 @@ export class Part {
         }
 
         this.timerid = window.setTimeout(() => {
-            if (this.source === null) {
-                this.callbacks.stop(sequence);
-            } else if (this.source instanceof OscillatorModule) {
+            if (this.source instanceof OscillatorModule) {
                 this.source.stop();
                 this.callbacks.stop(sequence);
             } else if (this.source instanceof OneshotModule) {
@@ -185,28 +144,24 @@ export class Part {
      * This method stops MML.
      */
     stop() {
-        const sequence = this.previous;
-
-        if (sequence === null) {
+        if (this.previous === null) {
             return;
         }
 
-        if (this.source === null) {
-            this.callbacks.stop(sequence);
-        } else if (this.source instanceof OscillatorModule) {
+        if (this.source instanceof OscillatorModule) {
             this.source.stop();
-            this.callbacks.stop(sequence);
+            this.callbacks.stop(this.previous);
         } else if (this.source instanceof OneshotModule) {
-            for (const index of sequence.indexes) {
+            for (const index of this.previous.indexes) {
                 if (index !== -1) {
                     this.source.stop((index + this.offset));
                 }
             }
 
-            this.callbacks.stop(sequence, this.offset);
+            this.callbacks.stop(this.previous, this.offset);
         } else if (this.source instanceof NoiseModule) {
             this.source.stop();
-            this.callbacks.stop(sequence);
+            this.callbacks.stop(this.previous);
         }
 
         window.clearTimeout(this.timerid);
@@ -224,7 +179,7 @@ export class Part {
      * This method is the getter for sequence.
      */
     getSequence() {
-        return this.sequence;
+        return this.sequences;
     }
 
     /**
@@ -232,7 +187,7 @@ export class Part {
      * @return {boolean} If the sequence exists, this value is `true`. Otherwise, this value is `false`.
      */
     hasSequence() {
-        return this.sequence.length > 0;
+        return this.sequences.length > 0;
     }
 
     /**
@@ -257,7 +212,7 @@ export class Part {
     setCurrentIndex(index) {
         const i = parseInt(index, 10);
 
-        if (i >= 0 && i < this.sequence.length) {
+        if (i >= 0 && i < this.sequences.length) {
             this.currentIndex = i;
         }
     }

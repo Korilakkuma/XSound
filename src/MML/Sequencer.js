@@ -1,6 +1,7 @@
 'use strict';
 
 import { TokenTypes, Token } from './Token';
+import { Sequence } from './Sequence';
 
 /**
  * This class converts syntax tree to the array that contains musical notes.
@@ -85,7 +86,7 @@ export class Sequencer {
      * @param {TreeConstructor} treeConstructor This argument is the instance of `TreeConstructor`.
      */
     constructor(treeConstructor) {
-        this.sequences = [];  /** @type {Array.<object>} */
+        this.sequences = [];  /** @type {Array.<Sequence>} */
 
         this.treeConstructor = treeConstructor;
 
@@ -319,14 +320,14 @@ export class Sequencer {
                 throw new Error(`Duration (${token}${value}) is invalid`);
         }
 
-        this.sequences.push({
-            'note'        : `${token}${digits}`,
-            'indexes'     : indexes,
-            'frequencies' : frequencies,
-            'start'       : this.currentTime,
-            'stop'        : this.currentTime + duration,
-            'duration'    : duration
-        });
+        this.sequences.push(new Sequence(
+            `${token}${digits}`,
+            indexes,
+            frequencies,
+            this.currentTime,
+            (this.currentTime + duration),
+            duration
+        ));
 
         this.currentTime += duration;
     }
@@ -338,10 +339,7 @@ export class Sequencer {
         const current  = this.sequences.pop();
         const previous = this.sequences.pop();
 
-        previous.note     += `&${current.note}`;
-        previous.duration += current.duration;
-
-        previous.stop = previous.start + previous.duration;
+        previous.concat(current);
 
         this.sequences.push(previous);
     }

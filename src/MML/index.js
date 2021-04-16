@@ -139,12 +139,13 @@ export class MML {
     /**
      * This method starts or stops MML according to state.
      * @param {number} part This argument is the part of MML.
+     * @param {boolean} highlight This argument is `true` in the case of surrounding by `span.x-highlight`.
      * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
      * @return {MML} This is returned for method chain.
      */
-    toggle(part, connects) {
+    toggle(part, highlight, connects) {
         if (this.isPaused()) {
-            this.start(part, connects);
+            this.start(part, highlight, connects);
         } else {
             this.stop();
         }

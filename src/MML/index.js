@@ -431,6 +431,10 @@ export class MML {
      * @return {MML} This is returned for method chain.
      */
     clear() {
+        for (const part of this.parts) {
+            part.stop();
+        }
+
         // Garbage Collection
         this.parts.length = 0;
 

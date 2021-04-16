@@ -75,12 +75,7 @@ export class MML {
         this.mmls = mmls;
 
         for (const mml of mmls) {
-            const tokenizer       = new Tokenizer(mml);
-            const treeConstructor = new TreeConstructor(tokenizer);
-            const sequencer       = new Sequencer(treeConstructor);
-            const sequence        = sequencer.get();
-
-            this.parts.push(new Part(this.context, source, mml, sequence, this.callbacks, offset));
+            this.parts.push(new Part(source, mml, this.callbacks, offset));
         }
 
         return this;

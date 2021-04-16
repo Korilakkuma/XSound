@@ -31,7 +31,7 @@ describe('MML TEST', () => {
         });
 
         it('should return the array that contains performance information', () => {
-            const actual   = mml.get(0, false);
+            const actuals  = mml.get(0, false);
             const expected = [
                 { 'indexes' : [48, 45, 41, 38], 'frequencies' : [440.00000000000017, 369.9944227116345, 293.6647679174077, 246.94165062806215], 'start' : 0,                  'duration' : 1.6216216216216217,  'stop' : 1.6216216216216217, 'note' : 'AF+DB2' },
                 { 'indexes' : [48, 43, 38],     'frequencies' : [440.00000000000017, 329.62755691287015, 246.94165062806215],                   'start' : 1.6216216216216217, 'duration' : 0.8108108108108109,  'stop' : 2.4324324324324325, 'note' : 'AEB4' },
@@ -42,7 +42,9 @@ describe('MML TEST', () => {
                 { 'indexes' : [-1],             'frequencies' : [0],                                                                            'start' : 6.081081081081081,  'duration' : 0.8108108108108109,  'stop' : 6.891891891891891,  'note' : 'R4' }
             ];
 
-            actual.forEach((a, i) => {
+            actuals.forEach((actual, i) => {
+                const a = actual.toPlainObject();
+
                 Object.keys(a).forEach(k => {
                     if ((k === 'indexes') || (k === 'note')) {
                         expect(a[k]).toEqual(expected[i][k]);
@@ -58,7 +60,7 @@ describe('MML TEST', () => {
         });
 
         it('should return the array that contains performance information', () => {
-            const actual = mml.get(1, false);
+            const actuals  = mml.get(1, false);
             const expected = [
                 { 'indexes' : [26],     'frequencies' : [123.47082531403106],                    'start' : 0,                  'duration' : 1.6216216216216217, 'stop' : 1.6216216216216217, 'note' : 'B2' },
                 { 'indexes' : [28],     'frequencies' : [138.59131548843607],                    'start' : 1.6216216216216217, 'duration' : 1.6216216216216217, 'stop' : 3.2432432432432434, 'note' : 'C+2' },
@@ -75,7 +77,9 @@ describe('MML TEST', () => {
                 { 'indexes' : [31, 19], 'frequencies' : [164.81377845643502, 82.40688922821751], 'start' : 25.94594594594594,  'duration' : 6.486486486486487,  'stop' : 32.43243243243243,  'note' : 'EE1&EE1' }
             ];
 
-            actual.forEach((a, i) => {
+            actuals.forEach((actual, i) => {
+                const a = actual.toPlainObject();
+
                 Object.keys(a).forEach(k => {
                     if ((k === 'indexes') || (k === 'note')) {
                         expect(a[k]).toEqual(expected[i][k]);
@@ -91,7 +95,7 @@ describe('MML TEST', () => {
         });
 
         it('should return the array that contains performance information', () => {
-            const actual = mml.get();
+            const actuals  = mml.get();
             const expected = [
                 [
                     { 'indexes' : [48, 45, 41, 38], 'frequencies' : [440.00000000000017, 369.9944227116345, 293.6647679174077, 246.94165062806215], 'start' : 0,                  'duration' : 1.6216216216216217,  'stop' : 1.6216216216216217, 'note' : 'AF+DB2' },
@@ -119,7 +123,9 @@ describe('MML TEST', () => {
                 ]
             ];
 
-            actual[0].forEach((a, i) => {
+            actuals[0].forEach((actual, i) => {
+                const a = actual.toPlainObject();
+
                 Object.keys(a).forEach(k => {
                     if ((k === 'indexes') || (k === 'note')) {
                         expect(a[k]).toEqual(expected[0][i][k]);
@@ -133,7 +139,9 @@ describe('MML TEST', () => {
                 });
             });
 
-            actual[1].forEach((a, i) => {
+            actuals[1].forEach((actual, i) => {
+                const a = actual.toPlainObject();
+
                 Object.keys(a).forEach(k => {
                     if ((k === 'indexes') || (k === 'note')) {
                         expect(a[k]).toEqual(expected[1][i][k]);

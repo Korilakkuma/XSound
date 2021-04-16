@@ -74,14 +74,14 @@ export class Part {
      * @param {Array.<Effector>|Array.<AudioNode>} connects This argument is the array for changing the default connection.
      */
     start(highlight, connects) {
-        const sequence = this.sequence[this.currentIndex++];
-
-        if (!sequence) {
+        if (!this.sequences[this.currentIndex]) {
             this.stop();
             this.callbacks.ended();
 
             return;
         }
+
+        const sequence = this.sequences[this.currentIndex++].toPlainObject();
 
         if (highlight) {
             const prev    = this.mml.slice(0, this.currentPosition);

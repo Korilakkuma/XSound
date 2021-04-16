@@ -3,6 +3,57 @@
 import { TokenTypes, Token } from './Token';
 
 /**
+ * This class is the entity for sequence that has musical notes.
+ * @constructor
+ */
+class Sequence {
+    /**
+     * @param {string} note This argument is the string that corresponds to MML token.
+     * @param {Array.<number>} indexes This argument is the array that contains the indexes that corresponds to the 12 equal temperament.
+     * @param {Array.<number>} frequencies This argument is the array that contains the frequencies.
+     * @param {number} start This argument is the start time.
+     * @param {number} stop This argument is the stop time.
+     * @param {number} duration This argument is the duration.
+     */
+    constructor(note, indexes, frequencies, start, stop, duration) {
+        this.note        = note;
+        this.indexes     = indexes;
+        this.frequencies = frequencies;
+        this.start       = start;
+        this.stop        = stop;
+        this.duration    = duration;
+    }
+
+    /**
+     * This method concatenates sequence in the case of tie.
+     * @param {Sequence} sequence This argument is the instance of `Sequence`.
+     */
+    concat(sequence) {
+        const s = sequence.toPlainObject();
+
+        this.note     += `&${s.note}`;
+        this.duration += s.duration;
+
+        this.stop = this.start + this.duration;
+    }
+
+    /**
+     * This method converts the values that the instance of `Sequence` has to plain object and returns it.
+     * @return {object} This is returned as the plain object that has musical notes.
+     */
+    toPlainObject() {
+        return {
+            'note'        : this.note,
+            'indexes'     : this.indexes,
+            'frequencies' : this.frequencies,
+            'start'       : this.start,
+            'stop'        : this.stop,
+            'duration'    : this.duration
+        };
+    }
+}
+
+/**
  * This class converts syntax tree to the array that contains musical notes.
  * @constructor
  */
@@ -85,7 +136,7 @@ export class Sequencer {
      * @param {TreeConstructor} treeConstructor This argument is the instance of `TreeConstructor`.
      */
     constructor(treeConstructor) {
-        this.sequences = [];  /** @type {Array.<object>} */
+        this.sequences = [];  /** @type {Array.<Sequence>} */
 
         this.treeConstructor = treeConstructor;
 
@@ -319,14 +370,14 @@ export class Sequencer {
                 throw new Error(`Duration (${token}${value}) is invalid`);
         }
 
-        this.sequences.push({
-            'note'        : `${token}${digits}`,
-            'indexes'     : indexes,
-            'frequencies' : frequencies,
-            'start'       : this.currentTime,
-            'stop'        : this.currentTime + duration,
-            'duration'    : duration
-        });
+        this.sequences.push(new Sequence(
+            `${token}${digits}`,
+            indexes,
+            frequencies,
+            this.currentTime,
+            (this.currentTime + duration),
+            duration
+        ));
 
         this.currentTime += duration;
     }
@@ -338,10 +389,7 @@ export class Sequencer {
         const current  = this.sequences.pop();
         const previous = this.sequences.pop();
 
-        previous.note     += `&${current.note}`;
-        previous.duration += current.duration;
-
-        previous.stop = previous.start + previous.duration;
+        previous.concat(current);
 
         this.sequences.push(previous);
     }

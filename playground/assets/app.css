@@ -33,7 +33,7 @@ header h1 {
     text-shadow: -1px -1px 1px #000;
 }
 
-header h1 img {
+header a img {
     position: absolute;
     top: 0;
     right: 0;

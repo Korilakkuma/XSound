@@ -34,7 +34,8 @@
                     <a href="#clear" role="button">Clear</a>
                     <a href="https://xsound.dev" target="_blank" rel="noopener noreferrer">API Documentation</a>
                 </div>
-                <textarea>/**
+                <label>
+                    <textarea>/**
  * for Oscillator or Custom Oscillator
  */
 X(&apos;oscillator&apos;).setup([true, false]);
@@ -158,6 +159,7 @@ document.getElementById(&apos;text-param-value&apos;).onblur = (event) =&gt; {
     X(&apos;oscillator&apos;).param(key, parseFloat(event.currentTarget.value));
     X(&apos;audio&apos;).param(key, parseFloat(event.currentTarget.value));
 };</textarea>
+                </label>
             </div>
             <fieldset id="ui" hidden>
                 <legend>Input Forms</legend>
@@ -168,13 +170,15 @@ document.getElementById(&apos;text-param-value&apos;).onblur = (event) =&gt; {
                     <input type="file" accept="audio/*" hidden />
                 </div>
                 <div>
-                    <select id="select-type">
-                        <option value="">Select Type</option>
-                        <option value="sine" selected>sine</option>
-                        <option value="square">square</option>
-                        <option value="sawtooth">sawtooth</option>
-                        <option value="triangle">triangle</option>
-                    </select>
+                    <label>
+                        <select id="select-type">
+                            <option value="">Select Type</option>
+                            <option value="sine" selected>sine</option>
+                            <option value="square">square</option>
+                            <option value="sawtooth">sawtooth</option>
+                            <option value="triangle">triangle</option>
+                        </select>
+                    </label>
                 </div>
                 <div>
                     <input type="text" id="text-param-key" placeholder="Type Parameter Key" />

@@ -193,6 +193,11 @@ nav > a:last-of-type:hover {
     background-color: #800080;
 }
 
+aside > img {
+    width: 100%;
+    height: auto;
+}
+
 pre {
     margin-left: 16px;
     padding: 8px 16px;

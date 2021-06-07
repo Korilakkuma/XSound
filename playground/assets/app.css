@@ -19,15 +19,15 @@ body {
 }
 
 header {
-    padding: 32px;
+    padding: 8px 0;
     background-color: #212121;
     text-align: center;
 }
 
 header h1 {
-    margin: 16px 0;
+    margin-bottom: 8px;
     font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
-    font-size: 4rem;
+    font-size: 32px;
     font-weight: lighter;
     color: #c0c;
     text-shadow: -1px -1px 1px #000;

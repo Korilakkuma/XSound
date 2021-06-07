@@ -29,9 +29,9 @@
         </header>
         <main>
             <div>
-                <div>
-                    <a href="#run" role="button">Run</a>
-                    <a href="#clear" role="button">Clear</a>
+                <div class="buttons">
+                    <button type="button" id="button-run">Run</button>
+                    <button type="button" id="button-clear">Clear</button>
                     <a href="https://xsound.dev" target="_blank" rel="noopener noreferrer">API Documentation</a>
                 </div>
                 <label>
@@ -163,7 +163,7 @@ document.getElementById(&apos;text-param-value&apos;).onblur = (event) =&gt; {
             </div>
             <fieldset id="ui" hidden>
                 <legend>Input Forms</legend>
-                <div>
+                <div class="buttons">
                     <button type="button" id="button-start">Start</button>
                     <button type="button" id="button-stop">Stop</button>
                     <button type="button" id="button-uploader">Upload</button>

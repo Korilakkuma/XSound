@@ -63,7 +63,7 @@ export class TreeConstructor {
 
                         parentNode.concat(tree);
 
-                        // /([CDEFGAB]+(+|-)?)+\d+\.?/
+                        // /(?:[CDEFGABR][#+-]?)+\d+\.?/
                         this.syntaxTree.push(tree);
 
                         break;

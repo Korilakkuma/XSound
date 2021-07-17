@@ -19,7 +19,7 @@ export class Tree {
     }
 
     /**
-     * This method concats partial tree as right partial tree.
+     * This method concatenates partial tree as right partial tree.
      * @param {Token} operator This argument is the instance of `Token` as Tree Node.
      */
     concat(node) {

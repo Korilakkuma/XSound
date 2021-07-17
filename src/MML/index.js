@@ -57,7 +57,7 @@ export class MML {
      * This method parses MML string.
      * @param {OscillatorModule|OneshotModule|NoiseModule} source This argument is in order to select sound source.
      * @param {Array.<string>} mmls This argument is MML strings.
-     * @param {number} offset This argument is in order to correct the index of one-shot audio.
+     * @param {number} offset This argument is in order to adjust the index of one-shot audio.
      * @return {Array.<Array.<Sequence>>} This is returned as array that contains `Sequence` for playing the MML.
      */
     ready(source, mmls, offset) {
@@ -85,7 +85,7 @@ export class MML {
      * This method starts the designated MML part. Moreover, this method schedules next sequence.
      * @param {number} part This argument is the part of MML.
      * @param {boolean} highlight This argument is `true` in the case of surrounding by `span.x-highlight`.
-     * @param {Array.<Effector>|Array.<AudioNode>} connects This argument is the array for changing the default connection.
+     * @param {Array.<Connectable>|Array.<AudioNode>} connects This argument is the array for changing the default connection.
      * @return {MML} This is returned for method chain.
      */
     start(part, highlight, connects) {
@@ -140,7 +140,7 @@ export class MML {
      * This method starts or stops MML according to state.
      * @param {number} part This argument is the part of MML.
      * @param {boolean} highlight This argument is `true` in the case of surrounding by `span.x-highlight`.
-     * @param {Array.<Effector>} connects This argument is the array for changing the default connection.
+     * @param {Array.<Connectable>|Array.<AudioNode>} connects This argument is the array for changing the default connection.
      * @return {MML} This is returned for method chain.
      */
     toggle(part, highlight, connects) {

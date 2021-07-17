@@ -126,3 +126,29 @@ export class TreeConstructor {
         this.syntaxTree.length = 0;
     }
 }
+
+/**
+ * This class is error class for MML syntax error (extends `Error`).
+ * @constructor
+ */
+export class MMLSyntaxError extends Error {
+    static ERRORS = {
+        TEMPO   : 'tempo',
+        OCTAVE  : 'octave',
+        NOTE    : 'note',
+        REST    : 'rest',
+        TIE     : 'tie',
+        UNKNOWN : 'unknown'
+    };
+
+    /**
+     * @param {string} error This argument is one of 'tempo', 'octave', 'note', 'rest', 'tie', 'unknown'.
+     * @param {Token} token This argument is the instance of `Token` that error occurs in.
+     */
+    constructor(error, token) {
+        super(error);
+
+        this.token = token;
+        this.error = error;
+    }
+}

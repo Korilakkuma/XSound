@@ -2,8 +2,8 @@
 <html lang="en" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
     <head>
         <meta charset="UTF-8" />
-        <title>XSound - Powerful Audio Features Easily ! -</title>
-        <meta name="author" content="Tomohiro IKEDA, rilakkuma3xjapan, Korilakkuma" />
+        <title>Playground | XSound - Powerful Audio Features Easily ! -</title>
+        <meta name="author" content="Tomohiro IKEDA, Korilakkuma, rilakkuma3xjapan" />
         <meta name="description" content="XSound gives Web Developers Powerful Audio Features Easily ! Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ..." />
         <meta name="keywords" content="XSound, XSound API, Web Audio API, Web Audio API Library, Web Audio Library" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, shrink-to-fit=no, viewport-fit=cover" />
@@ -15,9 +15,9 @@
         <meta property="og:description" content="XSound gives Web Developers Powerful Audio Features Easily ! Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ..." />
         <meta name="twitter:card" content="summary">
         <meta name="twitter:site" content="@xmusicjp">
-        <link rel="canonical" href="https://xsound.jp" />
+        <link rel="canonical" href="https://xsound.jp/playground/" />
         <link rel="icon" href="assets/images/icon.png" type="image/png" />
-        <link rel="apple-touch-icon-precomposed" href="assets/images/icon.png" />
+        <link rel="apple-touch-icon" href="assets/images/icon.png" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" type="text/css" media="all" />
         <link rel="stylesheet" href="lib/codemirror.css" type="text/css" media="all" />
         <link rel="stylesheet" href="assets/app.css" type="text/css" media="all" />
@@ -25,16 +25,16 @@
     <body>
         <header>
             <h1>XSound Playground</h1>
-            <a href="https://github.com/Korilakkuma/XSound"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
         </header>
         <main>
             <div>
-                <div>
-                    <a href="#run" role="button">Run</a>
-                    <a href="#clear" role="button">Clear</a>
+                <div class="buttons">
+                    <button type="button" id="button-run">Run</button>
+                    <button type="button" id="button-clear">Clear</button>
                     <a href="https://xsound.dev" target="_blank" rel="noopener noreferrer">API Documentation</a>
                 </div>
-                <textarea>/**
+                <label>
+                    <textarea>/**
  * for Oscillator or Custom Oscillator
  */
 X(&apos;oscillator&apos;).setup([true, false]);
@@ -158,23 +158,26 @@ document.getElementById(&apos;text-param-value&apos;).onblur = (event) =&gt; {
     X(&apos;oscillator&apos;).param(key, parseFloat(event.currentTarget.value));
     X(&apos;audio&apos;).param(key, parseFloat(event.currentTarget.value));
 };</textarea>
+                </label>
             </div>
             <fieldset id="ui" hidden>
                 <legend>Input Forms</legend>
-                <div>
+                <div class="buttons">
                     <button type="button" id="button-start">Start</button>
                     <button type="button" id="button-stop">Stop</button>
                     <button type="button" id="button-uploader">Upload</button>
                     <input type="file" accept="audio/*" hidden />
                 </div>
                 <div>
-                    <select id="select-type">
-                        <option value="">Select Type</option>
-                        <option value="sine" selected>sine</option>
-                        <option value="square">square</option>
-                        <option value="sawtooth">sawtooth</option>
-                        <option value="triangle">triangle</option>
-                    </select>
+                    <label>
+                        <select id="select-type">
+                            <option value="">Select Type</option>
+                            <option value="sine" selected>sine</option>
+                            <option value="square">square</option>
+                            <option value="sawtooth">sawtooth</option>
+                            <option value="triangle">triangle</option>
+                        </select>
+                    </label>
                 </div>
                 <div>
                     <input type="text" id="text-param-key" placeholder="Type Parameter Key" />

@@ -13,9 +13,7 @@
 
     editor.save();
 
-    document.querySelector('[href="#run"]').addEventListener('click', (event) => {
-        event.preventDefault();
-
+    document.getElementById('button-run').addEventListener('click', (event) => {
         editor.save();
 
         const executor = new Function(textarea.value);
@@ -27,17 +25,16 @@
         }
     }, false);
 
-    document.querySelector('[href="#clear"]').addEventListener('click', (event) => {
-        event.preventDefault();
+    document.getElementById('button-clear').addEventListener('click', (event) => {
         editor.setValue('');
         editor.clearHistory();
     }, false);
 
-    document.querySelector('[href="#run"]').addEventListener('dragstart', (event) => {
+    document.getElementById('button-run').addEventListener('dragstart', (event) => {
         event.preventDefault();
     }, false);
 
-    document.querySelector('[href="#clear"]').addEventListener('dragstart', (event) => {
+    document.getElementById('button-clear').addEventListener('dragstart', (event) => {
         event.preventDefault();
     }, false);
 

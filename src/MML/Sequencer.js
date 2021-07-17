@@ -1,7 +1,9 @@
 'use strict';
 
 import { TokenTypes, Token } from './Token';
+import { Tree } from './Tree';
 import { Sequence } from './Sequence';
+import { MMLSyntaxError } from './TreeConstructor';
 
 /**
  * This class converts syntax tree to the array that contains musical notes.
@@ -97,7 +99,8 @@ export class Sequencer {
 
     /**
      * This method calculates pitch and music time from Parse Tree.
-     * @return {Array.<object>} This is returned as array that contains sequence objects for playing the MML.
+     * @return {Array.<object>|MMLSyntaxError} This is returned as array that contains sequence objects for playing the MML.
+     *     If error occurs, this is returned as `MMLSyntaxError`.
      */
     get() {
         const trees = this.treeConstructor.parse();
@@ -109,6 +112,14 @@ export class Sequencer {
         let tree = trees[0];
 
         while (tree !== null) {
+            if (!(tree instanceof Tree)) {
+                if (tree instanceof MMLSyntaxError) {
+                    return tree;
+                }
+
+                return new MMLSyntaxError(MMLSyntaxError.ERRORS.UNKNOWN, null);
+            }
+
             const operator = tree.getOperator();
 
             const left  = tree.getLeft();
@@ -141,9 +152,7 @@ export class Sequencer {
                     tree = right;
                     break;
                 default:
-                    // eslint-disable-next-line no-console
-                    console.assert();
-                    break;
+                    return new MMLSyntaxError(MMLSyntaxError.ERRORS.UNKNOWN, null);
             }
         }
 

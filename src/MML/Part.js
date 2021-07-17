@@ -1,7 +1,7 @@
 'use strict';
 
 import { Tokenizer } from './Tokenizer';
-import { TreeConstructor } from './TreeConstructor';
+import { TreeConstructor, MMLSyntaxError } from './TreeConstructor';
 import { Sequencer } from './Sequencer';
 import { OscillatorModule } from '../OscillatorModule';
 import { OneshotModule } from '../OneshotModule';
@@ -66,6 +66,10 @@ export class Part {
         const sequencer       = new Sequencer(treeConstructor);
 
         this.sequences = sequencer.get();
+
+        if ((this.sequences instanceof MMLSyntaxError) && this.callbacks.error) {
+            this.callbacks.error(this.sequences);
+        }
     }
 
     /**

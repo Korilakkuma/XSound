@@ -33,9 +33,11 @@ export class TreeConstructor {
 
                         // /T\d+/
                         this.syntaxTree.push(tree);
+
+                        break;
                     }
 
-                    break;
+                    return new MMLSyntaxError(MMLSyntaxError.ERRORS.TEMPO, token);
                 case TokenTypes.OCTAVE:
                     if ((this.syntaxTree.length > 0) && (nextToken.getType() === TokenTypes.NUMBER)) {
                         const left = new Tree(nextToken, null, null);  // Leaf
@@ -47,9 +49,11 @@ export class TreeConstructor {
 
                         // /O\d+/
                         this.syntaxTree.push(tree);
+
+                        break;
                     }
 
-                    break;
+                    return new MMLSyntaxError(MMLSyntaxError.ERRORS.OCTAVE, token);
                 case TokenTypes.NOTE:
                     if ((this.syntaxTree.length > 0) && (nextToken.getType() === TokenTypes.NUMBER)) {
                         const left = new Tree(nextToken, null, null);  // Leaf
@@ -61,9 +65,11 @@ export class TreeConstructor {
 
                         // /([CDEFGAB]+(+|-)?)+\d+\.?/
                         this.syntaxTree.push(tree);
+
+                        break;
                     }
 
-                    break;
+                    return new MMLSyntaxError(MMLSyntaxError.ERRORS.NOTE, token);
                 case TokenTypes.REST:
                     if ((this.syntaxTree.length > 0) && (nextToken.getType() === TokenTypes.NUMBER)) {
                         const left  = new Tree(nextToken, null, null);  // Leaf
@@ -75,9 +81,11 @@ export class TreeConstructor {
 
                         // /R\d+/
                         this.syntaxTree.push(tree);
+
+                        break;
                     }
 
-                    break;
+                    return new MMLSyntaxError(MMLSyntaxError.ERRORS.REST, token);
                 case TokenTypes.NUMBER:
                     // Noop
                     break;
@@ -91,9 +99,11 @@ export class TreeConstructor {
 
                         // /&/
                         this.syntaxTree.push(tree);
+
+                        break;
                     }
 
-                    break;
+                    return new MMLSyntaxError(MMLSyntaxError.ERRORS.TIE, token);
                 case TokenTypes.EOS:
                     if (this.syntaxTree.length > 0) {
                         const tree = new Tree(token, null, null);
@@ -111,7 +121,7 @@ export class TreeConstructor {
 
                     return this.syntaxTree;
                 default:
-                    return this.syntaxTree;
+                    return new MMLSyntaxError(MMLSyntaxError.ERRORS.UNKNOWN, token);
             }
 
             token     = nextToken;

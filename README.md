@@ -32,7 +32,7 @@ XSound don't depend on other libraries or frameworks (For example, jQuery, React
   
 ## Supported Browsers
   
-<img src="./misc/supported-browsers.png" alt="Supported Browsers" style="max-width: 100%;" />
+<img src="./misc/supported-browsers.png" alt="Supported Browsers are Chrome, Edge, Firefox, Opera and Safari" style="max-width: 100%;" />
   
 ## Getting Started
 

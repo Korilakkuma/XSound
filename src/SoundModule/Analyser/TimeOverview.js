@@ -367,7 +367,7 @@ export class TimeOverview extends Visualizer {
 
                     const innerWidth  = width  - (this.styles.left + this.styles.right);
                     const innerHeight = height - (this.styles.top  + this.styles.bottom);
-                    const x           = Math.floor(((t * this.sampleRate) / this.length) * innerWidth);
+                    const x           = ((t * this.sampleRate) / this.length) * innerWidth;
 
                     context.clearRect(0, 0, width, height);
                     context.putImageData(this.savedImage, 0, 0);

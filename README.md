@@ -7,8 +7,6 @@
 ![David Dev](https://img.shields.io/david/dev/Korilakkuma/XSound.svg)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/xsound/badge)](https://www.jsdelivr.com/package/npm/xsound)
   
-Web Audio API Library for Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ... etc
-  
 ## Overview
   
 XSound gives Web Developers Powerful Audio Features Easily !  

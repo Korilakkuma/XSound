@@ -1,10 +1,6 @@
 'use strict';
 
 import { Part } from './Part';
-import { TokenTypes } from './Token';
-import { Tokenizer } from './Tokenizer';
-import { TreeConstructor } from './TreeConstructor';
-import { Sequencer } from './Sequencer';
 
 /**
  * This class manages the instances of `Part` for playing the MML (Music Macro Language).
@@ -211,125 +207,136 @@ export class MML {
         abc += `L:${L ? L : '1/256'}\n`;
         abc += `K:${K ? K : ''}\n`;
 
-        const tokenizer       = new Tokenizer(mml);
-        const treeConstructor = new TreeConstructor(tokenizer);
+        const notes = mml.match(/\s*(?:T\d+)\s*|\s*(?:O\d+)\s*|\s*(?:(?:[CDEFGABR][#+-]?)+(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?)(?:&(?:[CDEFGABR][#+-]?)+(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?)*\s*/gi);
 
-        const trees = treeConstructor.parse();
+        if (notes === null) {
+            return abc;
+        }
 
         let octave        = null;
         let totalDuration = 0;
 
-        while (trees.length > 0) {
-            const tree     = trees.shift();
-            const operator = tree.getOperator();
-            const left     = tree.getLeft();
+        while (notes.length > 0) {
+            const note = notes.shift().trim();
 
-            if (operator.getType() === TokenTypes.TEMPO) {
-                const Q = left.getOperator().getValue();
+            if (/T\d+/i.test(note)) {
+                const Q = parseInt(note.slice(1), 10);
 
                 if (Q <= 0) {
                     return abc;
                 }
 
                 abc += `Q:1/4=${Q}\n`;
-            } else if (operator.getType() === TokenTypes.OCTAVE) {
-                octave = left.getOperator().getValue();
+            } else if (/O\d+/i.test(note)) {
+                octave = parseInt(note.slice(1), 10);
 
                 if (octave < 0) {
                     return abc;
                 }
-            } else {
-                const token    = operator.getToken();
-                const digits   = left.getOperator().getToken();
-                const duration = left.getOperator().getValue();
+            } else if (/(?:(?:[CDEFGABR][#+-]?)+)(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)(?:&(?:[CDEFGABR][#+-]?)+(?:256|192|144|128|96|72|64|48|36|32|24|18|16|12|8|6|4|2|1)\.?)*/i.test(note)) {
+                if (octave === null) {
+                    return abc;
+                }
+
+                let splittedNotes = null;
+
+                if (note.indexOf('&') === -1) {
+                    splittedNotes = [note];
+                } else {
+                    splittedNotes = note.split('&');
+                }
 
                 let chord = '';
 
-                for (let i = 0, len = token.length - 1; i < len; i++) {
+                while (splittedNotes.length > 0) {
+                    const splittedNote = splittedNotes.shift();
+
+                    const duration = parseInt(splittedNote.replace(/^.+?(\d+)\.*$/, '$1'), 10);
+
                     let n = '';
                     let d = 0;
 
                     switch (duration) {
                         case 1:
-                            n = digits.replace('1', '256');
+                            n = splittedNote.replace('1', '256');
                             break;
                         case 2:
-                            n = digits.replace('2', '128');
+                            n = splittedNote.replace('2', '128');
                             break;
                         case 4:
-                            n = digits.replace('4', '64');
+                            n = splittedNote.replace('4', '64');
                             break;
                         case 8:
-                            n = digits.replace('8', '32');
+                            n = splittedNote.replace('8', '32');
                             break;
                         case 16:
-                            n = digits.replace('16', '16');
+                            n = splittedNote.replace('16', '16');
                             break;
                         case 32:
-                            n = digits.replace('32', '8');
+                            n = splittedNote.replace('32', '8');
                             break;
                         case 64:
-                            n = digits.replace('64', '4');
+                            n = splittedNote.replace('64', '4');
                             break;
                         case 128:
-                            n = digits.replace('128', '2');
+                            n = splittedNote.replace('128', '2');
                             break;
                         case 256:
-                            n = digits.replace('256', '1');
+                            n = splittedNote.replace('256', '1');
                             break;
                         // Tuplet
                         case 6:
-                            n = `(3${digits.replace('6', '128')}`;
+                            n = `(3${splittedNote.replace('6', '128')}`;
                             d = 128 / 3;
                             break;
                         case 12:
-                            n = `(3${digits.replace('12', '64')}`;
+                            n = `(3${splittedNote.replace('12', '64')}`;
                             d = 64 / 3;
                             break;
                         case 18:
-                            n = `(9${digits.replace('18', '128')}`;
+                            n = `(9${splittedNote.replace('18', '128')}`;
                             d = 128 / 9;
                             break;
                         case 24:
-                            n = `(3${digits.replace('24', '32')}`;
+                            n = `(3${splittedNote.replace('24', '32')}`;
                             d = 32 / 3;
                             break;
                         case 36:
-                            n = `(9${digits.replace('36', '64')}`;
+                            n = `(9${splittedNote.replace('36', '64')}`;
                             d = 64 / 9;
                             break;
                         case 48:
-                            n = `(3${digits.replace('48', '16')}`;
+                            n = `(3${splittedNote.replace('48', '16')}`;
                             d = 16 / 3;
                             break;
                         case 72:
-                            n = `(9${digits.replace('72', '32')}`;
+                            n = `(9${splittedNote.replace('72', '32')}`;
                             d = 32 / 9;
                             break;
                         case 96:
-                            n = `(3${digits.replace('96', '8')}`;
+                            n = `(3${splittedNote.replace('96', '8')}`;
                             d = 8 / 3;
                             break;
                         case 144:
-                            n = `(9${digits.replace('144', '16')}`;
+                            n = `(9${splittedNote.replace('144', '16')}`;
                             d = 16 / 9;
                             break;
                         case 192:
-                            n = `(3${digits.replace('192', '4')}`;
+                            n = `(3${splittedNote.replace('192', '4')}`;
                             d = 4 / 3;
                             break;
                         default:
                             return abc;
                     }
 
-                    if (digits.includes(Sequencer.DOT)) {
+                    if (n.indexOf('.') !== -1) {
                         n = n.replace(/^(.+?)\d+\.+$/, `$1${1.5 * parseInt(n.replace(/^.+?(\d+)\.+$/, '$1'), 10)}`);
                     }
 
-                    if (n.includes('(')) {
-                        totalDuration += d;
-                    } else {
+                    if (n.indexOf('(') === -1) {
                         totalDuration += parseInt(n.replace(/^.+?(\d+)\.*$/i, '$1'), 10);
+                    } else {
+                        totalDuration += d;
                     }
 
                     if (totalDuration >= 256) {
@@ -337,7 +344,7 @@ export class MML {
                         totalDuration = 0;
                     }
 
-                    if (n === Sequencer.R) {
+                    if (/R/i.test(n)) {
                         abc += `${n} `;
                         continue;
                     }
@@ -411,7 +418,7 @@ export class MML {
                         }
                     }
 
-                    if ((i === 0) && (len === 2)) {
+                    if (splittedNotes.length > 0) {
                         chord += '&';
                     } else {
                         abc += `${chord} `;
@@ -424,7 +431,8 @@ export class MML {
             .replace(/[#+]/g, '^')
             .replace(/-/g, '_')
             .replace(/&/g, '-')
-            .replace(/\s{2}/g, ' ');
+            .replace(/\s{2}/g, ' ')
+            .trim();
     }
 
     /**

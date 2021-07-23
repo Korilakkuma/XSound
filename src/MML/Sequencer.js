@@ -125,14 +125,24 @@ export class Sequencer {
             const left  = tree.getLeft();
             const right = tree.getRight();
 
+            const value = left !== null ? left.getOperator().getValue() : -1;
+
             switch (operator.getType()) {
                 case TokenTypes.TEMPO:
-                    this.setTimeOf4Note(left.getOperator().getValue());
+                    if (value <= 0) {
+                        return new MMLSyntaxError(MMLSyntaxError.ERRORS.TEMPO, operator.getToken());
+                    }
+
+                    this.timeOf4note = 60 / value;
 
                     tree = right;
                     break;
                 case TokenTypes.OCTAVE:
-                    this.setOctave(left.getOperator().getValue());
+                    if (value < 0) {
+                        return new MMLSyntaxError(MMLSyntaxError.ERRORS.OCTAVE, operator.getToken());
+                    }
+
+                    this.octave = value;
 
                     tree = right;
                     break;
@@ -160,30 +170,6 @@ export class Sequencer {
         this.treeConstructor.free();
 
         return this.sequences;
-    }
-
-    /**
-     * This method sets the time of quarter note.
-     * @param {number} bpm This argument is BPM (Beat Per Minute).
-     */
-    setTimeOf4Note(bpm) {
-        if (bpm <= 0) {
-            throw new Error(`BPM (${bpm}) is greater than 0`);
-        }
-
-        this.timeOf4note = 60 / bpm;
-    }
-
-    /**
-     * This method sets octave.
-     * @param {number} octave This argument is the number greater than or equal to 0.
-     */
-    setOctave(octave) {
-        if (octave < 0) {
-            throw new Error(`Octave (${octave}) is greater than 0`);
-        }
-
-        this.octave = octave;
     }
 
     /**
@@ -246,7 +232,7 @@ export class Sequencer {
 
             // Validation
             if ((index !== -1) && (index < 0)) {
-                throw new Error(`Index (${index}) is invalid`);
+                return new MMLSyntaxError(MMLSyntaxError.ERRORS.NOTE, token);
             }
 
             indexes.push(index);
@@ -257,7 +243,7 @@ export class Sequencer {
 
             // Validation
             if (frequency < 0) {
-                throw new Error(`Frequency (${frequency}) is invalid`);
+                return new MMLSyntaxError(MMLSyntaxError.ERRORS.NOTE, token);
             }
 
             frequencies.push(frequency);
@@ -326,7 +312,7 @@ export class Sequencer {
                 duration += (0.0625 * this.timeOf4note) / 3;
                 break;
             default:
-                throw new Error(`Duration (${token}${value}) is invalid`);
+                return new MMLSyntaxError(MMLSyntaxError.ERRORS.NOTE, token);
         }
 
         this.sequences.push(new Sequence(

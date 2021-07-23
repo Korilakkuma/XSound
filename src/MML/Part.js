@@ -104,12 +104,12 @@ export class Part {
         }
 
         if (this.source instanceof OscillatorModule) {
-            this.source.start(sequence.frequencies);
+            this.source.ready(0, sequence.duration).start(sequence.frequencies);
             this.callbacks.start(sequence);
         } else if (this.source instanceof OneshotModule) {
             for (let i = 0, len = sequence.indexes.length; i < len; i++) {
                 if (sequence.indexes[i] !== -1) {
-                    this.source.start((sequence.indexes[i] + this.offset));
+                    this.source.ready(0, sequence.duration).start(sequence.indexes[i] + this.offset);
                 }
             }
 
@@ -121,15 +121,8 @@ export class Part {
 
         this.timerid = window.setTimeout(() => {
             if (this.source instanceof OscillatorModule) {
-                this.source.stop();
                 this.callbacks.stop(sequence);
             } else if (this.source instanceof OneshotModule) {
-                for (let i = 0, len = sequence.indexes.length; i < len; i++) {
-                    if (sequence.indexes[i] !== -1) {
-                        this.source.stop((sequence.indexes[i] + this.offset));
-                    }
-                }
-
                 this.callbacks.stop(sequence, this.offset);
             } else if (this.source instanceof NoiseModule) {
                 this.source.stop();

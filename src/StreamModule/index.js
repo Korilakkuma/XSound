@@ -17,7 +17,8 @@ export class StreamModule extends SoundModule {
     constructor(context, bufferSize) {
         super(context, bufferSize);
 
-        this.source = null;  // for the instance of `MediaStreamAudioSourceNode`
+        this.sources = [];   /** @type {Array.<MediaStreamAudioSourceNode|MediaStreamTrackAudioSourceNode>} */
+
         this.stream = null;  // for the instance of `MediaStream`
 
         // for `navigator.mediaDevices.getUserMedia`
@@ -31,6 +32,7 @@ export class StreamModule extends SoundModule {
             'error'  : () => {}
         };
 
+        this.each   = false;
         this.output = true;
 
         this.isStop = true;
@@ -87,6 +89,14 @@ export class StreamModule extends SoundModule {
             }
 
             switch (k) {
+                case 'each':
+                    if (value === undefined) {
+                        return this.each;
+                    }
+
+                    this.each = Boolean(value);
+
+                    break;
                 case 'output':
                     if (value === undefined) {
                         return this.output;
@@ -103,9 +113,36 @@ export class StreamModule extends SoundModule {
         return this;
     }
 
-    /** @override */
-    ready() {
-        return this;
+    /**
+     * This method opens devices or sets the instance of `MediaStream`.
+     * @param {MediaStream} stream This argument is the instance of `MediaStream`.
+     * @return {Promise} This is returned as `Promise` of `getUserMedia`.
+     * @override
+     */
+    ready(stream) {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaStream) {
+            return Promise.reject('Cannot use WebRTC.');
+        }
+
+        this.isStop = false;
+
+        if (stream instanceof MediaStream) {
+            this.stream = stream;
+            return Promise.resolve();
+        }
+
+        return navigator.mediaDevices.getUserMedia(this.constraints)
+            .then(stream => {
+                if (this.isStop) {
+                    return;
+                }
+
+                this.stream = stream;
+
+                this.callbacks.stream(stream);
+            }).catch(error => {
+                this.callbacks.error(error);
+            });
     }
 
     /**
@@ -116,78 +153,72 @@ export class StreamModule extends SoundModule {
      * @override
      */
     start(connects, processCallback) {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            return Promise.reject('Cannot use WebRTC.');
-        }
-
         const bufferSize = this.processor.bufferSize;
 
-        let isAnalyser = false;
+        let runAnalyser = false;
 
-        const start = (stream, connects, processCallback) => {
-            this.stream = stream;
-            this.source = this.context.createMediaStreamSource(stream);
+        if (this.each) {
+            // Get the instance of `MediaStreamTrack` for audio
+            const audioTracks = this.stream.getAudioTracks();
+
+            for (let i = 0, len = audioTracks.length; i < len; i++) {
+                this.sources[i] = this.context.createMediaStreamTrackSource(audioTracks[i]);
+
+                // MediaStreamTrackAudioSourceNode (Input) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
+                this.sources[i].connect(this.processor);
+                this.connect(this.processor, connects);
+            }
+        } else {
+            this.sources[0] = this.context.createMediaStreamSource(this.stream);
 
             // MediaStreamAudioSourceNode (Input) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
-            this.source.connect(this.processor);
+            this.sources[0].connect(this.processor);
             this.connect(this.processor, connects);
+        }
 
-            if (!this.output) {
-                this.mastervolume.disconnect(0);
+        if (!this.output) {
+            this.mastervolume.disconnect(0);
 
-                // for analyser
-                this.mastervolume.connect(this.analyser.input);
+            // for analyser
+            this.mastervolume.connect(this.analyser.input);
 
-                // for recording
-                this.mastervolume.connect(this.recorder.processor);
-                this.recorder.processor.connect(this.context.destination);
+            // for recording
+            this.mastervolume.connect(this.recorder.processor);
+            this.recorder.processor.connect(this.context.destination);
 
-                // for session
-                this.mastervolume.connect(this.session.sender);
-                this.session.sender.connect(this.context.destination);
-            }
+            // for session
+            this.mastervolume.connect(this.session.sender);
+            this.session.sender.connect(this.context.destination);
+        }
 
-            this.on(this.context.currentTime);
+        this.on(this.context.currentTime);
 
-            if (!isAnalyser) {
-                this.analyser.start('time');
-                this.analyser.start('fft');
-                isAnalyser = true;
-            }
+        if (!runAnalyser) {
+            this.analyser.start('time');
+            this.analyser.start('fft');
+            runAnalyser = true;
+        }
 
-            if (Object.prototype.toString.call(processCallback) === '[object Function]') {
-                this.processor.onaudioprocess = processCallback;
-            } else {
-                this.processor.onaudioprocess = event => {
-                    const inputLs  = event.inputBuffer.getChannelData(0);
-                    const inputRs  = event.inputBuffer.getChannelData(1);
-                    const outputLs = event.outputBuffer.getChannelData(0);
-                    const outputRs = event.outputBuffer.getChannelData(1);
+        if (Object.prototype.toString.call(processCallback) === '[object Function]') {
+            this.processor.onaudioprocess = processCallback;
+        } else {
+            this.processor.onaudioprocess = event => {
+                const inputLs  = event.inputBuffer.getChannelData(0);
+                const inputRs  = event.inputBuffer.getChannelData(1);
+                const outputLs = event.outputBuffer.getChannelData(0);
+                const outputRs = event.outputBuffer.getChannelData(1);
 
-                    for (let i = 0; i < bufferSize; i++) {
-                        outputLs[i] = this.noisegate.start(inputLs[i]);
-                        outputRs[i] = this.noisegate.start(inputRs[i]);
-                    }
-
-                    this.noisesuppressor.start(inputLs, outputLs, bufferSize);
-                    this.noisesuppressor.start(inputRs, outputRs, bufferSize);
-                };
-            }
-        };
-
-        this.isStop = false;
-
-        return navigator.mediaDevices.getUserMedia(this.constraints)
-            .then(stream => {
-                if (this.isStop) {
-                    return;
+                for (let i = 0; i < bufferSize; i++) {
+                    outputLs[i] = this.noisegate.start(inputLs[i]);
+                    outputRs[i] = this.noisegate.start(inputRs[i]);
                 }
 
-                start(stream, connects, processCallback);
-                this.callbacks.stream(stream);
-            }).catch(error => {
-                this.callbacks.error(error);
-            });
+                this.noisesuppressor.start(inputLs, outputLs, bufferSize);
+                this.noisesuppressor.start(inputRs, outputRs, bufferSize);
+            };
+        }
+
+        return this;
     }
 
     /**
@@ -196,7 +227,7 @@ export class StreamModule extends SoundModule {
      * @override
      */
     stop() {
-        this.source = null;
+        this.sources.length = 0;
 
         this.off(this.context.currentTime, true);
 
@@ -213,12 +244,15 @@ export class StreamModule extends SoundModule {
     }
 
     /**
-     * This method gets the instance of `MediaStreamAudioSourceNode`.
-     * @return {MediaStreamAudioSourceNode}
+     * This method gets the instance of `MediaStreamAudioSourceNode` or `MediaStreamTrackAudioSourceNode`.
+     * @param {number} index This argument is required in the case of designating track.
+     * @return {MediaStreamAudioSourceNode|MediaStreamTrackAudioSourceNode|Array.<MediaStreamTrackAudioSourceNode>}
      * @override
      */
-    get() {
-        return this.source;
+    get(index) {
+        const i = parseInt(index, 10);
+
+        return ((i >= 0) && (i < this.sources.length)) ? this.sources[i] : this.sources;
     }
 
     /**

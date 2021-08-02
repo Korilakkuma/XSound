@@ -315,6 +315,18 @@ export class StreamModule extends SoundModule {
     }
 
     /**
+     * This method gets available devices as array that contains the instances of `MediaDeviceInfo`.
+     * @return {Promise} This is returned as `Promise` of `enumerateDevices`.
+     */
+    devices() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            return Promise.reject('No devices.');
+        }
+
+        return navigator.mediaDevices.enumerateDevices();
+    }
+
+    /**
      * This method determines whether streaming is active.
      * @return {boolean} If streaming is active, this value is `true`. Otherwise, this value is `false`.
      */

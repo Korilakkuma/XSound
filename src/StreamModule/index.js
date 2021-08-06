@@ -282,11 +282,26 @@ export class StreamModule extends SoundModule {
 
     /**
      * This method stops microphone and camera by stopping the instances of `MediaStreamTrack`.
-     * @param {boolean} clearVideo This argument is in order to stop video (camera) if it is `true`.
      * @return {StreamModule} This is returned for method chain.
      * @override
      */
-    clear(clearVideo) {
+    clear() {
+        this.stop();
+
+        this.clearAudio();
+        this.clearVideo();
+
+        this.stream = null;
+
+        return this;
+    }
+
+    /**
+     * This method stops microphone by stopping the instances of `MediaStreamTrack`.
+     * @return {StreamModule} This is returned for method chain.
+     * @override
+     */
+    clearAudio() {
         if (this.stream === null) {
             return this;
         }
@@ -300,16 +315,29 @@ export class StreamModule extends SoundModule {
             audioTrack.stop();
         }
 
-        if (clearVideo) {
-            // Get the instance of `MediaStreamTrack` for video
-            const videoTracks = this.stream.getVideoTracks();
+        return this;
+    }
 
-            for (const videoTrack of videoTracks) {
-                videoTrack.stop();
-            }
-
-            this.stream = null;
+    /**
+     * This method stops microphone by stopping the instances of `MediaStreamTrack`.
+     * @return {StreamModule} This is returned for method chain.
+     * @override
+     */
+    clearVideo() {
+        if (this.stream === null) {
+            return this;
         }
+
+        this.stop();
+
+        // Get the instance of `MediaStreamTrack` for video
+        const videoTracks = this.stream.getVideoTracks();
+
+        for (const videoTrack of videoTracks) {
+            videoTrack.stop();
+        }
+
+        this.stream = null;
 
         return this;
     }

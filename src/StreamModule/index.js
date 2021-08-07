@@ -153,6 +153,10 @@ export class StreamModule extends SoundModule {
      * @override
      */
     start(connects, processCallback) {
+        if (this.stream === null) {
+            return this;
+        }
+
         const bufferSize = this.processor.bufferSize;
 
         let runAnalyser = false;

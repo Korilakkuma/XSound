@@ -21,18 +21,12 @@ export class Recorder extends Connectable {
         this.context   = context;
         this.processor = context.createScriptProcessor(bufferSize, numberOfInputs, numberOfOutputs);
 
-        this.mixedLs = null;  /** @type {Float32Array} */
-        this.mixedRs = null;  /** @type {Float32Array} */
-
         this.numberOfTracks = 0;
-        this.trackLs        = [];  /** @type {Array.<Array.<Float32Array>>} 2 dimensions array */
-        this.trackRs        = [];  /** @type {Array.<Array.<Float32Array>>} 2 dimensions array */
+        this.tracks         = [];      /** @type {Array.<Array.<Array.<Float32Array>>>} 3 dimensions array */
+        this.gains          = [1, 1];  // index 0 is left channel, index 1 is right channel
 
         this.activeTrack = -1;    // There is not any active track in the case of -1
         this.paused      = true;  // for preventing from the duplicate `onaudioprocess` event (`start` method)
-
-        this.gainL = 1;  // Gain of Left  channel
-        this.gainR = 1;  // Gain of Right channel
     }
 
     /**
@@ -46,19 +40,17 @@ export class Recorder extends Connectable {
         if (n > 0) {
             this.numberOfTracks = n;
 
-            this.trackLs = new Array(this.numberOfTracks);
-            this.trackRs = new Array(this.numberOfTracks);
+            this.tracks = [new Array(this.numberOfTracks), new Array(this.numberOfTracks)];
 
-            for (let i = 0; i < n; i++) { this.trackLs[i] = []; }  // n x array
-            for (let i = 0; i < n; i++) { this.trackRs[i] = []; }  // n x array
+            for (const tracks of this.tracks) {
+                for (let i = 0; i < n; i++) {
+                    tracks[i] = [];
+                }
+            }
         } else {
             this.numberOfTracks = 1;
 
-            this.trackLs = new Array(this.numberOfTracks);
-            this.trackRs = new Array(this.numberOfTracks);
-
-            this.trackLs[0] = [];  // 1 * array
-            this.trackRs[0] = [];  // 1 * array
+            this.tracks = [[[]], [[]]];
         }
 
         return this;
@@ -85,10 +77,10 @@ export class Recorder extends Connectable {
             let max = null;
 
             switch (k) {
-                case 'gainl':
-                case 'gainr':
+                case '0'   :
+                case 'left':
                     if (value === undefined) {
-                        return this[`gain${k.slice(-1).toUpperCase()}`];
+                        return this.gains[0];
                     }
 
                     v   = parseFloat(value);
@@ -96,7 +88,22 @@ export class Recorder extends Connectable {
                     max = 1;
 
                     if ((v >= min) && (v <= max)) {
-                        this[`gain${k.slice(-1).toUpperCase()}`] = v;
+                        this.gains[0] = v;
+                    }
+
+                    break;
+                case '1'    :
+                case 'right':
+                    if (value === undefined) {
+                        return this.gains[1];
+                    }
+
+                    v   = parseFloat(value);
+                    min = 0;
+                    max = 1;
+
+                    if ((v >= min) && (v <= max)) {
+                        this.gains[1] = v;
                     }
 
                     break;
@@ -114,7 +121,7 @@ export class Recorder extends Connectable {
      * @return {Recorder} This is returned for method chain.
      */
     ready(track) {
-        if (this.isTrack(track)) {
+        if (this.hasTrack(track)) {
             this.activeTrack = track;
         } else {
             this.activeTrack = -1;
@@ -142,12 +149,12 @@ export class Recorder extends Connectable {
                     const recordedRs = new Float32Array(bufferSize);
 
                     for (let i = 0; i < bufferSize; i++) {
-                        recordedLs[i] = this.gainL * inputLs[i];
-                        recordedRs[i] = this.gainR * inputRs[i];
+                        recordedLs[i] = this.gains[0] * inputLs[i];
+                        recordedRs[i] = this.gains[1] * inputRs[i];
                     }
 
-                    this.trackLs[this.activeTrack].push(recordedLs);
-                    this.trackRs[this.activeTrack].push(recordedRs);
+                    this.tracks[0][this.activeTrack].push(recordedLs);
+                    this.tracks[1][this.activeTrack].push(recordedRs);
                 } else {
                     this.processor.disconnect(0);
                     this.processor.onaudioprocess = null;
@@ -174,11 +181,22 @@ export class Recorder extends Connectable {
     }
 
     /**
+     * This method determines whether the designated channel number is valid.
+     * @param {number} channel This argument is channel number for validation.
+     * @return {boolean} If the designated channel is valid range, this value is `true`. Otherwise, this value is `false`.
+     */
+    hasChannel(channel) {
+        const c = parseInt(channel, 10);
+
+        return (c >= 0) && (c < this.tracks.length);
+    }
+
+    /**
      * This method determines whether the designated track number is valid.
      * @param {number} track This argument is track number for validation.
      * @return {boolean} If the designated track is valid range, this value is `true`. Otherwise, this value is `false`.
      */
-    isTrack(track) {
+    hasTrack(track) {
         const t = parseInt(track, 10);
 
         return (t >= 0) && (t < this.numberOfTracks);
@@ -194,16 +212,16 @@ export class Recorder extends Connectable {
 
     /**
      * This method flats recorded sounds in track.
-     * @param {string} channel This argument is either 'L' or 'R'.
+     * @param {number} channel This argument is the channel number for mixing.
      * @param {number} track This argument is track number.
      * @return {Float32Array} This is returned as array for flatten sound.
      */
     flatTrack(channel, track) {
-        if (!this.isTrack(track)) {
+        if (!this.hasChannel(channel) || !this.hasTrack(track)) {
             return null;
         }
 
-        const tracks     = this[`track${channel}s`][track];
+        const tracks     = this.tracks[channel][track];
         const bufferSize = this.processor.bufferSize;
 
         const flattenTrack = new Float32Array(tracks.length * bufferSize);
@@ -219,13 +237,20 @@ export class Recorder extends Connectable {
 
     /**
      * This method synthesizes recorded sounds in track.
-     * @param {string} channel This argument is either 'L' or 'R'.
+     * @param {number} channel This argument is the channel number for mixing.
      * @return {Float32Array} This is returned as array for synthesized sound.
      */
     mixTrack(channel) {
-        const tracks      = this[`track${channel}s`];
-        const mixes       = { 'values' : null, 'sum' : 0, 'num' : 0 };
-        const bufferSize  = this.processor.bufferSize;
+        if (!this.hasChannel(channel)) {
+            return null;
+        }
+
+        const tracks     = this.tracks[channel];
+        const bufferSize = this.processor.bufferSize;
+
+        let mixedValues   = null;
+        let mixedSum      = 0;
+        let mixedElement  = 0;
         let currentBuffer = 0;
         let index         = 0;
 
@@ -239,60 +264,44 @@ export class Recorder extends Connectable {
             }
         }
 
-        mixes.values = new Float32Array(numberOfMaxBuffers * bufferSize);
+        mixedValues = new Float32Array(numberOfMaxBuffers * bufferSize);
 
         while (true) {
             for (let currentTrack = 0, len = tracks.length; currentTrack < len; currentTrack++) {
                 if (tracks[currentTrack][currentBuffer] instanceof Float32Array) {
-                    mixes.sum += tracks[currentTrack][currentBuffer][index];
-                    mixes.num++;
+                    mixedSum += tracks[currentTrack][currentBuffer][index];
+                    mixedElement++;
                 }
             }
 
-            if (mixes.num > 0) {
-                const offset = currentBuffer * bufferSize;
+            if (mixedElement <= 0) {
+                return mixedValues;
+            }
 
-                // Average
-                mixes.values[offset + index] = mixes.sum / mixes.num;
+            const offset = currentBuffer * bufferSize;
 
-                // Clear
-                mixes.sum = 0;
-                mixes.num = 0;
+            // Average
+            mixedValues[offset + index] = mixedSum / mixedElement;
 
-                // Next data
-                if (index < (bufferSize - 1)) {
-                    // Next element in Float32Array
-                    index++;
-                } else {
-                    // Next Float32Array
-                    currentBuffer++;
-                    index = 0;
-                }
+            // Clear
+            mixedSum     = 0;
+            mixedElement = 0;
+
+            // Next data
+            if (index < (bufferSize - 1)) {
+                // Next element in Float32Array
+                index++;
             } else {
-                return mixes.values;
+                // Next Float32Array
+                currentBuffer++;
+                index = 0;
             }
         }
-    }
-
-    /**
-     * This method synthesizes the all of recorded sounds in track.
-     * @return {Recorder} This is returned for method chain.
-     */
-    mix() {
-        // on the way of recording ?
-        if (this.activeTrack !== -1) {
-            this.stop();
-        }
-
-        this.mixedLs = this.mixTrack('L');
-        this.mixedRs = this.mixTrack('R');
-
-        return this;
     }
 
     /**
      * This method clears recorded sound of the designated track.
-     * @param {number|string} track This argument is track for clearing.
+     * @param {number} track This argument is track for clearing.
      * @return {Recorder} This is returned for method chain.
      */
     clear(track) {
@@ -301,13 +310,18 @@ export class Recorder extends Connectable {
             this.stop();
         }
 
-        if (String(track).toLowerCase() === 'all') {
-            for (const track of this.trackLs) { track.length = 0; }
-            for (const track of this.trackRs) { track.length = 0; }
+        const t = parseInt(track, 10);
+
+        if (t === -1) {
+            for (const tracks of this.tracks) {
+                for (const track of tracks) {
+                    track.length = 0;
+                }
+            }
         } else {
-            if (this.isTrack(track)) {
-                this.trackLs[track].length = 0;
-                this.trackRs[track].length = 0;
+            if (this.hasTrack(track)) {
+                this.tracks[0][track].length = 0;
+                this.tracks[1][track].length = 0;
             }
         }
 
@@ -316,7 +330,7 @@ export class Recorder extends Connectable {
 
     /**
      * This method creates WAVE file as Object URL or Data URL.
-     * @param {string|number} track This argument is the target track.
+     * @param {number} channel This argument is the channel number for mixing.
      * @param {number} numberOfChannels This argument is in order to select stereo or monaural of WAVE file. The default value is 2.
      * @param {number} qbit This argument is quantization bit of PCM. The default value is 16 (bit).
      * @param {string} type This argument is one of 'blob', 'objecturl', 'base64', 'dataurl'.
@@ -334,14 +348,12 @@ export class Recorder extends Connectable {
         /** @type {Float32Array} */
         let soundRs = null;
 
-        if (String(track).toLowerCase() === 'all') {
-            this.mix();
-
-            soundLs = this.mixedLs;
-            soundRs = this.mixedRs;
-        } else if (this.isTrack(track)) {
-            soundLs = this.flatTrack('L', track);
-            soundRs = this.flatTrack('R', track);
+        if (track === -1) {
+            soundLs = this.mixTrack(0);
+            soundRs = this.mixTrack(1);
+        } else if (this.hasTrack(track)) {
+            soundLs = this.flatTrack(0, track);
+            soundRs = this.flatTrack(1, track);
         }
 
         // Sound data exists ?

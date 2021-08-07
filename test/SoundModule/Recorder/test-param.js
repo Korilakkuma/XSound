@@ -6,15 +6,15 @@ describe('Recorder TEST', () => {
     describe('Recorder#param', () => {
         const recorder = new Recorder(audiocontext, 1024, 2, 2);
 
-        describe('gainL', () => {
+        describe('left', () => {
             afterEach(() => {
-                recorder.param('gainL', 1);
+                recorder.param('left', 1);
             });
 
             // Getter
             // Positive
             it('should return 1', () => {
-                expect(recorder.param('gainL')).toEqual(1);
+                expect(recorder.param('left')).toEqual(1);
             });
 
             // Negative
@@ -25,41 +25,41 @@ describe('Recorder TEST', () => {
             // Setter
             // Positive
             it('should return 0.5', () => {
-                recorder.param('gainL', 0.5);
-                expect(recorder.param('gainL')).toEqual(0.5);
+                recorder.param('left', 0.5);
+                expect(recorder.param('left')).toEqual(0.5);
             });
 
             it('should return 1', () => {
-                recorder.param('gainL', 1);
-                expect(recorder.param('gainL')).toEqual(1);
+                recorder.param('left', 1);
+                expect(recorder.param('left')).toEqual(1);
             });
 
             it('should return 0', () => {
-                recorder.param('gainL', 0);
-                expect(recorder.param('gainL')).toEqual(0);
+                recorder.param('left', 0);
+                expect(recorder.param('left')).toEqual(0);
             });
 
             // Negative
             it('should return 1', () => {
-                recorder.param('gainL', 1.1);
-                expect(recorder.param('gainL')).toEqual(1);
+                recorder.param('left', 1.1);
+                expect(recorder.param('left')).toEqual(1);
             });
 
             it('should return 1', () => {
-                recorder.param('gainL', -0.1);
-                expect(recorder.param('gainL')).toEqual(1);
+                recorder.param('left', -0.1);
+                expect(recorder.param('left')).toEqual(1);
             });
         });
 
-        describe('gainR', () => {
+        describe('right', () => {
             afterEach(() => {
-                recorder.param('gainR', 1);
+                recorder.param('right', 1);
             });
 
             // Getter
             // Positive
             it('should return 1', () => {
-                expect(recorder.param('gainR')).toEqual(1);
+                expect(recorder.param('right')).toEqual(1);
             });
 
             // Negative
@@ -70,29 +70,29 @@ describe('Recorder TEST', () => {
             // Setter
             // Positive
             it('should return 0.5', () => {
-                recorder.param('gainR', 0.5);
-                expect(recorder.param('gainR')).toEqual(0.5);
+                recorder.param('right', 0.5);
+                expect(recorder.param('right')).toEqual(0.5);
             });
 
             it('should return 1', () => {
-                recorder.param('gainR', 1);
-                expect(recorder.param('gainR')).toEqual(1);
+                recorder.param('right', 1);
+                expect(recorder.param('right')).toEqual(1);
             });
 
             it('should return 0', () => {
-                recorder.param('gainR', 0);
-                expect(recorder.param('gainR')).toEqual(0);
+                recorder.param('right', 0);
+                expect(recorder.param('right')).toEqual(0);
             });
 
             // Negative
             it('should return 1', () => {
-                recorder.param('gainR', 1.1);
-                expect(recorder.param('gainR')).toEqual(1);
+                recorder.param('right', 1.1);
+                expect(recorder.param('right')).toEqual(1);
             });
 
             it('should return 1', () => {
-                recorder.param('gainR', -0.1);
-                expect(recorder.param('gainR')).toEqual(1);
+                recorder.param('right', -0.1);
+                expect(recorder.param('right')).toEqual(1);
             });
         });
     });

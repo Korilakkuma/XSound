@@ -1,6 +1,7 @@
 'use strict';
 
 import { Connectable } from '../../interfaces/Connectable';
+import { Track } from './Track';
 
 /**
  * This private class defines properties for multi track recording.
@@ -44,13 +45,13 @@ export class Recorder extends Connectable {
 
             for (const tracks of this.tracks) {
                 for (let i = 0; i < n; i++) {
-                    tracks[i] = [];
+                    tracks[i] = new Track(i);
                 }
             }
         } else {
             this.numberOfTracks = 1;
 
-            this.tracks = [[[]], [[]]];
+            this.tracks = [[new Track(0)], [new Track(0)]];
         }
 
         return this;
@@ -153,8 +154,8 @@ export class Recorder extends Connectable {
                         recordedRs[i] = this.gains[1] * inputRs[i];
                     }
 
-                    this.tracks[0][this.activeTrack].push(recordedLs);
-                    this.tracks[1][this.activeTrack].push(recordedRs);
+                    this.tracks[0][this.activeTrack].append(recordedLs);
+                    this.tracks[1][this.activeTrack].append(recordedRs);
                 } else {
                     this.processor.disconnect(0);
                     this.processor.onaudioprocess = null;
@@ -221,14 +222,16 @@ export class Recorder extends Connectable {
             return null;
         }
 
-        const tracks     = this.tracks[channel][track];
+        const dataBlocks = this.tracks[channel][track].get();  /** @type {Array.<Float32Array>} */
         const bufferSize = this.processor.bufferSize;
 
-        const flattenTrack = new Float32Array(tracks.length * bufferSize);
+        const flattenTrack = new Float32Array(dataBlocks.length * bufferSize);
 
-        for (let i = 0, len = tracks.length; i < len; i++) {
+        for (let i = 0, len = dataBlocks.length; i < len; i++) {
+            const dataBlock = dataBlocks[i];
+
             for (let j = 0; j < bufferSize; j++) {
-                flattenTrack[(i * bufferSize) + j] = tracks[i][j];
+                flattenTrack[(i * bufferSize) + j] = dataBlock[j];
             }
         }
 
@@ -245,31 +248,36 @@ export class Recorder extends Connectable {
             return null;
         }
 
-        const tracks     = this.tracks[channel];
+        const tracks     = this.tracks[channel];  /** @type {Array.<Track>} */
         const bufferSize = this.processor.bufferSize;
 
-        let mixedValues   = null;
-        let mixedSum      = 0;
-        let mixedElement  = 0;
-        let currentBuffer = 0;
-        let index         = 0;
+        let mixedValues  = null;
+        let mixedSum     = 0;
+        let mixedElement = 0;
+        let currentBlock = 0;
+        let index        = 0;
 
         // Calculate sound data size
-        let numberOfMaxBuffers = 0;
+        let numberOfMaxBlocks = 0;
 
-        // Search the max number of Float32Arrays each track
+        // Search the max number of `Float32Array`'s each track
         for (const track of tracks) {
-            if (numberOfMaxBuffers < track.length) {
-                numberOfMaxBuffers = track.length;
+            const dataBlocks = track.get();
+
+            if (numberOfMaxBlocks < dataBlocks.length) {
+                numberOfMaxBlocks = dataBlocks.length;
             }
         }
 
-        mixedValues = new Float32Array(numberOfMaxBuffers * bufferSize);
+        mixedValues = new Float32Array(numberOfMaxBlocks * bufferSize);
 
         while (true) {
             for (let currentTrack = 0, len = tracks.length; currentTrack < len; currentTrack++) {
-                if (tracks[currentTrack][currentBuffer] instanceof Float32Array) {
-                    mixedSum += tracks[currentTrack][currentBuffer][index];
+                const dataBlocks = tracks[currentTrack].get();
+                const dataBlock  = dataBlocks[currentBlock];
+
+                if (dataBlock instanceof Float32Array) {
+                    mixedSum += dataBlock[index];
                     mixedElement++;
                 }
             }
@@ -278,7 +286,7 @@ export class Recorder extends Connectable {
                 return mixedValues;
             }
 
-            const offset = currentBuffer * bufferSize;
+            const offset = currentBlock * bufferSize;
 
             // Average
             mixedValues[offset + index] = mixedSum / mixedElement;
@@ -293,7 +301,7 @@ export class Recorder extends Connectable {
                 index++;
             } else {
                 // Next Float32Array
-                currentBuffer++;
+                currentBlock++;
                 index = 0;
             }
         }
@@ -315,13 +323,14 @@ export class Recorder extends Connectable {
         if (t === -1) {
             for (const tracks of this.tracks) {
                 for (const track of tracks) {
-                    track.length = 0;
+                    track.clear();
                 }
             }
         } else {
             if (this.hasTrack(track)) {
-                this.tracks[0][track].length = 0;
-                this.tracks[1][track].length = 0;
+                for (const tracks of this.tracks) {
+                    tracks[track].clear();
+                }
             }
         }
 

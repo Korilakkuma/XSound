@@ -1,6 +1,6 @@
 'use strict';
 
-import { Connectable } from '../interfaces/Connectable';
+import { Connectable } from '../../interfaces/Connectable';
 
 /**
  * This private class defines properties for multi track recording.

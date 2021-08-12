@@ -216,6 +216,7 @@ button[type="button"] {
     font-size: 16px;
     color: #ccc;
     background-color: #c000c0;
+    text-transform: uppercase;
     transition: background-color 0.4s ease;
 }
 

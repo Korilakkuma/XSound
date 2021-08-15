@@ -2,6 +2,7 @@
 
 import { Connectable } from '../../interfaces/Connectable';
 import { Track } from './Track';
+import { Channel } from './Channel';
 
 /**
  * This private class defines properties for multi track recording.
@@ -22,9 +23,7 @@ export class Recorder extends Connectable {
         this.context   = context;
         this.processor = context.createScriptProcessor(bufferSize, numberOfInputs, numberOfOutputs);
 
-        this.numberOfTracks = 0;
-        this.tracks         = [];      /** @type {Array.<Array.<Track>>} 2 dimensions array */
-        this.gains          = [1, 1];  // index 0 is left channel, index 1 is right channel
+        this.channels  = [];      /** @type {Array.<Channel>} */
 
         this.activeTrack = -1;    // There is not any active track in the case of -1
         this.paused      = true;  // for preventing from the duplicate `onaudioprocess` event (`start` method)
@@ -38,20 +37,16 @@ export class Recorder extends Connectable {
     setup(numberOfTracks) {
         const n = parseInt(numberOfTracks, 10);
 
+        this.chanels = [new Channel(0), new Channel(1)];
+
         if (n > 0) {
-            this.numberOfTracks = n;
-
-            this.tracks = [new Array(this.numberOfTracks), new Array(this.numberOfTracks)];
-
-            for (const tracks of this.tracks) {
-                for (let i = 0; i < n; i++) {
-                    tracks[i] = new Track(i);
-                }
+            for (let i = 0; i < (n - 1); i++) {
+                this.channels[0].append(new Track(i));
+                this.channels[1].append(new Track(i));
             }
         } else {
-            this.numberOfTracks = 1;
-
-            this.tracks = [[new Track(0)], [new Track(0)]];
+            this.channels[0].append(new Track(0));
+            this.channels[1].append(new Track(0));
         }
 
         return this;
@@ -73,40 +68,22 @@ export class Recorder extends Connectable {
         } else {
             const k = String(key).replace(/-/g, '').toLowerCase();
 
-            let v   = null;
-            let min = null;
-            let max = null;
-
             switch (k) {
                 case '0'   :
                 case 'left':
                     if (value === undefined) {
-                        return this.gains[0];
+                        return this.channels[0].getGain();
                     }
 
-                    v   = parseFloat(value);
-                    min = 0;
-                    max = 1;
-
-                    if ((v >= min) && (v <= max)) {
-                        this.gains[0] = v;
-                    }
-
+                    this.channels[0].setGain(value);
                     break;
                 case '1'    :
                 case 'right':
                     if (value === undefined) {
-                        return this.gains[1];
+                        return this.channels[1].getGain();
                     }
 
-                    v   = parseFloat(value);
-                    min = 0;
-                    max = 1;
-
-                    if ((v >= min) && (v <= max)) {
-                        this.gains[1] = v;
-                    }
-
+                    this.channels[1].setGain(value);
                     break;
                 default:
                     break;
@@ -139,6 +116,12 @@ export class Recorder extends Connectable {
         if ((this.activeTrack !== -1) && this.paused) {
             this.paused = false;
 
+            const gainL = this.channels[0].getGain();
+            const gainR = this.channels[1].getGain();
+
+            const trackL = this.channels[0].get(this.activeTrack);
+            const trackR = this.channels[1].get(this.activeTrack);
+
             const bufferSize = this.processor.bufferSize;
 
             this.processor.onaudioprocess = event => {
@@ -150,12 +133,12 @@ export class Recorder extends Connectable {
                     const recordedRs = new Float32Array(bufferSize);
 
                     for (let i = 0; i < bufferSize; i++) {
-                        recordedLs[i] = this.gains[0] * inputLs[i];
-                        recordedRs[i] = this.gains[1] * inputRs[i];
+                        recordedLs[i] = gainL * inputLs[i];
+                        recordedRs[i] = gainR * inputRs[i];
                     }
 
-                    this.tracks[0][this.activeTrack].append(recordedLs);
-                    this.tracks[1][this.activeTrack].append(recordedRs);
+                    trackL.append(recordedLs);
+                    trackR.append(recordedRs);
                 } else {
                     this.processor.disconnect(0);
                     this.processor.onaudioprocess = null;
@@ -183,24 +166,24 @@ export class Recorder extends Connectable {
 
     /**
      * This method determines whether the designated channel number is valid.
-     * @param {number} channel This argument is channel number for validation.
+     * @param {number} channelNumber This argument is channel number for validation.
      * @return {boolean} If the designated channel is valid range, this value is `true`. Otherwise, this value is `false`.
      */
-    hasChannel(channel) {
-        const c = parseInt(channel, 10);
+    hasChannel(channelNumber) {
+        const c = parseInt(channelNumber, 10);
 
-        return (c >= 0) && (c < this.tracks.length);
+        return (c >= 0) && (c < this.channels.length);
     }
 
     /**
      * This method determines whether the designated track number is valid.
-     * @param {number} track This argument is track number for validation.
+     * @param {number} trackNumber This argument is track number for validation.
      * @return {boolean} If the designated track is valid range, this value is `true`. Otherwise, this value is `false`.
      */
-    hasTrack(track) {
-        const t = parseInt(track, 10);
+    hasTrack(trackNumber) {
+        const t = parseInt(trackNumber, 10);
 
-        return (t >= 0) && (t < this.numberOfTracks);
+        return (t >= 0) && (t < this.channels.every(channel => t < channel.length()));
     }
 
     /**
@@ -213,16 +196,18 @@ export class Recorder extends Connectable {
 
     /**
      * This method flats recorded sounds in track.
-     * @param {number} channel This argument is the channel number for mixing.
-     * @param {number} track This argument is track number.
+     * @param {number} channelNumber This argument is the channel number for mixing.
+     * @param {number} trackNumber This argument is track number.
      * @return {Float32Array} This is returned as array for flatten sound.
      */
-    flatTrack(channel, track) {
-        if (!this.hasChannel(channel) || !this.hasTrack(track)) {
+    flatTrack(channelNumber, trackNumber) {
+        if (!this.hasChannel(channelNumber) || !this.hasTrack(trackNumber)) {
             return null;
         }
 
-        const dataBlocks = this.tracks[channel][track].get();  /** @type {Array.<Float32Array>} */
+        const channel    = this.channels[channelNumber];
+        const track      = channel.get(trackNumber);
+        const dataBlocks = track.get();
         const bufferSize = this.processor.bufferSize;
 
         const flattenTrack = new Float32Array(dataBlocks.length * bufferSize);
@@ -240,15 +225,16 @@ export class Recorder extends Connectable {
 
     /**
      * This method synthesizes recorded sounds in track.
-     * @param {number} channel This argument is the channel number for mixing.
+     * @param {number} channelNumber This argument is the channel number for mixing.
      * @return {Float32Array} This is returned as array for synthesized sound.
      */
-    mixTrack(channel) {
-        if (!this.hasChannel(channel)) {
+    mixTrack(channelNumber) {
+        if (!this.hasChannel(channelNumber)) {
             return null;
         }
 
-        const tracks     = this.tracks[channel];  /** @type {Array.<Track>} */
+        const channel    = this.channels[channelNumber];
+        const tracks     = channel.get();
         const bufferSize = this.processor.bufferSize;
 
         let mixedValues  = null;
@@ -310,27 +296,31 @@ export class Recorder extends Connectable {
 
     /**
      * This method clears recorded sound of the designated track.
-     * @param {number} track This argument is track for clearing.
+     * @param {number} trackNumber This argument is track for clearing.
      * @return {Recorder} This is returned for method chain.
      */
-    clear(track) {
+    clear(trackNumber) {
         // on the way of recording ?
         if (this.activeTrack !== -1) {
             this.stop();
         }
 
-        const t = parseInt(track, 10);
+        const t = parseInt(trackNumber, 10);
 
         if (t === -1) {
-            for (const tracks of this.tracks) {
+            for (const channel of this.channels) {
+                const tracks = channel.get();
+
                 for (const track of tracks) {
                     track.clear();
                 }
             }
         } else {
-            if (this.hasTrack(track)) {
-                for (const tracks of this.tracks) {
-                    tracks[track].clear();
+            if (this.hasTrack(t)) {
+                for (const channel of this.channels) {
+                    const track = channel.get(t);
+
+                    track.clear();
                 }
             }
         }

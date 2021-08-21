@@ -559,9 +559,9 @@ export class TimeOverview extends Visualizer {
         this.update(time);
 
         if (this.startTime <= time) {
-            this.callback(event, this.startTime, time, this.mode);
+            this.callback(event, this.startTime, time, this.mode, true);
         } else if (this.startTime > time) {
-            this.callback(event, time, this.startTime, this.mode);
+            this.callback(event, time, this.startTime, this.mode, false);
         }
 
         return this;

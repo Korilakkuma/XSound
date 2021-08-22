@@ -356,13 +356,13 @@ export class Recorder extends Connectable {
 
     /**
      * This method creates WAVE file as Object URL or Data URL.
-     * @param {number} channel This argument is the channel number for mixing.
+     * @param {number} trackNumber This argument is the track number for mixing.
      * @param {number} numberOfChannels This argument is in order to select stereo or monaural of WAVE file. The default value is 2.
      * @param {number} qbit This argument is quantization bit of PCM. The default value is 16 (bit).
      * @param {string} type This argument is one of 'blob', 'objecturl', 'base64', 'dataurl'.
      * @return {Blob|string} This is returned as `Blob` or Object URL or Base64 or Data URL for WAVE file.
      */
-    create(track, numberOfChannels, qbit, type) {
+    create(trackNumber, numberOfChannels, qbit, type) {
         // on the way of recording ?
         if (this.activeTrack !== -1) {
             this.stop();
@@ -374,16 +374,14 @@ export class Recorder extends Connectable {
         /** @type {Float32Array} */
         let soundRs = null;
 
-        if (track === -1) {
+        if ((trackNumber === -1) && this.has()) {
             soundLs = this.mixTrack(0);
             soundRs = this.mixTrack(1);
-        } else if (this.hasTrack(track)) {
-            soundLs = this.flatTrack(0, track);
-            soundRs = this.flatTrack(1, track);
-        }
-
-        // Sound data exists ?
-        if ((soundLs.length === 0) && (soundRs.length === 0)) {
+        } else if (this.has(0, trackNumber) && this.has(1, trackNumber)) {
+            soundLs = this.flatTrack(0, trackNumber);
+            soundRs = this.flatTrack(1, trackNumber);
+        } else {
+            // Sound data does not exists
             return '';
         }
 

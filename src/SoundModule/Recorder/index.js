@@ -187,9 +187,10 @@ export class Recorder extends Connectable {
     /**
      * This method detects track that has a recorded data.
      * @param {number} channelNumber This argument is the target channel number.
+     * @param {number} trackNumber This argument is the target track number.
      * @return {boolean} If there is the track that has a recorded data at least, this method returns true. Otherwise this value is `false`.
      */
-    has(channelNumber) {
+    has(channelNumber, trackNumber) {
         if (!this.hasChannel(channelNumber)) {
             return this.channels.some(channel => {
                 const tracks = channel.get();
@@ -198,9 +199,17 @@ export class Recorder extends Connectable {
             });
         }
 
-        const tracks = this.channels[channelNumber].get();
+        const c = parseInt(channelNumber, 10);
 
-        return tracks.some(track => track.has());
+        const tracks = this.channels[c].get();
+
+        if (!this.hasTrack(trackNumber)) {
+            return tracks.some(track => track.has());
+        }
+
+        const t = parseInt(trackNumber, 10);
+
+        return tracks[t].has();
     }
 
     /**

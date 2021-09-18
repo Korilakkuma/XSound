@@ -185,7 +185,7 @@ export class Recorder extends Connectable {
     }
 
     /**
-     * This method detects track that has a recorded data.
+     * This method determines whether the track has a recorded data.
      * @param {number} channelNumber This argument is the target channel number.
      * @param {number} trackNumber This argument is the target track number.
      * @return {boolean} If there is the track that has a recorded data at least, this method returns true. Otherwise this value is `false`.

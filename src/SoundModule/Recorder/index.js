@@ -438,8 +438,8 @@ export class Recorder extends Connectable {
                     }
 
                     // for preventing from clipping
-                    if (binary > (+Math.pow(2, 15) - 1)) { binary =  Math.pow(2, 15) - 1; }
-                    if (binary < (-Math.pow(2, 15) - 1)) { binary = -Math.pow(2, 15) - 1; }
+                    if (binary > (+Math.pow(2, 15) - 1)) { binary = +Math.pow(2, 15) - 1; }
+                    if (binary < (-Math.pow(2, 15) - 0)) { binary = -Math.pow(2, 15) - 0; }
 
                     sounds[i] = binary;
                 }

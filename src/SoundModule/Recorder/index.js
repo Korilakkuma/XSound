@@ -263,11 +263,10 @@ export class Recorder extends Connectable {
         const tracks     = channel.get();
         const bufferSize = this.processor.bufferSize;
 
-        let mixedValues  = null;
-        let mixedSum     = 0;
-        let mixedElement = 0;
-        let currentBlock = 0;
-        let index        = 0;
+        let sum              = 0;
+        let numberOfElements = 0;
+        let currentBlock     = 0;
+        let index            = 0;
 
         // Calculate sound data size
         let numberOfMaxBlocks = 0;
@@ -281,7 +280,7 @@ export class Recorder extends Connectable {
             }
         }
 
-        mixedValues = new Float32Array(numberOfMaxBlocks * bufferSize);
+        const mixedValues = new Float32Array(numberOfMaxBlocks * bufferSize);
 
         while (true) {
             for (let currentTrack = 0, len = tracks.length; currentTrack < len; currentTrack++) {
@@ -290,23 +289,23 @@ export class Recorder extends Connectable {
                 const dataBlock  = dataBlocks[currentBlock];
 
                 if (dataBlock instanceof Float32Array) {
-                    mixedSum += dataBlock[index];
-                    mixedElement++;
+                    sum += dataBlock[index];
+                    numberOfElements++;
                 }
             }
 
-            if (mixedElement <= 0) {
+            if (numberOfElements <= 0) {
                 return mixedValues;
             }
 
             const offset = currentBlock * bufferSize;
 
             // Average
-            mixedValues[offset + index] = mixedSum / mixedElement;
+            mixedValues[offset + index] = sum / numberOfElements;
 
             // Clear
-            mixedSum     = 0;
-            mixedElement = 0;
+            sum              = 0;
+            numberOfElements = 0;
 
             // Next data
             if (index < (bufferSize - 1)) {

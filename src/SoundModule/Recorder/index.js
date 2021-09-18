@@ -216,7 +216,7 @@ export class Recorder extends Connectable {
      * This method determines whether active track exists.
      * @return {number} This is returned as active track.
      */
-    getActiveTrack() {
+    get() {
         return this.activeTrack;
     }
 

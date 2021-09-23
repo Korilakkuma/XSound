@@ -529,14 +529,15 @@ export class Recorder extends Connectable {
             }
         }
 
-        // Create WAVE file (Object URL or Data URL)
         const t = String(type).toLowerCase();
+
+        // Create WAVE file (Object URL or Data URL)
+        const base64 = window.btoa(Array.from(wave).map(d => String.fromCodePoint(d)).join(''));
+        const blob   = new Blob([wave], { 'type' : 'audio/wav' });
 
         switch (t) {
             case 'base64' :
             case 'dataurl':
-                const base64 = window.btoa(wave.map(d => String.fromCodePoint(d)).join(''));
-
                 if (t === 'base64') {
                     return base64;
                 }
@@ -545,8 +546,6 @@ export class Recorder extends Connectable {
             case 'blob'     :
             case 'objecturl':
             default         :
-                const blob = new Blob([wave], { 'type' : 'audio/wav' });
-
                 if (t === 'blob') {
                     return blob;
                 }

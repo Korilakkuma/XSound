@@ -23,7 +23,7 @@ export class Recorder extends Connectable {
         this.context   = context;
         this.processor = context.createScriptProcessor(bufferSize, numberOfInputs, numberOfOutputs);
 
-        this.channels = [new Channel(0), new Channel(1)];  /** @type {Array.<Channel>} */
+        this.channels = [];
 
         this.activeTrack = -1;    // There is not any active track in the case of -1
         this.paused      = true;  // for preventing from the duplicate `onaudioprocess` event (`start` method)
@@ -31,20 +31,21 @@ export class Recorder extends Connectable {
 
     /**
      * This method sets the max number of tracks.
+     * @param {number} numberOfTracks This argument is the number of channels (not used currently). The default value is 2.
      * @param {number} numberOfTracks This argument is the max number of tracks. The default value is 1.
      * @return {Recorder} This is returned for method chain.
      */
-    setup(numberOfTracks) {
+    setup(numberOfChannels, numberOfTracks) {
         const n = parseInt(numberOfTracks, 10);
+        const t = n > 0 ? n : 1;
 
-        if (n > 0) {
-            for (let i = 0; i < n; i++) {
-                this.channels[0].append(new Track(i));
-                this.channels[1].append(new Track(i));
+        this.channels.push(new Channel(0));
+        this.channels.push(new Channel(1));
+
+        for (const channel of this.channels) {
+            for (let i = 0; i < t; i++) {
+                channel.append(new Track(i));
             }
-        } else {
-            this.channels[0].append(new Track(0));
-            this.channels[1].append(new Track(0));
         }
 
         return this;

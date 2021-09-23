@@ -6,6 +6,8 @@ describe('Recorder TEST', () => {
     describe('Recorder#param', () => {
         const recorder = new Recorder(audiocontext, 1024, 2, 2);
 
+        recorder.setup(2, 4);
+
         describe('left', () => {
             afterEach(() => {
                 recorder.param('left', 1);

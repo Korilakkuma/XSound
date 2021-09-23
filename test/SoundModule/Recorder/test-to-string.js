@@ -6,6 +6,8 @@ describe('Recorder TEST', () => {
     describe('Recorder#toString', () => {
         const recorder = new Recorder(audiocontext, 1024, 2, 2);
 
+        recorder.setup(2, 4);
+
         it('should return "[SoundModule Recorder]"', () => {
             expect(recorder.toString()).toEqual('[SoundModule Recorder]');
         });

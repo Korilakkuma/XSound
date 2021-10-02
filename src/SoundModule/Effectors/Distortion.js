@@ -7,151 +7,183 @@ import { Effector } from './Effector';
  * @constructor
  * @extends {Effector}
  */
-export class Distortion extends Effector {
-    static CLEAN      = 'clean';
-    static CRUNCH     = 'crunch';
-    static OVERDRIVE  = 'overdrive';
-    static DISTORTION = 'distortion';
-    static FUZZ       = 'fuzz';
-
-    /**
-     * This class (static) method creates the instance of `Float32Array` for distortion.
-     * @param {string} type This argument is one of 'clean', 'crunch', 'overdrive', 'distortion', 'fuzz'.
-     * @param {number} amount This argument is the depth of distortion.
-     * @param {number} numberOfSamples This argument is the size of `Float32Array`.
-     * @return {Float32Array|null} This is `curve` property in `WaveShaperNode`.
-     */
-    static createCurve(type, amount, numberOfSamples) {
-        // This algorithms are from https://github.com/Theodeus/tuna/blob/master/tuna.js#L1301,L1359
-        if ((amount > 0) && (amount < 1)) {
-            const curves = new Float32Array(numberOfSamples);
-
-            let x   = 0;
-            let y   = 0;
-            let a   = 0;
-            let k   = 0;
-            let abx = 0;
-
-            switch (type) {
-                case Distortion.CRUNCH:
-                    a = 1 - amount > 0.99 ? 0.99 : 1 - amount;
-
-                    for (let i = 0; i < numberOfSamples; i++) {
-                        x = i * 2 / numberOfSamples - 1;
-                        abx = Math.abs(x);
-
-                        if (abx < a) {
-                            y = abx;
-                        } else if (abx > a) {
-                            y = a + (abx - a) / (1 + Math.pow((abx - a) / (1 - a), 2));
-                        } else if (abx > 1) {
-                            y = abx;
-                        }
-
-                        curves[i] = (x === 0 ? 1 : Math.abs(x) / x) * y * (1 / ((a + 1) / 2));
-                    }
-
-                    /*
-                    const a    = 2 + Math.round(amount * 14);
-                    const bits = Math.round(Math.pow(2, a - 1));
-
-                    let x = 0;
-
-                    for (let i = 0; i < numberOfSamples; i++) {
-                        x = i * 2 / numberOfSamples - 1;
-                        curves[i] = Math.round(x * bits) / bits;
-                    }
-                    */
-
-                    break;
-                case Distortion.OVERDRIVE:
-                    k = (2 * amount) / (1 - amount);
-
-                    for (let i = 0; i < numberOfSamples; i++) {
-                        // LINEAR INTERPOLATION: x := (c - a) * (z - y) / (b - a) + y
-                        // a = 0, b = 2048, z = 1, y = -1, c = i
-                        const x = (((i - 0) * (1 - (-1))) / (numberOfSamples - 0)) + (-1);
-                        curves[i] = ((1 + k) * x) / (1 + k * Math.abs(x));
-                    }
-
-                    /*
-                    let x = 0;
-
-                    for (let i = 0; i < numberOfSamples; i++) {
-                        x = i * 2 / numberOfSamples - 1;
-
-                        if (x < -0.08905) {
-                            curves[i] = (-3 / 4) * (1 - (Math.pow((1 - (Math.abs(x) - 0.032857)), 12)) + (1 / 3) * (Math.abs(x) - 0.032847)) + 0.01;
-                        } else if (x >= -0.08905 && x < 0.320018) {
-                            curves[i] = (-6.153 * (x * x)) + 3.9375 * x;
-                        } else {
-                            curves[i] = 0.630035;
-                        }
-                    }
-                    */
-
-                    break;
-                case Distortion.DISTORTION:
-                    a = 1 - amount;
-
-                    for (let i = 0; i < numberOfSamples; i++) {
-                        x = i * 2 / numberOfSamples - 1;
-                        y = x < 0 ? -Math.pow(Math.abs(x), a + 0.04) : Math.pow(x, a);
-                        curves[i] = (Math.exp(2 * y) - Math.exp(-2 * y)) / (Math.exp(2 * y) + Math.exp(-2 * y));
-                    }
-
-                    break;
-                case Distortion.FUZZ:
-                    for (let i = 0; i < numberOfSamples; i++) {
-                        x = ((i * 2) / numberOfSamples) - 1;
-                        y = ((0.5 * Math.pow((x + 1.4), 2)) - 1) * y >= 0 ? 5.8 : 1.2;
-
-                        curves[i] = (Math.exp(y) - Math.exp(-y)) / (Math.exp(y) + Math.exp(-y));
-                    }
-
-                    break;
-                case Distortion.CLEAN:
-                default:
-                    return null;
-            }
-
-            return curves;
-        }
-
-        return null;  // Clean sound (default value)
-    }
-
+class PreEqualizer extends Effector {
     /**
      * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
-     * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
      */
-    constructor(context, bufferSize) {
-        super(context, bufferSize);
+    constructor(context) {
+        super(context, 0);
+
+        this.preAmp = context.createWaveShaper();
+
+        this.gain     = context.createGain();
+        this.leadGain = context.createGain();
+
+        this.lowpass   = context.createBiquadFilter();
+        this.highpass1 = context.createBiquadFilter();
+        this.highpass2 = context.createBiquadFilter();
+        this.highpass3 = context.createBiquadFilter();
+
+        this.gain.gain.value     = 0.5;
+        this.leadGain.gain.value = 0.5;
+
+        this.lowpass.type             = (typeof this.lowpass.type === 'string') ? 'lowpass' : (this.lowpass.LOWPASS || 0);
+        this.lowpass.frequency.value  = 3200;
+        this.lowpass.Q.value          = Math.SQRT1_2;
+        this.lowpass.gain.value       = 0;  // Not used
+
+        this.highpass1.type             = (typeof this.highpass1.type === 'string') ? 'highpass' : (this.highpass1.HIGHPASS || 1);
+        this.highpass1.frequency.value  = 80;
+        this.highpass1.Q.value          = Math.SQRT1_2;
+        this.highpass1.gain.value       = 0;  // Not used
+
+        this.highpass2.type             = (typeof this.highpass2.type === 'string') ? 'highpass' : (this.highpass2.HIGHPASS || 1);
+        this.highpass2.frequency.value  = 640;
+        this.highpass2.Q.value          = Math.SQRT1_2;
+        this.highpass2.gain.value       = 0;  // Not used
+
+        this.highpass3.type             = (typeof this.highpass3.type === 'string') ? 'highpass' : (this.highpass3.HIGHPASS || 1);
+        this.highpass3.frequency.value  = 80;
+        this.highpass3.Q.value          = Math.SQRT1_2;
+        this.highpass3.gain.value       = 0;  // Not used
+
+        this.state(false);
+    }
+
+    /** @override */
+    param(key, value) {
+        if (Object.prototype.toString.call(arguments[0]) === '[object Object]') {
+            // Associative array
+            for (const k in arguments[0]) {
+                this.param(k, arguments[0][k]);
+            }
+        } else  {
+            const k = String(key).replace(/-/g, '').toLowerCase();
+
+            let v = null;
+
+            switch (k) {
+                case 'curve':
+                    if (value === undefined) {
+                        return this.preAmp.curve;
+                    }
+
+                    this.preAmp.curve = value;
+
+                    break;
+                case 'gain':
+                    if (value === undefined) {
+                        return this.gain.gain.value;
+                    }
+
+                    v = parseFloat(value);
+
+                    if ((v >= 0) && (v <= 1)) {
+                        this.gain.gain.value = v;
+                    }
+
+                    break;
+                case 'lead':
+                    if (value === undefined) {
+                        return this.leadGain.gain.value;
+                    }
+
+                    v = parseFloat(value);
+
+                    if ((v >= 0) && (v <= 1)) {
+                        this.leadGain.gain.value = v;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return this;
+    }
+
+    /** @override */
+    connect() {
+        this.input.disconnect(0);
+
+        if (this.isActive) {
+            // Effect ON
+
+            // GainNode (Input) -> BiquadFilterNode (Highpass) -> GainNode (Gain) -> BiquadFilterNode (Highpass) -> GainNode (Output)
+            this.input.connect(this.highpass1);
+            this.highpass1.connect(this.gain);
+            this.gain.connect(this.highpass3);
+
+            // GainNode (Input) -> BiquadFilterNode (Highpass) -> GainNode (Lead Gain) -> BiquadFilterNode (Highpass)
+            this.input.connect(this.highpass2);
+            this.highpass2.connect(this.leadGain);
+            this.leadGain.connect(this.highpass3);
+
+            // BiquadFilterNode (Highpass) -> WaveShaperNode (Preamplifier) -> GainNode (Output)
+            this.highpass3.connect(this.preAmp);
+            this.preAmp.connect(this.output);
+        } else {
+            // Effect OFF
+
+            // GainNode (Input) -> GainNode (Output)
+            this.input.connect(this.output);
+        }
+
+        return this;
+    }
+}
+
+/**
+ * Effector's subclass
+ * @constructor
+ * @extends {Effector}
+ */
+class PostEqualizer extends Effector {
+    /**
+     * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
+     */
+    constructor(context) {
+        super(context, 0);
 
         this.distortion = context.createWaveShaper();
-        this.drive      = context.createGain();
-        this.color      = context.createBiquadFilter();
-        this.tone       = context.createBiquadFilter();
 
-        // Distortion type
-        this.type = Distortion.CLEAN;
+        this.bass     = context.createBiquadFilter();
+        this.middle   = context.createBiquadFilter();
+        this.treble   = context.createBiquadFilter();
 
-        // for creating curve
-        this.amount          = 0.5;
-        this.numberOfSamples = 4096;
+        this.bass.type   = (typeof this.bass.type     === 'string') ? 'lowshelf'  : (this.bass.LOWSHELF    || 3);
+        this.middle.type = (typeof this.middle.type   === 'string') ? 'peaking'   : (this.middle.PEAKING   || 5);
+        this.treble.type = (typeof this.treble.type   === 'string') ? 'highshelf' : (this.treble.HIGHSHELF || 4);
 
-        // Initialize parameters
-        this.drive.gain.value      = 1;
-        this.color.type            = (typeof this.color.type === 'string') ? 'bandpass' : (this.color.BANDPASS || 2);
-        this.color.frequency.value = 350;
-        this.color.Q.value         = Math.SQRT1_2;
-        this.color.gain.value      = 0;  // Not used
-        this.tone.type             = (typeof this.tone.type === 'string') ? 'lowpass' : (this.tone.LOWPASS || 0);
-        this.tone.frequency.value  = 350;
-        this.tone.Q.value          = Math.SQRT1_2;
-        this.tone.gain.value       = 0;  // Not used
+        // Set cutoff frequency
+        this.bass.frequency.value   = 240;  // 240 Hz
+        this.middle.frequency.value = 500;  // 500 Hz
+        this.treble.frequency.value = 1600; // 1.6 kHz
 
-        // `Distortion` is not connected by default
+        // Set Q
+        // this.bass.Q.value   = Math.SQRT1_2;  // Not used
+        this.middle.Q.value = Math.SQRT1_2;
+        // this.treble.Q.value = Math.SQRT1_2;  // Not used
+
+        // Set Gain
+        this.bass.gain.value   = 0;
+        this.middle.gain.value = 0;
+        this.treble.gain.value = 0;
+
+        this.lowpass  = context.createBiquadFilter();
+        this.highpass = context.createBiquadFilter();
+
+        this.lowpass.type             = (typeof this.lowpass.type === 'string') ? 'lowpass' : (this.lowpass.LOWPASS || 0);
+        this.lowpass.frequency.value  = 24000;
+        this.lowpass.Q.value          = Math.SQRT1_2;
+        this.lowpass.gain.value       = 0;  // Not used
+
+        this.highpass.type             = (typeof this.highpass.type === 'string') ? 'highpass' : (this.highpass.HIGHPASS || 1);
+        this.highpass.frequency.value  = 40;
+        this.highpass.Q.value          = Math.SQRT1_2;
+        this.highpass.gain.value       = 0;  // Not used
+
         this.state(false);
     }
 
@@ -175,30 +207,183 @@ export class Distortion extends Effector {
                         return this.distortion.curve;
                     }
 
+                    this.distortion.curve = value;
+
+                    break;
+                case 'bass'  :
+                case 'middle':
+                case 'treble':
+                    if (value === undefined) {
+                        return this[k].gain.value;
+                    }
+
+                    v   = parseFloat(value);
+                    min = -40;
+                    max =  40;
+
+                    if ((v >= min) && (v <= max)) {
+                        this[k].gain.value = v;
+                    }
+
+                    break;
+                case 'frequency':
+                    if (value === undefined) {
+                        return this.middle.frequency.value;
+                    }
+
+                    v   = parseFloat(value);
+                    min = 10;
+                    max = this.context.sampleRate / 2;
+
+                    if ((v >= min) && (v <= max)) {
+                        this.middle.frequency.value = v;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return this;
+    }
+
+    /** @override */
+    connect() {
+        this.input.disconnect(0);
+
+        if (this.isActive) {
+            // Effect ON
+
+            // GainNode (Input) -> BiquadFilterNode (Lowpass) -> BiquadFilterNode (Highpass) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> GainNode (Output)
+            this.input.connect(this.lowpass);
+            this.lowpass.connect(this.highpass);
+            this.highpass.connect(this.distortion);
+            this.distortion.connect(this.bass);
+            this.bass.connect(this.middle);
+            this.middle.connect(this.treble);
+            this.treble.connect(this.output);
+        } else {
+            // Effect OFF
+
+            // GainNode (Input) -> GainNode (Output)
+            this.input.connect(this.output);
+        }
+
+        return this;
+    }
+}
+
+/**
+ * Effector's subclass
+ * @constructor
+ * @extends {Effector}
+ */
+export class Distortion extends Effector {
+    static CLEAN      = 'clean';
+    static CRUNCH     = 'crunch';
+    static OVERDRIVE  = 'overdrive';
+    static DISTORTION = 'distortion';
+    static FUZZ       = 'fuzz';
+
+    /**
+     * This class (static) method creates the instance of `Float32Array` for distortion.
+     * @param {number} drive This argument is an amount of distortion.
+     * @param {number} numberOfSamples This argument is the size of distortion curve.
+     * @return {Float32Array|null} This is `curve` property in `WaveShaperNode`.
+     */
+    static createCurve(drive, numberOfSamples) {
+        const index = Math.floor((numberOfSamples - 1) / 2);
+
+        const curves = new Float32Array(numberOfSamples);
+
+        const d = Math.pow(10, ((drive / 5.0) - 1.0)) - 0.1;
+        const c = (d / 5.0) + 1.0;
+
+        let peak = 0.4;
+
+        if (c === 1) {
+            peak = 1.0;
+        } else if ((c > 1) && (c < 1.04)) {
+            peak = (-15.5 * c) + 16.52;
+        }
+
+        for (let i = 0; i < index; i++) {
+            curves[index + i] = peak * (+1 - Math.pow(c, -i) + (i * Math.pow(c, -index)) / index);
+            curves[index - i] = peak * (-1 + Math.pow(c, -i) - (i * Math.pow(c, -index)) / index);
+        }
+
+        curves[index] = 0;
+
+        return curves;
+    }
+
+    /**
+     * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
+     * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+     */
+    constructor(context, bufferSize) {
+        super(context, bufferSize);
+
+        this.distortion = context.createWaveShaper();
+
+        this.preEQ  = new PreEqualizer(context);
+        this.postEQ = new PostEqualizer(context);
+
+        // Distortion type
+        this.type = Distortion.CLEAN;
+
+        // for creating curve
+        this.numberOfSamples = 256;
+
+        this.param('curve', Distortion.CLEAN);
+
+        // `Distortion` is not connected by default
+        this.state(false);
+    }
+
+    /** @override */
+    param(key, value) {
+        if (Object.prototype.toString.call(arguments[0]) === '[object Object]') {
+            // Associative array
+            for (const k in arguments[0]) {
+                this.param(k, arguments[0][k]);
+            }
+        } else  {
+            const k = String(key).replace(/-/g, '').toLowerCase();
+
+            let v = null;
+
+            switch (k) {
+                case 'curve':
                     let curve = null;
 
                     switch (String(value).toLowerCase()) {
                         case Distortion.CLEAN:
                             this.type = Distortion.CLEAN;
-                            curve = Distortion.createCurve(Distortion.CLEAN, this.amount, this.numberOfSamples);
+                            curve = Distortion.createCurve(0.0, this.numberOfSamples);
                             break;
                         case Distortion.CRUNCH:
                             this.type = Distortion.CRUNCH;
-                            curve = Distortion.createCurve(Distortion.CRUNCH, this.amount, this.numberOfSamples);
+                            curve = Distortion.createCurve(3.0, this.numberOfSamples);
                             break;
                         case Distortion.OVERDRIVE:
                             this.type = Distortion.OVERDRIVE;
-                            curve = Distortion.createCurve(Distortion.OVERDRIVE, this.amount, this.numberOfSamples);
+                            curve = Distortion.createCurve(5.0, this.numberOfSamples);
                             break;
                         case Distortion.DISTORTION:
                             this.type = Distortion.DISTORTION;
-                            curve = Distortion.createCurve(Distortion.DISTORTION, this.amount, this.numberOfSamples);
+                            curve = Distortion.createCurve(8.0, this.numberOfSamples);
                             break;
                         case Distortion.FUZZ:
                             this.type = Distortion.FUZZ;
-                            curve = Distortion.createCurve(Distortion.FUZZ, this.amount, this.numberOfSamples);
+                            curve = Distortion.createCurve(10.0, this.numberOfSamples);
                             break;
                         default:
+                            if (value === undefined) {
+                                return this.postEQ.param('curve');
+                            }
+
                             if (value instanceof Float32Array) {
                                 curve = value;
                             }
@@ -206,20 +391,8 @@ export class Distortion extends Effector {
                             break;
                     }
 
-                    this.distortion.curve = curve;
-
-                    break;
-                case 'amount':
-                    if (value === undefined) {
-                        return this.amount;
-                    }
-
-                    v = parseFloat(value);
-
-                    if ((v > 0) && (v < 1)) {
-                        this.amount = v;
-                        this.param('curve', this.type);
-                    }
+                    this.preEQ.param('curve', curve);
+                    this.postEQ.param('curve', curve);
 
                     break;
                 case 'samples':
@@ -235,33 +408,40 @@ export class Distortion extends Effector {
                     }
 
                     break;
-                case 'drive':
+                case 'pre':
                     if (value === undefined) {
-                        return this.drive.gain.value;
+                        return this.preEQ.state();
                     }
 
-                    v   = parseFloat(value);
-                    min = 0;
-                    max = 100;
-
-                    if ((v >= min) && (v <= max)) {
-                        this.drive.gain.value = v;
-                    }
+                    this.preEQ.state(value);
 
                     break;
-                case 'color':
-                case 'tone' :
+                case 'gain':
+                case 'lead':
                     if (value === undefined) {
-                        return this[k].frequency.value;
+                        return this.preEQ.param(k);
                     }
 
-                    v   = parseFloat(value);
-                    min = 10;
-                    max = this.context.sampleRate / 2;
+                    this.preEQ.param(k, value);
 
-                    if ((v >= min) && (v <= max)) {
-                        this[k].frequency.value = v;
+                    break;
+                case 'post':
+                    if (value === undefined) {
+                        return this.postEQ.state();
                     }
+
+                    this.postEQ.state(value);
+
+                    break;
+                case 'bass'     :
+                case 'middle'   :
+                case 'treble'   :
+                case 'frequency':
+                    if (value === undefined) {
+                        return this.postEQ.param(k);
+                    }
+
+                    this.postEQ.param(k, value);
 
                     break;
                 default:
@@ -276,20 +456,14 @@ export class Distortion extends Effector {
     connect() {
         // Clear connection
         this.input.disconnect(0);
-        this.color.disconnect(0);
-        this.drive.disconnect(0);
-        this.distortion.disconnect(0);
-        this.tone.disconnect(0);
 
         if (this.isActive) {
             // Effect ON
 
-            // GainNode (Input) -> BiquadFilterNode (Color) -> WaveShaperNode (Distortion) -> GainNode (Drive) -> BiquadFilterNode (Tone) -> GainNode (Output)
-            this.input.connect(this.color);
-            this.color.connect(this.drive);
-            this.drive.connect(this.distortion);
-            this.distortion.connect(this.tone);
-            this.tone.connect(this.output);
+            // GainNode (Input) -> Pre-Equalizer -> Preamplifier -> Distortion -> Post-Equalizer -> GainNode (Output)
+            this.input.connect(this.preEQ.INPUT);
+            this.preEQ.OUTPUT.connect(this.postEQ.INPUT);
+            this.postEQ.OUTPUT.connect(this.output);
         } else {
             // Effect OFF
 
@@ -303,13 +477,17 @@ export class Distortion extends Effector {
     /** @override */
     params() {
         const params = {
-            'state'   : this.isActive,
-            'curve'   : this.type,
-            'amount'  : this.amount,
-            'samples' : this.numberOfSamples,
-            'drive'   : this.drive.gain.value,
-            'color'   : this.color.frequency.value,
-            'tone'    : this.tone.frequency.value
+            'state'     : this.isActive,
+            'curve'     : this.type,
+            'samples'   : this.numberOfSamples,
+            'pre'       : this.preEQ.state(),
+            'gain'      : this.preEQ.param('gain'),
+            'lead'      : this.preEQ.param('lead'),
+            'post'      : this.postEQ.state(),
+            'bass'      : this.postEQ.param('bass'),
+            'middle'    : this.postEQ.param('middle'),
+            'treble'    : this.postEQ.param('treble'),
+            'frequency' : this.postEQ.param('frequency')
         };
 
         return params;

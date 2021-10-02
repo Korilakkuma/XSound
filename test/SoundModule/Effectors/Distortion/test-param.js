@@ -14,7 +14,7 @@ describe('Distortion TEST', () => {
             // Getter
             // Positive
             it('should return null', () => {
-                expect(distortion.param('curve')).toBeNull();
+                expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
             });
 
             // Negative
@@ -25,7 +25,7 @@ describe('Distortion TEST', () => {
             // Setter
             it('should return null', () => {
                 distortion.param('curve', 'clean');
-                expect(distortion.param('curve')).toBeNull();
+                expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
             });
 
             it('should return the instance of `Float32Array`', () => {
@@ -51,46 +51,6 @@ describe('Distortion TEST', () => {
             it('should return the instance of `Float32Array`', () => {
                 distortion.param('curve', new Float32Array([1, 1.5, 2]));
                 expect(distortion.param('curve')).toEqual(jasmine.any(Float32Array));
-            });
-        });
-
-        describe('amount', () => {
-            afterEach(() => {
-                distortion.param('amount', 0.5);
-            });
-
-            // Getter
-            // Positive
-            it('should return 0.5', () => {
-                expect(distortion.param('amount')).toEqual(0.5);
-            });
-
-            // Negative
-            it('should return the instance of `Distortion`', () => {
-                expect(distortion.param('')).toEqual(jasmine.any(Distortion));
-            });
-
-            // Setter
-            // Positive
-            it('should return 0.95', () => {
-                distortion.param('amount', 0.95);
-                expect(distortion.param('amount')).toEqual(0.95);
-            });
-
-            it('should return 0.05', () => {
-                distortion.param('amount', 0.05);
-                expect(distortion.param('amount')).toEqual(0.05);
-            });
-
-            // Negative
-            it('should return 1', () => {
-                distortion.param('amount', 1);
-                expect(distortion.param('amount')).toEqual(0.5);
-            });
-
-            it('should return 0', () => {
-                distortion.param('amount', 0);
-                expect(distortion.param('amount')).toEqual(0.5);
             });
         });
 
@@ -129,15 +89,15 @@ describe('Distortion TEST', () => {
             });
         });
 
-        describe('drive', () => {
+        describe('gain', () => {
             afterEach(() => {
-                distortion.param('drive', 1);
+                distortion.param('gain', 0.5);
             });
 
             // Getter
             // Positive
-            it('should return 1', () => {
-                expect(distortion.param('drive')).toEqual(1);
+            it('should return 0.5', () => {
+                expect(distortion.param('gain')).toEqual(0.5);
             });
 
             // Negative
@@ -148,41 +108,41 @@ describe('Distortion TEST', () => {
             // Setter
             // Positive
             it('should return 0.5', () => {
-                distortion.param('drive', 0.5);
-                expect(distortion.param('drive')).toEqual(0.5);
-            });
-
-            it('should return 100', () => {
-                distortion.param('drive', 100);
-                expect(distortion.param('drive')).toEqual(100);
-            });
-
-            it('should return 0', () => {
-                distortion.param('drive', 0);
-                expect(distortion.param('drive')).toEqual(0);
-            });
-
-            // Negative
-            it('should return 100', () => {
-                distortion.param('drive', 101);
-                expect(distortion.param('drive')).toEqual(1);
+                distortion.param('gain', 0.5);
+                expect(distortion.param('gain')).toEqual(0.5);
             });
 
             it('should return 1', () => {
-                distortion.param('drive', -0.1);
-                expect(distortion.param('drive')).toEqual(1);
+                distortion.param('gain', 1);
+                expect(distortion.param('gain')).toEqual(1);
+            });
+
+            it('should return 0', () => {
+                distortion.param('gain', 0);
+                expect(distortion.param('gain')).toEqual(0);
+            });
+
+            // Negative
+            it('should return 1', () => {
+                distortion.param('gain', 1.1);
+                expect(distortion.param('gain')).toEqual(0.5);
+            });
+
+            it('should return 1', () => {
+                distortion.param('gain', -0.1);
+                expect(distortion.param('gain')).toEqual(0.5);
             });
         });
 
-        describe('color', () => {
+        describe('lead', () => {
             afterEach(() => {
-                distortion.param('color', 350);
+                distortion.param('lead', 0.5);
             });
 
             // Getter
             // Positive
-            it('should return 350', () => {
-                expect(distortion.param('color')).toEqual(350);
+            it('should return 0.5', () => {
+                expect(distortion.param('lead')).toEqual(0.5);
             });
 
             // Negative
@@ -192,42 +152,42 @@ describe('Distortion TEST', () => {
 
             // Setter
             // Positive
-            it('should return 350.5', () => {
-                distortion.param('color', 350.5);
-                expect(distortion.param('color')).toEqual(350.5);
+            it('should return 0.5', () => {
+                distortion.param('lead', 0.5);
+                expect(distortion.param('lead')).toEqual(0.5);
             });
 
-            it('should return the Nyquist frequency (half the sample-rate)', () => {
-                distortion.param('color', (audiocontext.sampleRate / 2));
-                expect(distortion.param('color')).toEqual(audiocontext.sampleRate / 2);
+            it('should return 1', () => {
+                distortion.param('lead', 1);
+                expect(distortion.param('lead')).toEqual(1);
             });
 
-            it('should return 10', () => {
-                distortion.param('color', 10);
-                expect(distortion.param('color')).toEqual(10);
+            it('should return 0', () => {
+                distortion.param('lead', 0);
+                expect(distortion.param('lead')).toEqual(0);
             });
 
             // Negative
-            it('should return 350', () => {
-                distortion.param('color', ((audiocontext.sampleRate / 2) + 0.1));
-                expect(distortion.param('color')).toEqual(350);
+            it('should return 1', () => {
+                distortion.param('lead', 1.1);
+                expect(distortion.param('lead')).toEqual(0.5);
             });
 
-            it('should return 350', () => {
-                distortion.param('color', 9.9);
-                expect(distortion.param('color')).toEqual(350);
+            it('should return 1', () => {
+                distortion.param('lead', -0.1);
+                expect(distortion.param('lead')).toEqual(0.5);
             });
         });
 
-        describe('tone', () => {
+        describe('bass', () => {
             afterEach(() => {
-                distortion.param('tone', 350);
+                distortion.param('bass', 0);
             });
 
             // Getter
             // Positive
-            it('should return 350', () => {
-                expect(distortion.param('tone')).toEqual(350);
+            it('should return 0', () => {
+                expect(distortion.param('bass')).toEqual(0);
             });
 
             // Negative
@@ -237,30 +197,165 @@ describe('Distortion TEST', () => {
 
             // Setter
             // Positive
-            it('should return 350.5', () => {
-                distortion.param('tone', 350.5);
-                expect(distortion.param('tone')).toEqual(350.5);
+            it('should return 0.5', () => {
+                distortion.param('bass', 0.5);
+                expect(distortion.param('bass')).toEqual(0.5);
             });
 
-            it('should return the Nyquist frequency (half the sample-rate)', () => {
-                distortion.param('tone', (audiocontext.sampleRate / 2));
-                expect(distortion.param('tone')).toEqual(audiocontext.sampleRate / 2);
+            it('should return 40', () => {
+                distortion.param('bass', 40);
+                expect(distortion.param('bass')).toEqual(40);
             });
 
-            it('should return 10', () => {
-                distortion.param('tone', 10);
-                expect(distortion.param('tone')).toEqual(10);
+            it('should return -40', () => {
+                distortion.param('bass', -40);
+                expect(distortion.param('bass')).toEqual(-40);
             });
 
             // Negative
-            it('should return 350', () => {
-                distortion.param('tone', ((audiocontext.sampleRate / 2) + 0.1));
-                expect(distortion.param('tone')).toEqual(350);
+            it('should return 0', () => {
+                distortion.param('bass', 40.1);
+                expect(distortion.param('bass')).toEqual(0);
             });
 
-            it('should return 350', () => {
-                distortion.param('tone', 9.9);
-                expect(distortion.param('tone')).toEqual(350);
+            it('should return 0', () => {
+                distortion.param('bass', -40.1);
+                expect(distortion.param('bass')).toEqual(0);
+            });
+        });
+
+        describe('middle', () => {
+            afterEach(() => {
+                distortion.param('middle', 0);
+            });
+
+            // Getter
+            // Positive
+            it('should return 0', () => {
+                expect(distortion.param('middle')).toEqual(0);
+            });
+
+            // Negative
+            it('should return the instance of `Distortion`', () => {
+                expect(distortion.param('')).toEqual(jasmine.any(Distortion));
+            });
+
+            // Setter
+            // Positive
+            it('should return 0.5', () => {
+                distortion.param('middle', 0.5);
+                expect(distortion.param('middle')).toEqual(0.5);
+            });
+
+            it('should return 40', () => {
+                distortion.param('middle', 40);
+                expect(distortion.param('middle')).toEqual(40);
+            });
+
+            it('should return -40', () => {
+                distortion.param('middle', -40);
+                expect(distortion.param('middle')).toEqual(-40);
+            });
+
+            // Negative
+            it('should return 0', () => {
+                distortion.param('middle', 40.1);
+                expect(distortion.param('middle')).toEqual(0);
+            });
+
+            it('should return 0', () => {
+                distortion.param('middle', -40.1);
+                expect(distortion.param('middle')).toEqual(0);
+            });
+        });
+
+        describe('treble', () => {
+            afterEach(() => {
+                distortion.param('treble', 0);
+            });
+
+            // Getter
+            // Positive
+            it('should return 0', () => {
+                expect(distortion.param('treble')).toEqual(0);
+            });
+
+            // Negative
+            it('should return the instance of `Distortion`', () => {
+                expect(distortion.param('')).toEqual(jasmine.any(Distortion));
+            });
+
+            // Setter
+            // Positive
+            it('should return 0.5', () => {
+                distortion.param('treble', 0.5);
+                expect(distortion.param('treble')).toEqual(0.5);
+            });
+
+            it('should return 40', () => {
+                distortion.param('treble', 40);
+                expect(distortion.param('treble')).toEqual(40);
+            });
+
+            it('should return -40', () => {
+                distortion.param('treble', -40);
+                expect(distortion.param('treble')).toEqual(-40);
+            });
+
+            // Negative
+            it('should return 0', () => {
+                distortion.param('treble', 40.1);
+                expect(distortion.param('treble')).toEqual(0);
+            });
+
+            it('should return 0', () => {
+                distortion.param('treble', -40.1);
+                expect(distortion.param('treble')).toEqual(0);
+            });
+        });
+
+        describe('frequency', () => {
+            afterEach(() => {
+                distortion.param('frequency', 500);
+            });
+
+            // Getter
+            // Positive
+            it('should return 500', () => {
+                expect(distortion.param('frequency')).toEqual(500);
+            });
+
+            // Negative
+            it('should return the instance of `Distortion`', () => {
+                expect(distortion.param('')).toEqual(jasmine.any(Distortion));
+            });
+
+            // Setter
+            // Positive
+            it('should return 500.5', () => {
+                distortion.param('frequency', 500.5);
+                expect(distortion.param('frequency')).toEqual(500.5);
+            });
+
+            it('should return the Nyquist frequency (half the sample-rate)', () => {
+                distortion.param('frequency', (audiocontext.sampleRate / 2));
+                expect(distortion.param('frequency')).toEqual(audiocontext.sampleRate / 2);
+            });
+
+            it('should return 10', () => {
+                distortion.param('frequency', 10);
+                expect(distortion.param('frequency')).toEqual(10);
+            });
+
+            // Negative
+            it('should return 500', () => {
+                distortion.param('frequency', ((audiocontext.sampleRate / 2) + 0.1));
+                expect(distortion.param('frequency')).toEqual(500);
+            });
+
+            it('should return 500', () => {
+                distortion.param('frequency', 9.9);
+                expect(distortion.param('frequency')).toEqual(500);
             });
         });
     });

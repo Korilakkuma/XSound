@@ -36,5 +36,9 @@ module.exports = {
       ]
     })
   ] : [],
-  devtool: 'source-map'
+  devtool: 'source-map',
+  devServer: {
+    static: __dirname,
+    host: '0.0.0.0'
+  }
 };

@@ -17,7 +17,7 @@ html, body {
 }
 
 html {
-    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+    font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
     font-size: calc(4 * ((100vw - 320px) / (1280 - 320)) + 12px);
     line-height: 1.5;
     background-color: #212121;
@@ -99,7 +99,7 @@ aside > a:hover {
 }
 
 h1 {
-    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+    font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
     font-size: calc(64 * ((100vw - 320px) / (1280 - 320)) + 64px);
     font-weight: lighter;
     color: #c000c0;
@@ -107,7 +107,7 @@ h1 {
 }
 
 .section > h2 {
-    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+    font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
     font-size: calc(28 * ((100vw - 320px) / (1280 - 320)) + 28px);
     font-weight: lighter;
     color: #c000c0;
@@ -116,7 +116,7 @@ h1 {
 
 header h2,
 .section > section > h2 {
-    font-family: "Lucida Grande", "Calibri", Helvetica, Arial, sans-serif;
+    font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
     font-size: calc(24 * ((100vw - 320px) / (1280 - 320)) + 24px);
     font-weight: lighter;
     color: #c000c0;

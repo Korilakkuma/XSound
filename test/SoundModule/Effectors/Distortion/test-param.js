@@ -56,13 +56,13 @@ describe('Distortion TEST', () => {
 
         describe('samples', () => {
             afterEach(() => {
-                distortion.param('samples', 4096);
+                distortion.param('samples', 256);
             });
 
             // Getter
             // Positive
-            it('should return 4096', () => {
-                expect(distortion.param('samples')).toEqual(4096);
+            it('should return 256', () => {
+                expect(distortion.param('samples')).toEqual(256);
             });
 
             // Negative
@@ -83,9 +83,9 @@ describe('Distortion TEST', () => {
             });
 
             // Negative
-            it('should return 4096', () => {
+            it('should return 256', () => {
                 distortion.param('samples', -1);
-                expect(distortion.param('samples')).toEqual(4096);
+                expect(distortion.param('samples')).toEqual(256);
             });
         });
 

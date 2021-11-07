@@ -279,6 +279,76 @@ class PostEqualizer extends Effector {
  * @constructor
  * @extends {Effector}
  */
+export class SpeakerSimulator extends Effector {
+    /**
+     * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
+     */
+    constructor(context) {
+        super(context, 0);
+
+        this.lowpass = context.createBiquadFilter();
+        this.notch   = context.createBiquadFilter();
+
+        this.lowpass.type             = (typeof this.lowpass.type === 'string') ? 'lowpass' : (this.lowpass.LOWPASS || 0);
+        this.lowpass.frequency.value  = 3200;
+        this.lowpass.Q.value          = 6;
+        this.lowpass.gain.value       = 0;  // Not used
+
+        this.notch.type             = (typeof this.notch.type === 'string') ? 'notch' : (this.notch.NOTCH || 6);
+        this.notch.frequency.value  = 8000;
+        this.notch.Q.value          = 1;
+        this.notch.gain.value       = 0;  // Not used
+
+        this.state(false);
+    }
+
+    /** @override */
+    param() {
+        // Noop
+    }
+
+    /** @override */
+    connect() {
+        // Clear connection
+        this.input.disconnect(0);
+
+        if (this.isActive) {
+            // Effect ON
+
+            // GainNode (Input) -> BiquadFilterNode (Notch Filter) -> BiquadFilterNode (Low-Pass Filter) -> GainNode (Output)
+            this.input.connect(this.notch);
+            this.notch.connect(this.lowpass);
+            this.lowpass.connect(this.output);
+        } else {
+            // Effect OFF
+
+            // GainNode (Input) -> GainNode (Output)
+            this.input.connect(this.output);
+        }
+
+        return this;
+    }
+
+    /** @override */
+    params() {
+        const params = {
+            'state' : this.isActive
+        };
+
+        return params;
+    }
+
+    /** @override */
+    toString() {
+        return '[SoundModule SpeakerSimulator]';
+    }
+}
+
+/**
+ * Effector's subclass
+ * @constructor
+ * @extends {Effector}
+ */
 export class Distortion extends Effector {
     static CLEAN      = 'clean';
     static CRUNCH     = 'crunch';
@@ -327,8 +397,9 @@ export class Distortion extends Effector {
 
         this.distortion = context.createWaveShaper();
 
-        this.preEQ  = new PreEqualizer(context);
-        this.postEQ = new PostEqualizer(context);
+        this.preEQ     = new PreEqualizer(context);
+        this.postEQ    = new PostEqualizer(context);
+        this.simulator = new SpeakerSimulator(context);
 
         // Distortion type
         this.type = Distortion.CLEAN;
@@ -444,6 +515,14 @@ export class Distortion extends Effector {
                     this.postEQ.param(k, value);
 
                     break;
+                case 'simulator':
+                    if (value === undefined) {
+                        return this.simulator.state();
+                    }
+
+                    this.simulator.state(value);
+
+                    break;
                 default:
                     break;
             }
@@ -463,7 +542,8 @@ export class Distortion extends Effector {
             // GainNode (Input) -> Pre-Equalizer -> Preamplifier -> Distortion -> Post-Equalizer -> GainNode (Output)
             this.input.connect(this.preEQ.INPUT);
             this.preEQ.OUTPUT.connect(this.postEQ.INPUT);
-            this.postEQ.OUTPUT.connect(this.output);
+            this.postEQ.OUTPUT.connect(this.simulator.INPUT);
+            this.simulator.OUTPUT.connect(this.output);
         } else {
             // Effect OFF
 
@@ -487,7 +567,8 @@ export class Distortion extends Effector {
             'bass'      : this.postEQ.param('bass'),
             'middle'    : this.postEQ.param('middle'),
             'treble'    : this.postEQ.param('treble'),
-            'frequency' : this.postEQ.param('frequency')
+            'frequency' : this.postEQ.param('frequency'),
+            'simulator' : this.simulator.state()
         };
 
         return params;

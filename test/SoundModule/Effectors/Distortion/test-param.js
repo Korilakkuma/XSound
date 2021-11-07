@@ -358,5 +358,28 @@ describe('Distortion TEST', () => {
                 expect(distortion.param('frequency')).toEqual(500);
             });
         });
+
+        describe('simulator', () => {
+            afterEach(() => {
+                distortion.param('simulator', false);
+            });
+
+            // Getter
+            // Positive
+            it('should return `false`', () => {
+                expect(distortion.param('simulator')).toBeFalsy();
+            });
+
+            // Negative
+            it('should return the instance of `Distortion`', () => {
+                expect(distortion.param('')).toEqual(jasmine.any(Distortion));
+            });
+
+            // Setter
+            it('should return `true`', () => {
+                distortion.param('simulator', true);
+                expect(distortion.param('simulator')).toBeTruthy();
+            });
+        });
     });
 });

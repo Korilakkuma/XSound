@@ -18,7 +18,8 @@ describe('Distortion TEST', () => {
                 'bass'      : 0,
                 'middle'    : 0,
                 'treble'    : 0,
-                'frequency' : 500
+                'frequency' : 500,
+                'simulator' : false
             });
         });
     });

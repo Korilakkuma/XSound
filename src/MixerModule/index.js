@@ -52,7 +52,6 @@ export class MixerModule extends SoundModule {
             source.isAnalyser = false;
 
             source.recorder.stop();
-            source.session.close();
 
             // ScriptProcessorNode (each sound source) -> ScriptProcessorNode (Mix sound sources)
             source.processor.disconnect(0);

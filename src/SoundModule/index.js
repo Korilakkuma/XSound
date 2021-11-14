@@ -101,7 +101,7 @@ export class SoundModule {
 
         this.analyser          = new Analyser(context);
         this.recorder          = new Recorder(context, size, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
-        this.session           = new Session(context, size, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS, this.analyser);
+        this.session           = new Session(context);
         this.stereo            = new Stereo(context, size);
         this.compressor        = new Compressor(context, size);
         this.distortion        = new Distortion(context, size);
@@ -288,7 +288,7 @@ export class SoundModule {
 
         // for session
         this.mastervolume.connect(this.session.INPUT);
-        this.session.INPUT.connect(this.context.destination);
+        this.session.OUTPUT.connect(this.context.destination);
 
         return this;
     }

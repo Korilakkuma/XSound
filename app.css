@@ -68,8 +68,8 @@ aside > a {
     right: 24px;
     bottom: 24px;
     z-index: 1;
-    width: 2rem;
-    height: 1.5rem;
+    width: 28px;
+    height: 24px;
     text-align: right;
     transform: rotate(180deg);
 }

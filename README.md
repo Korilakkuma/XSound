@@ -106,7 +106,6 @@ The application that uses XSound is in the following URLs.
   
 - [XSound.app](https://xsound.app)
 - [x-piano](https://korilakkuma.github.io/x-piano/)
-- [Music V](https://weblike-curtaincall.ssl-lolipop.jp/portfolio-music-v/)
 - [Music Tweet](https://github.com/Korilakkuma/Music-Tweet)
 - [Chrome EQUALIZER](https://github.com/Korilakkuma/Chrome-EQUALIZER)
   

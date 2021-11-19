@@ -4,7 +4,6 @@
 ![node-current](https://img.shields.io/node/v/xsound?color=brightgreen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![npm](https://img.shields.io/npm/dt/xsound.svg)](https://www.npmjs.com/package/xsound)
-![David Dev](https://img.shields.io/david/dev/Korilakkuma/XSound.svg)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/xsound/badge)](https://www.jsdelivr.com/package/npm/xsound)
   
 ## Overview

@@ -284,7 +284,7 @@ export class SoundModule {
 
         // for recording
         this.mastervolume.connect(this.recorder.INPUT);
-        this.recorder.INPUT.connect(this.context.destination);
+        this.recorder.OUTPUT.connect(this.context.destination);
 
         // for session
         this.mastervolume.connect(this.session.INPUT);

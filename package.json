@@ -2,7 +2,7 @@
   "name": "xsound",
   "version": "2.27.1",
   "engines": {
-    "node": ">=10.19.0 <=14.15.4"
+    "node": ">=12.0.0 <=14.15.4"
   },
   "description": "XSound gives Web Developers Powerful Audio Features Easily !",
   "main": "build/xsound.js",
@@ -58,29 +58,29 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
-    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "copy-webpack-plugin": "^9.0.1",
+    "copy-webpack-plugin": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-cli": "^1.1.1",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.1",
     "eslint-plugin-standard": "^5.0.0",
     "generate-changelog": "^1.8.0",
     "husky": "4.3.8",
     "jasmine": "^3.10.0",
-    "karma": "^6.3.7",
+    "karma": "^6.3.9",
     "karma-chrome-launcher": "^3.1.0",
     "karma-cli": "^2.0.0",
     "karma-jasmine": "^4.0.1",
     "karma-webpack": "dev",
-    "lint-staged": "^11.2.6",
-    "webpack": "^5.62.1",
+    "lint-staged": "^12.0.3",
+    "webpack": "^5.64.1",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.4.0"
+    "webpack-dev-server": "^4.5.0"
   }
 }

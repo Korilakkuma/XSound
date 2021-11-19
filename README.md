@@ -98,7 +98,7 @@ X.Analyser(context: AudioContext);
 
 X.Recorder(context: AudioContext, size: BufferSize, numberOfInputs: number, numberOfOutputs: number);
 
-X.Session(context: AudioContext, size: BufferSize, numberOfInputs: number, numberOfOutputs, analyser: X.Analyser);
+X.Session(context: AudioContext);
 ```
 
 ## Demo

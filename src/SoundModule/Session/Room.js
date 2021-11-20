@@ -143,7 +143,8 @@ export class Room extends Connectable {
     }
 
     /**
-     * This method dstorys the instance of `WebSocket`. Namely, leave the room.
+     * This method stops sending and receiving data by disconnecting node.
+     * Namely, leave the room temporarily.
      */
     leave() {
         if (!this.connected()) {
@@ -152,10 +153,15 @@ export class Room extends Connectable {
 
         this.sender.disconnect(0);
         this.receiver.disconnect(0);
+    }
 
+    /**
+     * This method closes connection to WebSocket server and destroys the instance of `WebSocket`.
+     * Namely, leave the room permanently.
+     */
+    destroy() {
         this.websocket.send(this.id);
         this.websocket.close();
-
         this.websocket = null;
     }
 

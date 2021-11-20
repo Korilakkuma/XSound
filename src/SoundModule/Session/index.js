@@ -101,7 +101,7 @@ export class Session extends Connectable {
     }
 
     /**
-     * This method closes connection to server and destroys the instance of `WebSocket`.
+     * This method stops sending and receiving data.
      * @param {string} roomId This argument is the string that identifies messaging room.
      * @return {Session} This is returned for method chain.
      */
@@ -113,6 +113,23 @@ export class Session extends Connectable {
         }
 
         room.leave();
+
+        return this;
+    }
+
+    /**
+     * This method closes connection to WebSocket server and destroys the instance of `WebSocket`.
+     * @param {string} roomId This argument is the string that identifies messaging room.
+     * @return {Session} This is returned for method chain.
+     */
+    destroy(roomId) {
+        const room = this.get(roomId);
+
+        if (room === null) {
+            return this;
+        }
+
+        room.destroy();
 
         return this;
     }

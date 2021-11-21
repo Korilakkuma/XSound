@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Playground | XSound - Powerful Audio Features Easily ! -</title>
+    <meta name="author" content="Tomohiro IKEDA, Korilakkuma, rilakkuma3xjapan" />
+    <meta name="description" content="XSound gives Web Developers Powerful Audio Features Easily ! Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ..." />
+    <meta name="keywords" content="XSound, XSound API, Web Audio API, Web Audio API Library, Web Audio Library" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, shrink-to-fit=no, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta property="og:title" content="XSound" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xsound.jp" />
+    <meta property="og:image" content="assets/images/icon.png" />
+    <meta property="og:description" content="XSound gives Web Developers Powerful Audio Features Easily ! Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ..." />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@xmusicjp">
+    <link rel="canonical" href="https://xsound.jp/playground/" />
+    <link rel="icon" href="assets/images/icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="assets/images/icon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" type="text/css" media="all" />
+    <link rel="stylesheet" href="lib/codemirror.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="assets/app.css" type="text/css" media="all" />
+  </head>
+  <body>
+    <header>
+      <h1>XSound Playground</h1>
+    </header>
+    <main>
+      <div>
+        <div class="buttons">
+          <button type="button" id="button-run">Run</button>
+          <button type="button" id="button-clear">Clear</button>
+          <a href="https://xsound.dev" target="_blank" rel="noopener noreferrer">API Documentation</a>
+        </div>
+        <label>
+          <textarea>/**
+ * for Oscillator or Custom Oscillator
+ */
+X(&apos;oscillator&apos;).setup([true, false]);
+
+X(&apos;processor&apos;)
+  .setup(&apos;custom-oscillator&apos;)
+  .ready(&apos;./assets/worklet.js&apos;)
+  .then(() =&gt; {
+    X(&apos;processor&apos;).onMessage((event) =&gt; {
+      console.dir(event);
+    });
+  })
+  .catch(console.error);
+
+let key   = &apos;&apos;;
+let value = null;
+
+document.getElementById(&apos;button-start&apos;).onclick = () =&gt; {
+  X(&apos;oscillator&apos;).start([440, 880]);
+
+  // X(&apos;processor&apos;).start();
+
+  const currentTime   = X.getCurrentTime();
+  const audioParamMap = X(&apos;processor&apos;).map();
+  const frequency     = audioParamMap.get(&apos;frequency&apos;);
+
+  frequency.setValueAtTime(440, currentTime);
+  frequency.linearRampToValueAtTime(880, currentTime + 0.5);
+};
+
+document.getElementById(&apos;button-stop&apos;).onclick = () =&gt; {
+  X(&apos;oscillator&apos;).stop();
+  // X(&apos;processor&apos;).stop();
+};
+
+document.getElementById(&apos;select-type&apos;).onchange = (event) =&gt; {
+  const type = event.currentTarget.value;
+
+  for (let i = 0, len = X(&apos;oscillator&apos;).length(); i &lt; len; i++) {
+    X(&apos;oscillator&apos;).get(i).param({ type });
+  }
+
+  X(&apos;processor&apos;).postMessage(type);
+};
+
+/**
+ * for Audio
+ */
+
+X(&apos;audio&apos;).setup({
+  decodeCallback: () =&gt; {
+    X(&apos;audio&apos;).start(0);
+  }
+});
+
+X(&apos;audio&apos;)
+  .module(&apos;analyser&apos;)
+  .domain(&apos;timeoverview&apos;, 0)
+  .setup(document.querySelector(&apos;canvas&apos;))
+  .param({
+    styles: {
+      shape    : 'rect',
+      gradients: [
+        { offset: 0, color: 'rgba(0, 128, 255, 1.0)' },
+        { offset: 1, color: 'rgba(0,   0, 255, 1.0)' }
+      ],
+      font     : {
+        family: 'Arial',
+        size  : '12px',
+        style : 'normal',
+        weight: 'normal'
+      },
+      width    : 0.5
+    }
+  })
+  .activate()
+  .drag((event, startTime) =&gt; {
+    X(&apos;audio&apos;).param({ currentTime: startTime });
+  });
+
+const uploadButton = document.getElementById(&apos;button-uploader&apos;);
+const fileUploader = document.querySelector(&apos;[type=&quot;file&quot;]&apos;);
+
+uploadButton.onclick = () =&gt; {
+  fileUploader.click();
+};
+
+fileUploader.onchange = (event) =&gt; {
+  const file = X.file({
+    event           : event,
+    type            : &apos;arraybuffer&apos;,
+    successCallback : (event, arraybuffer) =&gt; {
+      X(&apos;audio&apos;).ready(arraybuffer);
+      console.log(&apos;Decoding ...&apos;);
+    },
+    errorCalllback  : (error) =&gt; {
+      alert(error.message);
+    },
+    progressCallback: (event) =&gt; {
+      if (event.lengthComputable &amp;&amp; (event.total &gt; 0)) {
+        console.log(`${Math.floor((event.loaded / event.total) * 100)}%`);
+      }
+    }
+  });
+
+  if (file instanceof File) {
+    uploadButton.textContent = file.name;
+  }
+};
+
+/**
+ * for Parameters
+ */
+document.getElementById(&apos;text-param-key&apos;).onblur = (event) =&gt; {
+  key = event.currentTarget.value;
+};
+
+document.getElementById(&apos;text-param-value&apos;).onblur = (event) =&gt; {
+  X(&apos;oscillator&apos;).param({ [key]: parseFloat(event.currentTarget.value) });
+  X(&apos;audio&apos;).param({ [key]: parseFloat(event.currentTarget.value) });
+};</textarea>
+        </label>
+      </div>
+      <fieldset id="ui" hidden>
+        <legend>Input Forms</legend>
+        <div class="buttons">
+          <button type="button" id="button-start">Start</button>
+          <button type="button" id="button-stop">Stop</button>
+          <button type="button" id="button-uploader">Upload</button>
+          <input type="file" accept="audio/*" hidden />
+        </div>
+        <div>
+          <label>
+            <select id="select-type">
+              <option value="">Select Type</option>
+              <option value="sine" selected>sine</option>
+              <option value="square">square</option>
+              <option value="sawtooth">sawtooth</option>
+              <option value="triangle">triangle</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <input type="text" id="text-param-key" placeholder="Type Parameter Key" />
+          <input type="text" id="text-param-value" placeholder="Type Parameter value" />
+        </div>
+        <div>
+          <canvas width="1200" height="150"></canvas>
+        </div>
+      </fieldset>
+    </main>
+    <footer>
+      <p>XSound maintained by <a href="https://github.com/Korilakkuma/XSound">Korilakkuma</a></p>
+    </footer>
+    <script type="text/javascript" src="lib/codemirror.js"></script>
+    <script type="text/javascript" src="lib/javascript.js"></script>
+    <script type="text/javascript" src="../build/xsound.js"></script>
+    <script type="text/javascript" src="assets/app.js"></script>
+  </body>
+</html>

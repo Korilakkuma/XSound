@@ -1,3 +1,5 @@
+import { Visualizer } from './SoundModule/Analyser/Visualizer';
+
 /**
  * This interface is implemented by some classes that abstract `AudioNode` connections (such as `Effector` class).
  *
@@ -15,6 +17,6 @@ export interface Connectable {
  */
 export interface Statable {
   state(): boolean;
-  activate(): true;
-  deactivate(): false;
+  activate(): Visualizer;
+  deactivate(): Visualizer;
 }

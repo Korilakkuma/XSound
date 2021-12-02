@@ -1,6 +1,7 @@
 import faker from 'faker';
 import { ScriptProcessorNodeBufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
+import { AudioBufferMock } from './AudioBufferMock';
 import { GainNodeMock } from './GainNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
 
@@ -23,8 +24,16 @@ export class AudioContextMock {
     return {} as BiquadFilterNode;
   }
 
-  createBuffer() {
-    return {} as AudioBuffer;
+  createBuffer(numberOfChannels: 1 | 2) {
+    const data = new Float32Array([1, 0, 1]);
+
+    switch (numberOfChannels) {
+      case 1:
+        return new AudioBufferMock(data);
+      case 2 :
+      default:
+        return new AudioBufferMock(data, data);
+    }
   }
 
   createBufferSource() {

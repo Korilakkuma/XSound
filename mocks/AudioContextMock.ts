@@ -3,6 +3,7 @@ import { ScriptProcessorNodeBufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
 import { GainNodeMock } from './GainNodeMock';
+import { OscillatorNodeMock } from './OscillatorNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
 
 export class AudioContextMock {
@@ -85,7 +86,7 @@ export class AudioContextMock {
   }
 
   createOscillator() {
-    return {} as OscillatorNode;
+    return new OscillatorNodeMock();
   }
 
   createPanner() {

@@ -4,6 +4,7 @@ import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
 import { BiquadFilterNodeMock } from './BiquadFilterNodeMock';
 import { DelayNodeMock } from './DelayNodeMock';
+import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
 import { GainNodeMock } from './GainNodeMock';
 import { OscillatorNodeMock } from './OscillatorNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
@@ -65,7 +66,7 @@ export class AudioContextMock {
   }
 
   createDynamicsCompressor() {
-    return {} as DynamicsCompressorNode;
+    return new DynamicsCompressorNodeMock();
   }
 
   createGain() {

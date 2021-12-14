@@ -2,6 +2,8 @@ import faker from 'faker';
 import { ScriptProcessorNodeBufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
+import { BiquadFilterNodeMock } from './BiquadFilterNodeMock';
+import { DelayNodeMock } from './DelayNodeMock';
 import { GainNodeMock } from './GainNodeMock';
 import { OscillatorNodeMock } from './OscillatorNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
@@ -23,7 +25,7 @@ export class AudioContextMock {
   }
 
   createBiquadFilter() {
-    return {} as BiquadFilterNode;
+    return new BiquadFilterNodeMock();
   }
 
   createBuffer(numberOfChannels: 1 | 2) {
@@ -59,7 +61,7 @@ export class AudioContextMock {
   }
 
   createDelay() {
-    return {} as DelayNode;
+    return new DelayNodeMock();
   }
 
   createDynamicsCompressor() {

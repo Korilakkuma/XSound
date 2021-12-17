@@ -8,6 +8,7 @@ import { GainNodeMock } from './GainNodeMock';
 import { OscillatorNodeMock } from './OscillatorNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
 import { StereoPannerNodeMock } from './StereoPannerNodeMock';
+import { WaveShaperNodeMock } from './WaveShaperNodeMock';
 
 export class AudioContextMock {
   audioWorklet = {} as AudioWorklet;
@@ -108,7 +109,7 @@ export class AudioContextMock {
   }
 
   createWaveShaper() {
-    return {} as WaveShaperNode;
+    return new WaveShaperNodeMock();
   }
 
   decodeAudioData() {

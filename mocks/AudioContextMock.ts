@@ -9,6 +9,7 @@ import { GainNodeMock } from './GainNodeMock';
 import { OscillatorNodeMock } from './OscillatorNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
 import { StereoPannerNodeMock } from './StereoPannerNodeMock';
+import { WaveShaperNodeMock } from './WaveShaperNodeMock';
 
 export class AudioContextMock {
   activeSourceCount = faker.datatype.number({ min: 0 });
@@ -110,7 +111,7 @@ export class AudioContextMock {
   }
 
   createWaveShaper() {
-    return {} as WaveShaperNode;
+    return new WaveShaperNodeMock();
   }
 
   decodeAudioData() {

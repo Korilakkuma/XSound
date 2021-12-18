@@ -8,6 +8,7 @@ import { DelayNodeMock } from './DelayNodeMock';
 import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
 import { GainNodeMock } from './GainNodeMock';
 import { OscillatorNodeMock } from './OscillatorNodeMock';
+import { PannerNodeMock } from './PannerNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
 import { StereoPannerNodeMock } from './StereoPannerNodeMock';
 import { WaveShaperNodeMock } from './WaveShaperNodeMock';
@@ -96,7 +97,7 @@ export class AudioContextMock {
   }
 
   createPanner() {
-    return {} as PannerNode;
+    return new PannerNodeMock();
   }
 
   createPeriodicWave() {

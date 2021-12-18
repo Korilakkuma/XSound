@@ -1,6 +1,7 @@
 import { ScriptProcessorNodeBufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
+import { AudioListenerMock } from './AudioListenerMock';
 import { BiquadFilterNodeMock } from './BiquadFilterNodeMock';
 import { DelayNodeMock } from './DelayNodeMock';
 import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
@@ -14,7 +15,7 @@ export class AudioContextMock {
   audioWorklet = {} as AudioWorklet;
   currentTime = performance.now();
   destination = {} as AudioDestinationNode;
-  listenr = {} as AudioListener;
+  listener = new AudioListenerMock();
   sampleRate = 44100;
   state: AudioContextState = 'suspended';
 

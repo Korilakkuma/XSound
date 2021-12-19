@@ -3,6 +3,7 @@ import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
 import { AudioListenerMock } from './AudioListenerMock';
 import { BiquadFilterNodeMock } from './BiquadFilterNodeMock';
+import { ConvolverNodeMock } from './ConvolverNodeMock';
 import { DelayNodeMock } from './DelayNodeMock';
 import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
 import { GainNodeMock } from './GainNodeMock';
@@ -59,7 +60,9 @@ export class AudioContextMock {
   }
 
   createConvolver() {
-    return {} as ConvolverNode;
+    const buffer = new AudioBufferMock(new Float32Array([1, 0, -1, 0]), new Float32Array([1, 0, -1, 0]));
+
+    return new ConvolverNodeMock(buffer);
   }
 
   createDelay() {

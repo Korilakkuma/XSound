@@ -4,6 +4,8 @@ import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
 import { AudioListenerMock } from './AudioListenerMock';
 import { BiquadFilterNodeMock } from './BiquadFilterNodeMock';
+import { ChannelMergerNodeMock } from './ChannelMergerNodeMock';
+import { ChannelSplitterNodeMock } from './ChannelSplitterNodeMock';
 import { ConvolverNodeMock } from './ConvolverNodeMock';
 import { DelayNodeMock } from './DelayNodeMock';
 import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
@@ -50,11 +52,11 @@ export class AudioContextMock {
   }
 
   createChannelMerger() {
-    return {} as ChannelMergerNode;
+    return new ChannelMergerNodeMock();
   }
 
   createChannelSplitter() {
-    return {} as ChannelSplitterNode;
+    return new ChannelSplitterNodeMock();
   }
 
   createConstantSource() {

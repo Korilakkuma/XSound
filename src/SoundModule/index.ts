@@ -1,143 +1,321 @@
+import { Connectable } from '../interfaces';
 import { ScriptProcessorNodeBufferSize } from '../types';
+import { Analyser } from './Analyser';
+import { Recorder } from './Recorder';
+import { Session } from './Session';
+import { Effector } from './Effectors/Effector';
+import { Autopanner, AutopannerParams } from './Effectors/Autopanner';
+import { Chorus, ChorusParams } from './Effectors/Chorus';
+import { Compressor, CompressorParams } from './Effectors/Compressor';
+import { Delay, DelayParams } from './Effectors/Delay';
+import { Distortion, DistortionParams } from './Effectors/Distortion';
+import { EnvelopeGenerator, EnvelopeGeneratorParams } from './Effectors/EnvelopeGenerator';
+import { Equalizer, EqualizerParams } from './Effectors/Equalizer';
+import { Filter, FilterParams } from './Effectors/Filter';
+import { Flanger, FlangerParams } from './Effectors/Flanger';
+import { Listener, ListenerParams } from './Effectors/Listener';
+import { Panner, PannerParams } from './Effectors/Panner';
+import { Phaser, PhaserParams } from './Effectors/Phaser';
+import { PitchShifter, PitchShifterParams } from './Effectors/PitchShifter';
+import { Reverb, ReverbParams } from './Effectors/Reverb';
+import { Ringmodulator, RingmodulatorParams } from './Effectors/Ringmodulator';
+import { Stereo, StereoParams } from './Effectors/Stereo';
+import { Tremolo, TremoloParams } from './Effectors/Tremolo';
+import { Wah, WahParams } from './Effectors/Wah';
+
+export type Module     = Analyser | Recorder | Session | Stereo | Compressor | Distortion | Wah | PitchShifter | Equalizer | Filter | Autopanner | Tremolo | Ringmodulator | Phaser | Flanger | Chorus | Delay | Reverb | Panner | Listener | EnvelopeGenerator;
+export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'chorus' | 'compressor' | 'delay' | 'distortion' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator';
+
+export type SoundModuleParams = {
+  mastervolume: number,
+  stereo: StereoParams,
+  compressor: CompressorParams,
+  distortion: DistortionParams,
+  wah: WahParams,
+  pitchshifter: PitchShifterParams,
+  equalizer: EqualizerParams,
+  filter: FilterParams,
+  autopanner: AutopannerParams,
+  tremolo: TremoloParams,
+  ringmodulator: RingmodulatorParams,
+  phaser: PhaserParams,
+  flanger: FlangerParams,
+  chorus: ChorusParams,
+  delay: DelayParams,
+  reverb: ReverbParams,
+  panner: PannerParams,
+  listener: ListenerParams,
+  envelopegenerator: EnvelopeGeneratorParams
+};
 
 /**
  * This class is superclass that is the top in this library.
- * This library's users do not create instance of `SoundModule`.
- * This class is used for inherit in subclass.
- * Therefore, this class defines common properties for each sound sources.
+ * This class is extended as subclass (`OscillatorModule`, `OneshotModule`, `NoiseModule`, `AudioModule`, `MediaModule`, `StreamModule`, `ProcessorModule`, `MixerModule` ...etc).
  * @constructor
  */
 export class SoundModule {
   public static NUMBER_OF_INPUTS  = 2;
   public static NUMBER_OF_OUTPUTS = 2;
 
-  private context: AudioContext | null = null;
-  private mastervolume: GainNode | null = null;
-  private processor: ScriptProcessorNode | null = null;
+  protected context: AudioContext;
+
+  protected modules: Connectable[] = [];
+
+  protected mastervolume: GainNode;
+  protected processor: ScriptProcessorNode;
+
+  protected analyser: Analyser;
+  protected recorder: Recorder;
+  protected session: Session;
+
+  protected stereo: Stereo;
+  protected compressor: Compressor;
+  protected distortion: Distortion;
+  protected wah: Wah;
+  protected pitchshifter: PitchShifter;
+  protected equalizer: Equalizer;
+  protected filter: Filter;
+  protected autopanner: Autopanner;
+  protected tremolo: Tremolo;
+  protected ringmodulator: Ringmodulator;
+  protected phaser: Phaser;
+  protected flanger: Flanger;
+  protected chorus: Chorus;
+  protected delay: Delay;
+  protected reverb: Reverb;
+  protected panner: Panner;
+  protected listener: Listener;
+  protected envelopegenerator: EnvelopeGenerator;
 
   /**
-   * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
-   * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {AudioContext} context This argument is in order to use Web Audio API.
+   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
   constructor(context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize) {
-    this.init(context, bufferSize);
-  }
+    this.context = context;
 
-  /** @abstract */
-  public setup(): SoundModule {
-    return this;
-  }
+    this.mastervolume = context.createGain();
+    this.processor    = context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
 
-  /** @abstract */
-  public ready(): SoundModule {
-    return this;
-  }
+    this.analyser          = new Analyser(context);
+    this.recorder          = new Recorder(context, bufferSize, 2, 2);
+    this.session           = new Session(context);
+    this.stereo            = new Stereo(context, bufferSize);
+    this.compressor        = new Compressor(context);
+    this.distortion        = new Distortion(context);
+    this.wah               = new Wah(context);
+    this.pitchshifter      = new PitchShifter(context, bufferSize);
+    this.equalizer         = new Equalizer(context);
+    this.filter            = new Filter(context);
+    this.autopanner        = new Autopanner(context);
+    this.tremolo           = new Tremolo(context);
+    this.ringmodulator     = new Ringmodulator(context);
+    this.phaser            = new Phaser(context);
+    this.flanger           = new Flanger(context);
+    this.chorus            = new Chorus(context);
+    this.delay             = new Delay(context);
+    this.reverb            = new Reverb(context);
+    this.panner            = new Panner(context);
+    this.listener          = new Listener(context);
+    this.envelopegenerator = new EnvelopeGenerator(context);
 
-  /** @abstract */
-  public start(): SoundModule {
-    return this;
-  }
-
-  /** @abstract */
-  public stop(): SoundModule {
-    return this;
+    // The default order for connection
+    this.modules = [
+      this.stereo,
+      this.compressor,
+      this.distortion,
+      this.wah,
+      this.pitchshifter,
+      this.equalizer,
+      this.filter,
+      this.autopanner,
+      this.tremolo,
+      this.ringmodulator,
+      this.phaser,
+      this.flanger,
+      this.chorus,
+      this.delay,
+      this.reverb,
+      this.panner
+    ];
   }
 
   /**
-   * This method is getter or setter for parameters.
-   * @param {string} key This argument is property name.
-   * @param {number} value This argument is the value of designated property. If this argument is omitted, This method is getter.
-   * @return {number} This is returned as the value of designated property in the case of getter.
+   * This method gets instance of `Module`.
+   * This method is overloaded for type interface and type check.
+   * @param {ModuleName} moduleName This argument is module's name.
+   * @return {Module|null}
    */
-  public param(key: 'mastervolume', value: number): number | void {
-    if (this.mastervolume === null) {
-      return;
-    }
-
-    switch (key) {
-      case 'mastervolume':
-        if (value === undefined) {
-          return this.mastervolume.gain.value;
-        }
-
-        this.mastervolume.gain.value = value;
-
-        break;
+  public module(moduleName: 'analyser'): Analyser;
+  public module(moduleName: 'recorder'): Recorder;
+  public module(moduleName: 'session'): Session;
+  public module(moduleName: 'autopanner'): Autopanner;
+  public module(moduleName: 'chorus'): Chorus;
+  public module(moduleName: 'compressor'): Compressor;
+  public module(moduleName: 'delay'): Delay;
+  public module(moduleName: 'distortion'): Distortion;
+  public module(moduleName: 'equalizer'): Equalizer;
+  public module(moduleName: 'filter'): Filter;
+  public module(moduleName: 'flanger'): Flanger;
+  public module(moduleName: 'listener'): Listener;
+  public module(moduleName: 'panner'): Panner;
+  public module(moduleName: 'phaser'): Phaser;
+  public module(moduleName: 'pitchshifter'): PitchShifter;
+  public module(moduleName: 'reverb'): Reverb;
+  public module(moduleName: 'ringmodulator'): Ringmodulator;
+  public module(moduleName: 'stereo'): Stereo;
+  public module(moduleName: 'tremolo'): Tremolo;
+  public module(moduleName: 'wah'): Wah;
+  public module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
+  public module(moduleName: ModuleName): Module | null {
+    switch (moduleName) {
+      case 'analyser':
+        return this.analyser;
+      case 'recorder':
+        return this.recorder;
+      case 'session':
+        return this.session;
+      case 'autopanner':
+        return this.autopanner;
+      case 'chorus':
+        return this.chorus;
+      case 'compressor':
+        return this.compressor;
+      case 'delay':
+        return this.delay;
+      case 'distortion':
+        return this.distortion;
+      case 'equalizer':
+        return this.equalizer;
+      case 'filter':
+        return this.filter;
+      case 'flanger':
+        return this.flanger;
+      case 'listener':
+        return this.listener;
+      case 'panner':
+        return this.panner;
+      case 'phaser':
+        return this.phaser;
+      case 'pitchshifter':
+        return this.pitchshifter;
+      case 'reverb':
+        return this.reverb;
+      case 'ringmodulator':
+        return this.ringmodulator;
+      case 'stereo':
+        return this.stereo;
+      case 'tremolo':
+        return this.tremolo;
+      case 'wah':
+        return this.wah;
+      case 'envelopegenerator':
+        return this.envelopegenerator;
       default:
-        break;
+        return null;
     }
-  }
-
-  /** @abstract */
-  public get(): SoundModule {
-    return this;
   }
 
   /**
    * This method changes buffer size for `ScriptProcessorNode`.
    * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
-   *     This value is one of 0, 256, 512, 1024, 2048, 4096, 8192, 16384.
-   * @return {SoundModule} This is returned for method chain.
+   * @return {SoundModule} Return value is for method chain.
    */
   public resize(bufferSize: ScriptProcessorNodeBufferSize): SoundModule {
-    if (this.context) {
-      this.init(this.context, bufferSize);
-    }
-
+    this.init(this.context, bufferSize);
     return this;
   }
 
   /**
    * This method gets buffer size for `ScriptProcessorNode`.
-   * @return {number} This is returned as buffer size for `ScriptProcessorNode`.
+   * @return {number}
    */
   public getBufferSize(): number {
-    if (this.processor) {
-      return this.processor.bufferSize;
-    }
-
-    return 0;
+    return this.processor.bufferSize;
   }
 
   /**
    * This method installs customized effector.
-   * @param {string} name This argument is in order to select effector.
-   * @param {Effector} effector This argument is the subclass that extends `Effector` class.
-   * @return {SoundModule} This is returned for method chain.
+   * @param {string} effectorName This argument selects effector.
+   * @param {Effector} effector This argument is subclass that extends `Effector` class.
+   * @return {Effector} Return value is instance of customized effector.
    */
-  /*
-    install(name, effector) {
-        if (!(effector instanceof Effector)) {
-            return this;
-        }
-
-        if (String(name) in this) {
-            return this;
-        }
-
-        this[name] = effector;
-
-        if (this.modules.every(module => module !== effector)) {
-            this.modules.push(effector);
-        }
-
-        return this;
+  public install(effectorName: string, effector: Effector): Effector {
+    if (this.modules.every((module: Connectable) => module !== effector)) {
+      this.modules.push(effector);
     }
-    */
+
+    return effector;
+  }
 
   /**
-   * This method gets the instance of module that is defined by this library. This method enables to access the instance of module by unified call.
-   * @param {string} module This argument is module's name.
-   * @return {Analyser|Recorder|Session|Effector|Listener|EnvelopeGenerator|Glide|VocalCanceler|NoiseGate|NoiseSuppressor} This value is the instance of module.
+   * This method starts effectors.
+   * @param {number} startTime This argument is used for scheduling parameter.
+   * @return {SoundModule} Return value is for method chain.
    */
-  public module() {
+  public on(startTime?: number): SoundModule {
+    const s = startTime ?? this.context.currentTime;
+
+    this.stereo.start();
+    this.chorus.start(s);
+    this.flanger.start(s);
+    this.phaser.start(s);
+    this.autopanner.start(s);
+    this.tremolo.start(s);
+    this.ringmodulator.start(s);
+    this.wah.start(s);
+    this.filter.start(s);
+
+    return this;
+  }
+
+  /**
+   * This method stops effectors.
+   * @param {number} stopTime This argument is used for scheduling parameter.
+   * @return {SoundModule} Return value is for method chain.
+   */
+  public off(stopTime?: number): SoundModule {
+    const s = stopTime ?? this.context.currentTime;
+
+    this.stereo.stop();
+    this.chorus.stop(s);
+    this.flanger.stop(s);
+    this.phaser.stop(s);
+    this.autopanner.stop(s);
+    this.tremolo.stop(s);
+    this.ringmodulator.stop(s);
+    this.wah.stop(s);
+    this.filter.stop(s);
+
+    return this;
   }
 
   /**
    * This method gets effector's parameters as associative array.
-   * @return {object}
+   * @return {SoundModuleParams}
    */
-  public params() {
+  public params(): SoundModuleParams {
+    return {
+      mastervolume     : this.mastervolume.gain.value,
+      stereo           : this.stereo.params(),
+      compressor       : this.compressor.params(),
+      distortion       : this.distortion.params(),
+      wah              : this.wah.params(),
+      pitchshifter     : this.pitchshifter.params(),
+      equalizer        : this.equalizer.params(),
+      filter           : this.filter.params(),
+      autopanner       : this.autopanner.params(),
+      tremolo          : this.tremolo.params(),
+      ringmodulator    : this.ringmodulator.params(),
+      phaser           : this.phaser.params(),
+      flanger          : this.flanger.params(),
+      chorus           : this.chorus.params(),
+      delay            : this.delay.params(),
+      reverb           : this.reverb.params(),
+      panner           : this.panner.params(),
+      listener         : this.listener.params(),
+      envelopegenerator: this.envelopegenerator.params()
+    };
   }
 
   /**
@@ -154,57 +332,127 @@ export class SoundModule {
   }
 
   /**
-   * This method connects nodes that are defined by this library and Web Audio API.
-   * @param {AudioNode} source This argument is `AudioNode` for input of sound.
-   * @param {Array.<Effector>} connects This argument is array for changing the default connection.
-   * @return {SoundModule} This is returned for method chain.
+   * This method connects `AudioNode`s.
+   * @param {AudioNode} source This argument is `AudioNode` as sound source.
    */
-  protected connect(): SoundModule {
-    return this;
-  }
+  protected connect(source: AudioNode): void {
+    const input = this.modules[0].INPUT;
 
-  /**
-   * This method starts effectors.
-   * @param {number} startTime This argument is used for scheduling parameter.
-   * @return {SoundModule} This is returned for method chain.
-   */
-  protected on(): SoundModule {
-    if (this.context === null) {
-      return this;
+    if (input === null) {
+      return;
     }
 
-    return this;
+    // Start connection
+    // AudioSourceNode (Input)-> AudioNode -> ... -> AudioNode -> GainNode (Master Volume) -> AnalyserNode  -> AudioDestinationNode (Output)
+    source.disconnect(0);  // Clear connection
+
+    if (this.modules.length > 0) {
+      source.connect(input);
+    } else {
+      source.connect(this.mastervolume);
+    }
+
+    for (let i = 0, len = this.modules.length; i < len; i++) {
+      const output = this.modules[i].OUTPUT;
+      const input  = this.modules[i + 1].INPUT;
+
+      if ((input === null) || (output === null)) {
+        continue;
+      }
+
+      // Clear connection
+      output.disconnect(0);
+
+      if (i < (this.modules.length - 1)) {
+        // Connect to next `AudioNode`
+        output.connect(input);
+      } else {
+        output.connect(this.mastervolume);
+      }
+    }
+
+    this.mastervolume.connect(this.context.destination);
+
+    // for analyser
+    this.mastervolume.connect(this.analyser.INPUT);
+
+    // for recording
+    this.mastervolume.connect(this.recorder.INPUT);
+    this.recorder.OUTPUT.connect(this.context.destination);
+
+    // for session
+    this.mastervolume.connect(this.session.INPUT);
+    this.session.OUTPUT.connect(this.context.destination);
   }
 
   /**
-   * This method stops effectors.
-   * @param {number} stopTime This argument is used for scheduling parameter.
-   * @return {SoundModule} This is returned for method chain.
-   */
-  protected off(): SoundModule {
-    return this;
-  }
-
-  /**
-   * This method initials modules.
-   * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
-   * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
-   *     However, the opportunity for designating buffer size is not so much.
-   *     The reason why is that the constructor of `SoundModule` selects buffer size automaticly.
-   *     This buffer size can be changed explicitly by calling `resize` method.
+   * This method re-initials modules.
+   * @param {AudioContext} context This argument is in order to use Web Audio API.
+   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
   private init(context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize): void {
-    if (this.mastervolume && this.processor) {
+    if (this.modules.length > 0) {
       this.mastervolume.disconnect(0);
-      this.mastervolume = null;
-
       this.processor.disconnect(0);
-      this.processor = null;
+      this.analyser.INPUT.disconnect(0);
+      this.recorder.INPUT.disconnect(0);
+      this.session.INPUT.disconnect(0);
+
+      for (const module of this.modules) {
+        if (module.INPUT) {
+          module.INPUT.disconnect(0);
+        }
+
+        if (module.OUTPUT) {
+          module.OUTPUT.disconnect(0);
+        }
+      }
+
+      this.modules.length = 0;
     }
 
-    this.context = context;
+    this.processor = context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
 
-    this.mastervolume = context.createGain();
-    this.processor    = context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
+    this.analyser          = new Analyser(context);
+    this.recorder          = new Recorder(context, bufferSize, 2, 2);
+    this.session           = new Session(context);
+    this.stereo            = new Stereo(context, bufferSize);
+    this.compressor        = new Compressor(context);
+    this.distortion        = new Distortion(context);
+    this.wah               = new Wah(context);
+    this.pitchshifter      = new PitchShifter(context, bufferSize);
+    this.equalizer         = new Equalizer(context);
+    this.filter            = new Filter(context);
+    this.autopanner        = new Autopanner(context);
+    this.tremolo           = new Tremolo(context);
+    this.ringmodulator     = new Ringmodulator(context);
+    this.phaser            = new Phaser(context);
+    this.flanger           = new Flanger(context);
+    this.chorus            = new Chorus(context);
+    this.delay             = new Delay(context);
+    this.reverb            = new Reverb(context);
+    this.panner            = new Panner(context);
+    this.listener          = new Listener(context);
+    this.envelopegenerator = new EnvelopeGenerator(context);
+
+    // The default order for connection
+    this.modules = [
+      this.stereo,
+      this.compressor,
+      this.distortion,
+      this.wah,
+      this.pitchshifter,
+      this.equalizer,
+      this.filter,
+      this.autopanner,
+      this.tremolo,
+      this.ringmodulator,
+      this.phaser,
+      this.flanger,
+      this.chorus,
+      this.delay,
+      this.reverb,
+      this.panner
+    ];
   }
 }

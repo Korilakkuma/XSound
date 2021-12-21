@@ -2,7 +2,7 @@ import { Connectable, Statable } from '../../interfaces';
 import { ScriptProcessorNodeBufferSize } from '../../types';
 
 /**
- * This class is super class for effector classes.
+ * This class is superclass for effector classes.
  * Also, this class is used for implementing custom effector.
  * @constructor
  * @implements {Connectable}

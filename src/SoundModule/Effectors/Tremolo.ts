@@ -43,7 +43,7 @@ export class Tremolo extends Effector {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
-      // Connect nodes again
+      // Connect `AudioNode`s again
       this.lfo.connect(this.depth);
       this.depth.connect(this.amplitude.gain);
     }

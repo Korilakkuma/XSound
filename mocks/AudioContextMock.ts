@@ -1,4 +1,4 @@
-import { ScriptProcessorNodeBufferSize } from '../src/types';
+import { BufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
 import { AudioListenerMock } from './AudioListenerMock';
@@ -107,7 +107,7 @@ export class AudioContextMock {
     return {} as PeriodicWave;
   }
 
-  createScriptProcessor(bufferSize: ScriptProcessorNodeBufferSize) {
+  createScriptProcessor(bufferSize: BufferSize) {
     return new ScriptProcessorNodeMock(bufferSize, 2, 2);
   }
 

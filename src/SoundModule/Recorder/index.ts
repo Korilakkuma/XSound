@@ -1,5 +1,5 @@
 import { Connectable } from '../../interfaces';
-import { ScriptProcessorNodeBufferSize } from '../../types';
+import { BufferSize } from '../../types';
 import { Track } from './Track';
 import { Channel } from './Channel';
 
@@ -28,11 +28,11 @@ export class Recorder implements Connectable {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    * @param {RecordType} numberOfInputs This argument is the number of inputs for `ScriptProcessorNode`.
    * @param {RecordType} numberOfOutputs This argument the number of outputs for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize, numberOfInputs: RecordType, numberOfOutputs: RecordType) {
+  constructor(context: AudioContext, bufferSize: BufferSize, numberOfInputs: RecordType, numberOfOutputs: RecordType) {
     this.processor  = context.createScriptProcessor(bufferSize, numberOfInputs, numberOfOutputs);
     this.sampleRate = context.sampleRate;
   }

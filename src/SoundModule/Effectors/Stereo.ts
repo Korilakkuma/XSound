@@ -1,4 +1,4 @@
-import { ScriptProcessorNodeBufferSize } from '../../types';
+import { BufferSize } from '../../types';
 import { Effector } from './Effector';
 
 export type StereoParams = {
@@ -21,9 +21,9 @@ export class Stereo extends Effector {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize) {
+  constructor(context: AudioContext, bufferSize: BufferSize) {
     super(context, bufferSize);
 
     this.splitter = context.createChannelSplitter(2);

@@ -8,4 +8,4 @@ declare global {
   }
 }
 
-export type ScriptProcessorNodeBufferSize = 0 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384;
+export type BufferSize = 0 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384;

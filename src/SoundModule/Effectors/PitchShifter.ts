@@ -1,4 +1,4 @@
-import { ScriptProcessorNodeBufferSize } from '../../types';
+import { BufferSize } from '../../types';
 import { FFT, IFFT } from '../../XSound';
 import { Effector } from './Effector';
 
@@ -18,9 +18,9 @@ export class PitchShifter extends Effector {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize) {
+  constructor(context: AudioContext, bufferSize: BufferSize) {
     super(context, bufferSize);
 
     // `PitchShifter` is not connected by default

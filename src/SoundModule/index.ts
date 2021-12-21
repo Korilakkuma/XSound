@@ -1,5 +1,5 @@
 import { Connectable } from '../interfaces';
-import { ScriptProcessorNodeBufferSize } from '../types';
+import { BufferSize } from '../types';
 import { Analyser } from './Analyser';
 import { Recorder } from './Recorder';
 import { Session } from './Session';
@@ -89,9 +89,9 @@ export class SoundModule {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize) {
+  constructor(context: AudioContext, bufferSize: BufferSize) {
     this.context = context;
 
     this.mastervolume = context.createGain();
@@ -221,7 +221,7 @@ export class SoundModule {
    * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    * @return {SoundModule} Return value is for method chain.
    */
-  public resize(bufferSize: ScriptProcessorNodeBufferSize): SoundModule {
+  public resize(bufferSize: BufferSize): SoundModule {
     this.init(this.context, bufferSize);
     return this;
   }
@@ -388,9 +388,9 @@ export class SoundModule {
   /**
    * This method re-initials modules.
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  private init(context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize): void {
+  private init(context: AudioContext, bufferSize: BufferSize): void {
     if (this.modules.length > 0) {
       this.mastervolume.disconnect(0);
       this.processor.disconnect(0);

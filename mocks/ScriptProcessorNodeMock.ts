@@ -1,4 +1,4 @@
-import { ScriptProcessorNodeBufferSize } from '../src/types';
+import { BufferSize } from '../src/types';
 import { AudioNodeMock } from './AudioNodeMock';
 
 export class ScriptProcessorNodeMock extends AudioNodeMock {
@@ -8,7 +8,7 @@ export class ScriptProcessorNodeMock extends AudioNodeMock {
 
   onaudioprocess = () => {};
 
-  constructor(bufferSize: ScriptProcessorNodeBufferSize, numberOfInputs: 1 | 2, numberOfOutputs: 1 | 2) {
+  constructor(bufferSize: BufferSize, numberOfInputs: 1 | 2, numberOfOutputs: 1 | 2) {
     super();
 
     this.bufferSize      = bufferSize;

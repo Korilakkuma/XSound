@@ -1,5 +1,5 @@
 import { Connectable, Statable } from '../../interfaces';
-import { ScriptProcessorNodeBufferSize } from '../../types';
+import { BufferSize } from '../../types';
 
 /**
  * This class is superclass for effector classes.
@@ -23,9 +23,9 @@ export class Effector implements Connectable, Statable {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize) {
+  constructor(context: AudioContext, bufferSize: BufferSize) {
     this.context = context;
 
     // for connecting external modules

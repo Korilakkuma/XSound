@@ -1,5 +1,5 @@
 import { Connectable } from '../../interfaces';
-import { ScriptProcessorNodeBufferSize } from '../../types';
+import { BufferSize } from '../../types';
 import { Analyser } from '../Analyser';
 import { NumberOfSessionChannels, SessionParams } from './';
 
@@ -27,12 +27,12 @@ export class Room implements Connectable {
   /**
    * @param {string} id This argument is string that identifies messaging room.
    * @param {AudioContext} context This argument is in order to use interfaces of Web Audio API.
-   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    * @param {NumberOfSessionChannels} numberOfInputs This argument is the number of inputs for `ScriptProcessorNode`.
    * @param {NumberOfSessionChannels} numberOfOutputs This argument the number of outputs for `ScriptProcessorNode`.
    * @param {Analyser} analyser This argument is instance of `Analyser`.
    */
-  constructor(id: string, context: AudioContext, bufferSize: ScriptProcessorNodeBufferSize, numberOfInputs: NumberOfSessionChannels, numberOfOutputs: NumberOfSessionChannels, analyser: Analyser) {
+  constructor(id: string, context: AudioContext, bufferSize: BufferSize, numberOfInputs: NumberOfSessionChannels, numberOfOutputs: NumberOfSessionChannels, analyser: Analyser) {
     this.id = id;
 
     this.context  = context;

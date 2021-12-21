@@ -1,5 +1,5 @@
 import { Connectable } from '../../interfaces';
-import { ScriptProcessorNodeBufferSize } from '../../types';
+import { BufferSize } from '../../types';
 import { Analyser } from '../Analyser';
 import { Room } from './Room';
 
@@ -46,13 +46,13 @@ export class Session implements Connectable {
 
   /**
    * @param {string} roomId This argument is string that identifies messaging room.
-   * @param {ScriptProcessorNodeBufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    * @param {NumberOfSessionChannels} numberOfInputs This argument is the number of inputs for `ScriptProcessorNode`.
    * @param {NumberOfSessionChannels} numberOfOutputs This argument the number of outputs for `ScriptProcessorNode`.
    * @param {Analyser} analyser This argument is instance of `Analyser`.
    * @return {Session} Return value is for method chain.
    */
-  public setup(roomId: string, bufferSize: ScriptProcessorNodeBufferSize, numberOfInputs: NumberOfSessionChannels, numberOfOutputs: NumberOfSessionChannels, analyser: Analyser): Session {
+  public setup(roomId: string, bufferSize: BufferSize, numberOfInputs: NumberOfSessionChannels, numberOfOutputs: NumberOfSessionChannels, analyser: Analyser): Session {
     this.rooms.push(new Room(roomId, this.context, bufferSize, numberOfInputs, numberOfOutputs, analyser));
     return this;
   }

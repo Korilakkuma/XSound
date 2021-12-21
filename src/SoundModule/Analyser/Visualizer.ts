@@ -43,7 +43,7 @@ export type VisualizerParams = {
 };
 
 /**
- * This private class is super class for visualizer class (`TimeOverview`, `Time`, `FFT`).
+ * This private class is superclass for visualizer class (`TimeOverview`, `Time`, `FFT`).
  * @constructor
  * @implements {Statable}
  */

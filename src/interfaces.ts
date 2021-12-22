@@ -1,5 +1,6 @@
 import { Visualizer } from './SoundModule/Analyser/Visualizer';
 import { Effector } from './SoundModule/Effectors/Effector';
+import { Oscillator } from './OscillatorModule/Oscillator';
 
 /**
  * This interface is implemented by some classes that abstract `AudioNode` connections (such as `Effector` class).
@@ -18,6 +19,6 @@ export interface Connectable {
  */
 export interface Statable {
   state(): boolean;
-  activate(): Visualizer | Effector;
-  deactivate(): Visualizer | Effector;
+  activate(): Visualizer | Effector | Oscillator;
+  deactivate(): Visualizer | Effector | Oscillator;
 }

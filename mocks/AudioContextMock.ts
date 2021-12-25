@@ -2,6 +2,7 @@ import faker from 'faker';
 import { BufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
+import { AudioBufferSourceNodeMock } from './AudioBufferSourceNodeMock';
 import { AudioListenerMock } from './AudioListenerMock';
 import { BiquadFilterNodeMock } from './BiquadFilterNodeMock';
 import { ChannelMergerNodeMock } from './ChannelMergerNodeMock';
@@ -48,7 +49,7 @@ export class AudioContextMock {
   }
 
   createBufferSource() {
-    return {} as AudioBufferSourceNode;
+    return new AudioBufferSourceNodeMock(this.createBuffer(2));
   }
 
   createChannelMerger() {

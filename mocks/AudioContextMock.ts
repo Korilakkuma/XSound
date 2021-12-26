@@ -10,6 +10,7 @@ import { ConvolverNodeMock } from './ConvolverNodeMock';
 import { DelayNodeMock } from './DelayNodeMock';
 import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
 import { GainNodeMock } from './GainNodeMock';
+import { MediaElementAudioSourceNodeMock } from './MediaElementAudioSourceNodeMock';
 import { OscillatorNodeMock } from './OscillatorNodeMock';
 import { PannerNodeMock } from './PannerNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
@@ -85,7 +86,7 @@ export class AudioContextMock {
   }
 
   createMediaElementSource() {
-    return {} as MediaElementAudioSourceNode;
+    return new MediaElementAudioSourceNodeMock(document.createElement('audio'));
   }
 
   createMediaStreamDestination() {

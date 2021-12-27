@@ -291,6 +291,22 @@ export class SoundModule implements Connectable {
   }
 
   /**
+   * This method stops analyser, recorder and `onaudioprocess` event.
+   * @return {SoundModule} Return value is for method chain.
+   */
+  public suspend(): SoundModule {
+    this.analyser.stop('time');
+    this.analyser.stop('fft');
+
+    this.recorder.stop();
+
+    this.processor.disconnect(0);
+    this.processor.onaudioprocess = null;
+
+    return this;
+  }
+
+  /**
    * This method gets effector's parameters as associative array.
    * @return {SoundModuleParams}
    */

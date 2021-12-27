@@ -53,7 +53,7 @@ export type SoundModuleParams = {
  * This class is extended as subclass (`OscillatorModule`, `OneshotModule`, `NoiseModule`, `AudioModule`, `MediaModule`, `StreamModule`, `ProcessorModule`, `MixerModule` ...etc).
  * @constructor
  */
-export class SoundModule {
+export class SoundModule implements Connectable {
   public static NUMBER_OF_INPUTS  = 2;
   public static NUMBER_OF_OUTPUTS = 2;
 
@@ -324,6 +324,16 @@ export class SoundModule {
    */
   public toJSON(): string {
     return JSON.stringify(this.params());
+  }
+
+  /** @override */
+  public get INPUT(): ScriptProcessorNode {
+    return this.processor;
+  }
+
+  /** @override */
+  public get OUTPUT(): GainNode {
+    return this.mastervolume;
   }
 
   /** @override */

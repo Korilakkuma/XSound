@@ -230,6 +230,40 @@ describe(SoundModule.name, () => {
     });
   });
 
+  describe(soundModule.suspend.name, () => {
+    test('should stop analyser, recorder, and `onaudioprocess` event', () => {
+      /* eslint-disable dot-notation */
+      const originalAnalyserStop = soundModule['analyser'].stop;
+      const originalRecorderStop = soundModule['recorder'].stop;
+      const originalProcessor    = soundModule['processor'];
+      /* eslint-enable dot-notation */
+
+      const analyserStopMock        = jest.fn();
+      const recorderStopMock        = jest.fn();
+      const processorDisconnectMock = jest.fn();
+
+      /* eslint-disable dot-notation */
+      soundModule['analyser'].stop        = analyserStopMock;
+      soundModule['recorder'].stop        = recorderStopMock;
+      soundModule['processor'].disconnect = processorDisconnectMock;
+      /* eslint-enable dot-notation */
+
+      soundModule.suspend();
+
+      expect(analyserStopMock).toHaveBeenCalledTimes(2);
+      expect(recorderStopMock).toHaveBeenCalledTimes(1);
+
+      // eslint-disable-next-line dot-notation
+      expect(soundModule['processor'].onaudioprocess).toBe(null);
+
+      /* eslint-disable dot-notation */
+      soundModule['analyser'].stop = originalAnalyserStop;
+      soundModule['recorder'].stop = originalRecorderStop;
+      soundModule['processor']     = originalProcessor;
+      /* eslint-enable dot-notation */
+    });
+  });
+
   describe(soundModule.params.name, () => {
     test('should return parameters for sound module as associative array', () => {
       /* eslint-disable dot-notation */

@@ -380,9 +380,8 @@ export class SoundModule implements Connectable {
 
     for (let i = 0, len = this.modules.length; i < len; i++) {
       const output = this.modules[i].OUTPUT;
-      const input  = this.modules[i + 1].INPUT;
 
-      if ((input === null) || (output === null)) {
+      if (output === null) {
         continue;
       }
 
@@ -390,6 +389,12 @@ export class SoundModule implements Connectable {
       output.disconnect(0);
 
       if (i < (this.modules.length - 1)) {
+        const input = this.modules[i + 1].INPUT;
+
+        if (input === null) {
+          continue;
+        }
+
         // Connect to next `AudioNode`
         output.connect(input);
       } else {

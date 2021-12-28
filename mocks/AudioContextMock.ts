@@ -20,7 +20,10 @@ import { WaveShaperNodeMock } from './WaveShaperNodeMock';
 
 export class AudioContextMock {
   activeSourceCount = faker.datatype.number({ min: 0 });
-  audioWorklet = {} as AudioWorklet;
+  audioWorklet = {
+    addModule: () => new Promise(() => {})
+  } as AudioWorklet;
+
   currentTime = faker.datatype.number({ min: 0 });
   destination = {} as AudioDestinationNode;
   listener = new AudioListenerMock();

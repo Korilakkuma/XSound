@@ -18,7 +18,10 @@ import { StereoPannerNodeMock } from './StereoPannerNodeMock';
 import { WaveShaperNodeMock } from './WaveShaperNodeMock';
 
 export class AudioContextMock {
-  audioWorklet = {} as AudioWorklet;
+  audioWorklet = {
+    addModule: () => new Promise(() => {})
+  } as AudioWorklet;
+
   currentTime = performance.now();
   destination = {} as AudioDestinationNode;
   listener = new AudioListenerMock();

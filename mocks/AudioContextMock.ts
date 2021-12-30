@@ -11,6 +11,7 @@ import { DelayNodeMock } from './DelayNodeMock';
 import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
 import { GainNodeMock } from './GainNodeMock';
 import { MediaElementAudioSourceNodeMock } from './MediaElementAudioSourceNodeMock';
+import { MediaStreamAudioSourceNodeMock } from './MediaStreamAudioSourceNodeMock';
 import { OscillatorNodeMock } from './OscillatorNodeMock';
 import { PannerNodeMock } from './PannerNodeMock';
 import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
@@ -97,7 +98,7 @@ export class AudioContextMock {
   }
 
   createMediaStreamSource() {
-    return {} as MediaStreamAudioSourceNode;
+    return new MediaStreamAudioSourceNodeMock();
   }
 
   createOscillator() {

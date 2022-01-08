@@ -189,7 +189,99 @@ XSound.setup = (): Promise<void> => {
 };
 
 /**
- * This class (static) method deletes one of global objects or both of global objects.
+ * This class (static) method returns closure that gets cloned instance of `Source`.
+ * @return {function}
+ */
+XSound.clone = (): typeof ClonedXSound => {
+  const clonedSources: { [sourceName: string]: Source | null } = {
+    oscillator: new OscillatorModule(audiocontext, 0),
+    oneshot   : new OneshotModule(audiocontext, 0),
+    noise     : new NoiseModule(audiocontext, 0),
+    audio     : new AudioModule(audiocontext, 0),
+    media     : new MediaModule(audiocontext, 0),
+    stream    : new StreamModule(audiocontext, 0),
+    mixer     : new MixerModule(audiocontext, 0),
+    processor : new ProcessorModule(audiocontext, 0),
+    midi      : new MIDI(),
+    mml       : new MML()
+  };
+
+  function ClonedXSound(sourceName: 'oscillator'): OscillatorModule;
+  function ClonedXSound(sourceName: 'oneshot'): OneshotModule;
+  function ClonedXSound(sourceName: 'noise'): NoiseModule;
+  function ClonedXSound(sourceName: 'audio'): AudioModule;
+  function ClonedXSound(sourceName: 'media'): MediaModule;
+  function ClonedXSound(sourceName: 'stream'): StreamModule;
+  function ClonedXSound(sourceName: 'processor'): ProcessorModule;
+  function ClonedXSound(sourceName: 'mixer'): MixerModule;
+  function ClonedXSound(sourceName: 'midi'): MIDI;
+  function ClonedXSound(sourceName: 'mml'): MML;
+  function ClonedXSound(sourecName: string): Source | null {
+    switch (sourecName) {
+      case 'oscillator':
+        return clonedSources.oscillator;
+      case 'oneshot':
+        return clonedSources.oneshot;
+      case 'noise':
+        return clonedSources.noise;
+      case 'audio':
+        return clonedSources.audio;
+      case 'media':
+        return clonedSources.media;
+      case 'stream':
+        return clonedSources.stream;
+      case 'processor':
+        return clonedSources.processor;
+      case 'mixer':
+        return clonedSources.mixer;
+      case 'midi':
+        return clonedSources.midi;
+      case 'mml':
+        return clonedSources.mml;
+      default:
+        return null;
+    }
+  }
+
+  ClonedXSound.free = (unusedSources: Source[]): void => {
+    for (const unusedSource of unusedSources) {
+      // Already deleted ?
+      if (unusedSource === null) {
+        continue;
+      }
+
+      Object.entries(clonedSources).forEach(([sourceName, clonedSource]: [string, Source | null]) => {
+        if (unusedSource === clonedSource) {
+          clonedSources[sourceName] = null;
+        }
+      });
+    }
+  };
+
+  // Closure
+  return ClonedXSound;
+};
+
+/**
+ * This class (static) method releases memory of unused instances.
+ * @param {Array<Source>} unusedSources This argument is array that contains unused instance of `Source`.
+ */
+XSound.free = (unusedSources: Source[]): void => {
+  for (const unusedSource of unusedSources) {
+    // Already deleted ?
+    if (unusedSource === null) {
+      continue;
+    }
+
+    Object.entries(sources).forEach(([sourceName, memoizedSource]: [string, Source | null]) => {
+      if (unusedSource === memoizedSource) {
+        sources[sourceName] = null;  // Release heap
+      }
+    });
+  }
+};
+
+/**
  * @param {boolean} deep This argument selects whether deleting both of global objects.
  *     If this value is `true`, both of global objects are deleted.
  * @return {XSound}

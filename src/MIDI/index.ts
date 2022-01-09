@@ -93,9 +93,4 @@ export class MIDI {
   public get(): MIDIAccess | null {
     return this.midiAccess;
   }
-
-  /** @override */
-  public toString(): string {
-    return '[MIDI]';
-  }
 }

@@ -238,9 +238,4 @@ export class Filter extends Effector {
 
     return this;
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Filter]';
-  }
 }

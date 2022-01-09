@@ -161,9 +161,4 @@ export class Effector implements Connectable, Statable {
   public get OUTPUT(): GainNode {
     return this.output;
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Effector]';
-  }
 }

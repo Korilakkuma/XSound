@@ -315,11 +315,6 @@ XSound.getCurrentTime = (): number => {
   return audiocontext.currentTime;
 };
 
-/** @override */
-XSound.toString = (): string => {
-  return '[XSound]';
-};
-
 // for Autoplay Policy
 const setup = (): void => {
   XSound.setup().then(() => {}).catch(() => {});

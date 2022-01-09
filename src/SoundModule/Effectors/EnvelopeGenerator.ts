@@ -252,9 +252,4 @@ export class EnvelopeGenerator {
   public toJSON(): string {
     return JSON.stringify(this.params());
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule EnvelopeGenerator]';
-  }
 }

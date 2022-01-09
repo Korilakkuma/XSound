@@ -153,9 +153,4 @@ export class Stereo extends Effector {
       time : this.delayL.delayTime.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Stereo]';
-  }
 }

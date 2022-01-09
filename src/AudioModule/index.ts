@@ -647,9 +647,4 @@ export class AudioModule extends SoundModule {
       vocalcanceler   : this.vocalcanceler.params()
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[AudioModule]';
-  }
 }

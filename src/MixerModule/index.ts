@@ -71,9 +71,4 @@ export class MixerModule extends SoundModule {
   public get(): SoundModule[] {
     return this.sources;
   }
-
-  /** @override */
-  public toString(): string {
-    return '[MixerModule]';
-  }
 }

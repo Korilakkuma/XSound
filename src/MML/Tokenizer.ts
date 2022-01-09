@@ -164,9 +164,4 @@ export class Tokenizer {
 
     return null;
   }
-
-  /** @override */
-  public toString(): string {
-    return this.tokens.join('\n');
-  }
 }

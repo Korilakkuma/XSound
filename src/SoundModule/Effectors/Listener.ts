@@ -163,9 +163,4 @@ export class Listener extends Effector {
       uz: this.ups.z
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Listener]';
-  }
 }

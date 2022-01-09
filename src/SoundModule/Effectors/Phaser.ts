@@ -227,9 +227,4 @@ export class Phaser extends Effector {
       feedback : this.feedback.gain.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Phaser]';
-  }
 }

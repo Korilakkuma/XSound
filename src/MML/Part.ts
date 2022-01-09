@@ -205,9 +205,4 @@ export class Part {
       this.currentIndex = index;
     }
   }
-
-  /** @override */
-  public toString(): string {
-    return this.mml;
-  }
 }

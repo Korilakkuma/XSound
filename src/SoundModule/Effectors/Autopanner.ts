@@ -117,9 +117,4 @@ export class Autopanner extends Effector {
       rate : this.rate.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Autopanner]';
-  }
 }

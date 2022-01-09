@@ -117,9 +117,4 @@ export class Ringmodulator extends Effector {
       rate : this.rate.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Ringmodulator]';
-  }
 }

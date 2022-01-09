@@ -352,11 +352,6 @@ export class SoundModule implements Connectable {
     return this.mastervolume;
   }
 
-  /** @override */
-  public toString(): string {
-    return '[SoundModule]';
-  }
-
   /**
    * This method connects `AudioNode`s.
    * @param {AudioNode} source This argument is `AudioNode` as sound source.

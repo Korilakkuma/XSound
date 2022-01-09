@@ -117,11 +117,6 @@ export class Sequencer {
     return this.sequences;
   }
 
-  /** @override */
-  public toString(): string {
-    return this.sequences.map((sequence: Sequence) => sequence.toString()).join('\n');
-  }
-
   /**
    * This method constructs syntax tree.
    * @param {Tree|null} tree This argument is instance of `Tree` that is added to syntax tree.

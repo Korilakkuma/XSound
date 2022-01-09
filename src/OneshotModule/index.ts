@@ -316,11 +316,6 @@ export class OneshotModule extends SoundModule {
     };
   }
 
-  /** @override */
-  public toString(): string {
-    return '[OneshotModule]';
-  }
-
   /**
    * This method gets `ArrayBuffer` and creates instance of `AudioBuffer`.
    * @param {string} url This argument is resource URL for one-shot audio.

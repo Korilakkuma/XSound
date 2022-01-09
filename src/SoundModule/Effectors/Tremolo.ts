@@ -128,9 +128,4 @@ export class Tremolo extends Effector {
       rate : this.rate.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Tremolo]';
-  }
 }

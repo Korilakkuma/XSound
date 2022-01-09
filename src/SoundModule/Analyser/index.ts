@@ -298,9 +298,4 @@ export class Analyser implements Connectable {
   public get OUTPUT(): GainNode {
     return this.input;
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Analyser]';
-  }
 }

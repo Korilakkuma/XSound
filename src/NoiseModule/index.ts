@@ -211,9 +211,4 @@ export class NoiseModule extends SoundModule {
       type: this.type
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[NoiseModule]';
-  }
 }

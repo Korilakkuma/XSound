@@ -474,9 +474,4 @@ export class StreamModule extends SoundModule {
       noisesuppressor: this.noisesuppressor.params()
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[StreamModule]';
-  }
 }

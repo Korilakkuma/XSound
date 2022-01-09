@@ -180,9 +180,4 @@ export class Flanger extends Effector {
       feedback: this.feedback.gain.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Flanger]';
-  }
 }

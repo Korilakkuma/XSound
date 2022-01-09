@@ -110,10 +110,16 @@ export class EnvelopeGenerator {
 
   /**
    * This method gets or sets parameters for envelope generator.
+   * This method is overloaded for type interface and type check.
    * @param {keyof EnvelopeGeneratorParams|EnvelopeGeneratorParams} params This argument is string if getter. Otherwise, setter.
    * @return {EnvelopeGeneratorParams[keyof EnvelopeGeneratorParams]|EnvelopeGenerator} Return value is parameter for envelope generator if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'attack'): number;
+  public param(params: 'decay'): number;
+  public param(params: 'sustain'): number;
+  public param(params: 'release'): number;
+  public param(params: EnvelopeGeneratorParams): EnvelopeGenerator;
   public param(params: keyof EnvelopeGeneratorParams | EnvelopeGeneratorParams): EnvelopeGeneratorParams[keyof EnvelopeGeneratorParams] | EnvelopeGenerator {
     if (typeof params === 'string') {
       switch (params) {

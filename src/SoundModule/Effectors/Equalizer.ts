@@ -61,7 +61,7 @@ export class Equalizer extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.bass.disconnect(0);
@@ -90,10 +90,16 @@ export class Equalizer extends Effector {
 
   /**
    * This method gets or sets parameters for equalizer.
+   * This method is overloaded for type interface and type check.
    * @param {keyof EqualizerParams|EqualizerParams} params This argument is string if getter. Otherwise, setter.
    * @return {EqualizerParams[keyof EqualizerParams]|Equalizer} Return value is parameter for equalizer if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'bass'): number;
+  public param(params: 'middle'): number;
+  public param(params: 'treble'): number;
+  public param(params: 'presence'): number;
+  public param(params: EqualizerParams): Equalizer;
   public param(params: keyof EqualizerParams | EqualizerParams): EqualizerParams[keyof EqualizerParams] | Equalizer {
     if (typeof params === 'string') {
       switch (params) {
@@ -145,7 +151,7 @@ export class Equalizer extends Effector {
   }
 
   /** @override */
-  public params(): EqualizerParams {
+  override params(): EqualizerParams {
     return {
       state   : this.isActive,
       bass    : this.bass.gain.value,

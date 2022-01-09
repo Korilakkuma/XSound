@@ -55,10 +55,21 @@ export class Listener extends Effector {
 
   /**
    * This method gets or sets parameters for audio listener.
+   * This method is overloaded for type interface and type check.
    * @param {keyof ListenerParams|ListenerParams} params This argument is string if getter. Otherwise, setter.
    * @return {ListenerParams[keyof ListenerParams]|Listener} Return value is parameter for audio listener if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'x'): number;
+  public param(params: 'y'): number;
+  public param(params: 'z'): number;
+  public param(params: 'fx'): number;
+  public param(params: 'fy'): number;
+  public param(params: 'fz'): number;
+  public param(params: 'ux'): number;
+  public param(params: 'uy'): number;
+  public param(params: 'uz'): number;
+  public param(params: ListenerParams): Listener;
   public param(params: keyof ListenerParams | ListenerParams): ListenerParams[keyof ListenerParams] | Listener {
     if (typeof params === 'string') {
       switch (params) {
@@ -150,7 +161,7 @@ export class Listener extends Effector {
   }
 
   /** @override */
-  public params(): ListenerParams {
+  override params(): ListenerParams {
     return {
       x : this.positions.x,
       y : this.positions.y,

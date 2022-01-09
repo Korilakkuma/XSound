@@ -66,7 +66,7 @@ export class Phaser extends Effector {
   }
 
   /** @override */
-  public stop(stopTime?: number, releaseTime?: number): void {
+  override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
@@ -80,7 +80,7 @@ export class Phaser extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
 
@@ -119,10 +119,19 @@ export class Phaser extends Effector {
 
   /**
    * This method gets or sets parameters for phaser effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof PhaserParams|PhaserParams} params This argument is string if getter. Otherwise, setter.
    * @return {PhaserParams[keyof PhaserParams]|Phaser} Return value is parameter for phaser effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'stage'): PhaserNumberOfStages;
+  public param(params: 'frequency'): number;
+  public param(params: 'resonance'): number;
+  public param(params: 'depth'): number;
+  public param(params: 'rate'): number;
+  public param(params: 'mix'): number;
+  public param(params: 'feedback'): number;
+  public param(params: PhaserParams): Phaser;
   public param(params: keyof PhaserParams | PhaserParams): PhaserParams[keyof PhaserParams] | Phaser {
     if (typeof params === 'string') {
       switch (params) {
@@ -215,7 +224,7 @@ export class Phaser extends Effector {
   }
 
   /** @override */
-  public params(): PhaserParams {
+  override params(): PhaserParams {
     return {
       state    : this.isActive,
       stage    : this.numberOfStages,

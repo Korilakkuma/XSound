@@ -55,7 +55,7 @@ export class Flanger extends Effector {
   }
 
   /** @override */
-  public stop(stopTime?: number, releaseTime?: number): void {
+  override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
@@ -66,7 +66,7 @@ export class Flanger extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.delay.disconnect(0);
@@ -96,10 +96,18 @@ export class Flanger extends Effector {
 
   /**
    * This method gets or sets parameters for flanger effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof FlangerParams|FlangerParams} params This argument is string if getter. Otherwise, setter.
    * @return {FlangerParams[keyof FlangerParams]|Flanger} Return value is parameter for flanger effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'time'): number;
+  public param(params: 'depth'): number;
+  public param(params: 'rate'): number;
+  public param(params: 'mix'): number;
+  public param(params: 'tone'): number;
+  public param(params: 'feedback'): number;
+  public param(params: FlangerParams): Flanger;
   public param(params: keyof FlangerParams | FlangerParams): FlangerParams[keyof FlangerParams] | Flanger {
     if (typeof params === 'string') {
       switch (params) {
@@ -169,7 +177,7 @@ export class Flanger extends Effector {
   }
 
   /** @override */
-  public params(): FlangerParams {
+  override params(): FlangerParams {
     return {
       state   : this.isActive,
       time    : this.delay.delayTime.value,

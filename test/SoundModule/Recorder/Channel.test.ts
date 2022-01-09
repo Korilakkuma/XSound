@@ -16,14 +16,14 @@ describe(Channel.name, () => {
 
     expect(channel.get(0)).toStrictEqual(track1);
     expect(channel.get(1)).toStrictEqual(track2);
-    expect(channel.getAllTracks()).toStrictEqual([track1, track2]);
+    expect(channel.get()).toStrictEqual([track1, track2]);
   });
 
   test('should set channel gain', () => {
-    channel.setGain(0.5);
+    channel.gain(0.5);
 
-    expect(channel.getGain()).toBe(0.5);
+    expect(channel.gain()).toBe(0.5);
 
-    channel.setGain(1);
+    channel.gain(1);
   });
 });

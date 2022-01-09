@@ -37,7 +37,7 @@ export class Ringmodulator extends Effector {
   }
 
   /** @override */
-  public stop(stopTime?: number, releaseTime?: number): void {
+  override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
@@ -48,7 +48,7 @@ export class Ringmodulator extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.amplitude.disconnect(0);
@@ -71,10 +71,14 @@ export class Ringmodulator extends Effector {
 
   /**
    * This method gets or sets parameters for ring modulator effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof RingmodulatorParams|RingmodulatorParams} params This argument is string if getter. Otherwise, setter.
    * @return {RingmodulatorParams[keyof RingmodulatorParams]|Autopanner} Return value is parameter for ring modulator effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'depth'): number;
+  public param(params: 'rate'): number;
+  public param(params: RingmodulatorParams): Ringmodulator;
   public param(params: keyof RingmodulatorParams | RingmodulatorParams): RingmodulatorParams[keyof RingmodulatorParams] | Ringmodulator {
     if (typeof params === 'string') {
       switch (params) {
@@ -110,7 +114,7 @@ export class Ringmodulator extends Effector {
   }
 
   /** @override */
-  public params(): RingmodulatorParams {
+  override params(): RingmodulatorParams {
     return {
       state: this.isActive,
       depth: this.depth.gain.value,

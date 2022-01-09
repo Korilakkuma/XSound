@@ -3,7 +3,7 @@ import { TimeOverview } from './TimeOverview';
 import { Time } from './Time';
 import { FFT } from './FFT';
 
-export type Domain   = 'timeoverview' | 'overview' | 'time' | 'fft';
+export type Domain   = 'timeoverview' | 'time' | 'fft';
 export type Channel  = 0 | 1;
 export type DataType = 'uint' | 'float';  // unsigned int 8 bit (`Uint8Array`) or float 32 bit (`Float32Array`)
 export type FFTSize  = 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384 | 32768;
@@ -54,7 +54,7 @@ export class Analyser implements Connectable {
 
   /**
    * This method visualizes sound wave.
-   * @param {Domain} domain This argument is one of 'timeoverview' ('overview'), 'time', 'fft'.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft'.
    * @param {Channel} channel This argument is channel number (Left: 0, Right: 1 ...).
    * @param {AudioBuffer} buffer This argument is instance of `AudioBuffer` (If domain is 'timeoverview', this argument is required).
    * @return {Analyser} Return value is for method chain.
@@ -62,7 +62,6 @@ export class Analyser implements Connectable {
   public start(domain: Domain, channel?: Channel, buffer?: AudioBuffer): Analyser {
     switch (domain) {
       case 'timeoverview':
-      case 'overview'    :
         if (((channel === 0) || (channel === 1)) && buffer) {
           switch (channel) {
             case 0:
@@ -156,7 +155,7 @@ export class Analyser implements Connectable {
 
   /**
    * This method stops visualizer.
-   * @param {Domain} domain This argument is one of 'timeoverview' ('overview'), 'time', 'fft'.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft'.
    * @return {Analyser} Return value is for method chain.
    */
   public stop(domain: Domain): Analyser {
@@ -254,21 +253,24 @@ export class Analyser implements Connectable {
 
   /**
    * This method selects domain for visualization.
-   * @param {Domain} domain This argument is one of 'timeoverview' ('overview'), 'time', 'fft'.
+   * This method is overloaded for type interface and type check.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft'.
    * @param {Channel} channel This argument is channel number (Left: 0, Right: 1 ...).
    * @return {TimeOverview|Time|FFT|Analyser} Return value is instance of selected `Visualizer` class.
    */
+  public domain(domain: 'timeoverview', channel?: Channel): TimeOverview;
+  public domain(domain: 'time', channel?: Channel): Time;
+  public domain(domain: 'fft', channel?: Channel): FFT;
   public domain(domain: Domain, channel?: Channel): TimeOverview | Time | FFT | Analyser {
     switch (domain) {
       case 'timeoverview':
-      case 'overview'    :
         switch (channel) {
           case 0:
             return this.timeOverviewL;
           case 1:
             return this.timeOverviewR;
           default:
-            return this;
+            return this.timeOverviewL;
         }
       case 'time':
         return this.time;

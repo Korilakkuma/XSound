@@ -40,7 +40,7 @@ export class Stereo extends Effector {
   }
 
   /** @override */
-  public start(): void {
+  override start(): void {
     if (!this.isActive || !this.paused) {
       return;
     }
@@ -68,7 +68,7 @@ export class Stereo extends Effector {
   }
 
   /** @override */
-  public stop(): void {
+  override stop(): void {
     // Effector's state is active ?
     if (!this.isActive) {
       return;
@@ -85,7 +85,7 @@ export class Stereo extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.splitter.disconnect(0);
@@ -115,10 +115,13 @@ export class Stereo extends Effector {
 
   /**
    * This method gets or sets parameters for stereo effector
+   * This method is overloaded for type interface and type check.
    * @param {keyof StereoParams|StereoParams} params This argument is string if getter. Otherwise, setter.
    * @return {StereoParams[keyof StereoParams]|Stereo} Return value is parameter for stereo effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'time'): number;
+  public param(params: StereoParams): Stereo;
   public param(params: keyof StereoParams | StereoParams): StereoParams[keyof StereoParams] | Stereo {
     if (typeof params === 'string') {
       switch (params) {
@@ -147,7 +150,7 @@ export class Stereo extends Effector {
   }
 
   /** @override */
-  public params(): StereoParams {
+  override params(): StereoParams {
     return {
       state: this.isActive,
       time : this.delayL.delayTime.value

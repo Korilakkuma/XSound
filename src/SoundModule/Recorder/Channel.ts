@@ -27,42 +27,36 @@ export class Channel {
   }
 
   /**
-   * This method gets designated track.
+   * This method gets designated track or array that contains the all of tracks.
+   * This method is overloaded for type interface and type check.
    * @param {number} trackNumber This argument is target track number.
-   * @return {Track|null}
+   * @return {Track|Array<Track>}
    */
-  public get(trackNumber: number): Track | null {
-    if ((trackNumber >= 0) && (trackNumber < this.tracks.length)) {
+  public get(trackNumber: number): Track;
+  public get(): Track[];
+  public get(trackNumber?: number): Track | Track[] {
+    if ((typeof trackNumber === 'number') && (trackNumber >= 0) && (trackNumber < this.tracks.length)) {
       return this.tracks[trackNumber];
     }
 
-    return null;
-  }
-
-  /**
-   * This method gets array that contains the all of tracks.
-   * @return {Array<Track>}
-   */
-  public getAllTracks(): Track[] {
     return this.tracks;
   }
 
   /**
-   * This method gets channel gain.
+   * This method gets or sets channel gain.
+   * This method is overloaded for type interface and type check.
+   * @param {number} param This argument is channel gain.
    * @return {number} Return value is channel gain.
    */
-  public getGain(): number {
-    return this.channelGain;
-  }
-
-  /**
-   * This method sets channel gain.
-   * @param {number} gain This argument is channel gain.
-   */
-  public setGain(gain: number): void {
-    if ((gain >= 0) && (gain <= 1)) {
-      this.channelGain = gain;
+  public gain(): number;
+  public gain(param: number): void;
+  public gain(param?: number): number | void {
+    if ((typeof param === 'number') && (param >= 0) && (param <= 1)) {
+      this.channelGain = param;
+      return;
     }
+
+    return this.channelGain;
   }
 
   /**

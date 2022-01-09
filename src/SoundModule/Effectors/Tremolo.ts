@@ -39,7 +39,7 @@ export class Tremolo extends Effector {
   }
 
   /** @override */
-  public stop(stopTime?: number, releaseTime?: number): void {
+  override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
@@ -50,7 +50,7 @@ export class Tremolo extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.amplitude.disconnect(0);
@@ -73,10 +73,15 @@ export class Tremolo extends Effector {
 
   /**
    * This method gets or sets parameters for tremolo effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof TremoloParams|TremoloParams} params This argument is string if getter. Otherwise, setter.
    * @return {TremoloParams[keyof TremoloParams]|Tremolo} Return value is parameter for tremolo effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'type'): OscillatorType;
+  public param(params: 'depth'): number;
+  public param(params: 'rate'): number;
+  public param(params: TremoloParams): Tremolo;
   public param(params: keyof TremoloParams | TremoloParams): TremoloParams[keyof TremoloParams] | Tremolo {
     if (typeof params === 'string') {
       switch (params) {
@@ -120,7 +125,7 @@ export class Tremolo extends Effector {
   }
 
   /** @override */
-  public params(): TremoloParams {
+  override params(): TremoloParams {
     return {
       state: this.isActive,
       type : this.lfo.type,

@@ -37,7 +37,7 @@ export class Compressor extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.compressor.disconnect(0);
@@ -58,10 +58,17 @@ export class Compressor extends Effector {
 
   /**
    * This method gets or sets parameters for compressor.
+   * This method is overloaded for type interface and type check.
    * @param {keyof CompressorParams|CompressorParams} params This argument is string if getter. Otherwise, setter.
    * @return {CompressorParams[keyof CompressorParams]|Compressor} Return value is parameter for compressor if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'threshold'): number;
+  public param(params: 'knee'): number;
+  public param(params: 'ratio'): number;
+  public param(params: 'attack'): number;
+  public param(params: 'release'): number;
+  public param(params: CompressorParams): Compressor;
   public param(params: keyof CompressorParams | CompressorParams): CompressorParams[keyof CompressorParams] | Compressor {
     if (typeof params === 'string') {
       switch (params) {
@@ -121,7 +128,7 @@ export class Compressor extends Effector {
   }
 
   /** @override */
-  public params(): CompressorParams {
+  override params(): CompressorParams {
     return {
       state    : this.isActive,
       threshold: this.compressor.threshold.value,

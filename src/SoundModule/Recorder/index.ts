@@ -80,8 +80,8 @@ export class Recorder implements Connectable {
     if ((this.activeTrack !== -1) && this.paused) {
       this.paused = false;
 
-      const gainL = this.channels[0].getGain();
-      const gainR = this.channels[1].getGain();
+      const gainL = this.channels[0].gain();
+      const gainR = this.channels[1].gain();
 
       const trackL = this.channels[0].get(this.activeTrack);
       const trackR = this.channels[1].get(this.activeTrack);
@@ -130,22 +130,25 @@ export class Recorder implements Connectable {
 
   /**
    * This method gets or sets parameters for recorder.
+   * This method is overloaded for type interface and type check.
    * @param {keyof RecorderParams|RecorderParams} params This argument is string if getter. Otherwise, setter.
    * @return {RecorderParams[keyof RecorderParams]|Recorder} Return value is parameter for recorder if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: '0' | '1'): number;
+  public param(params: RecorderParams): Recorder;
   public param(params: keyof RecorderParams | RecorderParams): RecorderParams[keyof RecorderParams] | RecorderParams | Recorder {
     if (typeof params === 'string') {
       switch (params) {
         case '0':
           if (this.channels[0]) {
-            return this.channels[0].getGain();
+            return this.channels[0].gain();
           }
 
           break;
         case '1':
           if (this.channels[1]) {
-            return this.channels[1].getGain();
+            return this.channels[1].gain();
           }
 
           break;
@@ -158,13 +161,13 @@ export class Recorder implements Connectable {
       switch (key) {
         case '0':
           if (this.channels[0] && (typeof value === 'number')) {
-            this.channels[0].setGain(value);
+            this.channels[0].gain(value);
           }
 
           break;
         case '1':
           if (this.channels[1] && (typeof value === 'number')) {
-            this.channels[1].setGain(value);
+            this.channels[1].gain(value);
           }
 
           break;
@@ -197,7 +200,7 @@ export class Recorder implements Connectable {
 
     if (trackNumber === -1) {
       for (const channel of this.channels) {
-        const tracks = channel.getAllTracks();
+        const tracks = channel.get();
 
         for (const track of tracks) {
           track.clear();
@@ -435,13 +438,13 @@ export class Recorder implements Connectable {
   public has(channelNumber: ChannelNumber, trackNumber: number): boolean {
     if (!this.hasChannel(channelNumber)) {
       return this.channels.some((channel: Channel) => {
-        const tracks = channel.getAllTracks();
+        const tracks = channel.get();
 
         return tracks.some((track: Track) => track.has());
       });
     }
 
-    const tracks = this.channels[channelNumber].getAllTracks();
+    const tracks = this.channels[channelNumber].get();
 
     if (!this.hasTrack(trackNumber)) {
       return tracks.some((track: Track) => track.has());
@@ -525,7 +528,7 @@ export class Recorder implements Connectable {
     }
 
     const channel    = this.channels[channelNumber];
-    const tracks     = channel.getAllTracks();
+    const tracks     = channel.get();
     const bufferSize = this.processor.bufferSize;
 
     let sum              = 0;

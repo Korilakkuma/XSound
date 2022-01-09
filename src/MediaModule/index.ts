@@ -482,14 +482,8 @@ export class MediaModule extends SoundModule {
    * @return {number|MediaModule} Return value is fade-in time. Otherwise, return value is for method chain.
    */
   public fadeIn(time?: number): number | MediaModule {
-    if (!time) {
-      const fadeInTime = this.envelopegenerator.param('attack');
-
-      if (typeof fadeInTime === 'number') {
-        return fadeInTime;
-      }
-
-      return 0;
+    if (typeof time !== 'number') {
+      return this.envelopegenerator.param('attack');
     }
 
     this.envelopegenerator.param({ attack: time });
@@ -511,14 +505,8 @@ export class MediaModule extends SoundModule {
    * @return {number|MediaModule} Return value is fade-out time. Otherwise, return value is for method chain.
    */
   public fadeOut(time?: number): number | MediaModule {
-    if (!time) {
-      const fadeOutTime = this.envelopegenerator.param('release');
-
-      if (typeof fadeOutTime === 'number') {
-        return fadeOutTime;
-      }
-
-      return 0;
+    if (typeof time !== 'number') {
+      return this.envelopegenerator.param('release');
     }
 
     this.envelopegenerator.param({ release: time });

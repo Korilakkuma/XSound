@@ -55,7 +55,7 @@ export class Reverb extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.convolver.disconnect(0);
@@ -87,10 +87,16 @@ export class Reverb extends Effector {
 
   /**
    * This method gets or sets parameters for reverb effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof ReverbParams|ReverbParams} params This argument is string if getter. Otherwise, setter.
    * @return {ReverbParams[keyof ReverbParams]|Reverb} Return value is parameter for reverb effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'buffer'): AudioBuffer | null;
+  public param(params: 'dry'): number;
+  public param(params: 'wet'): number;
+  public param(params: 'tone'): number;
+  public param(params: ReverbParams): Reverb;
   public param(params: keyof ReverbParams | ReverbParams): ReverbParams[keyof ReverbParams] | Reverb {
     if (typeof params === 'string') {
       switch (params) {
@@ -203,7 +209,7 @@ export class Reverb extends Effector {
   }
 
   /** @override */
-  public params(): ReverbParams {
+  override params(): ReverbParams {
     return {
       state: this.isActive,
       dry  : this.dry.gain.value,

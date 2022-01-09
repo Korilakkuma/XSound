@@ -50,7 +50,7 @@ export class Delay extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.delay.disconnect(0);
@@ -88,10 +88,17 @@ export class Delay extends Effector {
 
   /**
    * This method gets or sets parameters for delay effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof DelayParams|DelayParams} params This argument is string if getter. Otherwise, setter.
    * @return {DelayParams[keyof DelayParams]|Delay} Return value is parameter for delay effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'time'): number;
+  public param(params: 'dry'): number;
+  public param(params: 'wet'): number;
+  public param(params: 'tone'): number;
+  public param(params: 'feedback'): number;
+  public param(params: DelayParams): Delay;
   public param(params: keyof DelayParams | DelayParams): DelayParams[keyof DelayParams] | Delay {
     if (typeof params === 'string') {
       switch (params) {
@@ -151,7 +158,7 @@ export class Delay extends Effector {
   }
 
   /** @override */
-  params(): DelayParams {
+  override params(): DelayParams {
     return {
       state   : this.isActive,
       time    : this.delay.delayTime.value,

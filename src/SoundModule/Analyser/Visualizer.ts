@@ -154,6 +154,49 @@ export class Visualizer implements Statable {
   }
 
   /**
+   * This method gets or sets parameters for visualization.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof VisualizerParams|VisualizerParams} params This argument is string if getter. Otherwise, setter.
+   * @return {VisualizerParams[keyof VisualizerParams]} Return value is parameter for visualization if getter.
+   */
+  public param(params: 'interval'): number;
+  public param(params: 'styles'): GraphicsStyles;
+  public param(params: VisualizerParams): void;
+  public param(params: keyof VisualizerParams | VisualizerParams): VisualizerParams[keyof VisualizerParams] | void {
+    // Getter
+    if (typeof params === 'string') {
+      switch (params) {
+        case 'interval':
+          return this.interval;
+        case 'styles':
+          return this.styles;
+        default:
+          return;
+      }
+    }
+
+    for (const [key, value] of Object.entries(params)) {
+      switch (key) {
+        case 'interval':
+          if (typeof value === 'number') {
+            this.interval = value;
+          }
+
+          break;
+        case 'styles':
+          // TODO:
+          if (typeof value === 'object') {
+            this.styles = { ...this.styles, ...value };
+          }
+
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  /**
    * This method gets instance of `HTMLCanvasElement` or `Element` (`SVGElement`).
    * @return {HTMLCanvasElement|Element|null}
    */
@@ -233,45 +276,6 @@ export class Visualizer implements Statable {
     this.isActive = false;
 
     return this;
-  }
-
-  /**
-   * This method gets or sets parameters for visualization.
-   * @param {keyof VisualizerParams|VisualizerParams} params This argument is string if getter. Otherwise, setter.
-   * @return {VisualizerParams[keyof VisualizerParams]} Return value is parameter for visualization if getter.
-   */
-  protected baseparam(params: keyof VisualizerParams | VisualizerParams): VisualizerParams[keyof VisualizerParams] | void {
-    // Getter
-    if (typeof params === 'string') {
-      switch (params) {
-        case 'interval':
-          return this.interval;
-        case 'styles':
-          return this.styles;
-        default:
-          return;
-      }
-    }
-
-    for (const [key, value] of Object.entries(params)) {
-      switch (key) {
-        case 'interval':
-          if (typeof value === 'number') {
-            this.interval = value;
-          }
-
-          break;
-        case 'styles':
-          // TODO:
-          if (typeof value === 'object') {
-            this.styles = { ...this.styles, ...value };
-          }
-
-          break;
-        default:
-          break;
-      }
-    }
   }
 
   /**

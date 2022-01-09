@@ -1,6 +1,5 @@
 import { BufferSize } from '../types';
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
-import { TimeOverview } from '../SoundModule/Analyser/TimeOverview';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
@@ -228,13 +227,13 @@ export class AudioModule extends SoundModule {
           }
         }
 
-        if (timeoverviewL instanceof TimeOverview) { timeoverviewL.update(this.currentTime); }
-        if (timeoverviewR instanceof TimeOverview) { timeoverviewR.update(this.currentTime); }
+        timeoverviewL.update(this.currentTime);
+        timeoverviewR.update(this.currentTime);
       } else {
         if (this.source.loop) {
           this.stop();
 
-          if ((timeoverviewL instanceof TimeOverview) && (timeoverviewL.param('mode') === 'sprite')) {
+          if (timeoverviewL.param('mode') === 'sprite') {
             this.start(this.source.loopStart, this.source.loopEnd);
           } else {
             this.start(0, this.buffer.duration);

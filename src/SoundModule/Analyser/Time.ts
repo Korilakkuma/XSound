@@ -1,5 +1,5 @@
 import { Channel, DataType } from '../Analyser';
-import { Visualizer, VisualizerParams } from './Visualizer';
+import { Visualizer, VisualizerParams, GraphicsStyles } from './Visualizer';
 
 export type TimeParams = VisualizerParams & {
   type?: DataType,
@@ -28,26 +28,30 @@ export class Time extends Visualizer {
 
   /**
    * This method gets or sets parameters for visualizing sound wave.
+   * This method is overloaded for type interface and type check.
    * @param {keyof TimeParams|TimeParams} params This argument is string if getter. Otherwise, setter.
    * @return {TimeParams[keyof TimeParams]|Time} Return value is parameter for visualizing sound wave if getter.
    *     Otherwise, return value is for method chain.
+   * @override
    */
-  public param(params: keyof TimeParams | TimeParams): TimeParams[keyof TimeParams] | Time {
+  override param(params: 'interval'): number;
+  override param(params: 'styles'): GraphicsStyles;
+  override param(params: 'type'): DataType;
+  override param(params: 'textInterval'): number;
+  override param(params: TimeParams): Time;
+  override param(params: keyof TimeParams | TimeParams): TimeParams[keyof TimeParams] | Time {
     if (typeof params === 'string') {
       switch (params) {
         case 'type':
           return this.type;
         case 'textInterval':
           return this.textInterval;
-        default: {
-          const r = super.baseparam(params);
-
-          if ((typeof r === 'number') || (typeof r === 'object')) {
-            return r;
-          }
-
+        case 'interval':
+          return super.param(params);
+        case 'styles':
+          return super.param(params);
+        default:
           return this;
-        }
       }
     }
 
@@ -71,7 +75,7 @@ export class Time extends Visualizer {
       }
     }
 
-    super.baseparam(params);
+    super.param(params);
 
     return this;
   }

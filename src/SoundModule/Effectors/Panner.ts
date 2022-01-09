@@ -69,7 +69,7 @@ export class Panner extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.panner.disconnect(0);
@@ -92,10 +92,26 @@ export class Panner extends Effector {
 
   /**
    * This method gets or sets parameters for panner.
+   * This method is overloaded for type interface and type check.
    * @param {keyof PannerParams|PannerParams} params This argument is string if getter. Otherwise, setter.
    * @return {PannerParams[keyof PannerParams]|PannerParams} Return value is parameter for panner if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'x'): number;
+  public param(params: 'y'): number;
+  public param(params: 'z'): number;
+  public param(params: 'ox'): number;
+  public param(params: 'oy'): number;
+  public param(params: 'oz'): number;
+  public param(params: 'refDistance'): number;
+  public param(params: 'maxDistance'): number;
+  public param(params: 'rolloffFactor'): number;
+  public param(params: 'coneInnerAngle'): number;
+  public param(params: 'coneOuterAngle'): number;
+  public param(params: 'coneOuterGain'): number;
+  public param(params: 'panningModel'): PanningModelType;
+  public param(params: 'distanceModel'): DistanceModelType;
+  public param(params: PannerParams): Panner;
   public param(params: keyof PannerParams | PannerParams): PannerParams[keyof PannerParams] | Panner {
     if (typeof params === 'string') {
       switch (params) {
@@ -227,7 +243,7 @@ export class Panner extends Effector {
   }
 
   /** @override */
-  public params(): PannerParams {
+  override params(): PannerParams {
     return {
       state         : this.isActive,
       x             : this.positions.x,

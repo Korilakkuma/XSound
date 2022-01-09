@@ -1,5 +1,5 @@
 import { Channel } from '../Analyser';
-import { Visualizer, VisualizerParams, Color } from './Visualizer';
+import { Visualizer, VisualizerParams, Color, GraphicsStyles } from './Visualizer';
 
 type MouseEventTypes = 'mousedown' | 'mousemove' | 'mouseup' | 'touchstart' | 'touchmove' | 'touchend';
 
@@ -73,11 +73,21 @@ export class TimeOverview extends Visualizer {
 
   /**
    * This method gets or sets parameters for visualizing audio wave.
+   * This method is overloaded for type interface and type check.
    * @param {keyof TimeOverviewParams|TimeOverviewParams} params This argument is string if getter. Otherwise, setter.
    * @return {TimeOverviewParams[keyof TimeOverviewParams]|TimeOverview} Return value is parameter for visualizing audio wave if getter.
    *     Otherwise, return value is for method chain.
+   * @override
    */
-  public param(params: keyof TimeOverviewParams | TimeOverviewParams): TimeOverviewParams[keyof TimeOverviewParams] | TimeOverview {
+  override param(params: 'interval'): number;
+  override param(params: 'styles'): GraphicsStyles;
+  override param(params: 'currentTime'): CurrentTimeStyles;
+  override param(params: 'sprite'): Color;
+  override param(params: 'plotInterval'): number;
+  override param(params: 'textInterval'): number;
+  override param(params: 'mode'): DragMode;
+  override param(params: TimeOverviewParams): TimeOverview;
+  override param(params: keyof TimeOverviewParams | TimeOverviewParams): TimeOverviewParams[keyof TimeOverviewParams] | TimeOverview {
     if (typeof params === 'string') {
       switch (params) {
         case 'currentTime':
@@ -90,15 +100,12 @@ export class TimeOverview extends Visualizer {
           return this.textInterval;
         case 'mode':
           return this.mode;
-        default: {
-          const r = super.baseparam(params);
-
-          if ((typeof r === 'number') || (typeof r === 'object')) {
-            return r;
-          }
-
+        case 'interval':
+          return super.param(params);
+        case 'styles':
+          return super.param(params);
+        default:
           return this;
-        }
       }
     }
 
@@ -140,7 +147,7 @@ export class TimeOverview extends Visualizer {
       }
     }
 
-    super.baseparam(params);
+    super.param(params);
 
     return this;
   }

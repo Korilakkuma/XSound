@@ -56,7 +56,7 @@ export class Wah extends Effector {
   }
 
   /** @override */
-  public stop(stopTime?: number, releaseTime?: number): void {
+  override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (!this.auto && this.isActive) {
@@ -67,7 +67,7 @@ export class Wah extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.sensitivity.disconnect(0);
@@ -113,10 +113,17 @@ export class Wah extends Effector {
 
   /**
    * This method gets or sets parameters for wah effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof WahParams|WahParams} params This argument is string if getter. Otherwise, setter.
    * @return {WahParams[keyof WahParams]|Wah} Return value is parameter for wah effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'auto'): boolean;
+  public param(params: 'cutoff'): number;
+  public param(params: 'depth'): number;
+  public param(params: 'rate'): number;
+  public param(params: 'resonance'): number;
+  public param(params: WahParams): Wah;
   public param(params: keyof WahParams | WahParams): WahParams[keyof WahParams] | Wah {
     if (typeof params === 'string') {
       switch (params) {
@@ -188,7 +195,7 @@ export class Wah extends Effector {
   }
 
   /** @override */
-  public params(): WahParams {
+  override params(): WahParams {
     return {
       state    : this.isActive,
       auto     : this.auto,

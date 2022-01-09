@@ -37,7 +37,7 @@ export class Autopanner extends Effector {
   }
 
   /** @override */
-  public stop(stopTime?: number, releaseTime?: number): void {
+  override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
@@ -48,7 +48,7 @@ export class Autopanner extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.panner.disconnect(0);
@@ -71,10 +71,14 @@ export class Autopanner extends Effector {
 
   /**
    * This method gets or sets parameters for autopanner effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof AutopannerParams|AutopannerParams} params This argument is string if getter. Otherwise, setter.
    * @return {AutopannerParams[keyof AutopannerParams]|Autopanner} Return value is parameter for autopanner effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'depth'): number;
+  public param(params: 'rate'): number;
+  public param(params: AutopannerParams): Autopanner;
   public param(params: keyof AutopannerParams | AutopannerParams): AutopannerParams[keyof AutopannerParams] | Autopanner {
     if (typeof params === 'string') {
       switch (params) {
@@ -110,7 +114,7 @@ export class Autopanner extends Effector {
   }
 
   /** @override */
-  public params(): AutopannerParams {
+  override params(): AutopannerParams {
     return {
       state: this.isActive,
       depth: this.depth.gain.value,

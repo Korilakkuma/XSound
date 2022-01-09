@@ -91,7 +91,7 @@ class PreEqualizer extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     this.input.disconnect(0);
 
     if (this.isActive) {
@@ -122,9 +122,15 @@ class PreEqualizer extends Effector {
 
   /**
    * This method gets or sets parameters for pre-equalizer.
+   * This method is overloaded for type interface and type check.
    * @param {keyof PreEqualizerParams|PreEqualizerParams} params This argument is string if getter. Otherwise, setter.
    * @return {PreEqualizerParams[keyof PreEqualizerParams]} Return value is parameter for pre-equalizer if getter.
    */
+  public param(params: 'state'): boolean;
+  public param(params: 'curve'): Float32Array | null;
+  public param(params: 'gain'): number;
+  public param(params: 'lead'): number;
+  public param(params: PreEqualizerParams): void;
   public param(params: keyof PreEqualizerParams | PreEqualizerParams): PreEqualizerParams[keyof PreEqualizerParams] | void {
     if (typeof params === 'string') {
       switch (params) {
@@ -178,7 +184,7 @@ class PreEqualizer extends Effector {
   }
 
   /** @override */
-  public params(): PreEqualizerParams {
+  override params(): PreEqualizerParams {
     return {
       state: this.isActive,
       curve: this.preAmp.curve,
@@ -253,7 +259,7 @@ class PostEqualizer extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     this.input.disconnect(0);
 
     if (this.isActive) {
@@ -279,9 +285,17 @@ class PostEqualizer extends Effector {
 
   /**
    * This method gets or sets parameters for post-equalizer.
+   * This method is overloaded for type interface and type check.
    * @param {keyof PostEqualizerParams|PostEqualizerParams} params This argument is string if getter. Otherwise, setter.
    * @return {PostEqualizerParams[keyof PostEqualizerParams]} Return value is parameter for post-equalizer if getter.
    */
+  public param(params: 'state'): boolean;
+  public param(params: 'curve'): Float32Array | null;
+  public param(params: 'bass'): number;
+  public param(params: 'middle'): number;
+  public param(params: 'treble'): number;
+  public param(params: 'frequency'): number;
+  public param(params: PostEqualizerParams): void;
   public param(params: keyof PostEqualizerParams | PostEqualizerParams): PostEqualizerParams[keyof PostEqualizerParams] | void {
     if (typeof params === 'string') {
       switch (params) {
@@ -351,7 +365,7 @@ class PostEqualizer extends Effector {
   }
 
   /** @override */
-  public params(): PostEqualizerParams {
+  override params(): PostEqualizerParams {
     return {
       state    : this.isActive,
       curve    : this.distortion.curve,
@@ -397,7 +411,7 @@ export class Cabinet extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
 
@@ -419,7 +433,7 @@ export class Cabinet extends Effector {
   }
 
   /** @override */
-  public params(): CabinetParams {
+  override params(): CabinetParams {
     return {
       state: this.isActive
     };
@@ -490,7 +504,7 @@ export class Distortion extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
 
@@ -514,10 +528,17 @@ export class Distortion extends Effector {
 
   /**
    * This method gets or sets parameters for distortion effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof DistortionParams|DistortionParams} params This argument is string if getter. Otherwise, setter.
    * @return {DistortionParams[keyof DistortionParams]|Distortion} Return value is parameter for distortion effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'curve'): DistortionType;
+  public param(params: 'samples'): number;
+  public param(params: 'pre'): PreEqualizerParams;
+  public param(params: 'post'): PostEqualizerParams;
+  public param(params: 'cabinet'): CabinetParams;
+  public param(params: DistortionParams): Distortion;
   public param(params: keyof DistortionParams | DistortionParams): DistortionParams[keyof DistortionParams] | Distortion {
     if (typeof params === 'string') {
       switch (params) {
@@ -612,7 +633,7 @@ export class Distortion extends Effector {
   }
 
   /** @override */
-  public params(): DistortionParams {
+  override params(): DistortionParams {
     return {
       state  : this.isActive,
       curve  : this.type,

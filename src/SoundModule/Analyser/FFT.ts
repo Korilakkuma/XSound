@@ -1,5 +1,5 @@
 import { Channel, DataType } from '../Analyser';
-import { Visualizer, VisualizerParams } from './Visualizer';
+import { Visualizer, VisualizerParams, GraphicsStyles } from './Visualizer';
 
 export type FFTParams = VisualizerParams & {
   type?: DataType,
@@ -32,11 +32,19 @@ export class FFT extends Visualizer {
 
   /**
    * This method gets or sets parameters for visualizing spectrum.
+   * This method is overloaded for type interface and type check.
    * @param {keyof FFTParams|FFTParams} params This argument is string if getter. Otherwise, setter.
    * @return {FFTParams[keyof FFTParams]|FFT} Return value is parameter for visualizing spectrum if getter.
    *     Otherwise, return value is for method chain.
+   * @override
    */
-  public param(params: keyof FFTParams | FFTParams): FFTParams[keyof FFTParams] | FFT {
+  override param(params: 'interval'): number;
+  override param(params: 'styles'): GraphicsStyles;
+  override param(params: 'type'): DataType;
+  override param(params: 'size'): number;
+  override param(params: 'textInterval'): number;
+  override param(params: FFTParams): FFT;
+  override param(params: keyof FFTParams | FFTParams): FFTParams[keyof FFTParams] | FFT {
     if (typeof params === 'string') {
       switch (params) {
         case 'type':
@@ -45,15 +53,12 @@ export class FFT extends Visualizer {
           return this.size;
         case 'textInterval':
           return this.textInterval;
-        default: {
-          const r = super.baseparam(params);
-
-          if ((typeof r === 'number') || (typeof r === 'object')) {
-            return r;
-          }
-
+        case 'interval':
+          return super.param(params);
+        case 'styles':
+          return super.param(params);
+        default:
           return this;
-        }
       }
     }
 
@@ -83,7 +88,7 @@ export class FFT extends Visualizer {
       }
     }
 
-    super.baseparam(params);
+    super.param(params);
 
     return this;
   }

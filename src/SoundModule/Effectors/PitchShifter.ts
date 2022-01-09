@@ -30,7 +30,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  public start(): void {
+  override start(): void {
     if (!this.isActive || !this.paused) {
       return;
     }
@@ -89,7 +89,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  public stop(): void {
+  override stop(): void {
     // Effector's state is active ?
     if (!this.isActive) {
       return;
@@ -106,7 +106,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.processor.disconnect(0);
@@ -125,10 +125,13 @@ export class PitchShifter extends Effector {
 
   /**
    * This method gets or sets parameters for pitch shifter.
+   * This method is overloaded for type interface and type check.
    * @param {keyof PitchShifterParams|PitchShifterParams} params This argument is string if getter. Otherwise, setter.
    * @return {PitchShifterParams[keyof PitchShifterParams]|PitchShifter} Return value is parameter for pitch shifter if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'pitch'): number;
+  public param(params: PitchShifterParams): PitchShifter;
   public param(params: keyof PitchShifterParams | PitchShifterParams): PitchShifterParams[keyof PitchShifterParams] | PitchShifter {
     if (typeof params === 'string') {
       switch (params) {
@@ -156,7 +159,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  public params(): PitchShifterParams {
+  override params(): PitchShifterParams {
     return {
       state: this.isActive,
       pitch: this.pitch

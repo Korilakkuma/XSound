@@ -50,7 +50,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  public start(startTime?: number): void {
+  override start(startTime?: number): void {
     if (!this.isActive) {
       return;
     }
@@ -70,7 +70,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  public stop(stopTime?: number): void {
+  override stop(stopTime?: number): void {
     if (!this.isActive) {
       return;
     }
@@ -87,7 +87,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  public connect(): GainNode {
+  override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.filter.disconnect(0);
@@ -110,10 +110,21 @@ export class Filter extends Effector {
 
   /**
    * This method gets or sets parameters for filter effector.
+   * This method is overloaded for type interface and type check.
    * @param {keyof FilterParams|FilterParams} params This argument is string if getter. Otherwise, setter.
    * @return {FilterParams[keyof FilterParams]|Filter} Return value is parameter for filter effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'type'): BiquadFilterType;
+  public param(params: 'frequency'): number;
+  public param(params: 'Q'): number;
+  public param(params: 'gain'): number;
+  public param(params: 'range'): number;
+  public param(params: 'attack'): number;
+  public param(params: 'decay'): number;
+  public param(params: 'sustain'): number;
+  public param(params: 'release'): number;
+  public param(params: FilterParams): Filter;
   public param(params: keyof FilterParams | FilterParams): FilterParams[keyof FilterParams] | Filter {
     if (typeof params === 'string') {
       switch (params) {
@@ -206,7 +217,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  public params(): FilterParams {
+  override params(): FilterParams {
     return {
       state    : this.isActive,
       type     : this.filter.type,

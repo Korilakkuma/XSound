@@ -480,11 +480,6 @@ export class Recorder implements Connectable {
     return this.processor;
   }
 
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Recorder]';
-  }
-
   /**
    * This method flats recorded sound data (data block of `Float32Array`) that track contains.
    * @param {ChanneNumber} channelNumber This argument is channel number for mixing.

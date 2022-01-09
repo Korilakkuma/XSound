@@ -198,9 +198,4 @@ export class Wah extends Effector {
       resonance: this.auto ? this.sensitivity.Q.value : this.lowpass.Q.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Wah]';
-  }
 }

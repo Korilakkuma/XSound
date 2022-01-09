@@ -147,9 +147,4 @@ export class TreeConstructor {
   public free(): void {
     this.syntaxTree.length = 0;
   }
-
-  /** @override */
-  public toString(): string {
-    return this.syntaxTree[0].toString();
-  }
 }

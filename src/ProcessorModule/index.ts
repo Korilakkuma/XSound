@@ -184,9 +184,4 @@ export class ProcessorModule extends SoundModule {
   public get(): AudioWorkletNode | ScriptProcessorNode | null {
     return this.worklet;
   }
-
-  /** @override */
-  public toString(): string {
-    return '[ProcessorModule]';
-  }
 }

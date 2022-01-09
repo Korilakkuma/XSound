@@ -62,9 +62,4 @@ export class NoiseGate {
       level: this.level
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[StreamModule NoiseGate]';
-  }
 }

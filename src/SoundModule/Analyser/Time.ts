@@ -76,11 +76,6 @@ export class Time extends Visualizer {
     return this;
   }
 
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Analyser Time]';
-  }
-
   /**
    * This method visualizes sound wave in time domain to Canvas.
    * @param {Uint8Array|Float32Array} data This argument is sound data for visualization.

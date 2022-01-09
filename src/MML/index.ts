@@ -420,9 +420,4 @@ export class MML {
       .replace(/\s{2}/g, ' ')
       .trim();
   }
-
-  /** @override */
-  public toString(): string {
-    return '[MML]';
-  }
 }

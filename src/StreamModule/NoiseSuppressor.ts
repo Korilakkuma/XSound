@@ -102,9 +102,4 @@ export class NoiseSuppressor {
       threshold: this.threshold
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[StreamModule NoiseSuppressor]';
-  }
 }

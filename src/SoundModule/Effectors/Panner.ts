@@ -246,9 +246,4 @@ export class Panner extends Effector {
       distanceModel : this.panner.distanceModel
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Panner]';
-  }
 }

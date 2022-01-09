@@ -116,9 +116,4 @@ export class Glide {
       time: this.time
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[OscillatorModule Glide]';
-  }
 }

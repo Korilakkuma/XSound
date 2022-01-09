@@ -88,11 +88,6 @@ export class FFT extends Visualizer {
     return this;
   }
 
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Analyser FFT]';
-  }
-
   /**
    * This method visualizes spectrum to Canvas.
    * @param {Uint8Array|Float32Array} data This argument is frequency domain data for spectrum.

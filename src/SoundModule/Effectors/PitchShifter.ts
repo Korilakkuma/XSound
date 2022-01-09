@@ -162,9 +162,4 @@ export class PitchShifter extends Effector {
       pitch: this.pitch
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule PitchShifter]';
-  }
 }

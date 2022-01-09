@@ -131,9 +131,4 @@ export class Compressor extends Effector {
       release  : this.compressor.release.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Compressor]';
-  }
 }

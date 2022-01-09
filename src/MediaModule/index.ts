@@ -613,11 +613,6 @@ export class MediaModule extends SoundModule {
     };
   }
 
-  /** @override */
-  public toString(): string {
-    return '[MediaModule]';
-  }
-
   /**
    * This method is event listener for `MediaSource`
    * @param {Event} event This argument is instance of `Event`.

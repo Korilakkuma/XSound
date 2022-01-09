@@ -424,11 +424,6 @@ export class Cabinet extends Effector {
       state: this.isActive
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Cabinet]';
-  }
 }
 
 /**
@@ -626,10 +621,5 @@ export class Distortion extends Effector {
       post   : this.postEQ.params(),
       cabinet: this.cabinet.params()
     };
-  }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Distortion]';
   }
 }

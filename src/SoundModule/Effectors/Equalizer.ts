@@ -154,9 +154,4 @@ export class Equalizer extends Effector {
       presence: this.presence.gain.value
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Equalizer]';
-  }
 }

@@ -248,9 +248,4 @@ export class Oscillator implements Connectable, Statable {
   public get OUTPUT(): GainNode {
     return this.volume;
   }
-
-  /** @override */
-  public toString(): string {
-    return '[OscillatorModule Oscillator]';
-  }
 }

@@ -344,11 +344,6 @@ export class TimeOverview extends Visualizer {
     return this;
   }
 
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Analyser TimeOverview]';
-  }
-
   /**
    * This method visualizes audio wave overview to Canvas.
    * @param {Float32Array} data This argument is audio data for visualization.

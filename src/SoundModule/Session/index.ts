@@ -179,9 +179,4 @@ export class Session implements Connectable {
   public get OUTPUT(): GainNode {
     return this.output;
   }
-
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Session]';
-  }
 }

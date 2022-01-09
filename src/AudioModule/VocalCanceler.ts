@@ -64,9 +64,4 @@ export class VocalCanceler {
       depth: this.depth
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[AudioModule VocalCanceler]';
-  }
 }

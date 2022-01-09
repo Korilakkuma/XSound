@@ -338,9 +338,4 @@ export class OscillatorModule extends SoundModule {
       }
     };
   }
-
-  /** @override */
-  public toString(): string {
-    return '[OscillatorModule]';
-  }
 }

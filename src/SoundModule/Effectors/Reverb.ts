@@ -230,11 +230,6 @@ export class Reverb extends Effector {
     return this;
   }
 
-  /** @override */
-  public toString(): string {
-    return '[SoundModule Reverb]';
-  }
-
   /**
    * This method retrives `ArrayBuffer` and creates instance of `AudioBuffer`.
    * @param {string} url This argument is resource URL for one-shot audio.

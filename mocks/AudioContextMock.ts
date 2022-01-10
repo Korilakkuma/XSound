@@ -1,4 +1,3 @@
-import faker from 'faker';
 import { BufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
@@ -20,12 +19,12 @@ import { StereoPannerNodeMock } from './StereoPannerNodeMock';
 import { WaveShaperNodeMock } from './WaveShaperNodeMock';
 
 export class AudioContextMock {
-  activeSourceCount = faker.datatype.number({ min: 0 });
+  activeSourceCount = Math.floor(6 * Math.random());
   audioWorklet = {
     addModule: () => new Promise(() => {})
   } as AudioWorklet;
 
-  currentTime = faker.datatype.number({ min: 0 });
+  currentTime = performance.now();
   destination = {} as AudioDestinationNode;
   listener = new AudioListenerMock();
   sampleRate = 44100;

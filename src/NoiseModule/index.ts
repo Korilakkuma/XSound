@@ -7,7 +7,7 @@ export type NoiseModuleParams = SoundModuleParams & {
   type: NoiseType
 };
 
-export type NoiseModuleParam = Partial<Pick<NoiseModuleParams, 'mastervolume' | 'type'>>;
+type Params = Partial<Pick<NoiseModuleParams, 'mastervolume' | 'type'>>;
 
 export class NoiseModule extends SoundModule {
   private type: NoiseType = 'whitenoise';
@@ -164,11 +164,14 @@ export class NoiseModule extends SoundModule {
 
   /**
    * This method gets or sets parameters for noise module.
-   * @param {keyof NoiseModuleParam|NoiseModuleParam} params This argument is string if getter. Otherwise, setter.
-   * @return {NoiseParam[keyof NoiseParam]|NoiseModule} Return value is parameter for noise module if getter.
+   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
+   * @return {Params[keyof Params]|NoiseModule} Return value is parameter for noise module if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof NoiseModuleParam | NoiseModuleParam): NoiseModuleParam[keyof NoiseModuleParam] | NoiseModule {
+  public param(params: 'mastervolume'): number;
+  public param(params: 'type'): NoiseType;
+  public param(params: Params): NoiseModule;
+  public param(params: keyof Params | Params): Params[keyof Params] | NoiseModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':

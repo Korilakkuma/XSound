@@ -1,7 +1,9 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
 import { AudioBufferMock } from '../../mocks/AudioBufferMock';
 import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
-import { AudioModule, AudioModuleParam } from '../../src/AudioModule';
+import { AudioModule, AudioModuleParams } from '../../src/AudioModule';
+
+type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
 
 describe(AudioModule.name, () => {
   const context = new AudioContextMock();
@@ -115,7 +117,7 @@ describe(AudioModule.name, () => {
   });
 
   describe(audioModule.param.name, () => {
-    const defaultParams: AudioModuleParam = {
+    const defaultParams: Params = {
       mastervolume: 1,
       playbackRate: 1,
       detune      : 0,
@@ -123,7 +125,7 @@ describe(AudioModule.name, () => {
       currentTime : 0
     };
 
-    const params: AudioModuleParam = {
+    const params: Params = {
       mastervolume: 0.5,
       playbackRate: 1.5,
       detune      : -600,

@@ -1,6 +1,8 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
 import { AudioBufferMock } from '../../mocks/AudioBufferMock';
-import { OneshotModule, OneshotModuleParam, OneshotSettings } from '../../src/OneshotModule';
+import { OneshotModule, OneshotModuleParams, OneshotSettings } from '../../src/OneshotModule';
+
+type Params = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;
 
 describe(OneshotModule.name, () => {
   const context = new AudioContextMock();
@@ -119,12 +121,12 @@ describe(OneshotModule.name, () => {
   });
 
   describe(oneshotModule.param.name, () => {
-    const defaultParams: OneshotModuleParam = {
+    const defaultParams: Params = {
       mastervolume: 1,
       transpose   : 1
     };
 
-    const params: OneshotModuleParam = {
+    const params: Params = {
       mastervolume: 0.5,
       transpose   : 0.5
     };
@@ -147,14 +149,17 @@ describe(OneshotModule.name, () => {
   });
 
   describe(oneshotModule.get.name, () => {
-    test('should return `OneshotSetting`', () => {
+    test('should return instance of `AudioBuffer` or array that contains instance of `AudioBuffer`', () => {
       // @ts-ignore
       // eslint-disable-next-line dot-notation
       oneshotModule['buffers'] = [new AudioBufferMock(), new AudioBufferMock()];
 
       expect(oneshotModule.get(0)).toBeInstanceOf(AudioBufferMock);
       expect(oneshotModule.get(1)).toBeInstanceOf(AudioBufferMock);
-      expect(oneshotModule.get(2)).toBe(null);
+
+      oneshotModule.get().forEach((buffer: AudioBuffer) => {
+        expect(buffer).toBeInstanceOf(AudioBuffer);
+      });
     });
   });
 

@@ -36,7 +36,7 @@ export type AudioModuleParams = SoundModuleParams & {
   readonly numberOfChannels?: number
 };
 
-export type AudioModuleParam = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
+type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
 
 /**
  * This subclass is for playing single audio.
@@ -278,11 +278,22 @@ export class AudioModule extends SoundModule {
 
   /**
    * This method gets or sets parameters for audio module.
-   * @param {keyof AudioModuleParam|AudioModuleParam} params This argument is string if getter. Otherwise, setter.
-   * @return {AudioModuleParam[keyof AudioModuleParam]|AudioModule} Return value is parameter for audio module if getter.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
+   * @return {Params[keyof Params]|Params} Return value is parameter for audio module if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof AudioModuleParam | AudioModuleParam): AudioModuleParam[keyof AudioModuleParam] | AudioModule {
+  public param(params: 'mastervolume'): number;
+  public param(params: 'playbackRate'): number;
+  public param(params: 'detune'): number;
+  public param(params: 'loop'): boolean;
+  public param(params: 'currentTime'): number;
+  public param(params: 'duration'): number;
+  public param(params: 'sampleRate'): number;
+  public param(params: 'numberOfChannels'): number;
+  public param(params: 'numberOfChannels'): number;
+  public param(params: Params): AudioModule;
+  public param(params: keyof Params | Params): Params[keyof Params] | AudioModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':

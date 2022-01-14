@@ -1,6 +1,8 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
 import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
-import { MediaModule, MediaModuleParam } from '../../src/MediaModule';
+import { MediaModule, MediaModuleParams } from '../../src/MediaModule';
+
+type Params = Partial<Pick<MediaModuleParams, 'mastervolume' | 'autoplay' | 'playbackRate' | 'currentTime' | 'controls' | 'loop' | 'muted' | 'duration'>>;
 
 /**
  * Coverage is low because of Autoplay policy on Jest
@@ -109,7 +111,7 @@ describe(MediaModule.name, () => {
   });
 
   describe(mediaModule.param.name, () => {
-    const defaultParams: MediaModuleParam = {
+    const defaultParams: Params = {
       mastervolume: 1,
       playbackRate: 1,
       currentTime : 0,
@@ -118,7 +120,7 @@ describe(MediaModule.name, () => {
       muted       : false
     };
 
-    const params: MediaModuleParam = {
+    const params: Params = {
       mastervolume: 0.5,
       playbackRate: 1.5,
       currentTime : 60,

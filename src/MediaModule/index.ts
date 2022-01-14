@@ -13,7 +13,7 @@ export type MediaModuleParams = SoundModuleParams & {
   readonly duration?: number
 };
 
-export type MediaModuleParam = Partial<Pick<MediaModuleParams, 'mastervolume' | 'autoplay' | 'playbackRate' | 'currentTime' | 'controls' | 'loop' | 'muted' | 'duration'>>;
+type Params = Partial<Pick<MediaModuleParams, 'mastervolume' | 'autoplay' | 'playbackRate' | 'currentTime' | 'controls' | 'loop' | 'muted' | 'duration'>>;
 
 /**
  * This class processes sound data from `HTMLMediaElement`.
@@ -346,11 +346,22 @@ export class MediaModule extends SoundModule {
 
   /**
    * This method gets or sets parameters for media module.
-   * @param {keyof MediaModuleParam|MediaModuleParam} params This argument is string if getter. Otherwise, setter.
-   * @return {MediaModuleParam[keyof MediaModuleParam]|MediaModule} Return value is parameter for media module if getter.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
+   * @return {Params[keyof Params]|MediaModule} Return value is parameter for media module if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof MediaModuleParam | MediaModuleParam): MediaModuleParam[keyof MediaModuleParam] | MediaModule {
+  public param(params: 'mastervolume'): number;
+  public param(params: 'autoplay'): boolean;
+  public param(params: 'playbackRate'): number;
+  public param(params: 'currentTime'): number;
+  public param(params: 'controls'): boolean;
+  public param(params: 'loop'): boolean;
+  public param(params: 'muted'): boolean;
+  public param(params: 'duration'): boolean;
+  public param(params: 'duration'): boolean;
+  public param(params: Params): MediaModule;
+  public param(params: keyof Params | Params): Params[keyof Params] | MediaModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':

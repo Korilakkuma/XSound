@@ -36,7 +36,7 @@ export type StreamModuleParams = SoundModuleParams & {
   track?: boolean
 };
 
-export type StreamModuleParam = Partial<Pick<StreamModuleParams, 'mastervolume' | 'output' | 'track'>>;
+type Params = Partial<Pick<StreamModuleParams, 'mastervolume' | 'output' | 'track'>>;
 
 /**
  * This class is for processing sound data from WebRTC.
@@ -229,11 +229,16 @@ export class StreamModule extends SoundModule {
 
   /**
    * This method gets or sets parameters for stream module.
-   * @param {keyof StreamModuleParam} params This argument is string if getter. Otherwise, setter.
-   * @return {StreamModuleParam[keyof StreamModuleParam]|StreamModule} Return value is parameter for stream module if getter.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof Params} params This argument is string if getter. Otherwise, setter.
+   * @return {Params[keyof Params]|StreamModule} Return value is parameter for stream module if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof StreamModuleParam | StreamModuleParam): StreamModuleParam[keyof StreamModuleParam] | StreamModule {
+  public param(params: 'mastervolume'): number;
+  public param(params: 'output'): boolean;
+  public param(params: 'track'): boolean;
+  public param(params: Params): StreamModule;
+  public param(params: keyof Params | Params): Params[keyof Params] | StreamModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -276,25 +281,19 @@ export class StreamModule extends SoundModule {
   }
 
   /**
-   * This method gets instance of `MediaStreamAudioSourceNode` or `MediaStreamTrackAudioSourceNode`.
+   * This method gets instance of `MediaStreamAudioSourceNode` or `MediaStreamTrackAudioSourceNode` or that array contains these.
+   * This method is overloaded for type interface and type check.
    * @param {number} index This argument selects instance of `MediaStreamAudioSourceNode` or `MediaStreamTrackAudioSourceNode`.
    * @return {MediaStreamAudioSourceNode|MediaStreamTrackAudioSourceNode}
    */
   // @ts-ignore (HACK: `MediaStreamTrackAudioSourceNode` is not defined)
-  public get(index: number): MediaStreamAudioSourceNode | MediaStreamTrackAudioSourceNode | null {
-    if ((index >= 0) && (index < this.sources.length)) {
+  public get(index: number): MediaStreamAudioSourceNode | MediaStreamTrackAudioSourceNode;
+  public get(): MediaStreamAudioSourceNode[] | MediaStreamTrackAudioSourceNode[];
+  public get(index?: number): MediaStreamAudioSourceNode | MediaStreamTrackAudioSourceNode | MediaStreamAudioSourceNode[] | MediaStreamTrackAudioSourceNode[] {
+    if ((typeof index === 'number') && (index >= 0) && (index < this.sources.length)) {
       return this.sources[index];
     }
 
-    return null;
-  }
-
-  /**
-   * This method gets array that contains instance of `MediaStreamAudioSourceNode` or `MediaStreamTrackAudioSourceNode`.
-   * @return {Array<MediaStreamAudioSourceNode|MediaStreamTrackAudioSourceNode>}
-   */
-  // @ts-ignore (HACK: `MediaStreamTrackAudioSourceNode` is not defined)
-  public getAll(): MediaStreamAudioSourceNode[] | MediaStreamTrackAudioSourceNode[] {
     return this.sources;
   }
 

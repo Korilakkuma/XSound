@@ -1,5 +1,7 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
-import { NoiseModule, NoiseModuleParam } from '../../src/NoiseModule';
+import { NoiseModule, NoiseModuleParams } from '../../src/NoiseModule';
+
+type Params = Partial<Pick<NoiseModuleParams, 'mastervolume' | 'type'>>;
 
 describe(NoiseModule.name, () => {
   const context = new AudioContextMock();
@@ -64,12 +66,12 @@ describe(NoiseModule.name, () => {
   });
 
   describe(noiseModule.param.name, () => {
-    const defaultParams: NoiseModuleParam = {
+    const defaultParams: Params = {
       mastervolume: 1,
       type        : 'whitenoise'
     };
 
-    const params: NoiseModuleParam = {
+    const params: Params = {
       mastervolume: 0.5,
       type        : 'browniannoise'
     };

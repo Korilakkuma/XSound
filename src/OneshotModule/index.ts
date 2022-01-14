@@ -18,7 +18,7 @@ export type OneshotModuleParams = SoundModuleParams & {
   transpose?: number
 };
 
-export type OneshotModuleParam = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;
+type Params = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;
 
 /**
  * This subclass is for playing one-shot audio
@@ -241,11 +241,15 @@ export class OneshotModule extends SoundModule {
 
   /**
    * This method gets or sets parameters for one-shot module.
-   * @param {keyof OneshotModuleParam|OneshotModuleParam} params This argument is string if getter. Otherwise, setter.
-   * @return {OneshotModuleParam[keyof OneshotModuleParam]|OneshotModule} Return value is parameter for one-shot module if getter.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
+   * @return {Params[keyof Params]|Params} Return value is parameter for one-shot module if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof OneshotModuleParam | OneshotModuleParam): OneshotModuleParam[keyof OneshotModuleParam] | OneshotModule {
+  public param(params: 'mastervolume'): number;
+  public param(params: 'transpose'): number;
+  public param(params: Params): Params[keyof Params];
+  public param(params: keyof Params | Params): Params[keyof Params] | OneshotModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -280,16 +284,19 @@ export class OneshotModule extends SoundModule {
   }
 
   /**
-   * This method gets instance of `AudioBuffer` that is used in `OneshotModule`.
+   * This method gets instance of `AudioBuffer` or array that contains the all of `AudioBuffer`s.
+   * This method is overloaded for type interface and type check.
    * @param {number} index This argument selects instance of `AudioBuffer`.
-   * @return {AudioBuffer|null}
+   * @return {AudioBuffer|AudioBuffer[]}
    */
-  public get(index: number): AudioBuffer | null {
-    if ((index >= 0) && (index < this.buffers.length)) {
+  public get(index: number): AudioBuffer;
+  public get(): AudioBuffer[];
+  public get(index?: number): AudioBuffer | AudioBuffer[] {
+    if ((typeof index === 'number') && (index >= 0) && (index < this.buffers.length)) {
       return this.buffers[index];
     }
 
-    return null;
+    return this.buffers;
   }
 
   /**

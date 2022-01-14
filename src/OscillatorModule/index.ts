@@ -31,7 +31,7 @@ export type OscillatorModuleParams = SoundModuleParams & {
   }
 };
 
-export type OscillatorModuleParam = Partial<Pick<OscillatorModuleParams, 'mastervolume'>>;
+type Params = Partial<Pick<OscillatorModuleParams, 'mastervolume'>>;
 
 /**
  * This class manages instances of `Oscillator` for creating sound.
@@ -191,11 +191,14 @@ export class OscillatorModule extends SoundModule {
 
   /**
    * This method gets or sets parameters for oscillator module.
-   * @param {keyof OscillatorModuleParam|OscillatorModuleParam} params This argument is string if getter. Otherwise, setter.
-   * @return {OscillatorModuleParam[keyof OscillatorModuleParam]|OscillatorModule} Return value is parameter for oscillator module if getter.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
+   * @return {Params[keyof Params]|OscillatorModule} Return value is parameter for oscillator module if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof OscillatorModuleParam | OscillatorModuleParam): OscillatorModuleParam[keyof OscillatorModuleParam] | OscillatorModule {
+  public param(params: 'mastervolume'): number;
+  public param(params: Params): OscillatorModule;
+  public param(params: keyof Params | Params): Params[keyof Params] | OscillatorModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -222,23 +225,18 @@ export class OscillatorModule extends SoundModule {
   }
 
   /**
-   * This method gets instance of `Oscillator`.
+   * This method gets instance of `Oscillator` or array that contains the all of `Oscillator`s.
+   * This method is overloaded for type interface and type check.
    * @param {number} index This argument selects instance of `Oscillator`.
-   * @return {Oscillator|null}
+   * @return {Oscillator|Array<Oscillator>}
    */
-  public get(index: number): Oscillator | null {
-    if ((index >= 0) && (index < this.sources.length)) {
+  public get(index: number): Oscillator;
+  public get(): Oscillator[];
+  public get(index?: number): Oscillator | Oscillator[] {
+    if ((typeof index === 'number') && (index >= 0) && (index < this.sources.length)) {
       return this.sources[index];
     }
 
-    return null;
-  }
-
-  /**
-   * This method gets array that contains instance of `Oscillator`.
-   * @return {Array<Oscillator>}
-   */
-  public getAll(): Oscillator[] {
     return this.sources;
   }
 

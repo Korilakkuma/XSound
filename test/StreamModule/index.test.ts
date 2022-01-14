@@ -1,5 +1,7 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
-import { StreamModule, StreamModuleParam } from '../../src/StreamModule';
+import { StreamModule, StreamModuleParams } from '../../src/StreamModule';
+
+type Params = Partial<Pick<StreamModuleParams, 'mastervolume' | 'output' | 'track'>>;
 
 // TODO: Add tests if use `MediaStreamTrackAudioSourceNode`
 describe(StreamModule.name, () => {
@@ -105,13 +107,13 @@ describe(StreamModule.name, () => {
   });
 
   describe(streamModule.param.name, () => {
-    const defaultParams: StreamModuleParam = {
+    const defaultParams: Params = {
       mastervolume: 1,
       output      : true,
       track       : false
     };
 
-    const params: StreamModuleParam = {
+    const params: Params = {
       mastervolume: 0.5,
       output      : false,
       track       : true
@@ -145,20 +147,10 @@ describe(StreamModule.name, () => {
           streamModule.start();
 
           expect(streamModule.get(0)).toBeInstanceOf(MediaStreamAudioSourceNode);
-          expect(streamModule.get(1)).toBe(null);
-        })
-        .catch(() => {
-        });
-    });
-  });
 
-  describe(streamModule.getAll.name, () => {
-    test('should return array that contains instance of `MediaStreamAudioSourceNode`', () => {
-      streamModule.ready()
-        .then(() => {
-          streamModule.start();
-
-          expect(streamModule.getAll()[0]).toBeInstanceOf(MediaStreamAudioSourceNode);
+          streamModule.get().forEach((source) => {
+            expect(source).toBeInstanceOf(MediaStreamAudioSourceNode);
+          });
         })
         .catch(() => {
         });

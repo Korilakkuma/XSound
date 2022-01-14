@@ -1,6 +1,8 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
 import { Oscillator } from '../../src/OscillatorModule/Oscillator';
-import { OscillatorModule, OscillatorModuleParam } from '../../src/OscillatorModule';
+import { OscillatorModule, OscillatorModuleParams } from '../../src/OscillatorModule';
+
+type Params = Partial<Pick<OscillatorModuleParams, 'mastervolume'>>;
 
 describe(OscillatorNode.name, () => {
   const context = new AudioContextMock();
@@ -18,11 +20,11 @@ describe(OscillatorNode.name, () => {
   });
 
   describe(oscillatorModule.param.name, () => {
-    const defaultParams: OscillatorModuleParam = {
+    const defaultParams: Params = {
       mastervolume: 1
     };
 
-    const params: OscillatorModuleParam = {
+    const params: Params = {
       mastervolume: 0.5
     };
 
@@ -40,14 +42,17 @@ describe(OscillatorNode.name, () => {
   });
 
   describe(oscillatorModule.get.name, () => {
-    test('should return instance of `Oscillator`', () => {
+    test('should return instance of `Oscillator` or array that contains instance of `Oscillator`', () => {
       oscillatorModule.setup([true, true, false, false]);
 
       expect(oscillatorModule.get(0)).toBeInstanceOf(Oscillator);
       expect(oscillatorModule.get(1)).toBeInstanceOf(Oscillator);
       expect(oscillatorModule.get(2)).toBeInstanceOf(Oscillator);
       expect(oscillatorModule.get(3)).toBeInstanceOf(Oscillator);
-      expect(oscillatorModule.get(4)).toBeNull();
+
+      oscillatorModule.get().forEach((oscillator: Oscillator) => {
+        expect(oscillator).toBeInstanceOf(Oscillator);
+      });
 
       oscillatorModule.setup([]);
     });

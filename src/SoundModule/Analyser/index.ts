@@ -205,10 +205,16 @@ export class Analyser implements Connectable {
 
   /**
    * This method gets or sets parameters for analyser.
+   * This method is overloaded for type interface and type check.
    * @param {keyof AnalyserParams|AnalyserParams} params This argument is string if getter. Otherwise, setter.
    * @return {AnalyserParams[keyof AnalyserParams]|Analyser} Return value is parameter for analyser if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'fftSize'): number;
+  public param(params: 'frequencyBinCount'): number;
+  public param(params: 'minDecibels'): number;
+  public param(params: 'maxDecibels'): number;
+  public param(params: 'smoothingTimeConstant'): number;
   public param(params: keyof AnalyserParams | AnalyserParams): AnalyserParams[keyof AnalyserParams] | Analyser {
     // Getter
     if (typeof params === 'string') {

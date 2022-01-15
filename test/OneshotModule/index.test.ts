@@ -1,5 +1,26 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
 import { AudioBufferMock } from '../../mocks/AudioBufferMock';
+import { Analyser } from '../../src/SoundModule/Analyser';
+import { Recorder } from '../../src/SoundModule/Recorder';
+import { Session } from '../../src/SoundModule/Session';
+import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
+import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
+import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
+import { Delay } from '../../src/SoundModule/Effectors/Delay';
+import { Distortion } from '../../src/SoundModule/Effectors/Distortion';
+import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
+import { Filter } from '../../src/SoundModule/Effectors/Filter';
+import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
+import { Listener } from '../../src/SoundModule/Effectors/Listener';
+import { Panner } from '../../src/SoundModule/Effectors/Panner';
+import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
+import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
+import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
+import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
+import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
+import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
+import { Wah } from '../../src/SoundModule/Effectors/Wah';
+import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { OneshotModule, OneshotModuleParams, OneshotSettings } from '../../src/OneshotModule';
 
 type Params = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;
@@ -203,6 +224,32 @@ describe(OneshotModule.name, () => {
 
     // eslint-disable-next-line dot-notation
     oneshotModule['load'] = originalLoad;
+  });
+
+  describe(oneshotModule.module.name, () => {
+    test('should return instance of `Module`', () => {
+      expect(oneshotModule.module('analyser')).toBeInstanceOf(Analyser);
+      expect(oneshotModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(oneshotModule.module('session')).toBeInstanceOf(Session);
+      expect(oneshotModule.module('autopanner')).toBeInstanceOf(Autopanner);
+      expect(oneshotModule.module('chorus')).toBeInstanceOf(Chorus);
+      expect(oneshotModule.module('compressor')).toBeInstanceOf(Compressor);
+      expect(oneshotModule.module('delay')).toBeInstanceOf(Delay);
+      expect(oneshotModule.module('distortion')).toBeInstanceOf(Distortion);
+      expect(oneshotModule.module('equalizer')).toBeInstanceOf(Equalizer);
+      expect(oneshotModule.module('filter')).toBeInstanceOf(Filter);
+      expect(oneshotModule.module('flanger')).toBeInstanceOf(Flanger);
+      expect(oneshotModule.module('listener')).toBeInstanceOf(Listener);
+      expect(oneshotModule.module('panner')).toBeInstanceOf(Panner);
+      expect(oneshotModule.module('phaser')).toBeInstanceOf(Phaser);
+      expect(oneshotModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
+      expect(oneshotModule.module('reverb')).toBeInstanceOf(Reverb);
+      expect(oneshotModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
+      expect(oneshotModule.module('stereo')).toBeInstanceOf(Stereo);
+      expect(oneshotModule.module('tremolo')).toBeInstanceOf(Tremolo);
+      expect(oneshotModule.module('wah')).toBeInstanceOf(Wah);
+      expect(oneshotModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
+    });
   });
 
   describe(oneshotModule.params.name, () => {

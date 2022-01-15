@@ -1,26 +1,5 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
-import { Analyser } from '../../src/SoundModule/Analyser';
-import { Recorder } from '../../src/SoundModule/Recorder';
-import { Session } from '../../src/SoundModule/Session';
 import { Effector } from '../../src/SoundModule/Effectors/Effector';
-import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
-import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
-import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
-import { Delay } from '../../src/SoundModule/Effectors/Delay';
-import { Distortion } from '../../src/SoundModule/Effectors/Distortion';
-import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
-import { Filter } from '../../src/SoundModule/Effectors/Filter';
-import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
-import { Listener } from '../../src/SoundModule/Effectors/Listener';
-import { Panner } from '../../src/SoundModule/Effectors/Panner';
-import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
-import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
-import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
-import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
-import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
-import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
-import { Wah } from '../../src/SoundModule/Effectors/Wah';
-import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { SoundModule } from '../../src/SoundModule';
 
 class CustomEffector extends Effector {
@@ -31,30 +10,6 @@ describe(SoundModule.name, () => {
 
   // @ts-ignore
   const soundModule = new SoundModule(context, 1024);
-
-  describe(soundModule.module.name, () => {
-    expect(soundModule.module('analyser')).toBeInstanceOf(Analyser);
-    expect(soundModule.module('recorder')).toBeInstanceOf(Recorder);
-    expect(soundModule.module('session')).toBeInstanceOf(Session);
-    expect(soundModule.module('autopanner')).toBeInstanceOf(Autopanner);
-    expect(soundModule.module('chorus')).toBeInstanceOf(Chorus);
-    expect(soundModule.module('compressor')).toBeInstanceOf(Compressor);
-    expect(soundModule.module('delay')).toBeInstanceOf(Delay);
-    expect(soundModule.module('distortion')).toBeInstanceOf(Distortion);
-    expect(soundModule.module('equalizer')).toBeInstanceOf(Equalizer);
-    expect(soundModule.module('filter')).toBeInstanceOf(Filter);
-    expect(soundModule.module('flanger')).toBeInstanceOf(Flanger);
-    expect(soundModule.module('listener')).toBeInstanceOf(Listener);
-    expect(soundModule.module('panner')).toBeInstanceOf(Panner);
-    expect(soundModule.module('phaser')).toBeInstanceOf(Phaser);
-    expect(soundModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
-    expect(soundModule.module('reverb')).toBeInstanceOf(Reverb);
-    expect(soundModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
-    expect(soundModule.module('stereo')).toBeInstanceOf(Stereo);
-    expect(soundModule.module('tremolo')).toBeInstanceOf(Tremolo);
-    expect(soundModule.module('wah')).toBeInstanceOf(Wah);
-    expect(soundModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
-  });
 
   describe(soundModule.resize.name, () => {
     test('should call init method', () => {

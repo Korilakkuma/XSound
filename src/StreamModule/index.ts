@@ -20,7 +20,7 @@ import { Reverb } from '../SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../SoundModule/Effectors/Stereo';
 import { Tremolo } from '../SoundModule/Effectors/Tremolo';
-import { Wah } from '../SoundModule/./Effectors/Wah';
+import { Wah } from '../SoundModule/Effectors/Wah';
 import { NoiseGate, NoiseGateParams }  from './NoiseGate';
 import { NoiseSuppressor, NoiseSuppressorParams }  from './NoiseSuppressor';
 
@@ -384,31 +384,35 @@ export class StreamModule extends SoundModule {
     return !this.paused;
   }
 
-  /** @override */
-  override module(moduleName: 'analyser'): Analyser;
-  override module(moduleName: 'recorder'): Recorder;
-  override module(moduleName: 'session'): Session;
-  override module(moduleName: 'autopanner'): Autopanner;
-  override module(moduleName: 'chorus'): Chorus;
-  override module(moduleName: 'compressor'): Compressor;
-  override module(moduleName: 'delay'): Delay;
-  override module(moduleName: 'distortion'): Distortion;
-  override module(moduleName: 'equalizer'): Equalizer;
-  override module(moduleName: 'filter'): Filter;
-  override module(moduleName: 'flanger'): Flanger;
-  override module(moduleName: 'listener'): Listener;
-  override module(moduleName: 'panner'): Panner;
-  override module(moduleName: 'phaser'): Phaser;
-  override module(moduleName: 'pitchshifter'): PitchShifter;
-  override module(moduleName: 'reverb'): Reverb;
-  override module(moduleName: 'ringmodulator'): Ringmodulator;
-  override module(moduleName: 'stereo'): Stereo;
-  override module(moduleName: 'tremolo'): Tremolo;
-  override module(moduleName: 'wah'): Wah;
-  override module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
-  override module(moduleName: 'noisegate'): NoiseGate;
-  override module(moduleName: 'noisesuppressor'): NoiseSuppressor;
-  override module(moduleName: ModuleName | 'noisegate' | 'noisesuppressor'): Module | NoiseGate | NoiseSuppressor | null {
+  /**
+   * This method gets instance of `Module` (Analyser, Recorder, Effector ... etc).
+   * @param {ModuleName|'noisegate'|'noisesuppressor'} moduleName This argument selects module.
+   * @return {Module|NoiseGate|NoiseSuppressor}
+   */
+  public module(moduleName: 'analyser'): Analyser;
+  public module(moduleName: 'recorder'): Recorder;
+  public module(moduleName: 'session'): Session;
+  public module(moduleName: 'autopanner'): Autopanner;
+  public module(moduleName: 'chorus'): Chorus;
+  public module(moduleName: 'compressor'): Compressor;
+  public module(moduleName: 'delay'): Delay;
+  public module(moduleName: 'distortion'): Distortion;
+  public module(moduleName: 'equalizer'): Equalizer;
+  public module(moduleName: 'filter'): Filter;
+  public module(moduleName: 'flanger'): Flanger;
+  public module(moduleName: 'listener'): Listener;
+  public module(moduleName: 'panner'): Panner;
+  public module(moduleName: 'phaser'): Phaser;
+  public module(moduleName: 'pitchshifter'): PitchShifter;
+  public module(moduleName: 'reverb'): Reverb;
+  public module(moduleName: 'ringmodulator'): Ringmodulator;
+  public module(moduleName: 'stereo'): Stereo;
+  public module(moduleName: 'tremolo'): Tremolo;
+  public module(moduleName: 'wah'): Wah;
+  public module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
+  public module(moduleName: 'noisegate'): NoiseGate;
+  public module(moduleName: 'noisesuppressor'): NoiseSuppressor;
+  public module(moduleName: ModuleName | 'noisegate' | 'noisesuppressor'): Module | NoiseGate | NoiseSuppressor | null {
     switch (moduleName) {
       case 'analyser':
         return this.analyser;

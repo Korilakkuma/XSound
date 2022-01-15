@@ -1,6 +1,27 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
 import { AudioBufferMock } from '../../mocks/AudioBufferMock';
+import { Analyser } from '../../src/SoundModule/Analyser';
+import { Recorder } from '../../src/SoundModule/Recorder';
+import { Session } from '../../src/SoundModule/Session';
+import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
+import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
+import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
+import { Delay } from '../../src/SoundModule/Effectors/Delay';
+import { Distortion } from '../../src/SoundModule/Effectors/Distortion';
 import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
+import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
+import { Filter } from '../../src/SoundModule/Effectors/Filter';
+import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
+import { Listener } from '../../src/SoundModule/Effectors/Listener';
+import { Panner } from '../../src/SoundModule/Effectors/Panner';
+import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
+import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
+import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
+import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
+import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
+import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from '../../src/AudioModule/VocalCanceler';
+import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { AudioModule, AudioModuleParams } from '../../src/AudioModule';
 
 type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
@@ -293,6 +314,33 @@ describe(AudioModule.name, () => {
 
       // eslint-disable-next-line dot-notation
       audioModule['buffer'] = null;
+    });
+  });
+
+  describe(audioModule.module.name, () => {
+    test('should return instance of `Module`', () => {
+      expect(audioModule.module('analyser')).toBeInstanceOf(Analyser);
+      expect(audioModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(audioModule.module('session')).toBeInstanceOf(Session);
+      expect(audioModule.module('autopanner')).toBeInstanceOf(Autopanner);
+      expect(audioModule.module('chorus')).toBeInstanceOf(Chorus);
+      expect(audioModule.module('compressor')).toBeInstanceOf(Compressor);
+      expect(audioModule.module('delay')).toBeInstanceOf(Delay);
+      expect(audioModule.module('distortion')).toBeInstanceOf(Distortion);
+      expect(audioModule.module('equalizer')).toBeInstanceOf(Equalizer);
+      expect(audioModule.module('filter')).toBeInstanceOf(Filter);
+      expect(audioModule.module('flanger')).toBeInstanceOf(Flanger);
+      expect(audioModule.module('listener')).toBeInstanceOf(Listener);
+      expect(audioModule.module('panner')).toBeInstanceOf(Panner);
+      expect(audioModule.module('phaser')).toBeInstanceOf(Phaser);
+      expect(audioModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
+      expect(audioModule.module('reverb')).toBeInstanceOf(Reverb);
+      expect(audioModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
+      expect(audioModule.module('stereo')).toBeInstanceOf(Stereo);
+      expect(audioModule.module('tremolo')).toBeInstanceOf(Tremolo);
+      expect(audioModule.module('wah')).toBeInstanceOf(Wah);
+      expect(audioModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
+      expect(audioModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
     });
   });
 

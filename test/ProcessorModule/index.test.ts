@@ -1,5 +1,26 @@
 import { AudioContextMock } from '../../mocks/AudioContextMock';
 import { AudioWorkletNodeMock, AudioParamMapMock } from '../../mocks/AudioWorkletNodeMock';
+import { Analyser } from '../../src/SoundModule/Analyser';
+import { Recorder } from '../../src/SoundModule/Recorder';
+import { Session } from '../../src/SoundModule/Session';
+import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
+import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
+import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
+import { Delay } from '../../src/SoundModule/Effectors/Delay';
+import { Distortion } from '../../src/SoundModule/Effectors/Distortion';
+import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
+import { Filter } from '../../src/SoundModule/Effectors/Filter';
+import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
+import { Listener } from '../../src/SoundModule/Effectors/Listener';
+import { Panner } from '../../src/SoundModule/Effectors/Panner';
+import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
+import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
+import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
+import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
+import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
+import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
+import { Wah } from '../../src/SoundModule/Effectors/Wah';
+import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { ProcessorModule } from '../../src/ProcessorModule';
 
 describe(ProcessorModule.name, () => {
@@ -121,6 +142,32 @@ describe(ProcessorModule.name, () => {
         })
         .catch(() => {
         });
+    });
+  });
+
+  describe(processorModule.module.name, () => {
+    test('should return instance of `Module`', () => {
+      expect(processorModule.module('analyser')).toBeInstanceOf(Analyser);
+      expect(processorModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(processorModule.module('session')).toBeInstanceOf(Session);
+      expect(processorModule.module('autopanner')).toBeInstanceOf(Autopanner);
+      expect(processorModule.module('chorus')).toBeInstanceOf(Chorus);
+      expect(processorModule.module('compressor')).toBeInstanceOf(Compressor);
+      expect(processorModule.module('delay')).toBeInstanceOf(Delay);
+      expect(processorModule.module('distortion')).toBeInstanceOf(Distortion);
+      expect(processorModule.module('equalizer')).toBeInstanceOf(Equalizer);
+      expect(processorModule.module('filter')).toBeInstanceOf(Filter);
+      expect(processorModule.module('flanger')).toBeInstanceOf(Flanger);
+      expect(processorModule.module('listener')).toBeInstanceOf(Listener);
+      expect(processorModule.module('panner')).toBeInstanceOf(Panner);
+      expect(processorModule.module('phaser')).toBeInstanceOf(Phaser);
+      expect(processorModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
+      expect(processorModule.module('reverb')).toBeInstanceOf(Reverb);
+      expect(processorModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
+      expect(processorModule.module('stereo')).toBeInstanceOf(Stereo);
+      expect(processorModule.module('tremolo')).toBeInstanceOf(Tremolo);
+      expect(processorModule.module('wah')).toBeInstanceOf(Wah);
+      expect(processorModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
     });
   });
 });

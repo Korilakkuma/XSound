@@ -313,8 +313,12 @@ export class OneshotModule extends SoundModule {
     return this;
   }
 
-  /** @override */
-  public params(): OneshotModuleParams {
+  /**
+   * This method gets one-shot module parameters as associative array.
+   * @return {OneshotModuleParams}
+   * @override
+   */
+  override params(): OneshotModuleParams {
     const params = super.params();
 
     return {

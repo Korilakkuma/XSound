@@ -461,8 +461,12 @@ export class StreamModule extends SoundModule {
     }
   }
 
-  /** @override */
-  public params(): StreamModuleParams {
+  /**
+   * This method gets stream module parameters as associative array.
+   * @return {StreamModuleParams}
+   * @override
+   */
+  override params(): StreamModuleParams {
     const params = super.params();
 
     return {

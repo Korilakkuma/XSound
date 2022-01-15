@@ -100,7 +100,7 @@ export class FFT extends Visualizer {
    * @param {number} maxDecibels This argument is in order to determine db range of spectrum. The default value is -30 dB.
    * @override
    */
-  protected visualizeOnCanvas(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void {
+  override visualizeOnCanvas(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive) {
       return;
     }
@@ -306,7 +306,7 @@ export class FFT extends Visualizer {
    * @param {number} maxDecibels This argument is in order to determine db range of spectrum. Default value is -30 dB.
    * @override
    */
-  protected visualizeBySVG(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void {
+  override visualizeBySVG(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void {
     if ((this.svg === null) || !this.isActive) {
       return;
     }

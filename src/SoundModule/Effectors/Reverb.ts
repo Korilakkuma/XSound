@@ -218,7 +218,8 @@ export class Reverb extends Effector {
     };
   }
 
-  public activate(): Reverb {
+  /** @override */
+  override activate(): Reverb {
     this.isActive = true;
 
     // Update connection
@@ -227,7 +228,8 @@ export class Reverb extends Effector {
     return this;
   }
 
-  public deactivate(): Reverb {
+  /** @override */
+  override deactivate(): Reverb {
     this.isActive = false;
 
     // Update connection

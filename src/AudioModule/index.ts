@@ -629,8 +629,12 @@ export class AudioModule extends SoundModule {
     }
   }
 
-  /** @override */
-  public params(): AudioModuleParams {
+  /**
+   * This method gets audio module parameters as associative array.
+   * @return {AudioModuleParams}
+   * @override
+   */
+  override params(): AudioModuleParams {
     const params = super.params();
 
     return {

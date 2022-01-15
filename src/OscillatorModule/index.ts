@@ -322,8 +322,12 @@ export class OscillatorModule extends SoundModule {
     }
   }
 
-  /** @override */
-  public params(): OscillatorModuleParams {
+  /**
+   * This method gets oscillator module parameters as associative array.
+   * @return {OscillatorModuleParams}
+   * @override
+   */
+  override params(): OscillatorModuleParams {
     const params = super.params();
 
     return {

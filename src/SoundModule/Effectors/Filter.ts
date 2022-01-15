@@ -232,7 +232,8 @@ export class Filter extends Effector {
     };
   }
 
-  public activate(): Filter {
+  /** @override */
+  override activate(): Filter {
     this.isActive = true;
 
     // Update connection
@@ -241,7 +242,8 @@ export class Filter extends Effector {
     return this;
   }
 
-  public deactivate(): Filter {
+  /** @override */
+  override deactivate(): Filter {
     this.isActive = false;
 
     // Update connection

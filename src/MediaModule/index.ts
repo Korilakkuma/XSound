@@ -597,8 +597,12 @@ export class MediaModule extends SoundModule {
     return document.exitPictureInPicture();
   }
 
-  /** @override */
-  public params(): MediaModuleParams {
+  /**
+   * This method gets media module parameters as associative array.
+   * @return {MediaModuleParams}
+   * @override
+   */
+  override params(): MediaModuleParams {
     const params = super.params();
 
     return {

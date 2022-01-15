@@ -357,7 +357,7 @@ export class TimeOverview extends Visualizer {
    * @override
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected visualizeOnCanvas(data: Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  override visualizeOnCanvas(data: Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive) {
       return;
     }
@@ -446,7 +446,7 @@ export class TimeOverview extends Visualizer {
    * @override
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected visualizeBySVG(data: Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  override visualizeBySVG(data: Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.svg === null) || !this.isActive) {
       return;
     }

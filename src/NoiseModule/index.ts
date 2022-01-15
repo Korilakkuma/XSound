@@ -205,8 +205,12 @@ export class NoiseModule extends SoundModule {
     return this;
   }
 
-  /** @override */
-  public params(): NoiseModuleParams {
+  /**
+   * This method gets noise module parameters as associative array.
+   * @return {NoiseModuleParams}
+   * @override
+   */
+  override params(): NoiseModuleParams {
     const params = super.params();
 
     return {

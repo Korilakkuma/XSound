@@ -34,12 +34,12 @@ export class Time extends Visualizer {
    *     Otherwise, return value is for method chain.
    * @override
    */
-  override param(params: 'interval'): number;
-  override param(params: 'styles'): GraphicsStyles;
-  override param(params: 'type'): DataType;
-  override param(params: 'textInterval'): number;
-  override param(params: TimeParams): Time;
-  override param(params: keyof TimeParams | TimeParams): TimeParams[keyof TimeParams] | Time {
+  public override param(params: 'interval'): number;
+  public override param(params: 'styles'): GraphicsStyles;
+  public override param(params: 'type'): DataType;
+  public override param(params: 'textInterval'): number;
+  public override param(params: TimeParams): Time;
+  public override param(params: keyof TimeParams | TimeParams): TimeParams[keyof TimeParams] | Time {
     if (typeof params === 'string') {
       switch (params) {
         case 'type':
@@ -86,7 +86,7 @@ export class Time extends Visualizer {
    * @override
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  override visualizeOnCanvas(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  protected override visualizeOnCanvas(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive) {
       return;
     }
@@ -233,7 +233,7 @@ export class Time extends Visualizer {
    * @override
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  override visualizeBySVG(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  protected override visualizeBySVG(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.svg === null) || !this.isActive) {
       return;
     }

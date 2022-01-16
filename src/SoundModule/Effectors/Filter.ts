@@ -50,7 +50,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  override start(startTime?: number): void {
+  public override start(startTime?: number): void {
     if (!this.isActive) {
       return;
     }
@@ -70,7 +70,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  override stop(stopTime?: number): void {
+  public override stop(stopTime?: number): void {
     if (!this.isActive) {
       return;
     }
@@ -87,7 +87,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.filter.disconnect(0);
@@ -217,7 +217,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  override params(): FilterParams {
+  public override params(): FilterParams {
     return {
       state    : this.isActive,
       type     : this.filter.type,
@@ -233,7 +233,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  override activate(): Filter {
+  public override activate(): Filter {
     this.isActive = true;
 
     // Update connection
@@ -243,7 +243,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  override deactivate(): Filter {
+  public override deactivate(): Filter {
     this.isActive = false;
 
     // Update connection

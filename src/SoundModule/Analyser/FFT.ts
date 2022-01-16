@@ -38,13 +38,13 @@ export class FFT extends Visualizer {
    *     Otherwise, return value is for method chain.
    * @override
    */
-  override param(params: 'interval'): number;
-  override param(params: 'styles'): GraphicsStyles;
-  override param(params: 'type'): DataType;
-  override param(params: 'size'): number;
-  override param(params: 'textInterval'): number;
-  override param(params: FFTParams): FFT;
-  override param(params: keyof FFTParams | FFTParams): FFTParams[keyof FFTParams] | FFT {
+  public override param(params: 'interval'): number;
+  public override param(params: 'styles'): GraphicsStyles;
+  public override param(params: 'type'): DataType;
+  public override param(params: 'size'): number;
+  public override param(params: 'textInterval'): number;
+  public override param(params: FFTParams): FFT;
+  public override param(params: keyof FFTParams | FFTParams): FFTParams[keyof FFTParams] | FFT {
     if (typeof params === 'string') {
       switch (params) {
         case 'type':
@@ -100,7 +100,7 @@ export class FFT extends Visualizer {
    * @param {number} maxDecibels This argument is in order to determine db range of spectrum. The default value is -30 dB.
    * @override
    */
-  override visualizeOnCanvas(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void {
+  protected override visualizeOnCanvas(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive) {
       return;
     }
@@ -306,7 +306,7 @@ export class FFT extends Visualizer {
    * @param {number} maxDecibels This argument is in order to determine db range of spectrum. Default value is -30 dB.
    * @override
    */
-  override visualizeBySVG(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void {
+  protected override visualizeBySVG(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void {
     if ((this.svg === null) || !this.isActive) {
       return;
     }

@@ -56,7 +56,7 @@ export class Wah extends Effector {
   }
 
   /** @override */
-  override stop(stopTime?: number, releaseTime?: number): void {
+  public override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (!this.auto && this.isActive) {
@@ -67,7 +67,7 @@ export class Wah extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.sensitivity.disconnect(0);
@@ -195,7 +195,7 @@ export class Wah extends Effector {
   }
 
   /** @override */
-  override params(): WahParams {
+  public override params(): WahParams {
     return {
       state    : this.isActive,
       auto     : this.auto,

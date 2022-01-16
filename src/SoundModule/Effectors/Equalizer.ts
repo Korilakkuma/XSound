@@ -61,7 +61,7 @@ export class Equalizer extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.bass.disconnect(0);
@@ -151,7 +151,7 @@ export class Equalizer extends Effector {
   }
 
   /** @override */
-  override params(): EqualizerParams {
+  public override params(): EqualizerParams {
     return {
       state   : this.isActive,
       bass    : this.bass.gain.value,

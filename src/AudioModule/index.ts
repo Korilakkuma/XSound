@@ -638,7 +638,7 @@ export class AudioModule extends SoundModule {
    * @return {AudioModuleParams}
    * @override
    */
-  override params(): AudioModuleParams {
+  public override params(): AudioModuleParams {
     const params = super.params();
 
     return {

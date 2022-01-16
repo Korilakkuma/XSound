@@ -414,7 +414,7 @@ export class OneshotModule extends SoundModule {
    * @return {OneshotModuleParams}
    * @override
    */
-  override params(): OneshotModuleParams {
+  public override params(): OneshotModuleParams {
     const params = super.params();
 
     return {

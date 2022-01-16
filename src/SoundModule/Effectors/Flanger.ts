@@ -55,7 +55,7 @@ export class Flanger extends Effector {
   }
 
   /** @override */
-  override stop(stopTime?: number, releaseTime?: number): void {
+  public override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
@@ -66,7 +66,7 @@ export class Flanger extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.delay.disconnect(0);
@@ -177,7 +177,7 @@ export class Flanger extends Effector {
   }
 
   /** @override */
-  override params(): FlangerParams {
+  public override params(): FlangerParams {
     return {
       state   : this.isActive,
       time    : this.delay.delayTime.value,

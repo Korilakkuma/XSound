@@ -91,7 +91,7 @@ class PreEqualizer extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     this.input.disconnect(0);
 
     if (this.isActive) {
@@ -184,7 +184,7 @@ class PreEqualizer extends Effector {
   }
 
   /** @override */
-  override params(): PreEqualizerParams {
+  public override params(): PreEqualizerParams {
     return {
       state: this.isActive,
       curve: this.preAmp.curve,
@@ -259,7 +259,7 @@ class PostEqualizer extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     this.input.disconnect(0);
 
     if (this.isActive) {
@@ -365,7 +365,7 @@ class PostEqualizer extends Effector {
   }
 
   /** @override */
-  override params(): PostEqualizerParams {
+  public override params(): PostEqualizerParams {
     return {
       state    : this.isActive,
       curve    : this.distortion.curve,
@@ -411,7 +411,7 @@ export class Cabinet extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
 
@@ -433,7 +433,7 @@ export class Cabinet extends Effector {
   }
 
   /** @override */
-  override params(): CabinetParams {
+  public override params(): CabinetParams {
     return {
       state: this.isActive
     };
@@ -504,7 +504,7 @@ export class Distortion extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
 
@@ -633,7 +633,7 @@ export class Distortion extends Effector {
   }
 
   /** @override */
-  override params(): DistortionParams {
+  public override params(): DistortionParams {
     return {
       state  : this.isActive,
       curve  : this.type,

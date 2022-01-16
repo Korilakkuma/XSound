@@ -69,7 +69,7 @@ export class Panner extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.panner.disconnect(0);
@@ -243,7 +243,7 @@ export class Panner extends Effector {
   }
 
   /** @override */
-  override params(): PannerParams {
+  public override params(): PannerParams {
     return {
       state         : this.isActive,
       x             : this.positions.x,

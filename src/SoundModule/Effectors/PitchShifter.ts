@@ -30,7 +30,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  override start(): void {
+  public override start(): void {
     if (!this.isActive || !this.paused) {
       return;
     }
@@ -89,7 +89,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  override stop(): void {
+  public override stop(): void {
     // Effector's state is active ?
     if (!this.isActive) {
       return;
@@ -106,7 +106,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.processor.disconnect(0);
@@ -161,7 +161,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  override params(): PitchShifterParams {
+  public override params(): PitchShifterParams {
     return {
       state: this.isActive,
       pitch: this.pitch

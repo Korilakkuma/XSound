@@ -66,7 +66,7 @@ export class Phaser extends Effector {
   }
 
   /** @override */
-  override stop(stopTime?: number, releaseTime?: number): void {
+  public override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
@@ -80,7 +80,7 @@ export class Phaser extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
 
@@ -224,7 +224,7 @@ export class Phaser extends Effector {
   }
 
   /** @override */
-  override params(): PhaserParams {
+  public override params(): PhaserParams {
     return {
       state    : this.isActive,
       stage    : this.numberOfStages,

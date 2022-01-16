@@ -470,7 +470,7 @@ export class StreamModule extends SoundModule {
    * @return {StreamModuleParams}
    * @override
    */
-  override params(): StreamModuleParams {
+  public override params(): StreamModuleParams {
     const params = super.params();
 
     return {

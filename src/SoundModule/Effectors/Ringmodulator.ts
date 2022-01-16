@@ -37,7 +37,7 @@ export class Ringmodulator extends Effector {
   }
 
   /** @override */
-  override stop(stopTime?: number, releaseTime?: number): void {
+  public override stop(stopTime?: number, releaseTime?: number): void {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
@@ -48,7 +48,7 @@ export class Ringmodulator extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.amplitude.disconnect(0);
@@ -114,7 +114,7 @@ export class Ringmodulator extends Effector {
   }
 
   /** @override */
-  override params(): RingmodulatorParams {
+  public override params(): RingmodulatorParams {
     return {
       state: this.isActive,
       depth: this.depth.gain.value,

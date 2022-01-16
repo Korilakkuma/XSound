@@ -55,7 +55,7 @@ export class Reverb extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.convolver.disconnect(0);
@@ -209,7 +209,7 @@ export class Reverb extends Effector {
   }
 
   /** @override */
-  override params(): ReverbParams {
+  public override params(): ReverbParams {
     return {
       state: this.isActive,
       dry  : this.dry.gain.value,
@@ -219,7 +219,7 @@ export class Reverb extends Effector {
   }
 
   /** @override */
-  override activate(): Reverb {
+  public override activate(): Reverb {
     this.isActive = true;
 
     // Update connection
@@ -229,7 +229,7 @@ export class Reverb extends Effector {
   }
 
   /** @override */
-  override deactivate(): Reverb {
+  public override deactivate(): Reverb {
     this.isActive = false;
 
     // Update connection

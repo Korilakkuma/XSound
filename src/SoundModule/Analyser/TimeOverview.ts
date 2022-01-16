@@ -79,15 +79,15 @@ export class TimeOverview extends Visualizer {
    *     Otherwise, return value is for method chain.
    * @override
    */
-  override param(params: 'interval'): number;
-  override param(params: 'styles'): GraphicsStyles;
-  override param(params: 'currentTime'): CurrentTimeStyles;
-  override param(params: 'sprite'): Color;
-  override param(params: 'plotInterval'): number;
-  override param(params: 'textInterval'): number;
-  override param(params: 'mode'): DragMode;
-  override param(params: TimeOverviewParams): TimeOverview;
-  override param(params: keyof TimeOverviewParams | TimeOverviewParams): TimeOverviewParams[keyof TimeOverviewParams] | TimeOverview {
+  public override param(params: 'interval'): number;
+  public override param(params: 'styles'): GraphicsStyles;
+  public override param(params: 'currentTime'): CurrentTimeStyles;
+  public override param(params: 'sprite'): Color;
+  public override param(params: 'plotInterval'): number;
+  public override param(params: 'textInterval'): number;
+  public override param(params: 'mode'): DragMode;
+  public override param(params: TimeOverviewParams): TimeOverview;
+  public override param(params: keyof TimeOverviewParams | TimeOverviewParams): TimeOverviewParams[keyof TimeOverviewParams] | TimeOverview {
     if (typeof params === 'string') {
       switch (params) {
         case 'currentTime':
@@ -357,7 +357,7 @@ export class TimeOverview extends Visualizer {
    * @override
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  override visualizeOnCanvas(data: Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  protected override visualizeOnCanvas(data: Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive) {
       return;
     }
@@ -446,7 +446,7 @@ export class TimeOverview extends Visualizer {
    * @override
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  override visualizeBySVG(data: Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  protected override visualizeBySVG(data: Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.svg === null) || !this.isActive) {
       return;
     }

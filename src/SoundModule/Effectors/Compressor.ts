@@ -37,7 +37,7 @@ export class Compressor extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.compressor.disconnect(0);
@@ -128,7 +128,7 @@ export class Compressor extends Effector {
   }
 
   /** @override */
-  override params(): CompressorParams {
+  public override params(): CompressorParams {
     return {
       state    : this.isActive,
       threshold: this.compressor.threshold.value,

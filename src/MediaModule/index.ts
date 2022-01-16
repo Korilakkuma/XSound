@@ -701,7 +701,7 @@ export class MediaModule extends SoundModule {
    * @return {MediaModuleParams}
    * @override
    */
-  override params(): MediaModuleParams {
+  public override params(): MediaModuleParams {
     const params = super.params();
 
     return {

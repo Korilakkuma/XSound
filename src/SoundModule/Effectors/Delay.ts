@@ -50,7 +50,7 @@ export class Delay extends Effector {
   }
 
   /** @override */
-  override connect(): GainNode {
+  public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
     this.delay.disconnect(0);
@@ -158,7 +158,7 @@ export class Delay extends Effector {
   }
 
   /** @override */
-  override params(): DelayParams {
+  public override params(): DelayParams {
     return {
       state   : this.isActive,
       time    : this.delay.delayTime.value,

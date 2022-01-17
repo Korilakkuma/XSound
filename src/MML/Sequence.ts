@@ -99,7 +99,9 @@ export class Sequence {
     return this._duration;
   }
 
-  /** @override */
+  /**
+   * This method returns `Sequence` members as JSON.
+   */
   public toString(): string {
     return JSON.stringify({
       id         : this._id,

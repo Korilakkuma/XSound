@@ -78,7 +78,9 @@ export class Token {
     return Number.isNaN(this._value) ? -1 : this._value;
   }
 
-  /** @override */
+  /**
+   * This method returns `Token` members as JSON.
+   */
   public toString(): string {
     return JSON.stringify({
       id   : this._id,

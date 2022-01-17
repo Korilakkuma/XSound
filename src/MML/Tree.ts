@@ -58,7 +58,9 @@ export class Tree {
     return this._right;
   }
 
-  /** @override */
+  /**
+   * This method represents tree status as string.
+   */
   public toString(): string {
     let space = '';
 

@@ -259,19 +259,28 @@ export class Visualizer implements Statable {
     }
   }
 
-  /** @override */
+  /**
+   * This method gets visualizer state. If returns `true`, visualizer is active.
+   * @return {boolean}
+   */
   public state(): boolean {
     return this.isActive;
   }
 
-  /** @override */
+  /**
+   * This method activates visualizer.
+   * @return {Visualizer} Return value is for method chain.
+   */
   public activate(): Visualizer {
     this.isActive = true;
 
     return this;
   }
 
-  /** @override */
+  /**
+   * This method deactivates visualizer.
+   * @return {Visualizer} Return value is for method chain.
+   */
   public deactivate(): Visualizer {
     this.isActive = false;
 

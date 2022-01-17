@@ -19,6 +19,7 @@
     "dev": "webpack-dev-server --progress",
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose",
     "release:patch": "npm version patch && git push && git push origin --tags",
     "release:minor": "npm version minor && git push && git push origin --tags",
     "release:major": "npm version major && git push && git push origin --tags",

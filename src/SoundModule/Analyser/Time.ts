@@ -80,6 +80,24 @@ export class Time extends Visualizer {
     return this;
   }
 
+  /** @override */
+  public override clear(): Time {
+    super.clear();
+    return this;
+  }
+
+  /** @override */
+  public override activate(): Time {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Time {
+    super.deactivate();
+    return this;
+  }
+
   /**
    * This method visualizes sound wave in time domain to Canvas.
    * @param {Uint8Array|Float32Array} data This argument is sound data for visualization.

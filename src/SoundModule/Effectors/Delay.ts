@@ -168,4 +168,16 @@ export class Delay extends Effector {
       feedback: this.feedback.gain.value
     };
   }
+
+  /** @override */
+  public override activate(): Delay {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Delay {
+    super.deactivate();
+    return this;
+  }
 }

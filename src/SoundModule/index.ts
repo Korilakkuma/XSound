@@ -277,70 +277,11 @@ export class SoundModule implements Connectable {
   }
 
   /**
-   * This method connects `AudioNode`s.
-   * @param {AudioNode} source This argument is `AudioNode` as sound source.
-   */
-  protected connect(source: AudioNode): void {
-    const input = this.modules[0].INPUT;
-
-    if (input === null) {
-      return;
-    }
-
-    // Start connection
-    // AudioSourceNode (Input)-> AudioNode -> ... -> AudioNode -> GainNode (Master Volume) -> AnalyserNode  -> AudioDestinationNode (Output)
-    source.disconnect(0);  // Clear connection
-
-    if (this.modules.length > 0) {
-      source.connect(input);
-    } else {
-      source.connect(this.mastervolume);
-    }
-
-    for (let i = 0, len = this.modules.length; i < len; i++) {
-      const output = this.modules[i].OUTPUT;
-
-      if (output === null) {
-        continue;
-      }
-
-      // Clear connection
-      output.disconnect(0);
-
-      if (i < (this.modules.length - 1)) {
-        const input = this.modules[i + 1].INPUT;
-
-        if (input === null) {
-          continue;
-        }
-
-        // Connect to next `AudioNode`
-        output.connect(input);
-      } else {
-        output.connect(this.mastervolume);
-      }
-    }
-
-    this.mastervolume.connect(this.context.destination);
-
-    // for analyser
-    this.mastervolume.connect(this.analyser.INPUT);
-
-    // for recording
-    this.mastervolume.connect(this.recorder.INPUT);
-    this.recorder.OUTPUT.connect(this.context.destination);
-
-    // for session
-    this.mastervolume.connect(this.session.INPUT);
-    this.session.OUTPUT.connect(this.context.destination);
-  }
-
-  /**
    * This method re-initials modules.
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  private init(context: AudioContext, bufferSize: BufferSize): void {
+  protected init(context: AudioContext, bufferSize: BufferSize): void {
     if (this.modules.length > 0) {
       this.mastervolume.disconnect(0);
       this.processor.disconnect(0);
@@ -404,5 +345,64 @@ export class SoundModule implements Connectable {
       this.reverb,
       this.panner
     ];
+  }
+
+  /**
+   * This method connects `AudioNode`s.
+   * @param {AudioNode} source This argument is `AudioNode` as sound source.
+   */
+  protected connect(source: AudioNode): void {
+    const input = this.modules[0].INPUT;
+
+    if (input === null) {
+      return;
+    }
+
+    // Start connection
+    // AudioSourceNode (Input)-> AudioNode -> ... -> AudioNode -> GainNode (Master Volume) -> AnalyserNode  -> AudioDestinationNode (Output)
+    source.disconnect(0);  // Clear connection
+
+    if (this.modules.length > 0) {
+      source.connect(input);
+    } else {
+      source.connect(this.mastervolume);
+    }
+
+    for (let i = 0, len = this.modules.length; i < len; i++) {
+      const output = this.modules[i].OUTPUT;
+
+      if (output === null) {
+        continue;
+      }
+
+      // Clear connection
+      output.disconnect(0);
+
+      if (i < (this.modules.length - 1)) {
+        const input = this.modules[i + 1].INPUT;
+
+        if (input === null) {
+          continue;
+        }
+
+        // Connect to next `AudioNode`
+        output.connect(input);
+      } else {
+        output.connect(this.mastervolume);
+      }
+    }
+
+    this.mastervolume.connect(this.context.destination);
+
+    // for analyser
+    this.mastervolume.connect(this.analyser.INPUT);
+
+    // for recording
+    this.mastervolume.connect(this.recorder.INPUT);
+    this.recorder.OUTPUT.connect(this.context.destination);
+
+    // for session
+    this.mastervolume.connect(this.session.INPUT);
+    this.session.OUTPUT.connect(this.context.destination);
   }
 }

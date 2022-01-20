@@ -138,4 +138,16 @@ export class Compressor extends Effector {
       release  : this.compressor.release.value
     };
   }
+
+  /** @override */
+  public override activate(): Compressor {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Compressor {
+    super.deactivate();
+    return this;
+  }
 }

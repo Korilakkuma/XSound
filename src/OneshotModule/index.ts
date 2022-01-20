@@ -409,6 +409,30 @@ export class OneshotModule extends SoundModule {
     }
   }
 
+  /** @override */
+  public override resize(bufferSize: BufferSize): OneshotModule {
+    super.init(this.context, bufferSize);
+    return this;
+  }
+
+  /** @override */
+  public override on(startTime?: number): OneshotModule {
+    super.on(startTime);
+    return this;
+  }
+
+  /** @override */
+  public override off(stopTime?: number): OneshotModule {
+    super.off(stopTime);
+    return this;
+  }
+
+  /** @override */
+  public override suspend(): OneshotModule {
+    super.suspend();
+    return this;
+  }
+
   /**
    * This method gets one-shot module parameters as associative array.
    * @return {OneshotModuleParams}

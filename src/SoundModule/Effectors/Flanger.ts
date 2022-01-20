@@ -188,4 +188,16 @@ export class Flanger extends Effector {
       feedback: this.feedback.gain.value
     };
   }
+
+  /** @override */
+  public override activate(): Flanger {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Flanger {
+    super.deactivate();
+    return this;
+  }
 }

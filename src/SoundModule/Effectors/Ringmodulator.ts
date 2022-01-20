@@ -121,4 +121,16 @@ export class Ringmodulator extends Effector {
       rate : this.rate.value
     };
   }
+
+  /** @override */
+  public override activate(): Ringmodulator {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Ringmodulator {
+    super.deactivate();
+    return this;
+  }
 }

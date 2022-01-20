@@ -133,4 +133,16 @@ export class Tremolo extends Effector {
       rate : this.rate.value
     };
   }
+
+  /** @override */
+  public override activate(): Tremolo {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Tremolo {
+    super.deactivate();
+    return this;
+  }
 }

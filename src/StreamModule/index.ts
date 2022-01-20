@@ -465,6 +465,30 @@ export class StreamModule extends SoundModule {
     }
   }
 
+  /** @override */
+  public override resize(bufferSize: BufferSize): StreamModule {
+    super.init(this.context, bufferSize);
+    return this;
+  }
+
+  /** @override */
+  public override on(startTime?: number): StreamModule {
+    super.on(startTime);
+    return this;
+  }
+
+  /** @override */
+  public override off(stopTime?: number): StreamModule {
+    super.off(stopTime);
+    return this;
+  }
+
+  /** @override */
+  public override suspend(): StreamModule {
+    super.suspend();
+    return this;
+  }
+
   /**
    * This method gets stream module parameters as associative array.
    * @return {StreamModuleParams}

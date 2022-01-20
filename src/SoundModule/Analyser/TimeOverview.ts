@@ -351,6 +351,24 @@ export class TimeOverview extends Visualizer {
     return this;
   }
 
+  /** @override */
+  public override clear(): TimeOverview {
+    super.clear();
+    return this;
+  }
+
+  /** @override */
+  public override activate(): TimeOverview {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): TimeOverview {
+    super.deactivate();
+    return this;
+  }
+
   /**
    * This method visualizes audio wave overview to Canvas.
    * @param {Float32Array} data This argument is audio data for visualization.

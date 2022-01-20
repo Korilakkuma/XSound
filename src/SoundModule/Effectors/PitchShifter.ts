@@ -167,4 +167,16 @@ export class PitchShifter extends Effector {
       pitch: this.pitch
     };
   }
+
+  /** @override */
+  public override activate(): PitchShifter {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): PitchShifter {
+    super.deactivate();
+    return this;
+  }
 }

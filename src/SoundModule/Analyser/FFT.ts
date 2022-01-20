@@ -93,6 +93,24 @@ export class FFT extends Visualizer {
     return this;
   }
 
+  /** @override */
+  public override clear(): FFT {
+    super.clear();
+    return this;
+  }
+
+  /** @override */
+  public override activate(): FFT {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): FFT {
+    super.deactivate();
+    return this;
+  }
+
   /**
    * This method visualizes spectrum to Canvas.
    * @param {Uint8Array|Float32Array} data This argument is frequency domain data for spectrum.

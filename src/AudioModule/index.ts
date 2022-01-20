@@ -633,6 +633,30 @@ export class AudioModule extends SoundModule {
     }
   }
 
+  /** @override */
+  public override resize(bufferSize: BufferSize): AudioModule {
+    super.init(this.context, bufferSize);
+    return this;
+  }
+
+  /** @override */
+  public override on(startTime?: number): AudioModule {
+    super.on(startTime);
+    return this;
+  }
+
+  /** @override */
+  public override off(stopTime?: number): AudioModule {
+    super.off(stopTime);
+    return this;
+  }
+
+  /** @override */
+  public override suspend(): AudioModule {
+    super.suspend();
+    return this;
+  }
+
   /**
    * This method gets audio module parameters as associative array.
    * @return {AudioModuleParams}

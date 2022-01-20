@@ -156,4 +156,16 @@ export class Stereo extends Effector {
       time : this.delayL.delayTime.value
     };
   }
+
+  /** @override */
+  public override activate(): Stereo {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Stereo {
+    super.deactivate();
+    return this;
+  }
 }

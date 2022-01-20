@@ -696,6 +696,30 @@ export class MediaModule extends SoundModule {
     }
   }
 
+  /** @override */
+  public override resize(bufferSize: BufferSize): MediaModule {
+    super.init(this.context, bufferSize);
+    return this;
+  }
+
+  /** @override */
+  public override on(startTime?: number): MediaModule {
+    super.on(startTime);
+    return this;
+  }
+
+  /** @override */
+  public override off(stopTime?: number): MediaModule {
+    super.off(stopTime);
+    return this;
+  }
+
+  /** @override */
+  public override suspend(): MediaModule {
+    super.suspend();
+    return this;
+  }
+
   /**
    * This method gets media module parameters as associative array.
    * @return {MediaModuleParams}

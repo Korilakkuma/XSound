@@ -236,4 +236,16 @@ export class Phaser extends Effector {
       feedback : this.feedback.gain.value
     };
   }
+
+  /** @override */
+  public override activate(): Phaser {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Phaser {
+    super.deactivate();
+    return this;
+  }
 }

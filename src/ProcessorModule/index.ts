@@ -280,4 +280,28 @@ export class ProcessorModule extends SoundModule {
         return null;
     }
   }
+
+  /** @override */
+  public override resize(bufferSize: BufferSize): ProcessorModule {
+    super.init(this.context, bufferSize);
+    return this;
+  }
+
+  /** @override */
+  public override on(startTime?: number): ProcessorModule {
+    super.on(startTime);
+    return this;
+  }
+
+  /** @override */
+  public override off(stopTime?: number): ProcessorModule {
+    super.off(stopTime);
+    return this;
+  }
+
+  /** @override */
+  public override suspend(): ProcessorModule {
+    super.suspend();
+    return this;
+  }
 }

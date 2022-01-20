@@ -643,4 +643,16 @@ export class Distortion extends Effector {
       cabinet: this.cabinet.params()
     };
   }
+
+  /** @override */
+  public override activate(): Distortion {
+    super.activate();
+    return this;
+  }
+
+  /** @override */
+  public override deactivate(): Distortion {
+    super.deactivate();
+    return this;
+  }
 }

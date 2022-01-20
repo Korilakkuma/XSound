@@ -167,4 +167,28 @@ export class MixerModule extends SoundModule {
         return null;
     }
   }
+
+  /** @override */
+  public override resize(bufferSize: BufferSize): MixerModule {
+    super.init(this.context, bufferSize);
+    return this;
+  }
+
+  /** @override */
+  public override on(startTime?: number): MixerModule {
+    super.on(startTime);
+    return this;
+  }
+
+  /** @override */
+  public override off(stopTime?: number): MixerModule {
+    super.off(stopTime);
+    return this;
+  }
+
+  /** @override */
+  public override suspend(): MixerModule {
+    super.suspend();
+    return this;
+  }
 }

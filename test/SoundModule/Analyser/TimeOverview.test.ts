@@ -116,11 +116,11 @@ describe(TimeOverview.name, () => {
       });
 
       test('should return `plotInterval`', () => {
-        expect(timeOverview.param('plotInterval')).toBe(0.125);
+        expect(timeOverview.param('plotInterval')).toBeCloseTo(0.125, 3);
       });
 
       test('should return `textInterval`', () => {
-        expect(timeOverview.param('textInterval')).toBe(120);
+        expect(timeOverview.param('textInterval')).toBeCloseTo(120, 1);
       });
 
       test('should return `mode`', () => {
@@ -128,7 +128,7 @@ describe(TimeOverview.name, () => {
       });
 
       test('should return `interval`', () => {
-        expect(timeOverview.param('interval')).toBe(0);
+        expect(timeOverview.param('interval')).toBeCloseTo(0, 1);
       });
 
       test('should return `styles`', () => {
@@ -289,11 +289,11 @@ describe(TimeOverview.name, () => {
       });
 
       test('should return `plotInterval`', () => {
-        expect(timeOverview.param('plotInterval')).toBe(0.125);
+        expect(timeOverview.param('plotInterval')).toBeCloseTo(0.125, 3);
       });
 
       test('should return `textInterval`', () => {
-        expect(timeOverview.param('textInterval')).toBe(120);
+        expect(timeOverview.param('textInterval')).toBeCloseTo(120, 1);
       });
 
       test('should return `mode`', () => {
@@ -301,7 +301,7 @@ describe(TimeOverview.name, () => {
       });
 
       test('should return `interval`', () => {
-        expect(timeOverview.param('interval')).toBe(0);
+        expect(timeOverview.param('interval')).toBeCloseTo(0, 1);
       });
 
       test('should return `styles`', () => {

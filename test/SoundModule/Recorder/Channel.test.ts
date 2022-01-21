@@ -22,7 +22,7 @@ describe(Channel.name, () => {
   test('should set channel gain', () => {
     channel.gain(0.5);
 
-    expect(channel.gain()).toBe(0.5);
+    expect(channel.gain()).toBeCloseTo(0.5, 1);
 
     channel.gain(1);
   });

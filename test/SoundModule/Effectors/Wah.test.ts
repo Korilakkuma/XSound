@@ -117,7 +117,7 @@ describe(Wah.name, () => {
       });
 
       test('should return `cutoff`', () => {
-        expect(wah.param('cutoff')).toBe(1000);
+        expect(wah.param('cutoff')).toBeCloseTo(1000, 1);
       });
 
       test('should return `depth`', () => {
@@ -129,7 +129,7 @@ describe(Wah.name, () => {
       });
 
       test('should return `resonance`', () => {
-        expect(wah.param('resonance')).toBe(20);
+        expect(wah.param('resonance')).toBeCloseTo(20, 1);
       });
     });
 
@@ -163,7 +163,7 @@ describe(Wah.name, () => {
       });
 
       test('should return `cutoff`', () => {
-        expect(wah.param('cutoff')).toBe(1000);
+        expect(wah.param('cutoff')).toBeCloseTo(1000, 1);
       });
 
       test('should return `depth`', () => {
@@ -175,7 +175,7 @@ describe(Wah.name, () => {
       });
 
       test('should return `resonance`', () => {
-        expect(wah.param('resonance')).toBe(20);
+        expect(wah.param('resonance')).toBeCloseTo(20, 1);
       });
     });
   });

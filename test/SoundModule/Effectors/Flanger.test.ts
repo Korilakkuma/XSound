@@ -172,7 +172,7 @@ describe(Flanger.name, () => {
     });
 
     test('should return `tone`', () => {
-      expect(flanger.param('tone')).toBe(4000);
+      expect(flanger.param('tone')).toBeCloseTo(4000, 1);
     });
 
     test('should return `feedback`', () => {

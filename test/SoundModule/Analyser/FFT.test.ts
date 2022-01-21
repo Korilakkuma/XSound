@@ -103,11 +103,11 @@ describe(FFT.name, () => {
       });
 
       test('should return `textInterval`', () => {
-        expect(fft.param('textInterval')).toBe(120);
+        expect(fft.param('textInterval')).toBeCloseTo(120, 1);
       });
 
       test('should return `interval`', () => {
-        expect(fft.param('interval')).toBe(0);
+        expect(fft.param('interval')).toBeCloseTo(0, 1);
       });
 
       test('should return `styles`', () => {
@@ -248,11 +248,11 @@ describe(FFT.name, () => {
       });
 
       test('should return `textInterval`', () => {
-        expect(fft.param('textInterval')).toBe(120);
+        expect(fft.param('textInterval')).toBeCloseTo(120, 1);
       });
 
       test('should return `interval`', () => {
-        expect(fft.param('interval')).toBe(0);
+        expect(fft.param('interval')).toBeCloseTo(0, 1);
       });
 
       test('should return `styles`', () => {

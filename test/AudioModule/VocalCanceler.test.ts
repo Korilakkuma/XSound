@@ -4,7 +4,7 @@ describe(VocalCanceler.name, () => {
   const vocalcanceler = new VocalCanceler();
 
   describe(vocalcanceler.start.name, () => {
-    expect(vocalcanceler.start(1, 1)).toBe(1);
+    expect(vocalcanceler.start(1, 1)).toBeCloseTo(1, 1);
 
     vocalcanceler.param({ depth: 0.5 });
 
@@ -29,7 +29,7 @@ describe(VocalCanceler.name, () => {
     });
 
     test('should return `depth`', () => {
-      expect(vocalcanceler.param('depth')).toBe(1);
+      expect(vocalcanceler.param('depth')).toBeCloseTo(1, 1);
     });
   });
 

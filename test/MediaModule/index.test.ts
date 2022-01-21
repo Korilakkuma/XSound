@@ -64,9 +64,9 @@ describe(MediaModule.name, () => {
     test('should set up envelope generator', () => {
       /* eslint-disable dot-notation */
       expect(mediaModule['envelopegenerator'].getGenerator(0)).toBeInstanceOf(GainNode);
-      expect(mediaModule['envelopegenerator'].param('attack')).toBe(0);
+      expect(mediaModule['envelopegenerator'].param('attack')).toBeCloseTo(0, 2);
       expect(mediaModule['envelopegenerator'].param('decay')).toBeCloseTo(0.01, 2);
-      expect(mediaModule['envelopegenerator'].param('sustain')).toBe(1);
+      expect(mediaModule['envelopegenerator'].param('sustain')).toBeCloseTo(1, 2);
       expect(mediaModule['envelopegenerator'].param('release')).toBeCloseTo(0.01, 2);
       /* eslint-enable dot-notation */
     });
@@ -171,7 +171,7 @@ describe(MediaModule.name, () => {
     });
 
     test('should return `currentTime`', () => {
-      expect(mediaModule.param('currentTime')).toBe(60);
+      expect(mediaModule.param('currentTime')).toBeCloseTo(60, 1);
     });
 
     test('should return `controls`', () => {
@@ -187,7 +187,7 @@ describe(MediaModule.name, () => {
     });
 
     test('should return `duration`', () => {
-      expect(mediaModule.param('duration')).toBe(0);
+      expect(mediaModule.param('duration')).toBeCloseTo(0, 1);
     });
   });
 
@@ -217,7 +217,7 @@ describe(MediaModule.name, () => {
 
   describe(mediaModule.fadeIn.name, () => {
     test('should return fade-in time', () => {
-      expect(mediaModule.fadeIn()).toBe(0);
+      expect(mediaModule.fadeIn()).toBeCloseTo(0, 2);
     });
 
     test('should call envelope generator methods', () => {
@@ -242,7 +242,7 @@ describe(MediaModule.name, () => {
 
   describe(mediaModule.fadeOut.name, () => {
     test('should return fade-out time', () => {
-      expect(mediaModule.fadeOut()).toBeCloseTo(0.01, 3);
+      expect(mediaModule.fadeOut()).toBeCloseTo(0.01, 2);
     });
 
     test('should call envelope generator methods', () => {

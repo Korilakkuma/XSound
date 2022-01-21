@@ -41,39 +41,39 @@ describe(Listener.name, () => {
     });
 
     test('should return `positionX`', () => {
-      expect(listener.param('x')).toBe(1);
+      expect(listener.param('x')).toBeCloseTo(1, 1);
     });
 
     test('should return `positionY`', () => {
-      expect(listener.param('y')).toBe(1);
+      expect(listener.param('y')).toBeCloseTo(1, 1);
     });
 
     test('should return `positionZ`', () => {
-      expect(listener.param('z')).toBe(1);
+      expect(listener.param('z')).toBeCloseTo(1, 1);
     });
 
     test('should return `forwardX`', () => {
-      expect(listener.param('fx')).toBe(1);
+      expect(listener.param('fx')).toBeCloseTo(1, 1);
     });
 
     test('should return `forwardY`', () => {
-      expect(listener.param('fy')).toBe(1);
+      expect(listener.param('fy')).toBeCloseTo(1, 1);
     });
 
     test('should return `forwardZ`', () => {
-      expect(listener.param('fz')).toBe(1);
+      expect(listener.param('fz')).toBeCloseTo(1, 1);
     });
 
     test('should return `upX`', () => {
-      expect(listener.param('ux')).toBe(1);
+      expect(listener.param('ux')).toBeCloseTo(1, 1);
     });
 
     test('should return `upY`', () => {
-      expect(listener.param('uy')).toBe(0);
+      expect(listener.param('uy')).toBeCloseTo(0, 1);
     });
 
     test('should return `upZ`', () => {
-      expect(listener.param('uz')).toBe(1);
+      expect(listener.param('uz')).toBeCloseTo(1, 1);
     });
   });
 

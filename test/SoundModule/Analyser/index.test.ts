@@ -267,15 +267,15 @@ describe(Analyser.name, () => {
     });
 
     test('should return `minDecibels`', () => {
-      expect(analyser.param('minDecibels')).toBe(-80);
+      expect(analyser.param('minDecibels')).toBeCloseTo(-80, 1);
     });
 
     test('should return `maxDecibels`', () => {
-      expect(analyser.param('maxDecibels')).toBe(-20);
+      expect(analyser.param('maxDecibels')).toBeCloseTo(-20, 1);
     });
 
     test('should return `smoothingTimeConstant`', () => {
-      expect(analyser.param('smoothingTimeConstant')).toBe(1);
+      expect(analyser.param('smoothingTimeConstant')).toBeCloseTo(1, 1);
     });
   });
 

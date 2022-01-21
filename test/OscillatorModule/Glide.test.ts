@@ -24,8 +24,8 @@ describe(Glide.name, () => {
     glide.ready(880);
 
     /* eslint-disable dot-notation */
-    expect(glide['prevFrequency']).toBe(440);
-    expect(glide['nextFrequency']).toBe(880);
+    expect(glide['prevFrequency']).toBeCloseTo(440, 1);
+    expect(glide['nextFrequency']).toBeCloseTo(880, 1);
     /* eslint-enable dot-notation */
   });
 
@@ -92,7 +92,7 @@ describe(Glide.name, () => {
     });
 
     test('should return `time`', () => {
-      expect(glide.param('time')).toBe(5);
+      expect(glide.param('time')).toBeCloseTo(5, 1);
     });
   });
 

@@ -117,7 +117,7 @@ describe(Delay.name, () => {
     });
 
     test('should return `time`', () => {
-      expect(delay.param('time')).toBe(5);
+      expect(delay.param('time')).toBeCloseTo(5, 1);
     });
 
     test('should return `dry`', () => {
@@ -129,7 +129,7 @@ describe(Delay.name, () => {
     });
 
     test('should return `tone`', () => {
-      expect(delay.param('tone')).toBe(4000);
+      expect(delay.param('tone')).toBeCloseTo(4000, 1);
     });
 
     test('should return `feedback`', () => {

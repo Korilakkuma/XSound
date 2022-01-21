@@ -172,7 +172,7 @@ describe(Chorus.name, () => {
     });
 
     test('should return tone', () => {
-      expect(chorus.param('tone')).toBe(4000);
+      expect(chorus.param('tone')).toBeCloseTo(4000, 1);
     });
 
     test('should return feedback', () => {

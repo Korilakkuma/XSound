@@ -155,11 +155,11 @@ describe(Phaser.name, () => {
     });
 
     test('should return `frequency`', () => {
-      expect(phaser.param('frequency')).toBe(1000);
+      expect(phaser.param('frequency')).toBeCloseTo(1000, 1);
     });
 
     test('should return `resonance`', () => {
-      expect(phaser.param('resonance')).toBe(10);
+      expect(phaser.param('resonance')).toBeCloseTo(10, 1);
     });
 
     test('should return `depth`', () => {

@@ -38,9 +38,9 @@ describe(AudioModule.name, () => {
 
       /* eslint-disable dot-notation */
       expect(audioModule['envelopegenerator'].getGenerator(0)).toBeInstanceOf(GainNode);
-      expect(audioModule['envelopegenerator'].param('attack')).toBe(0);
+      expect(audioModule['envelopegenerator'].param('attack')).toBeCloseTo(0, 2);
       expect(audioModule['envelopegenerator'].param('decay')).toBeCloseTo(0.01, 2);
-      expect(audioModule['envelopegenerator'].param('sustain')).toBe(1);
+      expect(audioModule['envelopegenerator'].param('sustain')).toBeCloseTo(1, 2);
       expect(audioModule['envelopegenerator'].param('release')).toBeCloseTo(0.01, 2);
       /* eslint-enable dot-notation */
     });
@@ -171,7 +171,7 @@ describe(AudioModule.name, () => {
     });
 
     test('should return `detune`', () => {
-      expect(audioModule.param('detune')).toBe(-600);
+      expect(audioModule.param('detune')).toBeCloseTo(-600, 1);
     });
 
     test('should return `loop`', () => {
@@ -179,7 +179,7 @@ describe(AudioModule.name, () => {
     });
 
     test('should return `currentTime`', () => {
-      expect(audioModule.param('currentTime')).toBe(48000);
+      expect(audioModule.param('currentTime')).toBeCloseTo(48000, 1);
     });
   });
 
@@ -237,7 +237,7 @@ describe(AudioModule.name, () => {
     test('should return fade-in time', () => {
       audioModule.setup();
 
-      expect(audioModule.fadeIn()).toBe(0);
+      expect(audioModule.fadeIn()).toBeCloseTo(0, 2);
     });
 
     test('should call envelope generator methods', () => {
@@ -264,7 +264,7 @@ describe(AudioModule.name, () => {
     test('should return fade-out time', () => {
       audioModule.setup();
 
-      expect(audioModule.fadeOut()).toBeCloseTo(0.01, 3);
+      expect(audioModule.fadeOut()).toBeCloseTo(0.01, 2);
     });
 
     test('should call envelope generator methods', () => {

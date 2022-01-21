@@ -97,11 +97,11 @@ describe(Time.name, () => {
       });
 
       test('should return `textInterval`', () => {
-        expect(time.param('textInterval')).toBe(120);
+        expect(time.param('textInterval')).toBeCloseTo(120, 1);
       });
 
       test('should return `interval`', () => {
-        expect(time.param('interval')).toBe(0);
+        expect(time.param('interval')).toBeCloseTo(0, 1);
       });
 
       test('should return `styles`', () => {
@@ -236,11 +236,11 @@ describe(Time.name, () => {
       });
 
       test('should return `textInterval`', () => {
-        expect(time.param('textInterval')).toBe(120);
+        expect(time.param('textInterval')).toBeCloseTo(120, 1);
       });
 
       test('should return `interval`', () => {
-        expect(time.param('interval')).toBe(0);
+        expect(time.param('interval')).toBeCloseTo(0, 1);
       });
 
       test('should return `styles`', () => {

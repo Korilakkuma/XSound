@@ -117,11 +117,11 @@ describe(Reverb.name, () => {
     });
 
     test('should return `wet`', () => {
-      expect(reverb.param('wet')).toBe(1);
+      expect(reverb.param('wet')).toBeCloseTo(1, 1);
     });
 
     test('should return `tone`', () => {
-      expect(reverb.param('tone')).toBe(4000);
+      expect(reverb.param('tone')).toBeCloseTo(4000, 1);
     });
   });
 

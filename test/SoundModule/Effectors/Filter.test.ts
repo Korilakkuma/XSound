@@ -173,15 +173,15 @@ describe(Filter.name, () => {
     });
 
     test('should return `frequency`', () => {
-      expect(filter.param('frequency')).toBe(4000);
+      expect(filter.param('frequency')).toBeCloseTo(4000, 1);
     });
 
     test('should return `Q` (Quality Factor)', () => {
-      expect(filter.param('Q')).toBe(20);
+      expect(filter.param('Q')).toBeCloseTo(20, 1);
     });
 
     test('should return `gain`', () => {
-      expect(filter.param('gain')).toBe(18);
+      expect(filter.param('gain')).toBeCloseTo(18, 1);
     });
 
     test('should return `range`', () => {

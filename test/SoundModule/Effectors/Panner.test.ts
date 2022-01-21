@@ -95,47 +95,47 @@ describe(Panner.name, () => {
     });
 
     test('should return `positionX`', () => {
-      expect(panner.param('x')).toBe(1);
+      expect(panner.param('x')).toBeCloseTo(1, 1);
     });
 
     test('should return `positionY`', () => {
-      expect(panner.param('y')).toBe(1);
+      expect(panner.param('y')).toBeCloseTo(1, 1);
     });
 
     test('should return `positionZ', () => {
-      expect(panner.param('z')).toBe(1);
+      expect(panner.param('z')).toBeCloseTo(1, 1);
     });
 
     test('should return `orientationX`', () => {
-      expect(panner.param('ox')).toBe(0);
+      expect(panner.param('ox')).toBeCloseTo(0, 1);
     });
 
     test('should return `orientationY`', () => {
-      expect(panner.param('oy')).toBe(1);
+      expect(panner.param('oy')).toBeCloseTo(1, 1);
     });
 
     test('should return `orientationZ`', () => {
-      expect(panner.param('oz')).toBe(1);
+      expect(panner.param('oz')).toBeCloseTo(1, 1);
     });
 
     test('should return `refDistance`', () => {
-      expect(panner.param('refDistance')).toBe(5);
+      expect(panner.param('refDistance')).toBeCloseTo(5, 1);
     });
 
     test('should return `maxDistance`', () => {
-      expect(panner.param('maxDistance')).toBe(5000);
+      expect(panner.param('maxDistance')).toBeCloseTo(5000, 1);
     });
 
     test('should return `rolloffFacto`r', () => {
-      expect(panner.param('rolloffFactor')).toBe(5);
+      expect(panner.param('rolloffFactor')).toBeCloseTo(5, 1);
     });
 
     test('should return `coneInnerAngle`', () => {
-      expect(panner.param('coneInnerAngle')).toBe(90);
+      expect(panner.param('coneInnerAngle')).toBeCloseTo(90, 1);
     });
 
     test('should return `coneOuterAngle', () => {
-      expect(panner.param('coneOuterAngle')).toBe(90);
+      expect(panner.param('coneOuterAngle')).toBeCloseTo(90, 1);
     });
 
     test('should return `coneOuterGain`', () => {

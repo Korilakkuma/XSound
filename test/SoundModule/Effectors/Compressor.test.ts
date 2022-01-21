@@ -77,15 +77,15 @@ describe(Compressor.name, () => {
     });
 
     test('should return threshold', () => {
-      expect(compressor.param('threshold')).toBe(-100);
+      expect(compressor.param('threshold')).toBeCloseTo(-100, 1);
     });
 
     test('should return knee', () => {
-      expect(compressor.param('knee')).toBe(50);
+      expect(compressor.param('knee')).toBeCloseTo(50, 1);
     });
 
     test('should return ratio', () => {
-      expect(compressor.param('ratio')).toBe(4);
+      expect(compressor.param('ratio')).toBeCloseTo(4, 1);
     });
 
     test('should return attack', () => {

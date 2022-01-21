@@ -152,19 +152,19 @@ describe(Equalizer.name, () => {
 
     // Getter
     test('should return bass', () => {
-      expect(equalizer.param('bass')).toBe(10);
+      expect(equalizer.param('bass')).toBeCloseTo(10, 1);
     });
 
     test('should return middle', () => {
-      expect(equalizer.param('middle')).toBe(-10);
+      expect(equalizer.param('middle')).toBeCloseTo(-10, 1);
     });
 
     test('should return treble', () => {
-      expect(equalizer.param('treble')).toBe(10);
+      expect(equalizer.param('treble')).toBeCloseTo(10, 1);
     });
 
     test('should return presence', () => {
-      expect(equalizer.param('presence')).toBe(8);
+      expect(equalizer.param('presence')).toBeCloseTo(8, 1);
     });
   });
 

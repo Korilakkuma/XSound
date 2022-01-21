@@ -151,7 +151,7 @@ describe(EnvelopeGenerator.name, () => {
     });
 
     test('should return `attack`', () => {
-      expect(envelopegenerator.param('attack')).toBeCloseTo(0.5, 1);
+      expect(envelopegenerator.param('attack')).toBeCloseTo(0.5, 2);
     });
 
     test('should return `decay`', () => {

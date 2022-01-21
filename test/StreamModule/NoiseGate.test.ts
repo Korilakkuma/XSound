@@ -14,8 +14,8 @@ describe(NoiseGate.name, () => {
     });
 
     test('should return `0`', () => {
-      expect(noisegate.start(0.002)).toBe(0);
-      expect(noisegate.start(-0.002)).toBe(0);
+      expect(noisegate.start(0.002)).toBeCloseTo(0, 3);
+      expect(noisegate.start(-0.002)).toBeCloseTo(0, 3);
     });
   });
 

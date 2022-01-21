@@ -110,7 +110,7 @@ describe(PitchShifter.name, () => {
     });
 
     test('should return `pitch`', () => {
-      expect(pitchshifter.param('pitch')).toBe(1.5);
+      expect(pitchshifter.param('pitch')).toBeCloseTo(1.5, 1);
     });
   });
 

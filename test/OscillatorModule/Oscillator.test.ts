@@ -135,11 +135,11 @@ describe(Oscillator.name, () => {
     });
 
     test('should return `fine`', () => {
-      expect(oscillator.param('fine')).toBe(-50);
+      expect(oscillator.param('fine')).toBeCloseTo(-50, 1);
     });
 
     test('should return `volume`', () => {
-      expect(oscillator.param('volume')).toBe(0.5);
+      expect(oscillator.param('volume')).toBeCloseTo(0.5, 1);
     });
 
     test('should be custom', () => {

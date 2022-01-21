@@ -16,10 +16,6 @@ export type ReverbParams = {
  * @extends {Effector}
  */
 export class Reverb extends Effector {
-  public static ERROR_AJAX: ReverbErrorText         = 'error';
-  public static ERROR_AJAX_TIMEOUT: ReverbErrorText = 'timeout';
-  public static ERROR_DECODE: ReverbErrorText       = 'decode';
-
   private convolver: ConvolverNode;
   private dry: GainNode;
   private wet: GainNode;
@@ -263,7 +259,7 @@ export class Reverb extends Effector {
 
     xhr.ontimeout = (event: ProgressEvent) => {
       if (!this.isLoadError && errorCallback) {
-        errorCallback(event, Reverb.ERROR_AJAX_TIMEOUT);
+        errorCallback(event, 'timeout');
       }
 
       this.isLoadError = true;
@@ -279,7 +275,7 @@ export class Reverb extends Effector {
 
     xhr.onerror = (event: ProgressEvent) => {
       if (!this.isLoadError && errorCallback) {
-        errorCallback(event, Reverb.ERROR_AJAX);
+        errorCallback(event, 'error');
       }
 
       this.isLoadError = true;
@@ -307,7 +303,7 @@ export class Reverb extends Effector {
 
         const decodeErrorCallback = (error: Error) => {
           if (errorCallback) {
-            errorCallback(error, Reverb.ERROR_DECODE);
+            errorCallback(error, 'decode');
           }
         };
 

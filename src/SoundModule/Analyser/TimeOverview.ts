@@ -20,15 +20,15 @@ export type TimeOverviewParams = VisualizerParams & {
   mode?: DragMode
 };
 
+const SVG_CURRENT_TIME_CLASS_NAME = 'xsound-svg-current-time';
+const SVG_SPRITE_CLASS_NAME       = 'xsound-svg-sprite';
+
 /**
  * This private class visualizes audio wave overview in time domain.
  * @constructor
  * @extends {Visualizer}
  */
 export class TimeOverview extends Visualizer {
-  private static SVG_CURRENT_TIME_CLASS_NAME = 'xsound-svg-current-time';
-  private static SVG_SPRITE_CLASS_NAME       = 'xsound-svg-sprite';
-
   private callback: DragCallbackFunction = () => {};
 
   private currentImageData: ImageData | null = null;
@@ -228,7 +228,7 @@ export class TimeOverview extends Visualizer {
         }
 
         if (this.svg) {
-          const rect = this.svg.querySelector(`.${TimeOverview.SVG_CURRENT_TIME_CLASS_NAME}`);
+          const rect = this.svg.querySelector(`.${SVG_CURRENT_TIME_CLASS_NAME}`);
 
           if (rect === null) {
             return this;
@@ -250,7 +250,7 @@ export class TimeOverview extends Visualizer {
             if (this.endTime !== 0) {
               const baseRect = document.createElementNS(TimeOverview.XMLNS, 'rect');
 
-              baseRect.classList.add(TimeOverview.SVG_SPRITE_CLASS_NAME);
+              baseRect.classList.add(SVG_SPRITE_CLASS_NAME);
 
               if (this.svg.lastElementChild?.previousElementSibling) {
                 this.svg.removeChild(this.svg.lastElementChild.previousElementSibling);
@@ -590,7 +590,7 @@ export class TimeOverview extends Visualizer {
     // This rectangle displays audio current time
     const rect = document.createElementNS(TimeOverview.XMLNS, 'rect');
 
-    rect.classList.add(TimeOverview.SVG_CURRENT_TIME_CLASS_NAME);
+    rect.classList.add(SVG_CURRENT_TIME_CLASS_NAME);
 
     rect.setAttribute('y', (top + 1).toString(10));
     rect.setAttribute('height', (innerHeight - 1).toString(10));

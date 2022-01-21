@@ -35,6 +35,8 @@ describe(Tree.name, () => {
   describe(root.toString.name, () => {
     test('should return string that represents tree structure (syntax tree)', () => {
       expect(root.toString().replace(/\s/g, '')).toBe('T(id=1)/\\60(id=2)O(id=4)/\\4(id=5)EOS');
+      root.clear();
+      expect(root.toString().replace(/\s/g, '')).toBe('T(id=1)/\\60(id=2)O(id=4)/\\4(id=5)EOS');
     });
   });
 });

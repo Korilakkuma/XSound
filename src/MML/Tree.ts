@@ -5,8 +5,6 @@ import { Token } from '../../src/MML/Token';
  * @constructor
  */
 export class Tree {
-  private static indent = 0;
-
   private _id: string;
 
   private _operator: Token;
@@ -15,6 +13,8 @@ export class Tree {
   private _left: Tree | null;
   private _right: Tree | null;
   /* eslint-enable no-use-before-define */
+
+  private indent = 0;
 
   /**
    * @param {string} id This argument is string that identifies syntax tree node.
@@ -59,16 +59,23 @@ export class Tree {
   }
 
   /**
+   * This method clears indent.
+   */
+  public clear(): void {
+    this.indent = 0;
+  }
+
+  /**
    * This method represents tree status as string.
    */
   public toString(): string {
     let space = '';
 
-    for (let i = 0; i < Tree.indent; i++) {
+    for (let i = 0; i < this.indent; i++) {
       space += '    ';
     }
 
-    Tree.indent++;
+    this.indent++;
 
     // Return syntax tree string
     return `

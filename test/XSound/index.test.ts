@@ -208,7 +208,7 @@ describe(read.name, () => {
     const fileMock = new File([blob], 'testfile', { type: 'text/plain' });
 
     const successCallbackMock = (event: Event, result: string) => {
-      expect(result).toBe(String.fromCharCode(0x60, 0x61, 0x62));
+      expect(result).toBe(String.fromCodePoint(0x60, 0x61, 0x62));
       done();
     };
 
@@ -263,7 +263,7 @@ describe(drop.name, () => {
     const eventMock = new DragEvent('drop', { dataTransfer: dataTransferMock });
 
     const successCallbackMock = (event: Event, result: string) => {
-      expect(result).toBe(String.fromCharCode(0x60, 0x61, 0x62));
+      expect(result).toBe(String.fromCodePoint(0x60, 0x61, 0x62));
       done();
     };
 
@@ -315,7 +315,7 @@ describe(file.name, () => {
     };
 
     const successCallbackMock = (event: Event, result: string) => {
-      expect(result).toBe(String.fromCharCode(0x60, 0x61, 0x62));
+      expect(result).toBe(String.fromCodePoint(0x60, 0x61, 0x62));
       done();
     };
 

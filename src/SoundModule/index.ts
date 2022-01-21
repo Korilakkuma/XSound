@@ -54,8 +54,8 @@ export type SoundModuleParams = {
  * @constructor
  */
 export class SoundModule implements Connectable {
-  public static NUMBER_OF_INPUTS  = 2;
-  public static NUMBER_OF_OUTPUTS = 2;
+  public static readonly NUMBER_OF_INPUTS  = 2;
+  public static readonly NUMBER_OF_OUTPUTS = 2;
 
   protected context: AudioContext;
 

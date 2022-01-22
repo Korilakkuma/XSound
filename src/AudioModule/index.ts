@@ -21,7 +21,7 @@ import { Ringmodulator } from '../SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../SoundModule/Effectors/Stereo';
 import { Tremolo } from '../SoundModule/Effectors/Tremolo';
 import { Wah } from '../SoundModule/Effectors/Wah';
-import { VocalCanceler, VocalCancelerParams } from './VocalCanceler';
+import { VocalCanceler, VocalCancelerParams } from '../SoundModule/Effectors/VocalCanceler';
 
 export type AudioBufferSprite = { [spriteName: string]: AudioBuffer };
 

@@ -1,4 +1,4 @@
-import { VocalCanceler, VocalCancelerParams } from '../../src/AudioModule/VocalCanceler';
+import { VocalCanceler, VocalCancelerParams } from '../../../src/SoundModule/Effectors/VocalCanceler';
 
 describe(VocalCanceler.name, () => {
   const vocalcanceler = new VocalCanceler();

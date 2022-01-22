@@ -12,19 +12,20 @@ describe(Part.name, () => {
 
   const mml = 'T60 O4 C4 R2. C4&C4';
 
+  const offset = 0;
+
   const startCallbackMock = jest.fn();
   const stopCallbackMock  = jest.fn();
   const endedCallbackMock = jest.fn();
 
-  const callbacks = {
-    start: startCallbackMock,
-    stop : stopCallbackMock,
-    ended: endedCallbackMock
-  };
-
-  const offset = 0;
-
-  const part = new Part({ source, mml, callbacks, offset });
+  const part = new Part({
+    source,
+    mml,
+    offset,
+    startCallback: startCallbackMock,
+    stopCallback : stopCallbackMock,
+    endedCallback: endedCallbackMock
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -105,7 +106,14 @@ describe(Part.name, () => {
     });
 
     test('should return `false`', () => {
-      const part = new Part({ source, mml: '', callbacks, offset });
+      const part = new Part({
+        source,
+        mml: '',
+        offset,
+        startCallback: startCallbackMock,
+        stopCallback : stopCallbackMock,
+        endedCallback: endedCallbackMock
+      });
 
       expect(part.has()).toBe(false);
     });

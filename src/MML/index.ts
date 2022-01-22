@@ -11,7 +11,10 @@ import { Part } from './Part';
  */
 export class MML {
   private parts: Part[] = [];
-  private callbacks: { [evenType: string]: (sequence?: Sequence | MMLSyntaxError, offset?: number) => void } = {};
+  private startCallback?(sequence: Sequence, offset?: number): void;
+  private stopCallback?(sequence: Sequence, offset?: number): void;
+  private endedCallback?(): void;
+  private errorCallback?(error: MMLSyntaxError): void;
 
   // eslint-disable-next-line no-useless-constructor
   constructor() {
@@ -21,8 +24,30 @@ export class MML {
    * This method sets callback functions.
    * @return {MML} Return value is for method chain.
    */
-  public setup(callbacks?: { [evenType: string]: (sequence?: Sequence | MMLSyntaxError, offset?: number) => void }): MML {
-    this.callbacks = callbacks ?? {};
+  public setup(callbacks?: {
+    startCallback?(sequence: Sequence, offset?: number) :void;
+    stopCallback?(sequence: Sequence, offset?: number) :void;
+    endedCallback?() :void;
+    errorCallback?(error: MMLSyntaxError) :void;
+  }): MML {
+    const { startCallback, stopCallback, endedCallback, errorCallback } = callbacks ?? {};
+
+    if (startCallback) {
+      this.startCallback = startCallback;
+    }
+
+    if (stopCallback) {
+      this.stopCallback = stopCallback;
+    }
+
+    if (endedCallback) {
+      this.endedCallback = endedCallback;
+    }
+
+    if (errorCallback) {
+      this.errorCallback = errorCallback;
+    }
+
     return this;
   }
 
@@ -38,7 +63,15 @@ export class MML {
     this.clear();
 
     for (const mml of mmls) {
-      this.parts.push(new Part({ source, mml, callbacks: this.callbacks, offset }));
+      this.parts.push(new Part({
+        source       : source,
+        mml          : mml,
+        offset       : offset,
+        startCallback: this.startCallback,
+        stopCallback : this.stopCallback,
+        endedCallback: this.endedCallback,
+        errorCallback: this.errorCallback
+      }));
     }
 
     return this;

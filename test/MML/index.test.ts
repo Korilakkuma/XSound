@@ -12,9 +12,9 @@ describe(MML.name, () => {
   const endedCallbackMock = jest.fn();
 
   mml.setup({
-    start: startCallbackMock,
-    stop : stopCallbackMock,
-    ended: endedCallbackMock
+    startCallback: startCallbackMock,
+    stopCallback : stopCallbackMock,
+    endedCallback: endedCallbackMock
   });
 
   afterEach(() => {

@@ -20,34 +20,57 @@ export class Part {
   private currentIndex = 0;
   private currentPosition = 0;
   private offset = 0;
-  private callbacks: { [evenType: string]: (sequence?: Sequence | MMLSyntaxError, offset?: number) => void } = {};
+  private startCallback?(sequence: Sequence, offset?: number): void;
+  private stopCallback?(sequence: Sequence, offset?: number): void;
+  private endedCallback?(): void;
+  private errorCallback?(error: MMLSyntaxError): void;
 
   /**
    * @param {OscillatorModule|OneshotModule|NoiseModule} source This argument selects sound source.
    * @param {string} mml This argument is MML string.
-   * @param {{ [evenType: string]: (sequence?: Sequence, offset?: number) => void }} callbacks This argument is callback functions.
    * @param {number} offset This argument corrects index of one-shot audio.
+   * @param {function} startCallback This argument is invoked on start musical note.
+   * @param {function} stopCallback This argument is invoked on stop musical note.
+   * @param {function} endedCallback This argument is invoked on ended.
+   * @param {function} errorCallback This argument is invoked on syntax error.
    */
   constructor(params: {
     source: OscillatorModule | OneshotModule | NoiseModule;
     mml: string;
-    callbacks?: { [evenType: string]: (sequence?: Sequence | MMLSyntaxError, offset?: number) => void };
     offset?: number;
+    startCallback?(sequence: Sequence, offset?: number): void;
+    stopCallback?(sequence: Sequence, offset?: number): void;
+    endedCallback?(): void;
+    errorCallback?(error: MMLSyntaxError): void;
   }) {
-    const { source, mml, callbacks, offset } = params;
+    const {
+      source,
+      mml,
+      offset,
+      startCallback,
+      stopCallback,
+      endedCallback,
+      errorCallback
+    } = params;
 
     this.source = source;
     this.mml    = mml;
     this.offset = offset ?? 0;
 
-    if (callbacks) {
-      Object.keys(callbacks).forEach((eventType: string) => {
-        const callback = callbacks[eventType];
+    if (startCallback) {
+      this.startCallback = startCallback;
+    }
 
-        if (typeof callback === 'function') {
-          this.callbacks[eventType] = callback;
-        }
-      });
+    if (stopCallback) {
+      this.stopCallback = stopCallback;
+    }
+
+    if (endedCallback) {
+      this.endedCallback = endedCallback;
+    }
+
+    if (errorCallback) {
+      this.errorCallback = errorCallback;
     }
 
     const tokenizer       = new Tokenizer(mml);
@@ -56,8 +79,8 @@ export class Part {
     const sequences       = sequencer.get();
 
     if (sequences instanceof MMLSyntaxError) {
-      if (this.callbacks.error) {
-        this.callbacks.error(sequences);
+      if (this.errorCallback) {
+        this.errorCallback(sequences);
       }
     } else {
       this.sequences = sequences;
@@ -71,7 +94,10 @@ export class Part {
   public start(highlight: boolean): void {
     if (!this.sequences[this.currentIndex]) {
       this.stop();
-      this.callbacks.ended();
+
+      if (this.endedCallback) {
+        this.endedCallback();
+      }
 
       return;
     }
@@ -96,7 +122,10 @@ export class Part {
 
     if (this.source instanceof OscillatorModule) {
       this.source.ready(0, sequence.duration).start(sequence.frequencies);
-      this.callbacks.start(sequence);
+
+      if (this.startCallback) {
+        this.startCallback(sequence);
+      }
     } else if (this.source instanceof OneshotModule) {
       for (let i = 0, len = sequence.indexes.length; i < len; i++) {
         if (sequence.indexes[i] !== -1) {
@@ -104,20 +133,32 @@ export class Part {
         }
       }
 
-      this.callbacks.start(sequence, this.offset);
+      if (this.startCallback) {
+        this.startCallback(sequence, this.offset);
+      }
     } else if (this.source instanceof NoiseModule) {
       this.source.start();
-      this.callbacks.start(sequence);
+
+      if (this.startCallback) {
+        this.startCallback(sequence);
+      }
     }
 
     this.timerId = window.setTimeout(() => {
       if (this.source instanceof OscillatorModule) {
-        this.callbacks.stop(sequence);
+        if (this.stopCallback) {
+          this.stopCallback(sequence);
+        }
       } else if (this.source instanceof OneshotModule) {
-        this.callbacks.stop(sequence, this.offset);
+        if (this.stopCallback) {
+          this.stopCallback(sequence, this.offset);
+        }
       } else if (this.source instanceof NoiseModule) {
         this.source.stop();
-        this.callbacks.stop(sequence);
+
+        if (this.stopCallback) {
+          this.stopCallback(sequence);
+        }
       }
 
       // for stopping MML
@@ -138,7 +179,10 @@ export class Part {
 
     if (this.source instanceof OscillatorModule) {
       this.source.stop();
-      this.callbacks.stop(this.previous);
+
+      if (this.stopCallback) {
+        this.stopCallback(this.previous);
+      }
     } else if (this.source instanceof OneshotModule) {
       for (const index of this.previous.indexes) {
         if (index !== -1) {
@@ -146,10 +190,15 @@ export class Part {
         }
       }
 
-      this.callbacks.stop(this.previous, this.offset);
+      if (this.stopCallback) {
+        this.stopCallback(this.previous, this.offset);
+      }
     } else if (this.source instanceof NoiseModule) {
       this.source.stop();
-      this.callbacks.stop(this.previous);
+
+      if (this.stopCallback) {
+        this.stopCallback(this.previous);
+      }
     }
 
     if (this.timerId) {

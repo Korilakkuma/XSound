@@ -92,15 +92,19 @@ export class StreamModule extends SoundModule {
    * @param {function} errorCallback This argument is invoked on failure.
    * @return {Promise<void>} Return value is `Promise` that `getUserMedia` returns.
    */
-  public ready(stream?: MediaStream, successCallback?: (stream: MediaStream) => void, errorCallback?: (error: Error) => void): Promise<void> {
+  public ready(params?: {
+    stream?: MediaStream;
+    successCallback?: (stream: MediaStream) => void;
+    errorCallback?: (error: Error) => void;
+  }): Promise<void> {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaStream) {
       return Promise.reject();
     }
 
     this.paused = false;
 
-    if (stream) {
-      this.stream = stream;
+    if (params?.stream) {
+      this.stream = params.stream;
       return Promise.resolve();
     }
 
@@ -112,13 +116,13 @@ export class StreamModule extends SoundModule {
 
         this.stream = stream;
 
-        if (successCallback) {
-          successCallback(stream);
+        if (params?.successCallback) {
+          params.successCallback(stream);
         }
       })
       .catch((error: Error) => {
-        if (errorCallback) {
-          errorCallback(error);
+        if (params?.errorCallback) {
+          params.errorCallback(error);
         }
       });
   }

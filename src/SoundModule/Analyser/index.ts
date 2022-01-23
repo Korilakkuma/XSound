@@ -30,6 +30,11 @@ export class Analyser implements Connectable {
   private time: Time;
   private fft: FFT;
 
+  private timeDomainAnimationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
+  private timeDomainTimerId: number | null = null;
+  private frequencyDomainAnimationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
+  private frequencyDomainTimerId: number | null = null;
+
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
@@ -103,11 +108,11 @@ export class Analyser implements Connectable {
           this.stop(domain);
 
           if (interval < 0) {
-            this.time.animationId = window.requestAnimationFrame(() => {
+            this.timeDomainAnimationId = window.requestAnimationFrame(() => {
               this.start(domain);
             });
           } else {
-            this.time.timerId = window.setTimeout(() => {
+            this.timeDomainTimerId = window.setTimeout(() => {
               this.start(domain);
             }, interval);
           }
@@ -133,11 +138,11 @@ export class Analyser implements Connectable {
           this.stop(domain);
 
           if (interval < 0) {
-            this.fft.animationId = window.requestAnimationFrame(() => {
+            this.frequencyDomainAnimationId = window.requestAnimationFrame(() => {
               this.start(domain);
             });
           } else {
-            this.fft.timerId = window.setTimeout(() => {
+            this.frequencyDomainTimerId = window.setTimeout(() => {
               this.start(domain);
             }, interval);
           }
@@ -164,14 +169,14 @@ export class Analyser implements Connectable {
         const interval = this.time.param('interval');
 
         if (typeof interval === 'number') {
-          if ((interval < 0) && this.time.animationId) {
-            window.cancelAnimationFrame(this.time.animationId);
+          if ((interval < 0) && this.timeDomainAnimationId) {
+            window.cancelAnimationFrame(this.timeDomainAnimationId);
 
-            this.time.animationId = null;
-          } else if (this.time.timerId) {
-            window.clearTimeout(this.time.timerId);
+            this.timeDomainAnimationId = null;
+          } else if (this.timeDomainTimerId) {
+            window.clearTimeout(this.timeDomainTimerId);
 
-            this.time.timerId = null;
+            this.timeDomainTimerId = null;
           }
         }
 
@@ -182,14 +187,14 @@ export class Analyser implements Connectable {
         const interval = this.fft.param('interval');
 
         if (typeof interval === 'number') {
-          if ((interval < 0) && this.fft.animationId) {
-            window.cancelAnimationFrame(this.fft.animationId);
+          if ((interval < 0) && this.frequencyDomainAnimationId) {
+            window.cancelAnimationFrame(this.frequencyDomainAnimationId);
 
-            this.fft.animationId = null;
-          } else if (this.fft.timerId) {
-            window.clearTimeout(this.fft.timerId);
+            this.frequencyDomainAnimationId = null;
+          } else if (this.frequencyDomainTimerId) {
+            window.clearTimeout(this.frequencyDomainTimerId);
 
-            this.fft.timerId = null;
+            this.frequencyDomainTimerId = null;
           }
         }
 

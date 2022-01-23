@@ -55,10 +55,6 @@ export class Visualizer implements Statable {
   protected static SVG_LINEAR_GRADIENT_ID_TIME          = 'svg-linear-gradient-time';
   protected static SVG_LINEAR_GRADIENT_ID_FFT           = 'svg-linear-gradient-fft';
 
-  // HACK:
-  public animationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
-  public timerId: number | null = null;
-
   protected sampleRate: number;
   protected channel: Channel;
 

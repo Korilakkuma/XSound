@@ -137,8 +137,10 @@ export class TimeOverview extends Visualizer {
 
           break;
         case 'mode':
-          if ((typeof value === 'string') && ((value === 'update') || (value === 'sprite'))) {
-            this.mode = value;
+          if (typeof value === 'string') {
+            if ((value === 'update') || (value === 'sprite')) {
+              this.mode = value;
+            }
           }
 
           break;

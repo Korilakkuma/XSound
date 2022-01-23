@@ -59,8 +59,10 @@ export class Time extends Visualizer {
       // TODO:
       switch (key) {
         case 'type':
-          if ((typeof value === 'string') && ((value === 'uint') || (value === 'float'))) {
-            this.type = value;
+          if (typeof value === 'string') {
+            if ((value === 'uint') || (value === 'float')) {
+              this.type = value;
+            }
           }
 
           break;

@@ -215,8 +215,8 @@ export class Analyser implements Connectable {
   public param(params: 'minDecibels'): number;
   public param(params: 'maxDecibels'): number;
   public param(params: 'smoothingTimeConstant'): number;
+  public param(params: AnalyserParams): Analyser;
   public param(params: keyof AnalyserParams | AnalyserParams): AnalyserParams[keyof AnalyserParams] | Analyser {
-    // Getter
     if (typeof params === 'string') {
       switch (params) {
         case 'fftSize':
@@ -234,7 +234,6 @@ export class Analyser implements Connectable {
       }
     }
 
-    // Setter
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
         case 'fftSize':

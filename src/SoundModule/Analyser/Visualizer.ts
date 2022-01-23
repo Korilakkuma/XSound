@@ -163,7 +163,6 @@ export class Visualizer implements Statable {
   public param(params: 'styles'): GraphicsStyles;
   public param(params: VisualizerParams): void;
   public param(params: keyof VisualizerParams | VisualizerParams): VisualizerParams[keyof VisualizerParams] | void {
-    // Getter
     if (typeof params === 'string') {
       switch (params) {
         case 'interval':

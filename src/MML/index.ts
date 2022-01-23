@@ -11,43 +11,16 @@ import { Part } from './Part';
  */
 export class MML {
   private parts: Part[] = [];
-  private startCallback?(sequence: Sequence, offset?: number): void;
-  private stopCallback?(sequence: Sequence, offset?: number): void;
-  private endedCallback?(): void;
-  private errorCallback?(error: MMLSyntaxError): void;
 
   // eslint-disable-next-line no-useless-constructor
   constructor() {
   }
 
   /**
-   * This method sets callback functions.
    * @return {MML} Return value is for method chain.
    */
-  public setup(callbacks?: {
-    startCallback?(sequence: Sequence, offset?: number) :void;
-    stopCallback?(sequence: Sequence, offset?: number) :void;
-    endedCallback?() :void;
-    errorCallback?(error: MMLSyntaxError) :void;
-  }): MML {
-    const { startCallback, stopCallback, endedCallback, errorCallback } = callbacks ?? {};
-
-    if (startCallback) {
-      this.startCallback = startCallback;
-    }
-
-    if (stopCallback) {
-      this.stopCallback = stopCallback;
-    }
-
-    if (endedCallback) {
-      this.endedCallback = endedCallback;
-    }
-
-    if (errorCallback) {
-      this.errorCallback = errorCallback;
-    }
-
+  public setup(): MML {
+    // Noop
     return this;
   }
 
@@ -58,19 +31,37 @@ export class MML {
    * @param {number} offset This argument is in order to adjust index of one-shot audio.
    * @return {MML} Return value is for method chain.
    */
-  public ready(source: OscillatorModule | OneshotModule | NoiseModule, mmls: string[], offset?: number): MML {
+  public ready(params: {
+    source: OscillatorModule | OneshotModule | NoiseModule;
+    mmls: string[];
+    offset?: number;
+    startCallback?(sequence: Sequence, offset?: number) :void;
+    stopCallback?(sequence: Sequence, offset?: number) :void;
+    endedCallback?() :void;
+    errorCallback?(error: MMLSyntaxError) :void;
+  }): MML {
+    const {
+      source,
+      mmls,
+      offset,
+      startCallback,
+      stopCallback,
+      endedCallback,
+      errorCallback
+    } = params;
+
     this.stop();
     this.clear();
 
     for (const mml of mmls) {
       this.parts.push(new Part({
-        source       : source,
-        mml          : mml,
-        offset       : offset,
-        startCallback: this.startCallback,
-        stopCallback : this.stopCallback,
-        endedCallback: this.endedCallback,
-        errorCallback: this.errorCallback
+        source,
+        mml,
+        offset,
+        startCallback,
+        stopCallback,
+        endedCallback,
+        errorCallback
       }));
     }
 

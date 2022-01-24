@@ -41,6 +41,37 @@ export class MixerModule extends SoundModule {
   }
 
   /**
+   * This method defines noop for the same API.
+   */
+  public setup(): MixerModule {
+    // Noop
+    return this;
+  }
+
+  /**
+   * This method defines noop for the same API.
+   */
+  public ready(): MixerModule {
+    // Noop
+    return this;
+  }
+
+  /**
+   * This method is alias to `mix` method.
+   */
+  public start(sources: SoundModule[]): MixerModule {
+    return this.mix(sources);
+  }
+
+  /**
+   * This method defines noop for the same API.
+   */
+  public stop(): MixerModule {
+    // Noop
+    return this;
+  }
+
+  /**
    * This method mixes sound sources (instance of `SoundModule` subclass).
    * @param {Array<SoundModule>} sources This argument is array that contains sound sources.
    * @return {MixerModule} Return value is for method chain.

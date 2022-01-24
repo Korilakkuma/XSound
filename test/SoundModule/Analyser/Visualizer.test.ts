@@ -71,7 +71,7 @@ describe(Visualizer.name, () => {
     beforeEach(() => {
       visualizer = new Visualizer(sampleRate, channel);
 
-      const svg = document.createElement('svg');
+      const svg = document.createElementNS(Visualizer.XMLNS, 'svg');
 
       svg.appendChild(document.createElementNS(Visualizer.XMLNS, 'path'));
 

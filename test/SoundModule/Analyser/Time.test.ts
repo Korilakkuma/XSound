@@ -144,7 +144,7 @@ describe(Time.name, () => {
   describe('use `SVGElement`', () => {
     const time = new Time(sampleRate, channel);
 
-    const svg = document.createElement('svg');
+    const svg = document.createElementNS(Time.XMLNS, 'svg');
 
     svg.appendChild(document.createElementNS(Time.XMLNS, 'path'));
 

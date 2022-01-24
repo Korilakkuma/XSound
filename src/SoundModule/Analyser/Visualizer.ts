@@ -48,8 +48,8 @@ export type VisualizerParams = {
  * @implements {Statable}
  */
 export class Visualizer implements Statable {
-  public static XMLNS = 'http://www.w3.org/2000/svg';
-  public static XLINK = 'http://www.w3.org/1999/xlink';
+  public static readonly XMLNS = 'http://www.w3.org/2000/svg' as const;
+  public static readonly XLINK = 'http://www.w3.org/1999/xlink' as const;
 
   protected static SVG_LINEAR_GRADIENT_ID_TIME_OVERVIEW = 'svg-linear-gradient-time-overview';
   protected static SVG_LINEAR_GRADIENT_ID_TIME          = 'svg-linear-gradient-time';
@@ -64,7 +64,7 @@ export class Visualizer implements Statable {
   protected canvas: HTMLCanvasElement | null = null;
   protected context: CanvasRenderingContext2D | null = null;
 
-  protected svg: Element | null = null;
+  protected svg: SVGSVGElement | null = null;
 
   protected interval = 1000;  // msec
 
@@ -108,20 +108,17 @@ export class Visualizer implements Statable {
 
   /**
    * This method sets up for using Canvas or SVG.
-   * @param {HTMLCanvasElement|Element} element This argument is either `HTMLCanvasElement` or `Element` (`SVGElement`).
+   * @param {HTMLCanvasElement|SVGSVGElement} element This argument is either `HTMLCanvasElement` or `SVGSVGElement`.
    * @return {Visualizer} Return value is for method chain.
    */
-  public setup(element: HTMLCanvasElement | Element): Visualizer {
+  public setup(element: HTMLCanvasElement | SVGSVGElement): Visualizer {
     if (element instanceof HTMLCanvasElement) {
       this.graphics = 'canvas';
       this.canvas   = element;
       this.context  = this.canvas.getContext('2d');
-    } else if (element instanceof Element) {
+    } else if (element instanceof SVGSVGElement) {
       this.graphics = 'svg';
       this.svg      = element;
-
-      // this.svg.setAttribute('xmlns',       Visualizer.XMLNS);
-      // this.svg.setAttribute('xmlns:xlink', Visualizer.XLINK);
     }
 
     return this;
@@ -192,10 +189,10 @@ export class Visualizer implements Statable {
   }
 
   /**
-   * This method gets instance of `HTMLCanvasElement` or `Element` (`SVGElement`).
-   * @return {HTMLCanvasElement|Element|null}
+   * This method gets instance of `HTMLCanvasElement` or `SVGSVGElement`.
+   * @return {HTMLCanvasElement|SVGSVGElement|null}
    */
-  public get(): HTMLCanvasElement | Element | null {
+  public get(): HTMLCanvasElement | SVGSVGElement | null {
     switch (this.graphics) {
       case 'canvas':
         return this.canvas;
@@ -368,9 +365,9 @@ export class Visualizer implements Statable {
    * @param {number} middle This argument is middle of visualization area.
    * @param {number} numberOfPlots This argument is interval for visualization.
    * @param {string} linearGradientId This argument is `id` attribute for `SVGLinearGradientElement`.
-   * @return {Element} This value is instance of `Element` (`SVGPathElement` or `SVGGElement`).
+   * @return {SVGPathElement|SVGGElement} This value is instance of `SVGPathElement` or `SVGGElement`.
    */
-  protected visualizeTimeDomainFloat32ArrayBySVG(data: Float32Array, innerWidth: number, innerHeight: number, middle: number, numberOfPlots: number, linearGradientId: string): Element | null {
+  protected visualizeTimeDomainFloat32ArrayBySVG(data: Float32Array, innerWidth: number, innerHeight: number, middle: number, numberOfPlots: number, linearGradientId: string): SVGPathElement | SVGGElement | null {
     const top  = this.styles.top ?? 15;
     const left = this.styles.left ?? 30;
 
@@ -461,9 +458,9 @@ export class Visualizer implements Statable {
   /**
    * This method creates elements for SVG linear gradient.
    * @param {string} linearGradientId This argument is `id` attribute for `SVGLinearGradientElement`.
-   * @return {Element} This value is as instance of `Element` (`SVGDefsElement`).
+   * @return {SVGDefsElement} This value is as instance of `SVGDefsElement`.
    */
-  protected createSVGLinearGradient(linearGradientId: string): Element | null {
+  protected createSVGLinearGradient(linearGradientId: string): SVGDefsElement | null {
     if (!this.styles.gradients) {
       return null;
     }

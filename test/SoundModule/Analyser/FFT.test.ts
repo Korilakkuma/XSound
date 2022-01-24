@@ -150,7 +150,7 @@ describe(FFT.name, () => {
   describe('use `SVGElement`', () => {
     const fft = new FFT(sampleRate, channel);
 
-    const svg = document.createElement('svg');
+    const svg = document.createElementNS(FFT.XMLNS, 'svg');
 
     svg.appendChild(document.createElementNS(FFT.XMLNS, 'path'));
 

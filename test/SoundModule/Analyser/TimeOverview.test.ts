@@ -178,7 +178,7 @@ describe(TimeOverview.name, () => {
   describe('use `SVGElement`', () => {
     const timeOverview = new TimeOverview(sampleRate, channel);
 
-    const svg = document.createElement('svg');
+    const svg = document.createElementNS(TimeOverview.XMLNS, 'svg');
 
     svg.appendChild(document.createElementNS(TimeOverview.XMLNS, 'path'));
 

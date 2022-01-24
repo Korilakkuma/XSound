@@ -7,13 +7,11 @@ import { MML } from '../../src/MML/index';
 describe(MML.name, () => {
   const mml = new MML();
 
-  mml.setup();
-
   afterEach(() => {
     mml.clear();
   });
 
-  describe(mml.ready.name, () => {
+  describe(mml.setup.name, () => {
     test('should call `stop` and `clear` method. And, should set instance of `Part`', () => {
       const context = new AudioContextMock();
 
@@ -34,7 +32,7 @@ describe(MML.name, () => {
       mml.stop  = stopMock;
       mml.clear = clearMock;
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       expect(stopMock).toHaveBeenCalledTimes(1);
       expect(clearMock).toHaveBeenCalledTimes(1);
@@ -65,7 +63,7 @@ describe(MML.name, () => {
 
       Part.prototype.start = partStartMock;
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       mml.start(0);
       mml.start(1);
@@ -94,7 +92,7 @@ describe(MML.name, () => {
 
       Part.prototype.stop = partStopMock;
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       mml.start(0);
       mml.start(1);
@@ -119,7 +117,7 @@ describe(MML.name, () => {
         'T60 O4 C4 R2. C4&C4'
       ];
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       expect(mml.getMML(0)).toBe('T60 O4 C4 R2. C4&C4');
       expect(mml.getMML(1)).toBe('T60 O4 C4 R2. C4&C4');
@@ -138,7 +136,7 @@ describe(MML.name, () => {
         'T60 O4 C4 R2. C4&C4'
       ];
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       expect(mml.getMMLs()).toStrictEqual(['T60 O4 C4 R2. C4&C4', 'T60 O4 C4 R2. C4&C4']);
     });
@@ -156,7 +154,7 @@ describe(MML.name, () => {
         'T60 O4 C4 R2. C4&C4'
       ];
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       expect(mml.getSequences(0)).toStrictEqual([
         new Sequence({ id: '1', note: 'C4',    indexes: [39], frequencies: [261.6255653005991], start: 0, stop: 1, duration: 1 }),
@@ -184,7 +182,7 @@ describe(MML.name, () => {
         'T60 O4 C4 R2. C4&C4'
       ];
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       expect(mml.getAllSequences()).toStrictEqual([
         [
@@ -217,7 +215,7 @@ describe(MML.name, () => {
         'T60 O4 C4 R2. C4&C4'
       ];
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       expect(mml.has()).toBe(true);
     });
@@ -239,7 +237,7 @@ describe(MML.name, () => {
         'T60 O4 C4 R2. C4&C4'
       ];
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       const originalPaused = Part.prototype.paused;
 
@@ -265,7 +263,7 @@ describe(MML.name, () => {
         'T60 O4 C4 R2. C4&C4'
       ];
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
 
       mml.currentIndex(0, 0);
 
@@ -303,7 +301,7 @@ describe(MML.name, () => {
 
       Part.prototype.stop = partStopMock;
 
-      mml.ready({ source, mmls });
+      mml.setup({ source, mmls });
       mml.clear();
 
       expect(partStopMock).toHaveBeenCalledTimes(2);

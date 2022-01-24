@@ -17,21 +17,13 @@ export class MML {
   }
 
   /**
-   * @return {MML} Return value is for method chain.
-   */
-  public setup(): MML {
-    // Noop
-    return this;
-  }
-
-  /**
    * This method parses MML string.
    * @param {OscillatorModule|OneshotModule|NoiseModule} source This argument selects sound source.
    * @param {Array<string>} mmls This argument is MML strings.
    * @param {number} offset This argument is in order to adjust index of one-shot audio.
    * @return {MML} Return value is for method chain.
    */
-  public ready(params: {
+  public setup(params: {
     source: OscillatorModule | OneshotModule | NoiseModule;
     mmls: string[];
     offset?: number;
@@ -65,6 +57,11 @@ export class MML {
       }));
     }
 
+    return this;
+  }
+
+  public ready(): MML {
+    // Noop
     return this;
   }
 

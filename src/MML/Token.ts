@@ -79,7 +79,7 @@ export class Token {
   }
 
   /**
-   * This method returns `Token` members as JSON.
+   * This method returns fields that `Token` has as JSON.
    */
   public toString(): string {
     return JSON.stringify({

@@ -100,7 +100,7 @@ export class Sequence {
   }
 
   /**
-   * This method returns `Sequence` members as JSON.
+   * This method returns fields that `Sequence` has as JSON.
    */
   public toString(): string {
     return JSON.stringify({

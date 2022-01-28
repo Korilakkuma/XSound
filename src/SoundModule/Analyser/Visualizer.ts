@@ -38,7 +38,7 @@ export type GraphicsStyles = {
 };
 
 export type VisualizerParams = {
-  interval: number,
+  interval?: number,
   styles?: GraphicsStyles
 };
 

@@ -35,7 +35,7 @@ export class Equalizer extends Effector {
     // Set filter type
     this.bass.type     = 'lowshelf';
     this.middle.type   = 'peaking';
-    this.treble.type   = 'peaking';
+    this.treble.type   = 'highshelf';
     this.presence.type = 'highshelf';
 
     // Set cutoff frequency

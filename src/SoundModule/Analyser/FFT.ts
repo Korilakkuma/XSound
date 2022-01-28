@@ -30,6 +30,12 @@ export class FFT extends Visualizer {
     super(sampleRate, channel);
   }
 
+  /** @override */
+  public override setup(element: HTMLCanvasElement | SVGSVGElement): FFT {
+    super.setup(element);
+    return this;
+  }
+
   /**
    * This method gets or sets parameters for visualizing spectrum.
    * This method is overloaded for type interface and type check.

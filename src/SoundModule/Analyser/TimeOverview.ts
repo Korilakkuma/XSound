@@ -71,6 +71,12 @@ export class TimeOverview extends Visualizer {
     this.onTouchEnd   = this.onTouchEnd.bind(this);
   }
 
+  /** @override */
+  public override setup(element: HTMLCanvasElement | SVGSVGElement): TimeOverview {
+    super.setup(element);
+    return this;
+  }
+
   /**
    * This method gets or sets parameters for visualizing audio wave.
    * This method is overloaded for type interface and type check.

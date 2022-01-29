@@ -206,7 +206,8 @@ describe(OneshotModule.name, () => {
 
     oneshotModule.setup({ resources, settings });
 
-    oneshotModule.reset(1, { bufferIndex: 3, playbackRate: 0.5 });
+    oneshotModule.reset(1, 'bufferIndex', 3);
+    oneshotModule.reset(1, 'playbackRate', 0.5);
 
     // eslint-disable-next-line dot-notation
     expect(oneshotModule['settings']).toStrictEqual([

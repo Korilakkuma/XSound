@@ -323,12 +323,32 @@ export class OneshotModule extends SoundModule {
   /**
    * This method resets settings.
    * @param {number} index This argument selects target setting.
-   * @param {OneshotSetting} key This argument is one-shot parameter.
+   * @param {keyof OneshotSetting} paramName This argument is one-shot parameter name.
+   * @param {OneshotSetting} param This argument is one-shot parameter value.
    * @return {OneshotModule} Return value is for method chain.
    */
-  public reset(index: number, params: OneshotSetting): OneshotModule {
+  public reset(index: number, paramName: keyof OneshotSetting, param: number | boolean): OneshotModule {
     if ((index >= 0) && (index < this.settings.length)) {
-      this.settings[index] = params;
+      switch (paramName) {
+        case 'bufferIndex' :
+        case 'playbackRate':
+        case 'loopStart'   :
+        case 'loopEnd'     :
+        case 'volume'      :
+          if (typeof param === 'number') {
+            this.settings[index][paramName] = param;
+          }
+
+          break;
+        case 'loop':
+          if (typeof param === 'boolean') {
+            this.settings[index][paramName] = param;
+          }
+
+          break;
+        default:
+          break;
+      }
     }
 
     return this;

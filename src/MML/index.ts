@@ -153,11 +153,14 @@ export class MML {
 
   /**
    * This method gets or sets current sequence index.
+   * This method is overloaded for type interface and type check.
    * @param {number} partNumber This argument is part of MML.
    * @param {number} sequenceIndex This argument is sequence index.
    *     If this argument is omitted, this method is getter for current sequence index.
    * @return {number|MML} Return value is for current sequence index. Otherwise, Return value is for method chain.
    */
+  public currentIndex(partNumber: number): number;
+  public currentIndex(partNumber: number, sequenceIndex: number): MML;
   public currentIndex(partNumber: number, sequenceIndex?: number): number | MML {
     if ((partNumber < 0) || (partNumber >= this.parts.length)) {
       return this;

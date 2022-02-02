@@ -12,8 +12,44 @@ import { Part } from './Part';
 export class MML {
   private parts: Part[] = [];
 
+  private startCallback?(sequence: Sequence, offset?: number): void;
+  private stopCallback?(sequence: Sequence, offset?: number): void;
+  private endedCallback?(): void;
+  private errorCallback?(error: MMLSyntaxError): void;
+
   // eslint-disable-next-line no-useless-constructor
   constructor() {
+  }
+
+  /**
+   * @param {function} startCallback This argument is invoked
+   * @param {function} stopCallback
+   * @param {function} endedCallback
+   * @param {function} errorCallback
+   */
+  public setup(callbacks?: {
+    startCallback?(sequence: Sequence, offset?: number): void;
+    stopCallback?(sequence: Sequence, offset?: number): void;
+    endedCallback?(): void;
+    errorCallback?(error: MMLSyntaxError): void;
+  }): MML {
+    if (callbacks?.startCallback) {
+      this.startCallback = callbacks.startCallback;
+    }
+
+    if (callbacks?.stopCallback) {
+      this.stopCallback = callbacks.stopCallback;
+    }
+
+    if (callbacks?.endedCallback) {
+      this.endedCallback = callbacks.endedCallback;
+    }
+
+    if (callbacks?.errorCallback) {
+      this.errorCallback = callbacks.errorCallback;
+    }
+
+    return this;
   }
 
   /**
@@ -23,45 +59,28 @@ export class MML {
    * @param {number} offset This argument is in order to adjust index of one-shot audio.
    * @return {MML} Return value is for method chain.
    */
-  public setup(params: {
+  public ready(params: {
     source: OscillatorModule | OneshotModule | NoiseModule;
     mmls: string[];
     offset?: number;
-    startCallback?(sequence: Sequence, offset?: number) :void;
-    stopCallback?(sequence: Sequence, offset?: number) :void;
-    endedCallback?() :void;
-    errorCallback?(error: MMLSyntaxError) :void;
   }): MML {
-    const {
-      source,
-      mmls,
-      offset,
-      startCallback,
-      stopCallback,
-      endedCallback,
-      errorCallback
-    } = params;
+    const { source, mmls, offset } = params;
 
     this.stop();
     this.clear();
 
     for (const mml of mmls) {
       this.parts.push(new Part({
-        source,
-        mml,
-        offset,
-        startCallback,
-        stopCallback,
-        endedCallback,
-        errorCallback
+        source       : source,
+        mml          : mml,
+        offset       : offset,
+        startCallback: this.startCallback,
+        stopCallback : this.stopCallback,
+        endedCallback: this.endedCallback,
+        errorCallback: this.errorCallback
       }));
     }
 
-    return this;
-  }
-
-  public ready(): MML {
-    // Noop
     return this;
   }
 

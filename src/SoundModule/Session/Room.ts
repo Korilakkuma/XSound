@@ -89,7 +89,7 @@ export class Room implements Connectable {
       }
 
       const total  = event.data.byteLength / Float32Array.BYTES_PER_ELEMENT;
-      const length = Math.floor(total / 2);
+      const length = Math.trunc(total / 2);
       const offset = length * Float32Array.BYTES_PER_ELEMENT;
 
       const bufferLs = new Float32Array(event.data,      0, length);  // Get Left  channel data
@@ -136,7 +136,7 @@ export class Room implements Connectable {
 
       const bufferSizeLR = 2 * bufferSize;
       const buffer       = new Float32Array(bufferSizeLR);
-      const offset       = Math.floor(buffer.length / 2);
+      const offset       = Math.trunc(buffer.length / 2);
 
       for (let i = 0; i < bufferSize; i++) {
         buffer[i]          = inputLs[i];

@@ -311,9 +311,9 @@ export function convertTime(time: number): { minutes: number; seconds: number; m
     };
   }
 
-  const m  = Math.floor(time / 60);
-  const s  = Math.floor(time % 60);
-  const ms = time - Math.floor(time);
+  const m  = Math.trunc(time / 60);
+  const s  = Math.trunc(time % 60);
+  const ms = time - Math.trunc(time);
 
   return {
     minutes     : m,

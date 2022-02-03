@@ -201,7 +201,7 @@ export class TimeOverview extends Visualizer {
 
           case 'sprite': {
             if (this.endTime !== 0) {
-              const baseX = Math.floor(((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.currentDataSize) * innerWidth);
+              const baseX = Math.trunc(((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.currentDataSize) * innerWidth);
 
               context.fillStyle = this.sprite;
 
@@ -264,7 +264,7 @@ export class TimeOverview extends Visualizer {
                 this.svg.removeChild(this.svg.lastElementChild.previousElementSibling);
               }
 
-              const baseX = Math.floor(((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.currentDataSize) * innerWidth);
+              const baseX = Math.trunc(((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.currentDataSize) * innerWidth);
 
               baseRect.setAttribute('y', (top + 1).toString(10));
               baseRect.setAttribute('height', (rect.getAttribute('height') ?? '0'));
@@ -397,17 +397,17 @@ export class TimeOverview extends Visualizer {
     const right       = this.styles.right ?? 30;
     const innerWidth  = width  - (left + right);
     const innerHeight = height - (top  + bottom);
-    const middle      = Math.floor(innerHeight / 2) + top;
+    const middle      = Math.trunc(innerHeight / 2) + top;
 
     const gridColor = this.styles.grid ?? 'none';
     const textColor = this.styles.text ?? 'none';
     const fontSize  = parseInt((this.styles.font?.size ?? '13px'), 10);
 
     // Visualize wave at intervals of `this.plotInterval`
-    const numberOfPlots = Math.floor(this.plotInterval * this.sampleRate);
+    const numberOfPlots = Math.trunc(this.plotInterval * this.sampleRate);
 
     // Visualize text at intervals of `this.textInterval`
-    const numberOfTexts = Math.floor(this.textInterval * this.sampleRate);
+    const numberOfTexts = Math.trunc(this.textInterval * this.sampleRate);
 
     // Erase previous wave
     context.clearRect(0, 0, width, height);
@@ -419,8 +419,8 @@ export class TimeOverview extends Visualizer {
       // Visualize grid and text (X axis)
       for (let i = 0, len = data.length; i < len; i++) {
         if ((i % numberOfTexts) === 0) {
-          const x = Math.floor((i / len) * innerWidth) + left;
-          const t = `${Math.floor((i / this.sampleRate) / 60)} min`;
+          const x = Math.trunc((i / len) * innerWidth) + left;
+          const t = `${Math.trunc((i / this.sampleRate) / 60)} min`;
 
           // Visualize grid
           if (gridColor !== 'none') {
@@ -439,8 +439,8 @@ export class TimeOverview extends Visualizer {
 
       // Visualize grid and text (Y axis)
       for (const t of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
-        const x = Math.floor(left - context.measureText(t).width);
-        const y = Math.floor((1 - parseFloat(t.trim())) * (innerHeight / 2)) + top;
+        const x = Math.trunc(left - context.measureText(t).width);
+        const y = Math.trunc((1 - parseFloat(t.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -452,7 +452,7 @@ export class TimeOverview extends Visualizer {
         if (textColor !== 'none') {
           context.fillStyle = textColor;
           context.font      = this.createFontString();
-          context.fillText(t, x, (y - Math.floor(fontSize / 4)));
+          context.fillText(t, x, (y - Math.trunc(fontSize / 4)));
         }
       }
     }
@@ -487,17 +487,17 @@ export class TimeOverview extends Visualizer {
     const right       = this.styles.right ?? 30;
     const innerWidth  = width  - (left + right);
     const innerHeight = height - (top  + bottom);
-    const middle      = Math.floor(innerHeight / 2) + top;
+    const middle      = Math.trunc(innerHeight / 2) + top;
 
     const gridColor = this.styles.grid ?? 'none';
     const textColor = this.styles.text ?? 'none';
     const fontSize  = parseInt((this.styles.font?.size ?? '13px'), 10);
 
     // Visualize wave at intervals of `this.plotInterval`
-    const numberOfPlots = Math.floor(this.plotInterval * this.sampleRate);
+    const numberOfPlots = Math.trunc(this.plotInterval * this.sampleRate);
 
     // Visualize text at intervals of `this.textInterval`
-    const numberOfTexts = Math.floor(this.textInterval * this.sampleRate);
+    const numberOfTexts = Math.trunc(this.textInterval * this.sampleRate);
 
     // Erase previous wave
     svg.innerHTML = '';
@@ -513,8 +513,8 @@ export class TimeOverview extends Visualizer {
       // Visualize grid and text (X axis)
       for (let i = 0, len = data.length; i < len; i++) {
         if ((i % numberOfTexts) === 0) {
-          const x = Math.floor((i / len) * innerWidth) + left;
-          const t = `${Math.floor((i / this.sampleRate) / 60)} min`;
+          const x = Math.trunc((i / len) * innerWidth) + left;
+          const t = `${Math.trunc((i / this.sampleRate) / 60)} min`;
 
           // Visualize grid
           if (gridColor !== 'none') {
@@ -556,7 +556,7 @@ export class TimeOverview extends Visualizer {
       // Visualize grid and text (Y axis)
       for (const t of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
         const x = left;
-        const y = Math.floor((1 - parseFloat(t.trim())) * (innerHeight / 2)) + top;
+        const y = Math.trunc((1 - parseFloat(t.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -580,7 +580,7 @@ export class TimeOverview extends Visualizer {
           text.textContent = t;
 
           text.setAttribute('x', x.toString(10));
-          text.setAttribute('y', (y - Math.floor(fontSize / 4)).toString(10));
+          text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
 
           text.setAttribute('text-anchor', 'end');
           text.setAttribute('stroke',      'none');

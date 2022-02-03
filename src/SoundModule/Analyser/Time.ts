@@ -127,7 +127,7 @@ export class Time extends Visualizer {
     const right       = this.styles.right ?? 30;
     const innerWidth  = width  - (left + right);
     const innerHeight = height - (top  + bottom);
-    const middle      = Math.floor(innerHeight / 2) + top;
+    const middle      = Math.trunc(innerHeight / 2) + top;
 
     const lineWidth = this.styles.width ?? 1.5;
     const lineCap   = this.styles.cap ?? 'round';
@@ -139,7 +139,7 @@ export class Time extends Visualizer {
     const fontSize  = parseInt((this.styles.font?.size ?? '13px'), 10);
 
     // Visualize text at intervals of `this.textInterval`
-    const numberOfTexts = Math.floor(this.textInterval * this.sampleRate);
+    const numberOfTexts = Math.trunc(this.textInterval * this.sampleRate);
 
     // Erase previous wave
     context.clearRect(0, 0, width, height);
@@ -214,8 +214,8 @@ export class Time extends Visualizer {
       // Visualize grid and text (X axis)
       for (let i = 0, len = data.length; i < len; i++) {
         if ((i % numberOfTexts) === 0) {
-          const x = Math.ceil((i / len) * innerWidth) + left;
-          const t = `${Math.ceil((i / this.sampleRate) * 1000)} ms`;
+          const x = Math.trunc((i / len) * innerWidth) + left;
+          const t = `${Math.trunc((i / this.sampleRate) * 1000)} ms`;
 
           // Visualize grid
           if (gridColor !== 'none') {
@@ -234,8 +234,8 @@ export class Time extends Visualizer {
 
       // Visualize grid and text (Y axis)
       for (const t of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
-        const x = Math.floor(left - context.measureText(t).width);
-        const y = Math.floor((1 - parseFloat(t.trim())) * (innerHeight / 2)) + top;
+        const x = Math.trunc(left - context.measureText(t).width);
+        const y = Math.trunc((1 - parseFloat(t.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -247,7 +247,7 @@ export class Time extends Visualizer {
         if (textColor !== 'none') {
           context.fillStyle = textColor;
           context.font      = this.createFontString();
-          context.fillText(t, x, (y - Math.floor(fontSize / 4)));
+          context.fillText(t, x, (y - Math.trunc(fontSize / 4)));
         }
       }
     }
@@ -274,7 +274,7 @@ export class Time extends Visualizer {
     const right       = this.styles.right ?? 30;
     const innerWidth  = width  - (left + right);
     const innerHeight = height - (top  + bottom);
-    const middle      = Math.floor(innerHeight / 2) + top;
+    const middle      = Math.trunc(innerHeight / 2) + top;
 
     const lineWidth = this.styles.width ?? 1.5;
     const lineCap   = this.styles.cap ?? 'round';
@@ -286,7 +286,7 @@ export class Time extends Visualizer {
     const fontSize  = parseInt((this.styles.font?.size ?? '13px'), 10);
 
     // Visualize text at intervals of `this.textInterval`
-    const numberOfTexts = Math.floor(this.textInterval * this.sampleRate);
+    const numberOfTexts = Math.trunc(this.textInterval * this.sampleRate);
 
     // Begin visualization
     svg.innerHTML = '';
@@ -388,8 +388,8 @@ export class Time extends Visualizer {
       // Visualize grid and text (X axis)
       for (let i = 0, len = data.length; i < len; i++) {
         if ((i % numberOfTexts) === 0) {
-          const x = Math.ceil((i / len) * innerWidth) + left;
-          const t = `${Math.ceil((i / this.sampleRate) * 1000)} ms`;
+          const x = Math.trunc((i / len) * innerWidth) + left;
+          const t = `${Math.trunc((i / this.sampleRate) * 1000)} ms`;
 
           // Visualize grid
           if (gridColor !== 'none') {
@@ -431,7 +431,7 @@ export class Time extends Visualizer {
       // Visualize grid and text (Y axis)
       for (const t of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
         const x = left;
-        const y = Math.floor((1 - parseFloat(t.trim())) * (innerHeight / 2)) + top;
+        const y = Math.trunc((1 - parseFloat(t.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -455,7 +455,7 @@ export class Time extends Visualizer {
           text.textContent = t;
 
           text.setAttribute('x', x.toString(10));
-          text.setAttribute('y', (y - Math.floor(fontSize / 4)).toString(10));
+          text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
 
           text.setAttribute('text-anchor', 'end');
           text.setAttribute('stroke',      'none');

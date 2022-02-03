@@ -453,7 +453,7 @@ export class Distortion extends Effector {
    * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
    */
   public static createCurve(drive: number, numberOfSamples: number): Float32Array | null {
-    const index = Math.floor((numberOfSamples - 1) / 2);
+    const index = Math.trunc((numberOfSamples - 1) / 2);
 
     const curves = new Float32Array(numberOfSamples);
 

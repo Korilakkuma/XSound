@@ -276,9 +276,9 @@ export class Recorder implements Connectable {
           let binary = 0;
 
           if ((i % CHANNEL) === 0) {
-            binary = Math.ceil(((soundLs[Math.floor(i / CHANNEL)] + 1) / 2) * ((2 ** 8) - 1));  // Left channel
+            binary = Math.ceil(((soundLs[Math.trunc(i / CHANNEL)] + 1) / 2) * ((2 ** 8) - 1));  // Left channel
           } else {
-            binary = Math.ceil(((soundRs[Math.floor(i / CHANNEL)] + 1) / 2) * ((2 ** 8) - 1));  // Right channel
+            binary = Math.ceil(((soundRs[Math.trunc(i / CHANNEL)] + 1) / 2) * ((2 ** 8) - 1));  // Right channel
           }
 
           // for preventing from clipping
@@ -297,9 +297,9 @@ export class Recorder implements Connectable {
           let binary = 0;
 
           if ((i % CHANNEL) === 0) {
-            binary = Math.ceil(soundLs[Math.floor(i / CHANNEL)] * (2 ** 15));  // Left channel
+            binary = Math.ceil(soundLs[Math.trunc(i / CHANNEL)] * (2 ** 15));  // Left channel
           } else {
-            binary = Math.ceil(soundRs[Math.floor(i / CHANNEL)] * (2 ** 15));  // Right channel
+            binary = Math.ceil(soundRs[Math.trunc(i / CHANNEL)] * (2 ** 15));  // Right channel
           }
 
           // for preventing from clipping

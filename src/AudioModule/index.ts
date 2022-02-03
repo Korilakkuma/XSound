@@ -215,7 +215,7 @@ export class AudioModule extends SoundModule {
         return;
       }
 
-      if (this.currentTime < Math.floor(this.source.loopEnd)) {
+      if (this.currentTime < Math.trunc(this.source.loopEnd)) {
         for (let i = 0; i < bufferSize; i++) {
           outputLs[i] = this.vocalcanceler.start(inputLs[i], inputRs[i]);
           outputRs[i] = this.vocalcanceler.start(inputRs[i], inputLs[i]);
@@ -479,8 +479,8 @@ export class AudioModule extends SoundModule {
     const sampleRate       = this.buffer.sampleRate;
     const numberOfChannels = this.buffer.numberOfChannels;
 
-    const start = Math.floor((startTime ?? 0) * sampleRate);
-    const end   = Math.floor((endTime ?? duration) * sampleRate);
+    const start = Math.trunc((startTime ?? 0) * sampleRate);
+    const end   = Math.trunc((endTime ?? duration) * sampleRate);
 
     const dataLs = (numberOfChannels > 0) ? this.buffer.getChannelData(0) : null;
     const dataRs = (numberOfChannels > 1) ? this.buffer.getChannelData(1) : null;

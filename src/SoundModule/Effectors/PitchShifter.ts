@@ -60,7 +60,7 @@ export class PitchShifter extends Effector {
         const aimagRs = new Float32Array(bufferSize);
 
         for (let i = 0; i < bufferSize; i++) {
-          const offset = Math.floor(this.pitch * i);
+          const offset = Math.trunc(this.pitch * i);
 
           let eq = 1;
 

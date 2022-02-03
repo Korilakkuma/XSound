@@ -161,7 +161,7 @@ export class FFT extends Visualizer {
     const fsDivN = this.sampleRate / (2 * data.length);
 
     // Visualize text at intervals of `this.textInterval`
-    const numberOfTexts = Math.floor(this.textInterval / fsDivN);
+    const numberOfTexts = Math.trunc(this.textInterval / fsDivN);
 
     // Erase previous wave
     context.clearRect(0, 0, width, height);
@@ -257,9 +257,9 @@ export class FFT extends Visualizer {
       // Visualize grid and text (X axis)
       for (let i = 0; i < actualSize; i++) {
         if ((i % numberOfTexts) === 0) {
-          const x = Math.floor((i / actualSize) * innerWidth) + left;
+          const x = Math.trunc((i / actualSize) * innerWidth) + left;
 
-          const f = Math.floor(this.textInterval * (i / numberOfTexts));
+          const f = Math.trunc(this.textInterval * (i / numberOfTexts));
           const t = (f < 1000) ? `${f} Hz` : `${String(f / 1000).slice(0, 3)} kHz`;
 
           // Visualize grid
@@ -282,8 +282,8 @@ export class FFT extends Visualizer {
         case 'float':
           for (let i = mindB; i <= maxdB; i += 10) {
             const t = `${i} dB`;
-            const x = Math.floor(left - context.measureText(t).width);
-            const y = Math.floor(((-1 * (i - maxdB)) / range) * innerHeight) + top;
+            const x = Math.trunc(left - context.measureText(t).width);
+            const y = Math.trunc(((-1 * (i - maxdB)) / range) * innerHeight) + top;
 
             // Visualize grid
             if (gridColor !== 'none') {
@@ -295,7 +295,7 @@ export class FFT extends Visualizer {
             if (textColor !== 'none') {
               context.fillStyle = textColor;
               context.font      = this.createFontString();
-              context.fillText(t, x, (y - Math.floor(fontSize)));
+              context.fillText(t, x, (y - Math.trunc(fontSize)));
             }
           }
 
@@ -303,7 +303,7 @@ export class FFT extends Visualizer {
         case 'uint':
         default    :
           for (const t of ['0.00', '0.25', '0.50', '0.75', '1.00']) {
-            const x = Math.floor(left - context.measureText(t).width);
+            const x = Math.trunc(left - context.measureText(t).width);
             const y = ((1 - parseFloat(t)) * innerHeight) + top;
 
             // Visualize grid
@@ -316,7 +316,7 @@ export class FFT extends Visualizer {
             if (textColor !== 'none') {
               context.fillStyle = textColor;
               context.font      = this.createFontString();
-              context.fillText(t, x, (y - Math.floor(fontSize)));
+              context.fillText(t, x, (y - Math.trunc(fontSize)));
             }
           }
 
@@ -367,7 +367,7 @@ export class FFT extends Visualizer {
     const fsDivN = this.sampleRate / (2 * data.length);
 
     // Visualize text at intervals of `this.textInterval`
-    const numberOfTexts = Math.floor(this.textInterval / fsDivN);
+    const numberOfTexts = Math.trunc(this.textInterval / fsDivN);
 
     // Erase previous wave
     svg.innerHTML = '';
@@ -381,8 +381,8 @@ export class FFT extends Visualizer {
         let d = '';
 
         for (let i = 0; i < actualSize; i++) {
-          const x = Math.floor((i / actualSize) * innerWidth) + left;
-          const y = Math.floor(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;
+          const x = Math.trunc((i / actualSize) * innerWidth) + left;
+          const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;
 
           if (i === 0) {
             d += `M${x + (lineWidth / 2)} ${y}`;
@@ -414,8 +414,8 @@ export class FFT extends Visualizer {
             let d = '';
 
             for (let i = 0; i < actualSize; i++) {
-              const x = Math.floor((i / actualSize) * innerWidth) + left;
-              const y = Math.floor((1 - (data[i] / 255)) * innerHeight) + top;
+              const x = Math.trunc((i / actualSize) * innerWidth) + left;
+              const y = Math.trunc((1 - (data[i] / 255)) * innerHeight) + top;
 
               if (i === 0) {
                 d += `M${x + (lineWidth / 2)} ${y}`;
@@ -455,8 +455,8 @@ export class FFT extends Visualizer {
             for (let i = 0; i < actualSize; i++) {
               const rect = document.createElementNS(FFT.XMLNS, 'rect');
 
-              const x = Math.floor((i / actualSize) * innerWidth) + left;
-              const y = Math.floor((data[i] / 255) * innerHeight);
+              const x = Math.trunc((i / actualSize) * innerWidth) + left;
+              const y = Math.trunc((data[i] / 255) * innerHeight);
 
               rect.setAttribute('x',     x.toString(10));
               rect.setAttribute('y',     (top + innerHeight).toString(10));
@@ -492,9 +492,9 @@ export class FFT extends Visualizer {
       // Visualize grid and text (X axis)
       for (let i = 0; i < actualSize; i++) {
         if ((i % numberOfTexts) === 0) {
-          const x = Math.floor((i / actualSize) * innerWidth) + left;
+          const x = Math.trunc((i / actualSize) * innerWidth) + left;
 
-          const f = Math.floor(this.textInterval * (i / numberOfTexts));
+          const f = Math.trunc(this.textInterval * (i / numberOfTexts));
           const t = (f < 1000) ? `${f} Hz` : `${String(f / 1000).slice(0, 3)} kHz`;
 
           // Visualize grid
@@ -539,7 +539,7 @@ export class FFT extends Visualizer {
           for (let i = mindB; i <= maxdB; i += 10) {
             const t = `${i}dB`;
             const x = left;
-            const y = Math.floor(((-1 * (i - maxdB)) / range) * innerHeight) + top;
+            const y = Math.trunc(((-1 * (i - maxdB)) / range) * innerHeight) + top;
 
             // Visualize grid
             if (gridColor !== 'none') {
@@ -563,7 +563,7 @@ export class FFT extends Visualizer {
               text.textContent = t;
 
               text.setAttribute('x', x.toString(10));
-              text.setAttribute('y', (y - Math.floor(fontSize / 4)).toString(10));
+              text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
 
               text.setAttribute('text-anchor', 'end');
               text.setAttribute('stroke',      'none');
@@ -608,7 +608,7 @@ export class FFT extends Visualizer {
               text.textContent = t;
 
               text.setAttribute('x', x.toString(10));
-              text.setAttribute('y', (y - Math.floor(fontSize / 4)).toString(10));
+              text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
 
               text.setAttribute('text-anchor', 'end');
               text.setAttribute('stroke',      'none');

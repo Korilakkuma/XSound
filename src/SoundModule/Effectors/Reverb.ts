@@ -4,7 +4,7 @@ type ReverbErrorText = 'error' | 'timeout' | 'decode';
 
 export type ReverbParams = {
   state?: boolean,
-  buffer?: AudioBuffer | null,
+  buffer?: number | AudioBuffer | null,
   dry?: number,
   wet?: number,
   tone?: number
@@ -112,16 +112,21 @@ export class Reverb extends Effector {
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
         case 'buffer':
-          if (value === null) {
+          if (typeof value === 'number') {
+            if ((value >= 0) && (value < this.rirs.length)) {
+              this.convolver.buffer = this.rirs[value];
+              this.connect();
+            }
+          } else if (value instanceof AudioBuffer) {
+            this.convolver.buffer = value;
+            this.connect();
+          } else if (value === null) {
             this.convolver.buffer = null;
 
             // If `buffer` in `ConvolverNode` is `null` after setting instance of `AudioBuffer`, `Reverb` is not OFF (Maybe, it is bug ?)
             // Therefore, `Reverb` is OFF by disconnecting `AudioNode`s.
             this.input.disconnect(0);
             this.input.connect(this.output);
-          } else if ((typeof value === 'number') && ((value >= 0) && (value < this.rirs.length))) {
-            this.convolver.buffer = this.rirs[value];
-            this.connect();
           }
 
           break;

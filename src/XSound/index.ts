@@ -325,13 +325,13 @@ export function convertTime(time: number): { minutes: number; seconds: number; m
 /**
  * This class (static) method decodes instance of `ArrayBuffer` to instance of `AudioBuffer`.
  * @param {AudioContext} context This argument is instance of `AudioContext` for `decodeAudioData` method.
- * @param {ArrayBuffer} arrayBuffer This argument is decoded to instance of `AudioBuffer`.
+ * @param {ArrayBuffer} arraybuffer This argument is decoded to instance of `AudioBuffer`.
  * @param {function} successCallback This argument is invoked on success.
  * @param {function} errorCallback This argument is invoked on failure.
  */
 export function decode(
   context: AudioContext,
-  arrayBuffer: ArrayBuffer,
+  arraybuffer: ArrayBuffer,
   successCallback?: (buffer: AudioBuffer) => void,
   errorCallback?: (error: Error) => void
 ): void {
@@ -343,7 +343,7 @@ export function decode(
     errorCallback = () => {};
   }
 
-  context.decodeAudioData(arrayBuffer, successCallback, errorCallback);
+  context.decodeAudioData(arraybuffer, successCallback, errorCallback);
 }
 
 /**

@@ -83,7 +83,7 @@ describe(Reverb.name, () => {
   });
 
   describe(reverb.param.name, () => {
-    const audioBuffer = new AudioBufferMock(new Float32Array([1, 0, -1, 0]));
+    const audiobuffer = new AudioBufferMock(new Float32Array([1, 0, -1, 0]));
 
     const defaultParams: ReverbParams = {
       buffer: null,
@@ -94,7 +94,7 @@ describe(Reverb.name, () => {
 
     const params: ReverbParams = {
       // @ts-ignore
-      buffer: audioBuffer,
+      buffer: audiobuffer,
       dry   : 0.5,
       wet   : 1,
       tone  : 4000

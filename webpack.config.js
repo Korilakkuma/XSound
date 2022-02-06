@@ -25,6 +25,8 @@ module.exports = {
   entry: './src/main.ts',
   output: {
     filename: 'xsound.js',
+    library: 'XSound',
+    libraryTarget: 'umd',
     path: `${dirname}/build`,
     publicPath: '/build/'
   },

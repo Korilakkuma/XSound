@@ -168,6 +168,8 @@ $ open http://localhost:8080/playground/
   
 ## Migration to v3
 
+Please refer to [API Documentation](#api-documentation) for details.
+
 ### Case sensitive
 
 ```JavaScript

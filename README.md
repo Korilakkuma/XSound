@@ -46,8 +46,7 @@ or, in the case of using as **module base** (For example, use chorus effector) .
 const context = X.get();
 
 // Create the instance of `Chorus` that is defined by XSound
-// (The 2nd argument is buffer size for `ScriptProcessorNode`)
-const chorus = new X.Chorus(context, 0);
+const chorus = new X.Chorus(context);
 
 const oscillator = context.createOscillator();
 

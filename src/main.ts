@@ -319,18 +319,18 @@ XSound.getCurrentTime = (): number => {
 const setup = (): void => {
   XSound.setup().then(() => {}).catch(() => {});
 
-  document.removeEventListener('click',      setup, true);
-  document.removeEventListener('mousedown',  setup, true);
-  document.removeEventListener('mouseup',    setup, true);
-  document.removeEventListener('touchstart', setup, true);
-  document.removeEventListener('touchend',   setup, true);
+  document.removeEventListener('click',      setup, false);
+  document.removeEventListener('mousedown',  setup, false);
+  document.removeEventListener('mouseup',    setup, false);
+  document.removeEventListener('touchstart', setup, false);
+  document.removeEventListener('touchend',   setup, false);
 };
 
-document.addEventListener('click',      setup, true);
-document.addEventListener('mousedown',  setup, true);
-document.addEventListener('mouseup',    setup, true);
-document.addEventListener('touchstart', setup, true);
-document.addEventListener('touchend',   setup, true);
+document.addEventListener('click',      setup, false);
+document.addEventListener('mousedown',  setup, false);
+document.addEventListener('mouseup',    setup, false);
+document.addEventListener('touchstart', setup, false);
+document.addEventListener('touchend',   setup, false);
 
 // for `<script>`
 window.XSound = XSound;

@@ -133,7 +133,7 @@ In the case of using CDN,
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js"></script>
 ```
 
-In the case of using ESModules for SSR ... etc,
+In the case of using ES Modules for SSR ... etc,
 
 ```JavaScript
 import { XSound, X } from 'xsound';

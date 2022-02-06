@@ -1,22 +1,11 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-    "module": "commonjs",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "outDir": "./build/@types",
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "es5"
+    "outDir": "./build/@types"
   },
   "include": [
     "src/**/*"

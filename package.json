@@ -12,7 +12,7 @@
     "lint": "eslint src test mocks jest.config.js webpack.config.js",
     "fix": "eslint --fix src test mocks jest.config.js webpack.config.js",
     "type": "tsc --noEmit",
-    "build:type": "tsc --project tsconfig.types.json --declaration --emitDeclarationOnly",
+    "build:type": "tsc --project tsconfig.types.json",
     "build:js": "cross-env NODE_ENV=production webpack --progress --mode production",
     "build": "npm run clean && npm run build:type && npm run build:js",
     "watch": "npm run clean && webpack --progress --watch",

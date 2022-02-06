@@ -340,21 +340,21 @@ export class TimeOverview extends Visualizer {
       this.callback = callback;
     }
 
-    visualizationNode.removeEventListener('mousedown', { handleEvent: this.onMouseStart }, true);
-    visualizationNode.removeEventListener('mousemove', { handleEvent: this.onMouseMove  }, true);
-    window.removeEventListener('mouseup',              { handleEvent: this.onMouseUp    }, true);
+    visualizationNode.removeEventListener('mousedown', { handleEvent: this.onMouseStart }, false);
+    visualizationNode.removeEventListener('mousemove', { handleEvent: this.onMouseMove  }, false);
+    window.removeEventListener('mouseup',              { handleEvent: this.onMouseUp    }, false);
 
-    visualizationNode.removeEventListener('touchstart', { handleEvent: this.onTouchStart }, true);
-    visualizationNode.removeEventListener('touchmove',  { handleEvent: this.onTouchMove  }, true);
-    window.removeEventListener('touchend',              { handleEvent: this.onTouchEnd   }, true);
+    visualizationNode.removeEventListener('touchstart', { handleEvent: this.onTouchStart }, false);
+    visualizationNode.removeEventListener('touchmove',  { handleEvent: this.onTouchMove  }, false);
+    window.removeEventListener('touchend',              { handleEvent: this.onTouchEnd   }, false);
 
-    visualizationNode.addEventListener('mousedown', { handleEvent: this.onMouseStart }, true);
-    visualizationNode.addEventListener('mousemove', { handleEvent: this.onMouseMove  }, true);
-    window.addEventListener('mouseup',              { handleEvent: this.onMouseUp    }, true);
+    visualizationNode.addEventListener('mousedown', { handleEvent: this.onMouseStart }, false);
+    visualizationNode.addEventListener('mousemove', { handleEvent: this.onMouseMove  }, false);
+    window.addEventListener('mouseup',              { handleEvent: this.onMouseUp    }, false);
 
-    visualizationNode.addEventListener('touchstart', { handleEvent: this.onTouchStart }, true);
-    visualizationNode.addEventListener('touchmove',  { handleEvent: this.onTouchMove  }, true);
-    window.addEventListener('touchend',              { handleEvent: this.onTouchEnd   }, true);
+    visualizationNode.addEventListener('touchstart', { handleEvent: this.onTouchStart }, false);
+    visualizationNode.addEventListener('touchmove',  { handleEvent: this.onTouchMove  }, false);
+    window.addEventListener('touchend',              { handleEvent: this.onTouchEnd   }, false);
 
     return this;
   }
@@ -698,8 +698,8 @@ export class TimeOverview extends Visualizer {
       return;
     }
 
-    // for Touch Panel
-    event.preventDefault();
+    // Improve rendering performance by stopping event bubbling
+    event.stopPropagation();
 
     if (event.type === 'mousemove') {
       this.visualize(event, event.type, this.getOffsetX(event));
@@ -742,6 +742,9 @@ export class TimeOverview extends Visualizer {
     if (!this.isDown) {
       return;
     }
+
+    // Improve rendering performance by stopping event bubbling
+    event.stopPropagation();
 
     // for Touch Panel
     event.preventDefault();

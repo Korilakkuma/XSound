@@ -332,9 +332,4 @@ document.addEventListener('mouseup',    setup, false);
 document.addEventListener('touchstart', setup, false);
 document.addEventListener('touchend',   setup, false);
 
-// for `<script>`
-window.XSound = XSound;
-window.X      = XSound;  // Alias
-
-// for ES Modules (If SSR (Server Side Rendering) ... etc)
 export { XSound, XSound as X };

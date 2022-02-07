@@ -20,15 +20,17 @@ const plugins = [
   })
 ];
 
-module.exports = {
+const baseConfig = {
   mode: 'development',
   entry: './src/main.ts',
   output: {
     filename: 'xsound.js',
-    library: 'XSound',
-    libraryTarget: 'umd',
     path: `${dirname}/build`,
-    publicPath: '/build/'
+    publicPath: '/build/',
+    library: {
+      name: 'xsound',
+      type: 'umd'
+    }
   },
   module: {
     rules: [
@@ -62,9 +64,23 @@ module.exports = {
       })
     ]
   },
-  devtool: 'source-map',
+  devtool: 'source-map'
+};
+
+const umdConfig = {
+  ...baseConfig,
+  output: {
+    filename: 'xsound.min.js',
+    path: `${dirname}/build`,
+    publicPath: '/build/',
+    library: {
+      type: 'window'
+    }
+  },
   devServer: {
     static: dirname,
     host: '0.0.0.0'
   }
 };
+
+module.exports = [baseConfig, umdConfig];

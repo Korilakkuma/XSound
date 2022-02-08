@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../mocks/AudioContextMock';
-import { OscillatorNodeMock } from '../../mocks/OscillatorNodeMock';
+import { AudioContextMock } from '../../mock/AudioContextMock';
+import { OscillatorNodeMock } from '../../mock/OscillatorNodeMock';
 import { Glide, GlideParams } from '../../src/OscillatorModule/Glide';
 
 describe(Glide.name, () => {

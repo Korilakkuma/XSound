@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Listener, ListenerParams } from '../../../src/SoundModule/Effectors/Listener';
 
 describe(Listener.name, () => {

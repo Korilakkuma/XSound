@@ -1,4 +1,4 @@
-import '../mocks/AudioContextMock';
+import '../mock/AudioContextMock';
 import { OscillatorModule } from '../src/OscillatorModule';
 import { OneshotModule } from '../src/OneshotModule';
 import { NoiseModule } from '../src/NoiseModule';

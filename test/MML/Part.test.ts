@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../mock/AudioContextMock';
 import { OscillatorModule } from '../../src/OscillatorModule';
 import { Part } from '../../src/MML/Part';
 

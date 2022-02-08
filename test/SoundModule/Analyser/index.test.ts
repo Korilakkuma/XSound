@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
-import { AnalyserNodeMock } from '../../../mocks/AnalyserNodeMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
+import { AnalyserNodeMock } from '../../../mock/AnalyserNodeMock';
 import { Analyser, AnalyserParams, Channel } from '../../../src/SoundModule/Analyser';
 import { TimeOverview } from '../../../src/SoundModule/Analyser/TimeOverview';
 import { Time } from '../../../src/SoundModule/Analyser/Time';

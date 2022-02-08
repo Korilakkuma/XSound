@@ -1,4 +1,4 @@
-import { canvasMock } from '../../../mocks/CanvasMock';
+import { canvasMock } from '../../../mock/CanvasMock';
 import { Channel } from '../../../src/SoundModule/Analyser';
 import { Time, TimeParams } from '../../../src/SoundModule/Analyser/Time';
 

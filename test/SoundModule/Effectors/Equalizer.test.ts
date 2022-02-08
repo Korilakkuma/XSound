@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Equalizer, EqualizerParams } from '../../../src/SoundModule/Effectors/Equalizer';
 
 describe(Equalizer.name, () => {

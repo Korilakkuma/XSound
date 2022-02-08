@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
-import { GainNodeMock } from '../../../mocks/GainNodeMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
+import { GainNodeMock } from '../../../mock/GainNodeMock';
 import { EnvelopeGenerator, EnvelopeGeneratorParams } from '../../../src/SoundModule/Effectors/EnvelopeGenerator';
 
 describe(EnvelopeGenerator.name, () => {

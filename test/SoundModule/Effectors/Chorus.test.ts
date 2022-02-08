@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Chorus, ChorusParams } from '../../../src/SoundModule/Effectors/Chorus';
 
 describe(Chorus.name, () => {

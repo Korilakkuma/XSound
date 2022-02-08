@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Autopanner, AutopannerParams } from '../../../src/SoundModule/Effectors/Autopanner';
 
 describe(Autopanner.name, () => {

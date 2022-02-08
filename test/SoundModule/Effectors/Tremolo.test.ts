@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Tremolo, TremoloParams } from '../../../src/SoundModule/Effectors/Tremolo';
 
 describe(Tremolo.name, () => {

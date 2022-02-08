@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
-import { AudioBufferMock } from '../../../mocks/AudioBufferMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
+import { AudioBufferMock } from '../../../mock/AudioBufferMock';
 import { Reverb, ReverbParams } from '../../../src/SoundModule/Effectors/Reverb';
 
 describe(Reverb.name, () => {

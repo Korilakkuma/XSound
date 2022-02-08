@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Ringmodulator, RingmodulatorParams } from '../../../src/SoundModule/Effectors/Ringmodulator';
 
 describe(Ringmodulator.name, () => {

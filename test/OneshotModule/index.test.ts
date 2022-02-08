@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../mocks/AudioContextMock';
-import { AudioBufferMock } from '../../mocks/AudioBufferMock';
+import { AudioContextMock } from '../../mock/AudioContextMock';
+import { AudioBufferMock } from '../../mock/AudioBufferMock';
 import { Analyser } from '../../src/SoundModule/Analyser';
 import { Recorder } from '../../src/SoundModule/Recorder';
 import { Session } from '../../src/SoundModule/Session';

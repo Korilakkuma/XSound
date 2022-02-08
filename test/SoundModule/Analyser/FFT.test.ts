@@ -1,4 +1,4 @@
-import { canvasMock } from '../../../mocks/CanvasMock';
+import { canvasMock } from '../../../mock/CanvasMock';
 import { Channel } from '../../../src/SoundModule/Analyser';
 import { FFT, FFTParams } from '../../../src/SoundModule/Analyser/FFT';
 

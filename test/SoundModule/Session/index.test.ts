@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Analyser } from '../../../src/SoundModule/Analyser';
 import { Room } from '../../../src/SoundModule/Session/Room';
 import { Session, SessionParams } from '../../../src/SoundModule/Session';

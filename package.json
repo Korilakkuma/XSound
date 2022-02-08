@@ -9,8 +9,8 @@
   "types": "build/types/main.d.ts",
   "scripts": {
     "clean": "rimraf -rf build",
-    "lint": "eslint src test mocks jest.config.js webpack.config.js",
-    "fix": "eslint --fix src test mocks jest.config.js webpack.config.js",
+    "lint": "eslint src test mock jest.config.js webpack.config.js",
+    "fix": "eslint --fix src test mock jest.config.js webpack.config.js",
     "type": "tsc --noEmit",
     "build:types": "tsc --project tsconfig.types.json",
     "build:js": "cross-env NODE_ENV=production webpack --progress --mode production",
@@ -31,7 +31,7 @@
     }
   },
   "lint-staged": {
-    "{src,test,mocks}/**/*.ts": [
+    "{src,test,mock}/**/*.ts": [
       "eslint --fix",
       "tsc --esModuleInterop --noEmit --skipLibCheck --target es5"
     ]

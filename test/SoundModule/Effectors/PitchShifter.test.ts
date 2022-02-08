@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { PitchShifter, PitchShifterParams } from '../../../src/SoundModule/Effectors/PitchShifter';
 
 describe(PitchShifter.name, () => {

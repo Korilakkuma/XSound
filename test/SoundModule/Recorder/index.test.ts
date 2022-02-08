@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Track } from '../../../src/SoundModule/Recorder/Track';
 import { Recorder, RecorderParams } from '../../../src/SoundModule/Recorder';
 

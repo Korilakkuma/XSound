@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Compressor, CompressorParams } from '../../../src/SoundModule/Effectors/Compressor';
 
 describe(Compressor.name, () => {

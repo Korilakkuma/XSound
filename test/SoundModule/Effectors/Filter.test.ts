@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../../mocks/AudioContextMock';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Filter, FilterParams } from '../../../src/SoundModule/Effectors/Filter';
 
 describe(Filter.name, () => {

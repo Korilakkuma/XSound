@@ -22,7 +22,7 @@
   "include": [
     "src/**/*",
     "test/**/*",
-    "mocks/**/*"
+    "mock/**/*"
   ],
   "exclude": [
     "node_modules"

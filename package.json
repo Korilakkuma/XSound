@@ -1,0 +1,91 @@
+{
+  "name": "xsound",
+  "version": "3.0.0-alpha",
+  "engines": {
+    "node": ">=12.0.0 <=16.13.2"
+  },
+  "description": "XSound gives Web Developers Powerful Audio Features Easily !",
+  "main": "build/xsound.js",
+  "types": "build/types/main.d.ts",
+  "scripts": {
+    "clean": "rimraf -rf build",
+    "lint": "eslint src test mock jest.config.js webpack.config.js",
+    "fix": "eslint --fix src test mock jest.config.js webpack.config.js",
+    "type": "tsc --noEmit",
+    "build:types": "tsc --project tsconfig.types.json",
+    "build:js": "cross-env NODE_ENV=production webpack --progress --mode production",
+    "build": "npm run clean && npm run build:types && npm run build:js",
+    "watch": "npm run clean && webpack --progress --watch",
+    "dev": "webpack-dev-server --progress",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose",
+    "release:patch": "npm version patch && git push && git push origin --tags",
+    "release:minor": "npm version minor && git push && git push origin --tags",
+    "release:major": "npm version major && git push && git push origin --tags",
+    "prepublish": "npm run build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{src,test,mock}/**/*.ts": [
+      "eslint --fix",
+      "tsc --esModuleInterop --noEmit --skipLibCheck --target es5"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Korilakkuma/XSound.git"
+  },
+  "keywords": [
+    "XSound",
+    "TypeScript",
+    "JavaScript",
+    "Web Audio API",
+    "Web Audio",
+    "Web Audio API Library",
+    "Web Audio Library"
+  ],
+  "author": "Korilakkuma <rilakkuma.san.xjapan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Korilakkuma/XSound/issues"
+  },
+  "homepage": "https://xsound.jp",
+  "files": [
+    "build",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/whatwg-fetch": "0.0.33",
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "cross-env": "^7.0.3",
+    "dotenv-webpack": "^7.1.0",
+    "eslint": "^8.8.0",
+    "eslint-cli": "^1.1.1",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "husky": "4.3.8",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.3.3",
+    "rimraf": "^3.0.2",
+    "terser-webpack-plugin": "^5.3.1",
+    "ts-jest": "^27.1.3",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  }
+}

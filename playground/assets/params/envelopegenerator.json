@@ -1,0 +1,6 @@
+{
+  "attack": 0.01,
+  "decay": 0.3,
+  "sustain": 0.5,
+  "release": 1.0
+}

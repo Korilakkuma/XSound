@@ -1,0 +1,35 @@
+{
+  "interval": 1000,
+  "styles": {
+    "shape": "line",
+    "gradients": [
+      {
+        "offset": 0,
+        "color": "rgba(0, 128, 255, 1.0)"
+      },
+      {
+        "offset": 1,
+        "color": "rgba(0, 0, 255, 1.0)"
+      }
+    ],
+    "wave": "rgba(0, 0, 255, 1.0)",
+    "grid": "rgba(255, 0, 0, 1.0)",
+    "text": "rgba(255, 255, 255, 1.0)",
+    "font": {
+      "family": "Arial",
+      "size": "13px",
+      "style": "normal",
+      "weight": "normal"
+    },
+    "width": 1.5,
+    "cap": "round",
+    "join": "miter",
+    "top": 15,
+    "right": 30,
+    "bottom": 15,
+    "left": 30
+  },
+  "type": "uint",
+  "size": 256,
+  "textInterval": 1000
+}

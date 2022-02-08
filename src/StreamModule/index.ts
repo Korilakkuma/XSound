@@ -29,6 +29,11 @@ import { NoiseSuppressor, NoiseSuppressorParams }  from './NoiseSuppressor';
 interface MediaStreamTrackAudioSourceNode extends AudioNode {
 }
 
+export type {
+  NoiseGateParams,
+  NoiseSuppressorParams
+};
+
 export type StreamModuleParams = SoundModuleParams & {
   noisegate: NoiseGateParams,
   noisesuppressor: NoiseSuppressorParams,

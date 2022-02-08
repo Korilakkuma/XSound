@@ -1,12 +1,30 @@
 import { Connectable } from '../../interfaces';
-import { TimeOverview } from './TimeOverview';
-import { Time } from './Time';
-import { FFT } from './FFT';
+import { Color, GraphicsApi, Gradient, Gradients, Shape, Font, GraphicsStyles } from './Visualizer';
+import { TimeOverview, TimeOverviewParams, CurrentTimeStyles, DragMode, DragCallbackFunction } from './TimeOverview';
+import { Time, TimeParams } from './Time';
+import { FFT, FFTParams } from './FFT';
 
 export type Domain   = 'timeoverview' | 'time' | 'fft';
 export type Channel  = 0 | 1;
 export type DataType = 'uint' | 'float';  // unsigned int 8 bit (`Uint8Array`) or float 32 bit (`Float32Array`)
 export type FFTSize  = 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384 | 32768;
+
+export type {
+  Color,
+  GraphicsApi,
+  Gradient,
+  Gradients,
+  Shape,
+  Font,
+  GraphicsStyles,
+  TimeOverview,
+  TimeOverviewParams,
+  CurrentTimeStyles,
+  DragMode,
+  DragCallbackFunction,
+  TimeParams,
+  FFTParams
+};
 
 export type AnalyserParams = {
   fftSize?: FFTSize,

@@ -1,9 +1,20 @@
 import { OscillatorModule } from '../OscillatorModule';
 import { OneshotModule } from '../OneshotModule';
 import { NoiseModule } from '../NoiseModule';
-import { MMLSyntaxError } from './Tree';
+import { TokenType, TokenMap, Token } from './Token';
+import { Tree, MMLSyntaxError } from './Tree';
 import { Sequence } from './Sequence';
 import { Part } from './Part';
+
+export type {
+  Part,
+  Sequence,
+  MMLSyntaxError,
+  Tree,
+  TokenType,
+  TokenMap,
+  Token
+};
 
 /**
  * This class manages instance of `Part` for playing MML (Music Macro Language).

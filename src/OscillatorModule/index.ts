@@ -24,6 +24,11 @@ import { Wah } from '../SoundModule/Effectors/Wah';
 import { Glide, GlideParams } from './Glide';
 import { Oscillator, OscillatorParams } from './Oscillator';
 
+export type {
+  GlideParams,
+  OscillatorParams
+};
+
 export type OscillatorModuleParams = SoundModuleParams & {
   oscillator: {
     glide: GlideParams,

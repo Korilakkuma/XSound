@@ -3,9 +3,7 @@ import { BufferSize } from '../../types';
 import { Track } from './Track';
 import { Channel } from './Channel';
 
-export type Monoral         = 1;
-export type Stereo          = 2;
-export type RecordType      = Monoral | Stereo;
+export type RecordType      = 1 | 2;  // Monaural | Stereo
 export type ChannelNumber   = -1 | 0 | 1;
 export type QuantizationBit = 8 | 16;
 export type WaveExportType  = 'base64' | 'dataURL' | 'blob' | 'objectURL';

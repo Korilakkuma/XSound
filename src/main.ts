@@ -1,37 +1,57 @@
 'use strict';
 
 import './types';
-import { OscillatorModule } from './OscillatorModule';
-import { OneshotModule } from './OneshotModule';
-import { NoiseModule } from './NoiseModule';
-import { AudioModule } from './AudioModule';
-import { MediaModule } from './MediaModule';
-import { StreamModule } from './StreamModule';
+import { OscillatorModule, OscillatorModuleParams, GlideParams, OscillatorParams } from './OscillatorModule';
+import { OneshotModule, OneshotModuleParams, OneshotSetting, OneshotSettings } from './OneshotModule';
+import { NoiseModule, NoiseModuleParams, NoiseType } from './NoiseModule';
+import { AudioModule, AudioModuleParams, AudioBufferSprite } from './AudioModule';
+import { MediaModule, MediaModuleParams } from './MediaModule';
+import { StreamModule, StreamModuleParams, NoiseGateParams, NoiseSuppressorParams } from './StreamModule';
 import { ProcessorModule } from './ProcessorModule';
 import { MixerModule } from './MixerModule';
-import { MIDI } from './MIDI';
-import { MML } from './MML';
-import { Analyser } from './SoundModule/Analyser';
-import { Recorder } from './SoundModule/Recorder';
-import { Session } from './SoundModule/Session';
+import { MIDI, MIDIAccess, MIDIOptions, MIDIInput, MIDIOutput, MIDIMessageEvent } from './MIDI';
+import { MML, Part, Sequence, MMLSyntaxError, Tree, TokenType, TokenMap, Token } from './MML';
+import {
+  Analyser,
+  AnalyserParams,
+  DataType,
+  Channel,
+  Domain,
+  Color,
+  GraphicsApi,
+  Gradient,
+  Gradients,
+  Shape,
+  Font,
+  GraphicsStyles,
+  TimeOverview,
+  TimeOverviewParams,
+  DragMode,
+  DragCallbackFunction,
+  CurrentTimeStyles,
+  TimeParams,
+  FFTParams
+} from './SoundModule/Analyser';
+import { Recorder, RecorderParams, RecordType, ChannelNumber, QuantizationBit, WaveExportType } from './SoundModule/Recorder';
+import { Session, SessionParams, NumberOfSessionChannels } from './SoundModule/Session';
 import { Effector } from './SoundModule/Effectors/Effector';
-import { Autopanner } from './SoundModule/Effectors/Autopanner';
-import { Chorus } from './SoundModule/Effectors/Chorus';
-import { Compressor } from './SoundModule/Effectors/Compressor';
-import { Delay } from './SoundModule/Effectors/Delay';
-import { Distortion } from './SoundModule/Effectors/Distortion';
-import { Equalizer } from './SoundModule/Effectors/Equalizer';
-import { Filter } from './SoundModule/Effectors/Filter';
-import { Flanger } from './SoundModule/Effectors/Flanger';
-import { Listener } from './SoundModule/Effectors/Listener';
-import { Panner } from './SoundModule/Effectors/Panner';
-import { Phaser } from './SoundModule/Effectors/Phaser';
-import { PitchShifter } from './SoundModule/Effectors/PitchShifter';
-import { Reverb } from './SoundModule/Effectors/Reverb';
-import { Ringmodulator } from './SoundModule/Effectors/Ringmodulator';
-import { Stereo } from './SoundModule/Effectors/Stereo';
-import { Tremolo } from './SoundModule/Effectors/Tremolo';
-import { Wah } from './SoundModule/Effectors/Wah';
+import { Autopanner, AutopannerParams } from './SoundModule/Effectors/Autopanner';
+import { Chorus, ChorusParams } from './SoundModule/Effectors/Chorus';
+import { Compressor, CompressorParams } from './SoundModule/Effectors/Compressor';
+import { Delay, DelayParams } from './SoundModule/Effectors/Delay';
+import { Distortion, DistortionParams, DistortionType, DistortionCurve } from './SoundModule/Effectors/Distortion';
+import { Equalizer, EqualizerParams } from './SoundModule/Effectors/Equalizer';
+import { Filter, FilterParams } from './SoundModule/Effectors/Filter';
+import { Flanger, FlangerParams } from './SoundModule/Effectors/Flanger';
+import { Listener, ListenerParams } from './SoundModule/Effectors/Listener';
+import { Panner, PannerParams, Position3D } from './SoundModule/Effectors/Panner';
+import { Phaser, PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
+import { PitchShifter, PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
+import { Reverb, ReverbParams } from './SoundModule/Effectors/Reverb';
+import { Ringmodulator, RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
+import { Stereo, StereoParams } from './SoundModule/Effectors/Stereo';
+import { Tremolo, TremoloParams } from './SoundModule/Effectors/Tremolo';
+import { Wah, WahParams } from './SoundModule/Effectors/Wah';
 import {
   EQUAL_TEMPERAMENT,
   FREQUENCY_RATIO,
@@ -54,7 +74,10 @@ import {
   drop,
   file,
   toFrequencies,
-  toTextFile
+  toTextFile,
+  FileEvent,
+  FileReadType,
+  FileReaderErrorText
 } from './XSound';
 
 export type Source     = OscillatorModule | OneshotModule | NoiseModule | AudioModule | MediaModule | StreamModule | ProcessorModule | MixerModule | MIDI | MML;
@@ -331,5 +354,83 @@ document.addEventListener('mousedown',  setup, false);
 document.addEventListener('mouseup',    setup, false);
 document.addEventListener('touchstart', setup, false);
 document.addEventListener('touchend',   setup, false);
+
+export type {
+  OscillatorModuleParams,
+  GlideParams,
+  OscillatorParams,
+  OneshotModuleParams,
+  OneshotSetting,
+  OneshotSettings,
+  NoiseModuleParams,
+  NoiseType,
+  AudioModuleParams,
+  AudioBufferSprite,
+  MediaModuleParams,
+  StreamModuleParams,
+  NoiseGateParams,
+  NoiseSuppressorParams,
+  MIDIAccess,
+  MIDIOptions,
+  MIDIInput,
+  MIDIOutput,
+  MIDIMessageEvent,
+  Part,
+  Sequence,
+  MMLSyntaxError,
+  Tree,
+  TokenType,
+  TokenMap,
+  Token,
+  AnalyserParams,
+  DataType,
+  Channel,
+  Domain,
+  Color,
+  GraphicsApi,
+  Gradient,
+  Gradients,
+  Shape,
+  Font,
+  GraphicsStyles,
+  TimeOverview,
+  TimeOverviewParams,
+  DragMode,
+  DragCallbackFunction,
+  CurrentTimeStyles,
+  TimeParams,
+  FFTParams,
+  RecorderParams,
+  RecordType,
+  ChannelNumber,
+  QuantizationBit,
+  WaveExportType,
+  SessionParams,
+  NumberOfSessionChannels,
+  AutopannerParams,
+  ChorusParams,
+  CompressorParams,
+  DelayParams,
+  DistortionParams,
+  DistortionType,
+  DistortionCurve,
+  EqualizerParams,
+  FilterParams,
+  FlangerParams,
+  ListenerParams,
+  PannerParams,
+  Position3D,
+  PhaserParams,
+  PhaserNumberOfStages,
+  PitchShifterParams,
+  ReverbParams,
+  RingmodulatorParams,
+  StereoParams,
+  TremoloParams,
+  WahParams,
+  FileEvent,
+  FileReadType,
+  FileReaderErrorText
+};
 
 export { XSound, XSound as X };

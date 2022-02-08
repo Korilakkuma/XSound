@@ -73,9 +73,7 @@ XSound enable to using the following classes (Refer to [API Documentation](https
 ```TypeScript
 // These type aliases are defined by XSound
 type BufferSize = 0 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384;
-type Monoral    = 1;
-type Stereo     = 2;
-type RecordType = Monoral | Stereo;
+type RecordType = 1 | 2;  // Monaural | Stereo
 
 X.Analyser(context: AudioContext);
 X.Recorder(context: AudioContext, bufferSize: BufferSize, numberOfInputs: RecordType, numberOfOutputs: RecordType);

@@ -8,6 +8,7 @@
     ],
     "module": "commonjs",
     "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -22,5 +23,8 @@
     "src/**/*",
     "test/**/*",
     "mocks/**/*"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

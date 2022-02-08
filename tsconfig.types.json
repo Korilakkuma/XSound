@@ -4,10 +4,14 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
-    "esModuleInterop": true,
-    "outDir": "./build/@types"
+    "outDir": "./build/types/"
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "node_module",
+    "test",
+    "mocks"
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "state": false,
+  "x": 0,
+  "y": 0,
+  "z": 0,
+  "ox": 1,
+  "oy": 0,
+  "oz": 0,
+  "refDistance": 1,
+  "maxDistance": 10000,
+  "rolloffFactor": 1,
+  "coneInnerAngle": 360,
+  "coneOuterAngle": 360,
+  "coneOuterGain": 0,
+  "panningModel": "HRTF",
+  "distanceModel": "inverse"
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Playground | XSound - Powerful Audio Features Easily ! -</title>
+    <meta name="author" content="Korilakkuma (Tomohiro IKEDA)" />
+    <meta name="description" content="XSound gives Web Developers Powerful Audio Features Easily ! Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ..." />
+    <meta name="keywords" content="XSound, XSound API, Web Audio API, Web Audio API Library, Web Audio Library" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, shrink-to-fit=no, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta property="og:title" content="XSound" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xsound.jp" />
+    <meta property="og:image" content="assets/images/icon.png" />
+    <meta property="og:description" content="XSound gives Web Developers Powerful Audio Features Easily ! Synthesizer, Effects, Visualization, Multi-Track Recording, Audio Streaming, Visual Audio Sprite ..." />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@xwebmusic">
+    <link rel="canonical" href="https://xsound.jp/playground/" />
+    <link rel="icon" href="assets/images/icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="assets/images/icon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@latest/lib/codemirror.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@latest/theme/monokai.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="assets/app.css" type="text/css" media="all" />
+  </head>
+  <body>
+    <header>
+      <h1>XSound Playground</h1>
+    </header>
+    <main>
+      <div>
+        <div class="buttons">
+          <select id="select-code">
+            <option value="default" selected>Select Example</option>
+            <option value="oscillator/index">OscillatorModule</option>
+            <option value="oneshot/index">OneshotModule</option>
+            <option value="noise/index">NoiseModule</option>
+            <option value="audio/index">AudioModule</option>
+            <option value="media/index">MediaModule</option>
+            <option value="stream/index">StreamModule</option>
+            <option value="processor/index">ProcessorModule</option>
+            <option value="mixer/index">MixerModule</option>
+            <option value="midi/index">MIDI</option>
+            <option value="mml/index">MML</option>
+            <optgroup label="XSound">
+              <option value="setup">setup</option>
+              <option value="clone">clone</option>
+              <option value="free">free</option>
+              <option value="noConflict">noConflict</option>
+              <option value="get">get</option>
+              <option value="getCurrentTime">getCurrentTime</option>
+              <option value="xsound/isPitchChar">isPitchChar</option>
+              <option value="xsound/computeIndex">computeIndex</option>
+              <option value="xsound/computeFrequency">computeFrequency</option>
+              <option value="xsound/fft">fft</option>
+              <option value="xsound/ifft">ifft</option>
+              <option value="xsound/ajax">ajax</option>
+              <option value="xsound/convertTime">convertTime</option>
+              <option value="xsound/decode">decode</option>
+              <option value="xsound/requestFullscreen">requestFullscreen</option>
+              <option value="xsound/exitFullscreen">exitFullscreen</option>
+              <option value="xsound/read">read</option>
+              <option value="xsound/drop">drop</option>
+              <option value="xsound/file">file</option>
+              <option value="xsound/toFrequencies">toFrequencies</option>
+              <option value="xsound/toTextFile">toTextFile</option>
+            </optgroup>
+          </select>
+          <button type="button" id="button-run">Run</button>
+          <button type="button" id="button-clear">Clear</button>
+          <a href="https://xsound.jp/docs/" target="_blank" rel="noopener noreferrer">API Documentation</a>
+        </div>
+        <label>
+          <textarea id="textarea-codemirror">X(&apos;oscillator&apos;).setup([true, true, false, false]);
+
+document.getElementById(&apos;button-start&apos;).onclick = () =&gt; {
+  X(&apos;oscillator&apos;).start([440, 880]);
+};
+
+document.getElementById(&apos;button-stop&apos;).onclick = () =&gt; {
+  X(&apos;oscillator&apos;).stop();
+};</textarea>
+        </label>
+        <div id="result-text"></div>
+      </div>
+      <fieldset id="ui" hidden>
+        <legend>Input Forms</legend>
+        <div class="buttons">
+          <button type="button" id="button-start">Start</button>
+          <button type="button" id="button-stop">Stop</button>
+          <button type="button" id="button-uploader">Upload</button>
+          <input type="file" accept="audio/*" hidden />
+        </div>
+        <div id="module-parameters-controller">
+          <label>
+            <select id="select-module">
+              <option value="default">Select Module</option>
+              <option value="analyser">Analyser</option>
+              <optgroup label="Visualizer">
+                <option value="timeoverview">Time Overview</option>
+                <option value="time">Time</option>
+                <option value="fft">FFT</option>
+              </optgroup>
+              <option value="recorder">Recorder</option>
+              <option value="session">Session</option>
+              <option value="autopanner">Autopanner</option>
+              <option value="chorus">Chorus</option>
+              <option value="compressor">Compressor</option>
+              <option value="delay">Delay</option>
+              <option value="distortion">Distortion</option>
+              <option value="equalizer">Equalizer</option>
+              <option value="filter">Filter</option>
+              <option value="flanger">Flanger</option>
+              <option value="listener">Listener</option>
+              <option value="panner">Panner</option>
+              <option value="phaser">Phaser</option>
+              <option value="pitchshifter">Pitch Shifter</option>
+              <option value="reverb">Reverb</option>
+              <option value="ringmodulator">Ring Modulator</option>
+              <option value="stereo">Stereo</option>
+              <option value="tremolo">Tremolo</option>
+              <option value="wah">Wah</option>
+              <option value="envelopegenerator">Envelope Generator</option>
+              <option value="glide">Glide</option>
+              <option value="vocalcanceler">Vocal Canceler</option>
+              <option value="noisegate">Noise Gate</option>
+              <option value="noisesuppressor">Noise Suppressor</option>
+            </select>
+          </label>
+          <textarea id="textarea-param-json">{
+  &quot;mastervolume&quot;: 1
+}</textarea>
+          <button id="button-set-parameters">Set</button>
+        </div>
+        <div>
+          <canvas width="1200" height="150"></canvas>
+          <svg width="1200" height="150"></svg>
+        </div>
+      </fieldset>
+    </main>
+    <footer>
+      <p>XSound maintained by <a href="https://github.com/Korilakkuma/XSound">Korilakkuma</a></p>
+    </footer>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/codemirror@latest/lib/codemirror.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/codemirror@latest/mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/abcjs@latest/dist/abcjs-basic-min.js"></script>
+    <script type="text/javascript" src="../build/xsound.min.js"></script>
+    <script type="text/javascript" src="assets/app.js"></script>
+  </body>
+</html>

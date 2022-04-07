@@ -67,7 +67,7 @@ const baseConfig = {
   devtool: 'source-map'
 };
 
-const umdConfig = {
+const windowConfig = {
   ...baseConfig,
   output: {
     filename: 'xsound.min.js',
@@ -83,4 +83,4 @@ const umdConfig = {
   }
 };
 
-module.exports = [baseConfig, umdConfig];
+module.exports = [baseConfig, windowConfig];

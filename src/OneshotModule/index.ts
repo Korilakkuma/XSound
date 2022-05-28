@@ -57,7 +57,7 @@ export class OneshotModule extends SoundModule {
   private startTime = 0;
   private duration = 0;
 
-  private transpose = 1;
+  private transpose = 0;
 
   private paused = true;
 

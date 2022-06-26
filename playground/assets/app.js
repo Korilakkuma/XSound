@@ -1,53 +1,90 @@
 (() => {
-    const STORAGE_KEY = 'xsound-playground';
+  const STORAGE_KEY = 'xsound-playground';
 
-    const textarea = document.querySelector('textarea');
-    const ui       = document.getElementById('ui');
+  const result     = document.getElementById('result-text');
+  const codeEditor = document.getElementById('textarea-codemirror');
+  const ui         = document.getElementById('ui');
 
-    const editor = CodeMirror.fromTextArea(textarea, {
-        mode        : 'javascript',
-        lineNumbers : true,
-        indentUnit  : 4,
-        smartIndent : true
-    });
+  const editor = CodeMirror.fromTextArea(codeEditor, {
+    mode       : 'javascript',
+    theme      : location.hostname === 'xsound.jp' ? 'default' : 'monokai',
+    lineNumbers: true,
+    indentUnit : 2,
+    smartIndent: true
+  });
 
+  editor.save();
+
+  document.getElementById('button-run').addEventListener('click', (event) => {
     editor.save();
 
-    document.getElementById('button-run').addEventListener('click', (event) => {
-        editor.save();
+    const executor = new Function(codeEditor.value);
 
-        const executor = new Function(textarea.value);
+    executor();
 
-        executor();
+    if (ui.hasAttribute('hidden')) {
+      ui.removeAttribute('hidden');
+    }
 
-        if (ui.hasAttribute('hidden')) {
-            ui.removeAttribute('hidden');
-        }
-    }, false);
+    document.getElementById('button-stop').click();
+  }, false);
 
-    document.getElementById('button-clear').addEventListener('click', (event) => {
-        editor.setValue('');
-        editor.clearHistory();
-    }, false);
+  document.getElementById('select-code').addEventListener('change', (event) => {
+    const path = event.currentTarget.value;
 
-    document.getElementById('button-run').addEventListener('dragstart', (event) => {
-        event.preventDefault();
-    }, false);
+    result.innerHTML = '';
 
-    document.getElementById('button-clear').addEventListener('dragstart', (event) => {
-        event.preventDefault();
-    }, false);
+    editor.setValue('\'Loading ...\';');
 
-    window.addEventListener('load', () => {
-        if (localStorage.getItem(STORAGE_KEY)) {
-            editor.setValue('');
-            editor.clearHistory();
-            editor.setValue(localStorage.getItem(STORAGE_KEY));
-        }
-    }, true);
+    fetch(`./assets/examples/${path}.js`)
+      .then((res) => {
+        return res.text();
+      })
+      .then((text) => {
+        editor.setValue(text.trim());
+      });
+  }, false);
 
-    window.addEventListener('unload', () => {
-        editor.save();
-        localStorage.setItem(STORAGE_KEY, textarea.value);
-    }, true);
+  document.getElementById('button-clear').addEventListener('click', (event) => {
+    editor.setValue('');
+    editor.clearHistory();
+  }, false);
+
+  document.getElementById('button-run').addEventListener('dragstart', (event) => {
+    event.preventDefault();
+  }, false);
+
+  document.getElementById('button-clear').addEventListener('dragstart', (event) => {
+    event.preventDefault();
+  }, false);
+
+  document.getElementById('select-module').addEventListener('change', (event) => {
+    const select = event.currentTarget;
+    const path   = select.value;
+
+    const textarea = document.getElementById('textarea-param-json');
+
+    textarea.value = 'Loading ...';
+
+    fetch(`./assets/params/${path}.json`)
+      .then((res) => {
+        return res.text();
+      })
+      .then((text) => {
+        textarea.value = text.trim();
+      });
+  }, false);
+
+  window.addEventListener('load', () => {
+    if (localStorage.getItem(STORAGE_KEY)) {
+      editor.setValue('');
+      editor.clearHistory();
+      editor.setValue(localStorage.getItem(STORAGE_KEY));
+    }
+  }, true);
+
+  window.addEventListener('unload', () => {
+    editor.save();
+    localStorage.setItem(STORAGE_KEY, codeEditor.value);
+  }, true);
 })();

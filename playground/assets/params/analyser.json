@@ -1,0 +1,6 @@
+{
+  "fftSize": 2048,
+  "minDecibels": -100,
+  "maxDecibels": -30,
+  "smoothingTimeConstant": 0.8
+}

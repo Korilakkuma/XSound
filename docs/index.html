@@ -1,0 +1,147 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>XSound</title><meta name="description" content="Documentation for XSound"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">XSound</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1> XSound </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography"><p><a href="https://xsound.jp"><img src="https://user-images.githubusercontent.com/4006693/154785249-a59e030a-6471-4472-8a5f-98f1243b428a.png" alt="XSound - Powerful Audio Features Easily ! -"></a></p>
+<p><a href="https://github.com/Korilakkuma/XSound/actions?query=workflow%3A%22Node.js+CI%22"><img src="https://github.com/Korilakkuma/XSound/workflows/Node.js%20CI/badge.svg" alt="Node.js CI"></a>
+<img src="https://img.shields.io/node/v/xsound?color=brightgreen" alt="node-current">
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-brightgreen.svg" alt="License: MIT"></a>
+<a href="https://www.npmjs.com/package/xsound"><img src="https://img.shields.io/npm/dt/xsound.svg" alt="npm"></a>
+<a href="https://www.jsdelivr.com/package/npm/xsound"><img src="https://data.jsdelivr.com/v1/package/npm/xsound/badge" alt="jsDelivr"></a></p>
+
+<a href="#overview" id="overview" style="color: inherit; text-decoration: none;">
+  <h2>Overview</h2>
+</a>
+<p>XSound gives Web Developers Powerful Audio Features Easily !<br>In concrete, XSound is useful to implement the following features.</p>
+<ul>
+<li>Create Sound</li>
+<li>Play the One-Shot Audio</li>
+<li>Play the Audio</li>
+<li>Play the Media</li>
+<li>Streaming (by WebRTC)</li>
+<li>MIDI (by Web MIDI API)</li>
+<li>MML (Music Macro Language)</li>
+<li>Effectors (Compressor / Wah / Equalizer / Tremolo / Phaser / Chorus / Delay / Reverb ... etc)</li>
+<li>Visualization (Overview in Time Domain / Time Domain / Spectrum)</li>
+<li>Multi-Track Recording (Create WAVE file)</li>
+<li>Session (by WebSocket)</li>
+<li>Audio Streaming</li>
+<li>Visual Audio Sprite</li>
+</ul>
+<p>XSound don&#39;t depend on other libraries or frameworks (For example, jQuery, React).</p>
+
+<a href="#supported-browsers" id="supported-browsers" style="color: inherit; text-decoration: none;">
+  <h2>Supported Browsers</h2>
+</a>
+<img src="https://raw.githubusercontent.com/Korilakkuma/XSound/main/misc/supported-browsers.png" alt="Supported Browsers are Chrome, Edge, Firefox, Opera and Safari" style="max-width: 100%;" />
+  
+
+<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+  <h2>Getting Started</h2>
+</a>
+<p>In case of using as <strong>full stack</strong> (For example, use oscillator) ...</p>
+<pre><code class="language-JavaScript"><span class="hl-0">X</span><span class="hl-1">(</span><span class="hl-2">&#39;oscillator&#39;</span><span class="hl-1">).</span><span class="hl-0">setup</span><span class="hl-1">([</span><span class="hl-3">true</span><span class="hl-1">, </span><span class="hl-3">true</span><span class="hl-1">, </span><span class="hl-3">false</span><span class="hl-1">, </span><span class="hl-3">false</span><span class="hl-1">]).</span><span class="hl-0">ready</span><span class="hl-1">(</span><span class="hl-4">2</span><span class="hl-1">, </span><span class="hl-4">5</span><span class="hl-1">).</span><span class="hl-0">start</span><span class="hl-1">([</span><span class="hl-4">440</span><span class="hl-1">, </span><span class="hl-4">880</span><span class="hl-1">]).</span><span class="hl-0">stop</span><span class="hl-1">();</span>
+</code></pre>
+<p>or, in case of using as <strong>module base</strong> (For example, use chorus effector) ...</p>
+<pre><code class="language-JavaScript"><span class="hl-5">// The instance of `AudioContext`</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">context</span><span class="hl-1"> = </span><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">get</span><span class="hl-1">();</span><br/><br/><span class="hl-5">// Create the instance of `Chorus` that is defined by XSound</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">chorus</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Chorus</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">);</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">oscillator</span><span class="hl-1"> = </span><span class="hl-7">context</span><span class="hl-1">.</span><span class="hl-0">createOscillator</span><span class="hl-1">();</span><br/><br/><span class="hl-5">// The instance that is defined by XSound has connectors for input and output</span><br/><span class="hl-7">oscillator</span><span class="hl-1">.</span><span class="hl-0">connect</span><span class="hl-1">(</span><span class="hl-7">chorus</span><span class="hl-1">.</span><span class="hl-6">INPUT</span><span class="hl-1">);</span><br/><span class="hl-7">chorus</span><span class="hl-1">.</span><span class="hl-6">OUTPUT</span><span class="hl-1">.</span><span class="hl-0">connect</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">.</span><span class="hl-7">destination</span><span class="hl-1">);</span><br/><br/><span class="hl-5">// Set parameters for chorus</span><br/><span class="hl-7">chorus</span><span class="hl-1">.</span><span class="hl-0">param</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-7">time :</span><span class="hl-1"> </span><span class="hl-4">0.025</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">depth:</span><span class="hl-1"> </span><span class="hl-4">0.5</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">rate :</span><span class="hl-1"> </span><span class="hl-4">2.5</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">mix  :</span><span class="hl-1"> </span><span class="hl-4">0.5</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">// Activate</span><br/><span class="hl-7">chorus</span><span class="hl-1">.</span><span class="hl-0">activate</span><span class="hl-1">();</span><br/><br/><span class="hl-7">oscillator</span><span class="hl-1">.</span><span class="hl-0">start</span><span class="hl-1">(</span><span class="hl-4">0</span><span class="hl-1">);</span>
+</code></pre>
+<p>XSound enable to using the following classes (Refer to <a href="https://xsound.jp/docs/">API Documentation</a> for details).</p>
+<pre><code class="language-TypeScript"><span class="hl-5">// These type aliases are defined by XSound</span><br/><span class="hl-3">type</span><span class="hl-1"> </span><span class="hl-8">BufferSize</span><span class="hl-1"> = </span><span class="hl-4">0</span><span class="hl-1"> | </span><span class="hl-4">256</span><span class="hl-1"> | </span><span class="hl-4">512</span><span class="hl-1"> | </span><span class="hl-4">1024</span><span class="hl-1"> | </span><span class="hl-4">2048</span><span class="hl-1"> | </span><span class="hl-4">4096</span><span class="hl-1"> | </span><span class="hl-4">8192</span><span class="hl-1"> | </span><span class="hl-4">16384</span><span class="hl-1">;</span><br/><span class="hl-3">type</span><span class="hl-1"> </span><span class="hl-8">RecordType</span><span class="hl-1"> = </span><span class="hl-4">1</span><span class="hl-1"> | </span><span class="hl-4">2</span><span class="hl-1">;  </span><span class="hl-5">// Monaural | Stereo</span><br/><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Analyser</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Recorder</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">, </span><span class="hl-7">bufferSize</span><span class="hl-1">: </span><span class="hl-7">BufferSize</span><span class="hl-1">, </span><span class="hl-7">numberOfInputs</span><span class="hl-1">: </span><span class="hl-7">RecordType</span><span class="hl-1">, </span><span class="hl-7">numberOfOutputs</span><span class="hl-1">: </span><span class="hl-7">RecordType</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Session</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><br/><span class="hl-5">// Effectors</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Autopanner</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Chorus</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Compressor</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Delay</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Distortion</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Equalizer</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Filter</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Flanger</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Listener</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Panner</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Phaser</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">PitchShifter</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">, </span><span class="hl-7">size</span><span class="hl-1">: </span><span class="hl-7">BufferSize</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Reverb</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Ringmodulator</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Stereo</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">, </span><span class="hl-7">size</span><span class="hl-1">, </span><span class="hl-7">size</span><span class="hl-1">: </span><span class="hl-7">BufferSize</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Tremolo</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span><br/><span class="hl-6">X</span><span class="hl-1">.</span><span class="hl-0">Wah</span><span class="hl-1">(</span><span class="hl-7">context</span><span class="hl-1">: </span><span class="hl-7">AudioContext</span><span class="hl-1">);</span>
+</code></pre>
+
+<a href="#demo" id="demo" style="color: inherit; text-decoration: none;">
+  <h2>Demo</h2>
+</a>
+<p><a href="https://xsound.app">XSound.app</a> uses this library.</p>
+<p>Now, I&#39;m creating website for Web Audio API. Please refer to the following site for understanding API Documentation.</p>
+<p><a href="https://weblike-curtaincall.ssl-lolipop.jp/portfolio-web-sounder/">WEB SOUNDER</a></p>
+
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<pre><code class="language-bash"><span class="hl-1">$ npm install --save xsound</span>
+</code></pre>
+<p>or,</p>
+<pre><code class="language-bash"><span class="hl-1">$ yarn add xsound</span>
+</code></pre>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<p>In case of using CDN,</p>
+<pre><code class="language-HTML"><span class="hl-9">&lt;</span><span class="hl-10">script</span><span class="hl-11"> </span><span class="hl-12">type</span><span class="hl-11">=</span><span class="hl-13">&quot;text/javascript&quot;</span><span class="hl-11"> </span><span class="hl-12">src</span><span class="hl-11">=</span><span class="hl-13">&quot;https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js&quot;</span><span class="hl-9">&gt;&lt;/</span><span class="hl-10">script</span><span class="hl-9">&gt;</span>
+</code></pre>
+<p>In case of using ES Modules (for SSR ... etc),</p>
+<pre><code class="language-JavaScript"><span class="hl-14">import</span><span class="hl-1"> { </span><span class="hl-7">XSound</span><span class="hl-1">, </span><span class="hl-7">X</span><span class="hl-1"> } </span><span class="hl-14">from</span><span class="hl-1"> </span><span class="hl-2">&#39;xsound&#39;</span><span class="hl-1">;</span>
+</code></pre>
+
+<a href="#connect-to-websocket-server" id="connect-to-websocket-server" style="color: inherit; text-decoration: none;">
+  <h3>Connect to WebSocket Server</h3>
+</a>
+<pre><code class="language-JavaScript"><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">roomId</span><span class="hl-1"> = </span><span class="hl-2">&#39;test-room-id-001&#39;</span><span class="hl-1">;  </span><span class="hl-5">// Any string</span><br/><br/><span class="hl-5">// for `ScriptProcessorNode`</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">bufferSize</span><span class="hl-1">             = </span><span class="hl-4">2048</span><span class="hl-1">;</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">numberOfInputChannels</span><span class="hl-1">  = </span><span class="hl-4">2</span><span class="hl-1">;</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">numberOfOutputChannels</span><span class="hl-1"> = </span><span class="hl-4">2</span><span class="hl-1">;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">analyser</span><span class="hl-1"> = </span><span class="hl-0">X</span><span class="hl-1">(</span><span class="hl-2">&#39;stream&#39;</span><span class="hl-1">).</span><span class="hl-0">module</span><span class="hl-1">(</span><span class="hl-2">&#39;analyser&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-5">// for connecting to WebSocket server</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">tls</span><span class="hl-1">  = </span><span class="hl-3">true</span><span class="hl-1">;  </span><span class="hl-5">// Use `wss:`</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">host</span><span class="hl-1"> = </span><span class="hl-2">&#39;xsound-websocket-server.herokuapp.com/&#39;</span><span class="hl-1">;</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">port</span><span class="hl-1"> = </span><span class="hl-4">8000</span><span class="hl-1">;</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">path</span><span class="hl-1"> = </span><span class="hl-2">&#39;/app&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">setupParams</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-7">roomId</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">bufferSize</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">numberOfInputChannels</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">numberOfOutputChannels</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">analyser</span><br/><span class="hl-1">};</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">connectionParams</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-7">roomId</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">tls</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">host</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">port</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-7">path</span><br/><span class="hl-1">};</span><br/><br/><span class="hl-5">// For example, sound source is `StreamModule`</span><br/><span class="hl-0">X</span><span class="hl-1">(</span><span class="hl-2">&#39;stream&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">  .</span><span class="hl-0">module</span><span class="hl-1">(</span><span class="hl-2">&#39;session&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">  .</span><span class="hl-0">setup</span><span class="hl-1">(</span><span class="hl-7">setupParams</span><span class="hl-1">)</span><br/><span class="hl-1">  .</span><span class="hl-0">ready</span><span class="hl-1">(</span><span class="hl-7">connectionParams</span><span class="hl-1">);</span>
+</code></pre>
+
+<a href="#setup" id="setup" style="color: inherit; text-decoration: none;">
+  <h2>Setup</h2>
+</a>
+
+<a href="#use-webpack-dev-server" id="use-webpack-dev-server" style="color: inherit; text-decoration: none;">
+  <h3>Use Webpack Dev Server</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">$ git clone git@github.com:Korilakkuma/XSound.git</span><br/><span class="hl-1">$ </span><span class="hl-0">cd</span><span class="hl-1"> XSound</span><br/><span class="hl-1">$ npm install</span><br/><span class="hl-1">$ npm run dev</span><br/><span class="hl-1">$ open http://localhost:8080/playground/</span>
+</code></pre>
+
+<a href="#use-docker" id="use-docker" style="color: inherit; text-decoration: none;">
+  <h3>Use Docker</h3>
+</a>
+<pre><code class="language-bash"><span class="hl-1">$ git clone git@github.com:Korilakkuma/XSound.git</span><br/><span class="hl-1">$ </span><span class="hl-0">cd</span><span class="hl-1"> XSound</span><br/><span class="hl-1">$ npm install</span><br/><span class="hl-1">$ npm run watch</span><br/><span class="hl-1">$ docker compose up -d --build</span><br/><span class="hl-1">$ open http://localhost:8080/playground/</span>
+</code></pre>
+
+<a href="#api-documentation" id="api-documentation" style="color: inherit; text-decoration: none;">
+  <h2>API Documentation</h2>
+</a>
+<p><a href="https://xsound.jp/docs/">XSound API Documentation</a></p>
+
+<a href="#playground" id="playground" style="color: inherit; text-decoration: none;">
+  <h2>Playground</h2>
+</a>
+<p><a href="https://xsound.jp/playground/">XSound Playground</a> (Watch by <a href="https://www.youtube.com/watch?v=QBe7FkidrUc">YouTube</a>).</p>
+<img src="https://raw.githubusercontent.com/Korilakkuma/XSound/main/misc/xsound-playground.gif" alt="XSound Playground Screenshot" style="max-width: 100%;" />
+  
+
+<a href="#migration-to-v3" id="migration-to-v3" style="color: inherit; text-decoration: none;">
+  <h2>Migration to v3</h2>
+</a>
+<p>Please refer to <a href="#api-documentation">API Documentation</a> for details.</p>
+
+<a href="#case-sensitive" id="case-sensitive" style="color: inherit; text-decoration: none;">
+  <h3>Case sensitive</h3>
+</a>
+<pre><code class="language-JavaScript"><span class="hl-5">// Bad (v2 or earlier)</span><br/><span class="hl-0">X</span><span class="hl-1">(</span><span class="hl-2">&#39;audio&#39;</span><span class="hl-1">).</span><span class="hl-0">module</span><span class="hl-1">(</span><span class="hl-2">&#39;panner&#39;</span><span class="hl-1">).</span><span class="hl-0">param</span><span class="hl-1">({ </span><span class="hl-7">coneinnerangle:</span><span class="hl-1"> </span><span class="hl-4">240</span><span class="hl-1"> });</span><br/><br/><span class="hl-5">// Good (v3)</span><br/><span class="hl-0">X</span><span class="hl-1">(</span><span class="hl-2">&#39;audio&#39;</span><span class="hl-1">).</span><span class="hl-0">module</span><span class="hl-1">(</span><span class="hl-2">&#39;panner&#39;</span><span class="hl-1">).</span><span class="hl-0">param</span><span class="hl-1">({ </span><span class="hl-7">coneInnerAngle:</span><span class="hl-1"> </span><span class="hl-4">240</span><span class="hl-1"> });</span>
+</code></pre>
+
+<a href="#use-plain-object-if-parameters-setter" id="use-plain-object-if-parameters-setter" style="color: inherit; text-decoration: none;">
+  <h3>Use plain object if parameters setter</h3>
+</a>
+<pre><code class="language-JavaScript"><span class="hl-5">// Bad (v2 or earlier)</span><br/><span class="hl-0">X</span><span class="hl-1">(</span><span class="hl-2">&#39;oscillator&#39;</span><span class="hl-1">).</span><span class="hl-0">get</span><span class="hl-1">(</span><span class="hl-4">0</span><span class="hl-1">).</span><span class="hl-0">param</span><span class="hl-1">(</span><span class="hl-2">&#39;type&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;sawtooth&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-5">// Good (v3)</span><br/><span class="hl-0">X</span><span class="hl-1">(</span><span class="hl-2">&#39;oscillator&#39;</span><span class="hl-1">).</span><span class="hl-0">get</span><span class="hl-1">(</span><span class="hl-4">0</span><span class="hl-1">).</span><span class="hl-0">param</span><span class="hl-1">({ </span><span class="hl-7">type:</span><span class="hl-1"> </span><span class="hl-2">&#39;sawtooth&#39;</span><span class="hl-1"> });</span>
+</code></pre>
+
+<a href="#validate-parameters-on-the-application-side" id="validate-parameters-on-the-application-side" style="color: inherit; text-decoration: none;">
+  <h3>Validate parameters on the application side</h3>
+</a>
+<pre><code class="language-JavaScript"><span class="hl-14">if</span><span class="hl-1"> ((</span><span class="hl-7">type</span><span class="hl-1"> === </span><span class="hl-2">&#39;sine&#39;</span><span class="hl-1">) || (</span><span class="hl-7">type</span><span class="hl-1"> === </span><span class="hl-2">&#39;square&#39;</span><span class="hl-1">) || (</span><span class="hl-7">type</span><span class="hl-1"> === </span><span class="hl-2">&#39;sawtooth&#39;</span><span class="hl-1">) || (</span><span class="hl-7">type</span><span class="hl-1"> === </span><span class="hl-2">&#39;triangle&#39;</span><span class="hl-1">)) {</span><br/><span class="hl-1">  </span><span class="hl-0">X</span><span class="hl-1">(</span><span class="hl-2">&#39;oscillator&#39;</span><span class="hl-1">).</span><span class="hl-0">get</span><span class="hl-1">(</span><span class="hl-4">0</span><span class="hl-1">).</span><span class="hl-0">param</span><span class="hl-1">({ </span><span class="hl-7">type</span><span class="hl-1"> });</span><br/><span class="hl-1">}</span>
+</code></pre>
+
+<a href="#pickups" id="pickups" style="color: inherit; text-decoration: none;">
+  <h2>Pickups</h2>
+</a>
+<ul>
+<li><a href="https://dev.to/areknawo/9-libraries-to-kickstart-your-web-audio-stuff-460p">9 libraries to kickstart your Web Audio stuff - DEV Community</a><ul>
+<li><blockquote>XSound is a batteries-included library for everything audio. From basic management and loading through streaming, effects, ending with visualizations and recording, this libraries provides almost everything! It also has nice, semi-chainable API with solid documentation.</blockquote></li>
+</ul>
+</li>
+<li><a href="https://bashooka.com/coding/web-audio-javascript-libraries/">20 Useful Web Audio Javascript Libraries – Bashooka</a></li>
+<li><a href="https://dl.acm.org/doi/10.1145/3424616.3424709">Extending X3D Realism with Audio Graphs, Acoustic  Properties and 3D Spatial Sound</a></li>
+</ul>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h2>License</h2>
+</a>
+<p>Released under the <a href="https://github.com/Korilakkuma/XSound/blob/main/LICENSE">MIT</a> license</p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/interfaces.html">interfaces</a></li><li class=" tsd-kind-module"><a href="modules/main.html">main</a></li><li class=" tsd-kind-module"><a href="modules/types.html">types</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

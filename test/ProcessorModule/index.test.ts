@@ -103,8 +103,34 @@ describe(ProcessorModule.name, () => {
     });
   });
 
-  xdescribe(processorModule.postMessage.name, () => {
-    // TODO:
+  describe(processorModule.postMessage.name, () => {
+    test('should call `postMessage` with designated data', () => {
+      processorModule.ready('./worklet.js')
+        .then(() => {
+          const processor = processorModule.get();
+
+          if (!(processor instanceof AudioWorkletNodeMock)) {
+            return;
+          }
+
+          const data = { data: [0x90, 0x3c, 0x7f] };
+
+          const originalPostMessage = processor.port.postMessage;
+
+          const postMessageMock = jest.fn();
+
+          processor.port.postMessage = postMessageMock;
+
+          processorModule.postMessage(data);
+
+          expect(postMessageMock).toHaveBeenCalledTimes(1);
+          expect(postMessageMock).toHaveBeenCalledWith(data);
+
+          processor.port.postMessage = originalPostMessage;
+        })
+        .catch(() => {
+        });
+    });
   });
 
   xdescribe(processorModule.onMessage.name, () => {

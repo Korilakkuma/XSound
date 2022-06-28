@@ -23,8 +23,8 @@ import { Tremolo } from '../SoundModule/Effectors/Tremolo';
 import { Wah } from '../SoundModule/Effectors/Wah';
 
 export class ProcessorModule extends SoundModule {
-  private worklet: AudioWorkletNode | ScriptProcessorNode | null = null;
-  private workletName = '';
+  private workletNode: AudioWorkletNode | ScriptProcessorNode | null = null;
+  private processorName = '';
   private options: AudioWorkletNodeOptions = {};
   private moduleURL = '';
 
@@ -39,25 +39,25 @@ export class ProcessorModule extends SoundModule {
 
     if (!window.AudioWorkletNode) {
       // Polyfill
-      this.worklet = this.context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
+      this.workletNode = this.context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
     }
   }
 
   /**
-   * This method sets registered worklet and options for `AudioWorkletNode` constructor.
+   * This method sets registered processor name and options for `AudioWorkletNode` constructor.
    * @param {string} name This argument is name of `AudioWorkletProcessor`.
    * @param {AudioWorkletNodeOptions} options This argument is object based on `AudioWorkletNodeOptions` dictionary.
    * @return {ProcessorModule} Return value is for method chain.
    */
-  public setup(workletName: string, options?: AudioWorkletNodeOptions): ProcessorModule {
-    this.workletName = workletName;
-    this.options     = options ?? {};
+  public setup(processorName: string, options?: AudioWorkletNodeOptions): ProcessorModule {
+    this.processorName = processorName;
+    this.options       = options ?? {};
 
     return this;
   }
 
   /**
-   * This method adds module for worklet and creates the instance of `AudioWorkletNode`.
+   * This method adds module for AudioWorklet and creates instance of `AudioWorkletNode`.
    * @param {string} moduleURL This argument is string that contains URL of file (.js) with module to add.
    * @param {WorkletOptions} options This argument is one of 'omit', 'same-origin', 'include'. The default value is 'same-origin'.
    * @return {Promise<void>} Return value is `Promise` that `addModule` returns.
@@ -71,7 +71,7 @@ export class ProcessorModule extends SoundModule {
 
     return this.context.audioWorklet.addModule(this.moduleURL, options ?? { credentials: 'same-origin' })
       .then(() => {
-        this.worklet = new AudioWorkletNode(this.context, this.workletName, this.options);
+        this.workletNode = new AudioWorkletNode(this.context, this.processorName, this.options);
       });
   }
 
@@ -84,7 +84,7 @@ export class ProcessorModule extends SoundModule {
   public start(processCallback?: (event: AudioProcessingEvent) => void): ProcessorModule {
     const generator = this.envelopegenerator.getGenerator(0);
 
-    if ((this.worklet === null) || (generator === null)) {
+    if ((this.workletNode === null) || (generator === null)) {
       return this;
     }
 
@@ -93,10 +93,10 @@ export class ProcessorModule extends SoundModule {
     if (!this.mixed) {
       // Clear previous
       this.envelopegenerator.clear(true);
-      this.worklet.disconnect(0);
+      this.workletNode.disconnect(0);
 
-      if (this.worklet instanceof ScriptProcessorNode) {
-        this.worklet.onaudioprocess = null;
+      if (this.workletNode instanceof ScriptProcessorNode) {
+        this.workletNode.onaudioprocess = null;
       }
 
       // GainNode (Envelope Generator) -> ... -> AudioDestinationNode (Output)
@@ -104,7 +104,7 @@ export class ProcessorModule extends SoundModule {
     }
 
     // AudioWorkletNode (Input) -> GainNode (Envelope Generator)
-    this.envelopegenerator.ready(0, this.worklet, null);
+    this.envelopegenerator.ready(0, this.workletNode, null);
 
     this.envelopegenerator.start(startTime);
 
@@ -116,8 +116,8 @@ export class ProcessorModule extends SoundModule {
 
     this.on(startTime);
 
-    if ((this.worklet instanceof ScriptProcessorNode) && processCallback) {
-      this.worklet.onaudioprocess = processCallback;
+    if ((this.workletNode instanceof ScriptProcessorNode) && processCallback) {
+      this.workletNode.onaudioprocess = processCallback;
     }
 
     return this;
@@ -128,14 +128,14 @@ export class ProcessorModule extends SoundModule {
    * @return {ProcessorModule} Return value is for method chain.
    */
   public stop(): ProcessorModule {
-    if (this.worklet === null) {
+    if (this.workletNode === null) {
       return this;
     }
 
     const stopTime = this.context.currentTime;
 
     if (!this.mixed) {
-      this.worklet.disconnect(0);
+      this.workletNode.disconnect(0);
     }
 
     this.envelopegenerator.stop(stopTime);
@@ -150,11 +150,11 @@ export class ProcessorModule extends SoundModule {
    * @return {ProcessorModule} Return value is for method chain.
    */
   public postMessage(data: unknown): ProcessorModule {
-    if ((this.worklet === null) || (this.worklet instanceof ScriptProcessorNode)) {
+    if ((this.workletNode === null) || (this.workletNode instanceof ScriptProcessorNode)) {
       return this;
     }
 
-    this.worklet.port.postMessage(data);
+    this.workletNode.port.postMessage(data);
 
     return this;
   }
@@ -165,11 +165,11 @@ export class ProcessorModule extends SoundModule {
    * @return {ProcessorModule} Return value is for method chain.
    */
   public onMessage(callback: (event: MessageEvent) => void): ProcessorModule {
-    if ((this.worklet === null) || (this.worklet instanceof ScriptProcessorNode)) {
+    if ((this.workletNode === null) || (this.workletNode instanceof ScriptProcessorNode)) {
       return this;
     }
 
-    this.worklet.port.onmessage = callback;
+    this.workletNode.port.onmessage = callback;
 
     return this;
   }
@@ -180,11 +180,11 @@ export class ProcessorModule extends SoundModule {
    * @return {ProcessorModule} Return value is for method chain.
    */
   public onMessageError(callback: (event: MessageEvent) => void): ProcessorModule {
-    if ((this.worklet === null) || (this.worklet instanceof ScriptProcessorNode)) {
+    if ((this.workletNode === null) || (this.workletNode instanceof ScriptProcessorNode)) {
       return this;
     }
 
-    this.worklet.port.onmessageerror = callback;
+    this.workletNode.port.onmessageerror = callback;
 
     return this;
   }
@@ -194,11 +194,11 @@ export class ProcessorModule extends SoundModule {
    * @return {AudioParamMap|null}
    */
   public map(): AudioParamMap | null {
-    if ((this.worklet === null) || (this.worklet instanceof ScriptProcessorNode)) {
+    if ((this.workletNode === null) || (this.workletNode instanceof ScriptProcessorNode)) {
       return null;
     }
 
-    return this.worklet.parameters;
+    return this.workletNode.parameters;
   }
 
   /**
@@ -206,7 +206,7 @@ export class ProcessorModule extends SoundModule {
    * @return {AudioWorkletNode|ScriptProcessorNode|null}
    */
   public get(): AudioWorkletNode | ScriptProcessorNode | null {
-    return this.worklet;
+    return this.workletNode;
   }
 
   /**
@@ -308,9 +308,9 @@ export class ProcessorModule extends SoundModule {
 
     const generator = this.envelopegenerator.getGenerator(0);
 
-    if (this.worklet && generator) {
+    if (this.workletNode && generator) {
       generator.disconnect(0);
-      this.worklet.connect(generator);
+      this.workletNode.connect(generator);
     }
 
     return this;

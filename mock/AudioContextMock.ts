@@ -20,7 +20,9 @@ import { WaveShaperNodeMock } from './WaveShaperNodeMock';
 
 export class AudioContextMock {
   audioWorklet = {
-    addModule: () => new Promise(() => {})
+    addModule: () => new Promise((resolve) => {
+      resolve();
+    })
   } as AudioWorklet;
 
   currentTime = performance.now();

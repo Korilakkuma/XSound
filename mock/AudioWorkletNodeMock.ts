@@ -1,17 +1,30 @@
 import { AudioNodeMock } from './AudioNodeMock';
 import { AudioParamMock } from './AudioParamMock';
 
-export class AudioParamMapMock extends Map<string, AudioParamMock> {
+// HACK: Error occurs if Jest uses `Map` or `MessagePort`
+
+export class AudioParamMapMock {
+  constructor(_map: [string, AudioParamMock][]) {
+  }
+
+  get(_key: string) {
+    return new AudioParamMock(0);
+  }
 }
 
 export class AudioWorkletNodeMock extends AudioNodeMock {
-  parameters: AudioParamMapMock = new AudioParamMapMock();
-  port = new MessagePort();
+  parameters: AudioParamMapMock;
+  port = {
+    postMessage: () => {},
+    onmessage: () => {},
+    onmessageerror: () => {}
+  };
   onprocessorerror: (event: MessageEvent) => void;
 
   constructor() {
     super();
 
+    this.parameters = new AudioParamMapMock([['param', new AudioParamMock(0)]]);
     this.onprocessorerror = () => {};
   }
 }

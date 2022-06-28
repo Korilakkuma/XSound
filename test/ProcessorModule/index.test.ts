@@ -116,32 +116,14 @@ describe(ProcessorModule.name, () => {
   });
 
   describe(processorModule.map.name, () => {
-    test('should return `null`', () => {
-      expect(processorModule.map()).toBe(null);
-    });
-
     test('should return instance of `AudioParamMap`', () => {
-      processorModule.ready('./worklet.js')
-        .then(() => {
-          expect(processorModule.map()).toBeInstanceOf(AudioParamMapMock);
-        })
-        .catch(() => {
-        });
+      expect(processorModule.map()).toBeInstanceOf(AudioParamMapMock);
     });
   });
 
   describe(processorModule.get.name, () => {
-    test('should return `null`', () => {
-      expect(processorModule.get()).toBe(null);
-    });
-
     test('should return instance of `AudioWorkletNode`', () => {
-      processorModule.ready('./worklet.js')
-        .then(() => {
-          expect(processorModule.get()).toBeInstanceOf(AudioWorkletNodeMock);
-        })
-        .catch(() => {
-        });
+      expect(processorModule.get()).toBeInstanceOf(AudioWorkletNodeMock);
     });
   });
 

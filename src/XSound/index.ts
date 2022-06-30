@@ -380,7 +380,7 @@ export function exitFullscreen(): Promise<void> {
 export function read(params: {
   file: File;
   type: FileReadType;
-  successCallback?(event: Event, result: ArrayBuffer | string | null): void;
+  successCallback?(event: Event, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
   errorCallback?(event: Event, textStatus: FileReaderErrorText): void;
   progressCallback?(event: Event): void;
 }): void {
@@ -469,7 +469,7 @@ export function read(params: {
 export function drop(params: {
   event: DragEvent;
   type: FileReadType | 'objectURL';
-  successCallback?(event: Event, result: ArrayBuffer | string | null): void;
+  successCallback?(event: Event, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
   errorCallback?(event: Event, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;
 }): string | File | Error {
@@ -524,7 +524,7 @@ export function drop(params: {
 export function file(params: {
   event: FileEvent;
   type: FileReadType | 'objectURL';
-  successCallback?(event: Event, result: ArrayBuffer | string | null): void;
+  successCallback?(event: Event, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
   errorCallback?(event: Event, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;
 }): string | File | Error {

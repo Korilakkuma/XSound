@@ -577,32 +577,15 @@ export function toFrequencies(indexes: number[]): number[] {
 /**
  * This class (static) method creates text file.
  * @param {string} text This argument is string.
- * @return {string} Return value is text file as Data URL.
+ * @param {boolean} asObjectURL This argument is `true` in case of getting text file as Object URL.
+ * @return {string} Return value is text file as Data URL or Object URL.
  */
-export function toTextFile(text: string): string {
-  /**
-   * This function converts string to ASCII string.
-   * @param {string} string This argument is string.
-   * @return {string} Return value is string that is converted to ASCII string.
-   */
-  const toAscii = (s: string) => {
-    let converted = '';
+export function toTextFile(text: string, asObjectURL: boolean): string {
+  if (asObjectURL) {
+    const blob = new Blob([text], { type: 'text/plain' });
 
-    for (let i = 0, len = s.length; i < len; i++) {
-      const charCode = s.charCodeAt(i);
+    return window.URL.createObjectURL(blob);
+  }
 
-      if (charCode > 0xFF) {
-        converted += `&#${charCode};`;
-      } else {
-        converted += s.charAt(i);
-      }
-    }
-
-    return converted;
-  };
-
-  const base64  = window.btoa(toAscii(text));
-  const dataURL = `data:text/plain;base64,${base64}`;
-
-  return dataURL;
+  return `data:,${encodeURIComponent(text)}`;
 }

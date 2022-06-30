@@ -356,11 +356,25 @@ describe(toFrequencies.name, () => {
 });
 
 describe(toTextFile.name, () => {
-  test('should return DatURL', () => {
-    expect(toTextFile('T62  O3  R16 A16 B-16  O4  D16 F12 A12  O5  F12 C2&C2. R4')).toBe('data:text/plain;base64,VDYyICBPMyAgUjE2IEExNiBCLTE2ICBPNCAgRDE2IEYxMiBBMTIgIE81ICBGMTIgQzImQzIuIFI0');
+  test('should return string as Object URL', () => {
+    const originalCreateObjectURL = URL.createObjectURL;
+
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      writable    : true,
+      value       : () => 'blob:https://xsound.jp/3bd816bf-28a5-4eb1-a1f6-66da75eb1ef5'
+    });
+
+    expect(toTextFile('あいうえお T62  O3  R16 A16 B-16  O4  D16 F12 A12  O5  F12 C2&C2. R4', true)).toBe('blob:https://xsound.jp/3bd816bf-28a5-4eb1-a1f6-66da75eb1ef5');
+
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      writable    : true,
+      value       : originalCreateObjectURL
+    });
   });
 
-  test('should return DatURL', () => {
-    expect(toTextFile('あいうえお T62  O3  R16 A16 B-16  O4  D16 F12 A12  O5  F12 C2&C2. R4')).toBe('data:text/plain;base64,JiMxMjM1NDsmIzEyMzU2OyYjMTIzNTg7JiMxMjM2MDsmIzEyMzYyOyBUNjIgIE8zICBSMTYgQTE2IEItMTYgIE80ICBEMTYgRjEyIEExMiAgTzUgIEYxMiBDMiZDMi4gUjQ=');
+  test('should return string as Data URL', () => {
+    expect(toTextFile('あいうえお T62  O3  R16 A16 B-16  O4  D16 F12 A12  O5  F12 C2&C2. R4', false)).toBe('data:,%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A%20T62%20%20O3%20%20R16%20A16%20B-16%20%20O4%20%20D16%20F12%20A12%20%20O5%20%20F12%20C2%26C2.%20R4');
   });
 });

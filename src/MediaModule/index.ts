@@ -192,7 +192,7 @@ export class MediaModule extends SoundModule {
 
   /**
    * This method prepares for playing media anytime after loading media resource.
-   * @param {string} source This argument is path name or `Data URL` or `Object URL` for media resource.
+   * @param {string} source This argument is Object URL or file name for media resource.
    * @param {string} mimeType This argument is required in case of audio streaming.
    * @return {MediaModule} Return value is for method chain.
    */
@@ -234,11 +234,11 @@ export class MediaModule extends SoundModule {
         this.mediaSource.addEventListener('sourceopen',  this.onSourceOpen,  false);
         this.mediaSource.addEventListener('sourceended', this.onSourceEnded, false);
         this.mediaSource.addEventListener('sourceclose', this.onSourceClose, false);
-      } else if (src.startsWith('data:') || src.startsWith('blob:') || (this.ext === '')) {
-        // `Data URL` or `Object URL` or Full path
+      } else if (src.startsWith('blob:') || (this.ext === '')) {
+        // Object URL or file name
         this.media.src = src;
       } else {
-        // Path
+        // file name (except extension)
         this.media.src = `${src}.${this.ext}`;
       }
     } catch (error) {

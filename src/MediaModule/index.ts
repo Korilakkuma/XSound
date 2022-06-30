@@ -806,8 +806,8 @@ export class MediaModule extends SoundModule {
    * @param {Event} event This argument is instance of `Event`.
    */
   private onSourceEnded(event: Event): void {
-    if (this.listeners.sourceclose) {
-      this.listeners.sourceclose(event);
+    if (this.listeners.sourceended) {
+      this.listeners.sourceended(event);
     }
   }
 
@@ -816,7 +816,7 @@ export class MediaModule extends SoundModule {
    * @param {Event} event This argument is instance of `Event`.
    */
   private onSourceClose(event: Event): void {
-    if (this.listeners.sourceended) {
+    if (this.listeners.sourceclose) {
       this.listeners.sourceclose(event);
     }
   }

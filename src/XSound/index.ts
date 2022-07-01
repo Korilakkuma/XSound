@@ -435,7 +435,7 @@ export function read(params: {
     }
 
     if ((typeof result === 'string') && (type === 'json')) {
-      result = JSON.parse(result);
+      result = JSON.parse(result.replace(/<(\/?script.*?)>/gi, '&lt;$1&gt;'));
     }
 
     successCallback(event, result);

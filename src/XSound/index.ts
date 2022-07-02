@@ -477,9 +477,7 @@ export function drop(params: {
 
   event.preventDefault();
 
-  // HACK:
-  const file = event.dataTransfer?.files.item(0) ?? null;
-  // const file  = event.dataTransfer?.items[0].getAsFile();
+  const file = event.dataTransfer?.items[0].getAsFile() ?? null;
 
   if (file === null) {
     return null;

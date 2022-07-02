@@ -75,6 +75,14 @@ uploader.onchange = (event) => {
     type            : 'arraybuffer',
     successCallback : (event, arraybuffer) => {
       X('audio').ready(arraybuffer);
+
+      result.innerHTML = `
+        <ul>
+          <li>${file.name}</li>
+          <li>${file.type}</li>
+          <li>${file.size}</li>
+        </ul>
+      `;
     },
     errorCalllback  : (event, textStatus) => {
       result.textContent = textStatus;
@@ -85,4 +93,8 @@ uploader.onchange = (event) => {
       }
     }
   });
+
+  if (file === null) {
+    result.textContent = 'There is not uploaded file';
+  }
 };

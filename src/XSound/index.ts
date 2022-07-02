@@ -380,21 +380,21 @@ export function exitFullscreen(): Promise<void> {
 export function read(params: {
   file: File;
   type: FileReadType;
-  successCallback?(event: Event, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
-  errorCallback?(event: Event, textStatus: FileReaderErrorText): void;
-  progressCallback?(event: Event): void;
+  successCallback?(event: ProgressEvent, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
+  errorCallback?(event: ProgressEvent, textStatus: FileReaderErrorText): void;
+  progressCallback?(event: ProgressEvent): void;
 }): void {
   const { file, type, successCallback, errorCallback, progressCallback } = params;
 
   const reader = new FileReader();
 
-  reader.onprogress = (event: Event) => {
+  reader.onprogress = (event: ProgressEvent) => {
     if (progressCallback) {
       progressCallback(event);
     }
   };
 
-  reader.onerror = (event: Event) => {
+  reader.onerror = (event: ProgressEvent) => {
     if (!errorCallback) {
       return;
     }
@@ -422,7 +422,7 @@ export function read(params: {
     errorCallback(event, error);
   };
 
-  reader.onload = (event: Event) => {
+  reader.onload = (event: ProgressEvent) => {
     if (!successCallback) {
       return;
     }
@@ -469,8 +469,8 @@ export function read(params: {
 export function drop(params: {
   event: DragEvent;
   type: FileReadType | 'objectURL';
-  successCallback?(event: Event, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
-  errorCallback?(event: Event, textStatus: FileReaderErrorText): void;
+  successCallback?(event: ProgressEvent, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
+  errorCallback?(event: ProgressEvent, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;
 }): string | File | null {
   const { event, type, successCallback, errorCallback, progressCallback } = params;
@@ -510,8 +510,8 @@ export function drop(params: {
 export function file(params: {
   event: FileEvent;
   type: FileReadType | 'objectURL';
-  successCallback?(event: Event, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
-  errorCallback?(event: Event, textStatus: FileReaderErrorText): void;
+  successCallback?(event: ProgressEvent, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
+  errorCallback?(event: ProgressEvent, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;
 }): string | File | null {
   const { event, type, successCallback, errorCallback, progressCallback } = params;

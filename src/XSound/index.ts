@@ -464,7 +464,7 @@ export function read(params: {
  * @param {function} successCallback This argument is invoked on success.
  * @param {function} errorCallback This argument is invoked on failure.
  * @param {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
- * @return {string|File|Error} Return value is Object URL or instance of `File` on success. Otherwise, instance of `Error`.
+ * @return {string|File|null} Return value is Object URL or instance of `File` on success. Otherwise, it is `null`.
  */
 export function drop(params: {
   event: DragEvent;
@@ -472,7 +472,7 @@ export function drop(params: {
   successCallback?(event: Event, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
   errorCallback?(event: Event, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;
-}): string | File | Error {
+}): string | File | null {
   const { event, type, successCallback, errorCallback, progressCallback } = params;
 
   event.preventDefault();
@@ -482,19 +482,7 @@ export function drop(params: {
   // const file  = event.dataTransfer?.items[0].getAsFile();
 
   if (file === null) {
-    return new Error('Please drop file.');
-  }
-
-  if ((type === 'text') && !file.type.includes('text')) {
-    return new Error('Please drop text file.');
-  }
-
-  if ((type === 'json') && !file.type.includes('application/json')) {
-    return new Error('Please drop JSON file.');
-  }
-
-  if (((type === 'arraybuffer') || (type === 'dataURL')) && !/audio|video/.test(file.type)) {
-    return new Error('Please drop audio or video file.');
+    return null;
   }
 
   if (type === 'objectURL') {
@@ -519,7 +507,7 @@ export function drop(params: {
  * @param {function} successCallback This argument is invoked on success.
  * @param {function} errorCallback This argument is invoked on failure.
  * @param {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
- * @return {string|File|Error} Return value is Object URL or instance of `File` on success. Otherwise, instance of `Error`.
+ * @return {string|File|null} Return value is Object URL or instance of `File` on success. Otherwise, it is `null`.
  */
 export function file(params: {
   event: FileEvent;
@@ -527,26 +515,14 @@ export function file(params: {
   successCallback?(event: Event, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
   errorCallback?(event: Event, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;
-}): string | File | Error {
+}): string | File | null {
   const { event, type, successCallback, errorCallback, progressCallback } = params;
 
   // HACK:
   const file = event.target.files?.item(0) ?? null;
 
   if (file === null) {
-    return new Error('Please upload file.');
-  }
-
-  if ((type === 'text') && !file.type.includes('text')) {
-    return new Error('Please upload text file.');
-  }
-
-  if ((type === 'json') && !file.type.includes('application/json')) {
-    return new Error('Please upload JSON file.');
-  }
-
-  if (((type === 'arraybuffer') || (type === 'dataURL')) && !/audio|video/.test(file.type)) {
-    return new Error('Please upload audio or video file.');
+    return null;
   }
 
   if (type === 'objectURL') {

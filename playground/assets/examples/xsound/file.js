@@ -29,7 +29,7 @@ uploader.onchange = (event) => {
     }
   });
 
-  if (file instanceof Error) {
-    result.textContent = file.message;
+  if (file === null) {
+    result.textContent = 'There is not uploaded file';
   }
 };

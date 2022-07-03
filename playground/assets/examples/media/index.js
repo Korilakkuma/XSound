@@ -65,8 +65,8 @@ document.getElementById('button-uploader').onclick = () => {
 uploader.onchange = (event) => {
   const objectURL = X.file({ event, type: 'objectURL' });
 
-  if (objectURL instanceof Error) {
-    result.textContent = objectURL.message;
+  if (objectURL === null) {
+    result.textContent = 'There is not uploaded file';
   } else {
     X('media').ready(objectURL);
   }

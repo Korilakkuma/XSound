@@ -25,7 +25,7 @@
     "release:minor": "npm version minor && git push && git push origin --tags",
     "release:major": "npm version major && git push && git push origin --tags",
     "prepublishOnly": "npm run build",
-    "docs": "typedoc src/main.ts src/interfaces.ts src/types.ts --name XSound"
+    "docs": "rm -rf docs && typedoc"
   },
   "husky": {
     "hooks": {

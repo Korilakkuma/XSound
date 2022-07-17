@@ -1,0 +1,14 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "customCss": "./typedoc.css",
+  "entryPoints": [
+    "src/interfaces.ts",
+    "src/main.ts",
+    "src/types.ts"
+  ],
+  "excludeExternals": true,
+  "gaID": "UA-41390233-1",
+  "gitRevision": "main",
+  "includeVersion": true,
+  "name": "XSound"
+}

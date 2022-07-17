@@ -27,13 +27,13 @@ export type AudioBufferSprite = { [spriteName: string]: AudioBuffer };
 
 export type AudioModuleParams = SoundModuleParams & {
   vocalcanceler: VocalCancelerParams,
-  playbackRate?: number,
-  detune?: number,
-  loop?: boolean,
-  currentTime?: number,
-  readonly duration?: number,
-  readonly sampleRate?: number,
-  readonly numberOfChannels?: number
+  playbackRate: number,
+  detune: number,
+  loop: boolean,
+  currentTime: number,
+  readonly duration: number,
+  readonly sampleRate: number,
+  readonly numberOfChannels: number
 };
 
 type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;

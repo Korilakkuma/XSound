@@ -36,7 +36,7 @@ export type OneshotSetting = {
 export type OneshotSettings = OneshotSetting[];
 
 export type OneshotModuleParams = SoundModuleParams & {
-  transpose?: number
+  transpose: number
 };
 
 type Params = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;

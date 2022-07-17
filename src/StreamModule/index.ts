@@ -38,8 +38,8 @@ export type {
 export type StreamModuleParams = SoundModuleParams & {
   noisegate: NoiseGateParams,
   noisesuppressor: NoiseSuppressorParams,
-  output?: boolean,
-  track?: boolean
+  output: boolean,
+  track: boolean
 };
 
 type Params = Partial<Pick<StreamModuleParams, 'mastervolume' | 'output' | 'track'>>;

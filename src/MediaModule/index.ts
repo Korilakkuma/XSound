@@ -25,13 +25,13 @@ import { VocalCanceler, VocalCancelerParams } from '../SoundModule/Effectors/Voc
 
 export type MediaModuleParams = SoundModuleParams & {
   vocalcanceler: VocalCancelerParams,
-  autoplay?: boolean,
-  playbackRate?: number,
-  currentTime?: number,
-  controls?: boolean,
-  loop?: boolean,
-  muted?: boolean,
-  readonly duration?: number
+  autoplay: boolean,
+  playbackRate: number,
+  currentTime: number,
+  controls: boolean,
+  loop: boolean,
+  muted: boolean,
+  readonly duration: number
 };
 
 type Params = Partial<Pick<MediaModuleParams, 'mastervolume' | 'autoplay' | 'playbackRate' | 'currentTime' | 'controls' | 'loop' | 'muted' | 'duration'>>;

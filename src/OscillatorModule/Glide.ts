@@ -77,9 +77,10 @@ export class Glide implements Statable {
   /**
    * This method gets or sets parameters for glide.
    * @param {keyof GlideParams|GlideParams} params This argument is string if getter. Otherwise, setter.
-   * @return {GlideParams[keyof GlideParams} Return value is parameter for glide if getter.
+   * @return {GlideParams[keyof GlideParams]|Glide} Return value is parameter for glide if getter.
+   *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof GlideParams | GlideParams): GlideParams[keyof GlideParams] | void {
+  public param(params: keyof GlideParams | GlideParams): GlideParams[keyof GlideParams] | Glide {
     if (typeof params === 'string') {
       switch (params) {
         case 'type':
@@ -87,7 +88,7 @@ export class Glide implements Statable {
         case 'time':
           return this.time;
         default:
-          return;
+          return this;
       }
     }
 
@@ -109,6 +110,8 @@ export class Glide implements Statable {
           break;
       }
     }
+
+    return this;
   }
 
   /**

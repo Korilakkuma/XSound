@@ -70,15 +70,16 @@ export class NoiseSuppressor implements Statable {
   /**
    * This method gets or sets parameters for noise suppressor.
    * @param {keyof NoiseSuppressorParams|NoiseSuppressorParams} params This argument is string if getter. Otherwise, setter.
-   * @return {NoiseSuppressorParams[keyof NoiseSuppressorParams]} Return value is parameter for noise suppressor if getter.
+   * @return {NoiseSuppressorParams[keyof NoiseSuppressorParams]|NoiseSuppressor} Return value is parameter for noise suppressor if getter.
+   *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof NoiseSuppressorParams | NoiseSuppressorParams): NoiseSuppressorParams[keyof NoiseSuppressorParams] | void {
+  public param(params: keyof NoiseSuppressorParams | NoiseSuppressorParams): NoiseSuppressorParams[keyof NoiseSuppressorParams] | NoiseSuppressor {
     if (typeof params === 'string') {
       switch (params) {
         case 'threshold':
           return this.threshold;
         default:
-          return;
+          return this;
       }
     }
 
@@ -96,6 +97,8 @@ export class NoiseSuppressor implements Statable {
           break;
       }
     }
+
+    return this;
   }
 
   /**

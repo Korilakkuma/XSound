@@ -35,15 +35,16 @@ export class NoiseGate implements Statable {
   /**
    * This method gets or sets parameters for noise gate.
    * @param {keyof NoiseGateParams|NoiseGateParams} params This argument is string if getter. Otherwise, setter.
-   * @return {NoiseGateParams[keyof NoiseGateParams]} Return value is parameter for noise gate if getter.
+   * @return {NoiseGateParams[keyof NoiseGateParams]|NoiseGate} Return value is parameter for noise gate if getter.
+   *     Otherwise, return value is for method chain.
    */
-  public param(params: keyof NoiseGateParams | NoiseGateParams): NoiseGateParams[keyof NoiseGateParams] | void {
+  public param(params: keyof NoiseGateParams | NoiseGateParams): NoiseGateParams[keyof NoiseGateParams] | NoiseGate {
     if (typeof params === 'string') {
       switch (params) {
         case 'level':
           return this.level;
         default:
-          return;
+          return this;
       }
     }
 
@@ -59,6 +60,8 @@ export class NoiseGate implements Statable {
           break;
       }
     }
+
+    return this;
   }
 
   /**

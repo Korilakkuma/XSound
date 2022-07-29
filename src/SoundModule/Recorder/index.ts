@@ -141,7 +141,7 @@ export class Recorder implements Connectable {
    */
   public param(params: '0' | '1'): number;
   public param(params: RecorderParams): Recorder;
-  public param(params: keyof RecorderParams | RecorderParams): RecorderParams[keyof RecorderParams] | RecorderParams | Recorder {
+  public param(params: keyof RecorderParams | RecorderParams): RecorderParams[keyof RecorderParams] | Recorder {
     if (typeof params === 'string') {
       switch (params) {
         case '0':

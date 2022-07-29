@@ -36,13 +36,11 @@ export type {
 };
 
 export type StreamModuleParams = SoundModuleParams & {
-  noisegate: NoiseGateParams,
-  noisesuppressor: NoiseSuppressorParams,
-  output: boolean,
-  track: boolean
+  noisegate?: NoiseGateParams,
+  noisesuppressor?: NoiseSuppressorParams,
+  output?: boolean,
+  track?: boolean
 };
-
-type Params = Partial<Pick<StreamModuleParams, 'mastervolume' | 'output' | 'track'>>;
 
 /**
  * This class is for processing sound data from WebRTC.
@@ -240,15 +238,15 @@ export class StreamModule extends SoundModule {
   /**
    * This method gets or sets parameters for stream module.
    * This method is overloaded for type interface and type check.
-   * @param {keyof Params} params This argument is string if getter. Otherwise, setter.
-   * @return {Params[keyof Params]|StreamModule} Return value is parameter for stream module if getter.
+   * @param {keyof StreamModuleParams} params This argument is string if getter. Otherwise, setter.
+   * @return {StreamModuleParams[keyof StreamModuleParams]|StreamModule} Return value is parameter for stream module if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'mastervolume'): number;
   public param(params: 'output'): boolean;
   public param(params: 'track'): boolean;
-  public param(params: Params): StreamModule;
-  public param(params: keyof Params | Params): Params[keyof Params] | StreamModule {
+  public param(params: StreamModuleParams): StreamModule;
+  public param(params: keyof StreamModuleParams | StreamModuleParams): StreamModuleParams[keyof StreamModuleParams] | StreamModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -515,7 +513,7 @@ export class StreamModule extends SoundModule {
    * @return {StreamModuleParams}
    * @override
    */
-  public override params(): StreamModuleParams {
+  public override params(): Required<StreamModuleParams> {
     const params = super.params();
 
     return {

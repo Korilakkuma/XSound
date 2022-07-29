@@ -44,6 +44,7 @@ describe(NoiseGate.name, () => {
   describe(noisegate.params.name, () => {
     test('should return parameters for noise gate as associative array', () => {
       expect(noisegate.params()).toStrictEqual({
+        state: true,
         level: 0
       });
     });

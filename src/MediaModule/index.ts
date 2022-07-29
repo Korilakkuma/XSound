@@ -24,17 +24,15 @@ import { Wah } from '../SoundModule/Effectors/Wah';
 import { VocalCanceler, VocalCancelerParams } from '../SoundModule/Effectors/VocalCanceler';
 
 export type MediaModuleParams = SoundModuleParams & {
-  vocalcanceler: VocalCancelerParams,
-  autoplay: boolean,
-  playbackRate: number,
-  currentTime: number,
-  controls: boolean,
-  loop: boolean,
-  muted: boolean,
-  readonly duration: number
+  vocalcanceler?: VocalCancelerParams,
+  autoplay?: boolean,
+  playbackRate?: number,
+  currentTime?: number,
+  controls?: boolean,
+  loop?: boolean,
+  muted?: boolean,
+  readonly duration?: number
 };
-
-type Params = Partial<Pick<MediaModuleParams, 'mastervolume' | 'autoplay' | 'playbackRate' | 'currentTime' | 'controls' | 'loop' | 'muted' | 'duration'>>;
 
 /**
  * This class processes sound data from `HTMLMediaElement`.
@@ -366,8 +364,8 @@ export class MediaModule extends SoundModule {
   /**
    * This method gets or sets parameters for media module.
    * This method is overloaded for type interface and type check.
-   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
-   * @return {Params[keyof Params]|MediaModule} Return value is parameter for media module if getter.
+   * @param {keyof MediaModuleParams|MediaModuleParams} params This argument is string if getter. Otherwise, setter.
+   * @return {MediaModuleParams[keyof MediaModuleParams]|MediaModule} Return value is parameter for media module if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'mastervolume'): number;
@@ -379,8 +377,8 @@ export class MediaModule extends SoundModule {
   public param(params: 'muted'): boolean;
   public param(params: 'duration'): boolean;
   public param(params: 'duration'): boolean;
-  public param(params: Params): MediaModule;
-  public param(params: keyof Params | Params): Params[keyof Params] | MediaModule {
+  public param(params: MediaModuleParams): MediaModule;
+  public param(params: keyof MediaModuleParams | MediaModuleParams): MediaModuleParams[keyof MediaModuleParams] | MediaModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -736,7 +734,7 @@ export class MediaModule extends SoundModule {
    * @return {MediaModuleParams}
    * @override
    */
-  public override params(): MediaModuleParams {
+  public override params(): Required<MediaModuleParams> {
     const params = super.params();
 
     return {

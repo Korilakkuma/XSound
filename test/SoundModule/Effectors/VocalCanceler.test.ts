@@ -38,6 +38,7 @@ describe(VocalCanceler.name, () => {
   describe(vocalcanceler.params.name, () => {
     test('should return parameters for vocal canceler as associative array', () => {
       expect(vocalcanceler.params()).toStrictEqual({
+        state: true,
         depth: 0
       });
     });

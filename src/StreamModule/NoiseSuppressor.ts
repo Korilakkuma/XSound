@@ -2,6 +2,7 @@ import { Statable } from '../interfaces';
 import { fft, ifft } from '../XSound';
 
 export type NoiseSuppressorParams = {
+  state?: boolean,
   threshold?: number
 };
 
@@ -73,6 +74,8 @@ export class NoiseSuppressor implements Statable {
    * @return {NoiseSuppressorParams[keyof NoiseSuppressorParams]|NoiseSuppressor} Return value is parameter for noise suppressor if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'threshold'): number;
+  public param(params: NoiseSuppressorParams): NoiseSuppressor;
   public param(params: keyof NoiseSuppressorParams | NoiseSuppressorParams): NoiseSuppressorParams[keyof NoiseSuppressorParams] | NoiseSuppressor {
     if (typeof params === 'string') {
       switch (params) {
@@ -105,8 +108,9 @@ export class NoiseSuppressor implements Statable {
    * This method gets noise suppressor parameters as associative array.
    * @return {NoiseSuppressorParams}
    */
-  public params(): NoiseSuppressorParams {
+  public params(): Required<NoiseSuppressorParams> {
     return {
+      state    : this.isActive,
       threshold: this.threshold
     };
   }

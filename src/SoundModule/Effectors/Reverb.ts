@@ -210,7 +210,7 @@ export class Reverb extends Effector {
   }
 
   /** @override */
-  public override params(): ReverbParams {
+  public override params(): Required<Omit<ReverbParams, 'buffer'>> {
     return {
       state: this.isActive,
       dry  : this.dry.gain.value,

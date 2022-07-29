@@ -224,7 +224,7 @@ export class Phaser extends Effector {
   }
 
   /** @override */
-  public override params(): PhaserParams {
+  public override params(): Required<PhaserParams> {
     return {
       state    : this.isActive,
       stage    : this.numberOfStages,

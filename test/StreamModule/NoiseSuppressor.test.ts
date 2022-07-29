@@ -54,6 +54,7 @@ describe(NoiseSuppressor.name, () => {
   describe(noisesuppressor.params.name, () => {
     test('should return parameters for noise suppressor as associative array', () => {
       expect(noisesuppressor.params()).toStrictEqual({
+        state    : true,
         threshold: 0
       });
     });

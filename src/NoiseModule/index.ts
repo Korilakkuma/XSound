@@ -25,10 +25,8 @@ import { Wah } from '../SoundModule/Effectors/Wah';
 export type NoiseType = 'whitenoise' | 'pinknoise' | 'browniannoise';
 
 export type NoiseModuleParams = SoundModuleParams & {
-  type: NoiseType
+  type?: NoiseType
 };
-
-type Params = Partial<Pick<NoiseModuleParams, 'mastervolume' | 'type'>>;
 
 export class NoiseModule extends SoundModule {
   private type: NoiseType = 'whitenoise';
@@ -193,14 +191,14 @@ export class NoiseModule extends SoundModule {
 
   /**
    * This method gets or sets parameters for noise module.
-   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
-   * @return {Params[keyof Params]|NoiseModule} Return value is parameter for noise module if getter.
+   * @param {keyof NoiseModuleParams|NoiseModuleParams} params This argument is string if getter. Otherwise, setter.
+   * @return {NoiseModuleParams[keyof NoiseModuleParams]|NoiseModule} Return value is parameter for noise module if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'mastervolume'): number;
   public param(params: 'type'): NoiseType;
-  public param(params: Params): NoiseModule;
-  public param(params: keyof Params | Params): Params[keyof Params] | NoiseModule {
+  public param(params: NoiseModuleParams): NoiseModule;
+  public param(params: keyof NoiseModuleParams | NoiseModuleParams): NoiseModuleParams[keyof NoiseModuleParams] | NoiseModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -358,7 +356,7 @@ export class NoiseModule extends SoundModule {
    * @return {NoiseModuleParams}
    * @override
    */
-  public override params(): NoiseModuleParams {
+  public override params(): Required<NoiseModuleParams> {
     const params = super.params();
 
     return {

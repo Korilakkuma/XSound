@@ -243,7 +243,7 @@ export class Panner extends Effector {
   }
 
   /** @override */
-  public override params(): PannerParams {
+  public override params(): Required<PannerParams> {
     return {
       state         : this.isActive,
       x             : this.positions.x,

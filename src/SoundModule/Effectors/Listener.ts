@@ -179,7 +179,7 @@ export class Listener extends Effector {
   }
 
   /** @override */
-  public override params(): ListenerParams {
+  public override params(): Required<ListenerParams> {
     return {
       x : this.positions.x,
       y : this.positions.y,

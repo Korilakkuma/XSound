@@ -125,7 +125,7 @@ export class Tremolo extends Effector {
   }
 
   /** @override */
-  public override params(): TremoloParams {
+  public override params(): Required<TremoloParams> {
     return {
       state: this.isActive,
       type : this.lfo.type,

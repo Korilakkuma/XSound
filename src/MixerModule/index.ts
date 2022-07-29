@@ -22,8 +22,6 @@ import { Stereo } from '../SoundModule/Effectors/Stereo';
 import { Tremolo } from '../SoundModule/Effectors/Tremolo';
 import { Wah } from '../SoundModule/Effectors/Wah';
 
-type Params = Partial<Pick<SoundModuleParams, 'mastervolume'>>;
-
 /**
  * This class is for mixing sound sources (instance of `SoundModule` subclass).
  * @constructor
@@ -143,13 +141,13 @@ export class MixerModule extends SoundModule {
   /**
    * This method gets or sets parameters for mixer module.
    * This method is overloaded for type interface and type check.
-   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
-   * @return {Params[keyof Params]|MixerModule} Return value is parameter for mixer module if getter.
+   * @param {keyof SoundModuleParams|SoundModuleParams} params This argument is string if getter. Otherwise, setter.
+   * @return {SoundModuleParams[keyof SoundModuleParams]|MixerModule} Return value is parameter for mixer module if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'mastervolume'): number;
-  public param(params: Params): MixerModule;
-  public param(params: keyof Params | Params): Params[keyof Params] | MixerModule {
+  public param(params: SoundModuleParams): MixerModule;
+  public param(params: keyof SoundModuleParams | SoundModuleParams): SoundModuleParams[keyof SoundModuleParams] | MixerModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':

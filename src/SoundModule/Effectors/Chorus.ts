@@ -177,7 +177,7 @@ export class Chorus extends Effector {
   }
 
   /** @override */
-  public override params(): ChorusParams {
+  public override params(): Required<ChorusParams> {
     return {
       state   : this.isActive,
       time    : this.delay.delayTime.value,

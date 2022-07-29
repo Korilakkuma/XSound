@@ -105,8 +105,9 @@ describe(Glide.name, () => {
   describe(glide.params.name, () => {
     test('should return parameters for glide as associative array', () => {
       expect(glide.params()).toStrictEqual({
-        type: 'linear',
-        time: 0
+        state: true,
+        type : 'linear',
+        time : 0
       });
     });
   });

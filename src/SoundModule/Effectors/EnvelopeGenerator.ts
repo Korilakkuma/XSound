@@ -1,6 +1,7 @@
 import { Statable } from '../../interfaces';
 
 export type EnvelopeGeneratorParams = {
+  state?: boolean,
   attack?: number,
   decay?: number,
   sustain?: number,
@@ -256,8 +257,9 @@ export class EnvelopeGenerator implements Statable {
    * This method gets effector's parameters as associative array.
    * @return {EnvelopeGeneratorParams}
    */
-  public params(): EnvelopeGeneratorParams {
+  public params(): Required<EnvelopeGeneratorParams> {
     return {
+      state  : this.isActive,
       attack : this.attack,
       decay  : this.decay,
       sustain: this.sustain,

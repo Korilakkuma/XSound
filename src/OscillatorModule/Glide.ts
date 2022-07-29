@@ -3,6 +3,7 @@ import { Statable } from '../interfaces';
 export type GlideType = 'linear' | 'exponential';
 
 export type GlideParams = {
+  state?: boolean,
   type?: GlideType,
   time?: number
 };
@@ -80,6 +81,9 @@ export class Glide implements Statable {
    * @return {GlideParams[keyof GlideParams]|Glide} Return value is parameter for glide if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'type'): GlideType;
+  public param(params: 'time'): number;
+  public param(params: GlideParams): Glide;
   public param(params: keyof GlideParams | GlideParams): GlideParams[keyof GlideParams] | Glide {
     if (typeof params === 'string') {
       switch (params) {
@@ -118,10 +122,11 @@ export class Glide implements Statable {
    * This method gets glide parameters as associative array.
    * @return {GlideParams}
    */
-  public params(): GlideParams {
+  public params(): Required<GlideParams> {
     return {
-      type: this.type,
-      time: this.time
+      state: this.isActive,
+      type : this.type,
+      time : this.time
     };
   }
 

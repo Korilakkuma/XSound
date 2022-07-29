@@ -1,6 +1,7 @@
 import { Statable } from '../../interfaces';
 
 export type VocalCancelerParams = {
+  state?: boolean,
   depth?: number
 };
 
@@ -37,6 +38,8 @@ export class VocalCanceler implements Statable {
    * @return {VocalCancelerParams[keyof VocalCancelerParams]|VocalCanceler} Return value is parameter for vocal canceler if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'depth'): number;
+  public param(params: VocalCancelerParams): VocalCanceler;
   public param(params: keyof VocalCancelerParams | VocalCancelerParams): VocalCancelerParams[keyof VocalCancelerParams] | VocalCanceler {
     if (typeof params === 'string') {
       switch (params) {
@@ -67,8 +70,9 @@ export class VocalCanceler implements Statable {
    * This method gets vocal canceler parameters as associative array.
    * @return {VocalCancelerParams}
    */
-  public params(): VocalCancelerParams {
+  public params(): Required<VocalCancelerParams> {
     return {
+      state: this.isActive,
       depth: this.depth
     };
   }

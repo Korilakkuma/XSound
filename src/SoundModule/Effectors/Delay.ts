@@ -158,7 +158,7 @@ export class Delay extends Effector {
   }
 
   /** @override */
-  public override params(): DelayParams {
+  public override params(): Required<DelayParams> {
     return {
       state   : this.isActive,
       time    : this.delay.delayTime.value,

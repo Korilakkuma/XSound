@@ -184,7 +184,7 @@ export class PreEqualizer extends Effector {
   }
 
   /** @override */
-  public override params(): PreEqualizerParams {
+  public override params(): Required<PreEqualizerParams> {
     return {
       state: this.isActive,
       curve: this.preAmp.curve,
@@ -365,7 +365,7 @@ export class PostEqualizer extends Effector {
   }
 
   /** @override */
-  public override params(): PostEqualizerParams {
+  public override params(): Required<PostEqualizerParams> {
     return {
       state    : this.isActive,
       curve    : this.distortion.curve,
@@ -433,7 +433,7 @@ export class Cabinet extends Effector {
   }
 
   /** @override */
-  public override params(): CabinetParams {
+  public override params(): Required<CabinetParams> {
     return {
       state: this.isActive
     };
@@ -632,7 +632,7 @@ export class Distortion extends Effector {
   }
 
   /** @override */
-  public override params(): DistortionParams {
+  public override params(): Required<DistortionParams> {
     return {
       state  : this.isActive,
       curve  : this.type,

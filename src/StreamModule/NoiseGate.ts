@@ -1,6 +1,7 @@
 import { Statable } from '../interfaces';
 
 export type NoiseGateParams = {
+  state?: boolean,
   level?: number
 };
 
@@ -38,6 +39,8 @@ export class NoiseGate implements Statable {
    * @return {NoiseGateParams[keyof NoiseGateParams]|NoiseGate} Return value is parameter for noise gate if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'level'): number;
+  public param(params: NoiseGateParams): NoiseGate;
   public param(params: keyof NoiseGateParams | NoiseGateParams): NoiseGateParams[keyof NoiseGateParams] | NoiseGate {
     if (typeof params === 'string') {
       switch (params) {
@@ -68,8 +71,9 @@ export class NoiseGate implements Statable {
    * This method gets noise gate parameters as associative array.
    * @return {NoiseGateParams}
    */
-  public params(): NoiseGateParams {
+  public params(): Required<NoiseGateParams> {
     return {
+      state: this.isActive,
       level: this.level
     };
   }

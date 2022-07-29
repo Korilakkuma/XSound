@@ -27,25 +27,25 @@ export type Module     = Analyser | Recorder | Session | Stereo | Compressor | D
 export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'chorus' | 'compressor' | 'delay' | 'distortion' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator';
 
 export type SoundModuleParams = {
-  mastervolume: number,
-  stereo: StereoParams,
-  compressor: CompressorParams,
-  distortion: DistortionParams,
-  wah: WahParams,
-  pitchshifter: PitchShifterParams,
-  equalizer: EqualizerParams,
-  filter: FilterParams,
-  autopanner: AutopannerParams,
-  tremolo: TremoloParams,
-  ringmodulator: RingmodulatorParams,
-  phaser: PhaserParams,
-  flanger: FlangerParams,
-  chorus: ChorusParams,
-  delay: DelayParams,
-  reverb: ReverbParams,
-  panner: PannerParams,
-  listener: ListenerParams,
-  envelopegenerator: EnvelopeGeneratorParams
+  mastervolume?: number,
+  stereo?: StereoParams,
+  compressor?: CompressorParams,
+  distortion?: DistortionParams,
+  wah?: WahParams,
+  pitchshifter?: PitchShifterParams,
+  equalizer?: EqualizerParams,
+  filter?: FilterParams,
+  autopanner?: AutopannerParams,
+  tremolo?: TremoloParams,
+  ringmodulator?: RingmodulatorParams,
+  phaser?: PhaserParams,
+  flanger?: FlangerParams,
+  chorus?: ChorusParams,
+  delay?: DelayParams,
+  reverb?: ReverbParams,
+  panner?: PannerParams,
+  listener?: ListenerParams,
+  envelopegenerator?: EnvelopeGeneratorParams
 };
 
 /**
@@ -315,7 +315,7 @@ export abstract class SoundModule implements Connectable {
    * This method gets effector's parameters as associative array.
    * @return {SoundModuleParams}
    */
-  public params(): SoundModuleParams {
+  public params(): Required<SoundModuleParams> {
     return {
       mastervolume     : this.mastervolume.gain.value,
       stereo           : this.stereo.params(),

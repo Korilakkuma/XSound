@@ -114,7 +114,7 @@ export class Ringmodulator extends Effector {
   }
 
   /** @override */
-  public override params(): RingmodulatorParams {
+  public override params(): Required<RingmodulatorParams> {
     return {
       state: this.isActive,
       depth: this.depth.gain.value,

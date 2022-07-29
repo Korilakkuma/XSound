@@ -162,7 +162,7 @@ export class PitchShifter extends Effector {
   }
 
   /** @override */
-  public override params(): PitchShifterParams {
+  public override params(): Required<PitchShifterParams> {
     return {
       state: this.isActive,
       pitch: this.pitch

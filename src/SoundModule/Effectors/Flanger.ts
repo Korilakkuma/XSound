@@ -177,7 +177,7 @@ export class Flanger extends Effector {
   }
 
   /** @override */
-  public override params(): FlangerParams {
+  public override params(): Required<FlangerParams> {
     return {
       state   : this.isActive,
       time    : this.delay.delayTime.value,

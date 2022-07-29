@@ -217,7 +217,7 @@ export class Filter extends Effector {
   }
 
   /** @override */
-  public override params(): FilterParams {
+  public override params(): Required<FilterParams> {
     return {
       state    : this.isActive,
       type     : this.filter.type,

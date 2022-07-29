@@ -151,7 +151,7 @@ export class Equalizer extends Effector {
   }
 
   /** @override */
-  public override params(): EqualizerParams {
+  public override params(): Required<EqualizerParams> {
     return {
       state   : this.isActive,
       bass    : this.bass.gain.value,

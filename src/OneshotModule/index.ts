@@ -36,10 +36,8 @@ export type OneshotSetting = {
 export type OneshotSettings = OneshotSetting[];
 
 export type OneshotModuleParams = SoundModuleParams & {
-  transpose: number
+  transpose?: number
 };
-
-type Params = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;
 
 /**
  * This subclass is for playing one-shot audio
@@ -276,14 +274,14 @@ export class OneshotModule extends SoundModule {
   /**
    * This method gets or sets parameters for one-shot module.
    * This method is overloaded for type interface and type check.
-   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
-   * @return {Params[keyof Params]|Params} Return value is parameter for one-shot module if getter.
+   * @param {keyof OneshotModuleParams|OneshotModuleParams} params This argument is string if getter. Otherwise, setter.
+   * @return {OneshotModuleParams[keyof OneshotModuleParams]|OneshotModule} Return value is parameter for one-shot module if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'mastervolume'): number;
   public param(params: 'transpose'): number;
-  public param(params: Params): Params[keyof Params];
-  public param(params: keyof Params | Params): Params[keyof Params] | OneshotModule {
+  public param(params: OneshotModuleParams): OneshotModuleParams[keyof OneshotModuleParams];
+  public param(params: keyof OneshotModuleParams | OneshotModuleParams): OneshotModuleParams[keyof OneshotModuleParams] | OneshotModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -483,7 +481,7 @@ export class OneshotModule extends SoundModule {
    * @return {OneshotModuleParams}
    * @override
    */
-  public override params(): OneshotModuleParams {
+  public override params(): Required<OneshotModuleParams> {
     const params = super.params();
 
     return {

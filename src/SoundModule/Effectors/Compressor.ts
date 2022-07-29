@@ -128,7 +128,7 @@ export class Compressor extends Effector {
   }
 
   /** @override */
-  public override params(): CompressorParams {
+  public override params(): Required<CompressorParams> {
     return {
       state    : this.isActive,
       threshold: this.compressor.threshold.value,

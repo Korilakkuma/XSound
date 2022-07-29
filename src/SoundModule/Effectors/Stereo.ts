@@ -150,7 +150,7 @@ export class Stereo extends Effector {
   }
 
   /** @override */
-  public override params(): StereoParams {
+  public override params(): Required<StereoParams> {
     return {
       state: this.isActive,
       time : this.delayL.delayTime.value

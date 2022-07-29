@@ -190,6 +190,7 @@ describe(EnvelopeGenerator.name, () => {
   describe(envelopegenerator.params.name, () => {
     test('should return parameters for envelope generator as associative array', () => {
       expect(envelopegenerator.params()).toStrictEqual({
+        state  : true,
         attack : 0.01,
         decay  : 0.3,
         sustain: 0.5,

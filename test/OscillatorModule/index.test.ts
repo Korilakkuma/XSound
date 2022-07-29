@@ -243,8 +243,9 @@ describe(OscillatorNode.name, () => {
         envelopegenerator: oscillatorModule['envelopegenerator'].params(),
         oscillator: {
           glide: {
-            type: 'linear',
-            time: 0
+            state: true,
+            type : 'linear',
+            time : 0
           },
           params: [
             {

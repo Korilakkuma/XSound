@@ -34,13 +34,11 @@ export type {
 };
 
 export type OscillatorModuleParams = SoundModuleParams & {
-  oscillator: {
+  oscillator?: {
     glide: GlideParams,
     params: OscillatorParams[]
   }
 };
-
-type Params = Partial<Pick<OscillatorModuleParams, 'mastervolume'>>;
 
 /**
  * This class manages instances of `Oscillator` for creating sound.
@@ -199,13 +197,13 @@ export class OscillatorModule extends SoundModule {
   /**
    * This method gets or sets parameters for oscillator module.
    * This method is overloaded for type interface and type check.
-   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
-   * @return {Params[keyof Params]|OscillatorModule} Return value is parameter for oscillator module if getter.
+   * @param {keyof OscillatorModuleParams|OscillatorModuleParams} params This argument is string if getter. Otherwise, setter.
+   * @return {OscillatorModuleParams[keyof OscillatorModuleParams]|OscillatorModule} Return value is parameter for oscillator module if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'mastervolume'): number;
-  public param(params: Params): OscillatorModule;
-  public param(params: keyof Params | Params): Params[keyof Params] | OscillatorModule {
+  public param(params: OscillatorModuleParams): OscillatorModule;
+  public param(params: keyof OscillatorModuleParams | OscillatorModuleParams): OscillatorModuleParams[keyof OscillatorModuleParams] | OscillatorModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -374,7 +372,7 @@ export class OscillatorModule extends SoundModule {
    * @return {OscillatorModuleParams}
    * @override
    */
-  public override params(): OscillatorModuleParams {
+  public override params(): Required<OscillatorModuleParams> {
     const params = super.params();
 
     return {

@@ -195,7 +195,7 @@ export class Wah extends Effector {
   }
 
   /** @override */
-  public override params(): WahParams {
+  public override params(): Required<WahParams> {
     return {
       state    : this.isActive,
       auto     : this.auto,

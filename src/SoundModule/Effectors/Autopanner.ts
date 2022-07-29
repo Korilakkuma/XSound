@@ -114,7 +114,7 @@ export class Autopanner extends Effector {
   }
 
   /** @override */
-  public override params(): AutopannerParams {
+  public override params(): Required<AutopannerParams> {
     return {
       state: this.isActive,
       depth: this.depth.gain.value,

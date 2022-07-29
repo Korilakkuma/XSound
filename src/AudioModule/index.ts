@@ -26,17 +26,15 @@ import { VocalCanceler, VocalCancelerParams } from '../SoundModule/Effectors/Voc
 export type AudioBufferSprite = { [spriteName: string]: AudioBuffer };
 
 export type AudioModuleParams = SoundModuleParams & {
-  vocalcanceler: VocalCancelerParams,
-  playbackRate: number,
-  detune: number,
-  loop: boolean,
-  currentTime: number,
-  readonly duration: number,
-  readonly sampleRate: number,
-  readonly numberOfChannels: number
+  vocalcanceler?: VocalCancelerParams,
+  playbackRate?: number,
+  detune?: number,
+  loop?: boolean,
+  currentTime?: number,
+  readonly duration?: number,
+  readonly sampleRate?: number,
+  readonly numberOfChannels?: number
 };
-
-type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
 
 /**
  * This subclass is for playing single audio.
@@ -284,8 +282,8 @@ export class AudioModule extends SoundModule {
   /**
    * This method gets or sets parameters for audio module.
    * This method is overloaded for type interface and type check.
-   * @param {keyof Params|Params} params This argument is string if getter. Otherwise, setter.
-   * @return {Params[keyof Params]|Params} Return value is parameter for audio module if getter.
+   * @param {keyof AudioModuleParams|AudioModuleParams} params This argument is string if getter. Otherwise, setter.
+   * @return {AudioModuleParams[keyof AudioModuleParams]|AudioModule} Return value is parameter for audio module if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'mastervolume'): number;
@@ -297,8 +295,8 @@ export class AudioModule extends SoundModule {
   public param(params: 'sampleRate'): number;
   public param(params: 'numberOfChannels'): number;
   public param(params: 'numberOfChannels'): number;
-  public param(params: Params): AudioModule;
-  public param(params: keyof Params | Params): Params[keyof Params] | AudioModule {
+  public param(params: AudioModuleParams): AudioModule;
+  public param(params: keyof AudioModuleParams | AudioModuleParams): AudioModuleParams[keyof AudioModuleParams] | AudioModule {
     if (typeof params === 'string') {
       switch (params) {
         case 'mastervolume':
@@ -683,7 +681,7 @@ export class AudioModule extends SoundModule {
    * @return {AudioModuleParams}
    * @override
    */
-  public override params(): AudioModuleParams {
+  public override params(): Required<AudioModuleParams> {
     const params = super.params();
 
     return {

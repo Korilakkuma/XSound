@@ -97,6 +97,7 @@ export class Panner extends Effector {
    * @return {PannerParams[keyof PannerParams]|PannerParams} Return value is parameter for panner if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'x'): number;
   public param(params: 'y'): number;
   public param(params: 'z'): number;
@@ -115,6 +116,8 @@ export class Panner extends Effector {
   public param(params: keyof PannerParams | PannerParams): PannerParams[keyof PannerParams] | Panner {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'x':
           return this.panner.positionX.value;
         case 'y':
@@ -150,6 +153,12 @@ export class Panner extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'x':
           if (typeof value === 'number') {
             this.panner.positionX.value = value;

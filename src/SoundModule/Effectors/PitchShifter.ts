@@ -131,11 +131,14 @@ export class PitchShifter extends Effector {
    * @return {PitchShifterParams[keyof PitchShifterParams]|PitchShifter} Return value is parameter for pitch shifter if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'pitch'): number;
   public param(params: PitchShifterParams): PitchShifter;
   public param(params: keyof PitchShifterParams | PitchShifterParams): PitchShifterParams[keyof PitchShifterParams] | PitchShifter {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'pitch':
           return this.pitch;
         default:
@@ -145,6 +148,12 @@ export class PitchShifter extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'pitch':
           if (typeof value === 'number') {
             if (value > 0) {

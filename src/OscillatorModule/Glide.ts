@@ -81,12 +81,15 @@ export class Glide implements Statable {
    * @return {GlideParams[keyof GlideParams]|Glide} Return value is parameter for glide if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'type'): GlideType;
   public param(params: 'time'): number;
   public param(params: GlideParams): Glide;
   public param(params: keyof GlideParams | GlideParams): GlideParams[keyof GlideParams] | Glide {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'type':
           return this.type;
         case 'time':
@@ -98,6 +101,12 @@ export class Glide implements Statable {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'type':
           if (typeof value === 'string') {
             this.type = value;

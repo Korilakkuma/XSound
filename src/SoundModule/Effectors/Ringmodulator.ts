@@ -76,12 +76,15 @@ export class Ringmodulator extends Effector {
    * @return {RingmodulatorParams[keyof RingmodulatorParams]|Autopanner} Return value is parameter for ring modulator effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'depth'): number;
   public param(params: 'rate'): number;
   public param(params: RingmodulatorParams): Ringmodulator;
   public param(params: keyof RingmodulatorParams | RingmodulatorParams): RingmodulatorParams[keyof RingmodulatorParams] | Ringmodulator {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'depth':
           return this.depth.gain.value;
         case 'rate':
@@ -93,6 +96,12 @@ export class Ringmodulator extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'depth':
           if (typeof value === 'number') {
             this.depth.gain.value = value;

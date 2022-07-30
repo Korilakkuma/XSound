@@ -95,6 +95,7 @@ export class Equalizer extends Effector {
    * @return {EqualizerParams[keyof EqualizerParams]|Equalizer} Return value is parameter for equalizer if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'bass'): number;
   public param(params: 'middle'): number;
   public param(params: 'treble'): number;
@@ -103,6 +104,8 @@ export class Equalizer extends Effector {
   public param(params: keyof EqualizerParams | EqualizerParams): EqualizerParams[keyof EqualizerParams] | Equalizer {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'bass':
           return this.bass.gain.value;
         case 'middle':
@@ -118,6 +121,12 @@ export class Equalizer extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'bass':
           if (typeof value === 'number') {
             this.bass.gain.value = value;

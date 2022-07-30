@@ -124,6 +124,7 @@ export class Phaser extends Effector {
    * @return {PhaserParams[keyof PhaserParams]|Phaser} Return value is parameter for phaser effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'stage'): PhaserNumberOfStages;
   public param(params: 'frequency'): number;
   public param(params: 'resonance'): number;
@@ -135,6 +136,8 @@ export class Phaser extends Effector {
   public param(params: keyof PhaserParams | PhaserParams): PhaserParams[keyof PhaserParams] | Phaser {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'stage':
           return this.numberOfStages;
         case 'frequency':
@@ -156,6 +159,12 @@ export class Phaser extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'stage':
           switch (value) {
             case  0:

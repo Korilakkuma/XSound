@@ -39,11 +39,14 @@ export class NoiseGate implements Statable {
    * @return {NoiseGateParams[keyof NoiseGateParams]|NoiseGate} Return value is parameter for noise gate if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'level'): number;
   public param(params: NoiseGateParams): NoiseGate;
   public param(params: keyof NoiseGateParams | NoiseGateParams): NoiseGateParams[keyof NoiseGateParams] | NoiseGate {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'level':
           return this.level;
         default:
@@ -53,6 +56,12 @@ export class NoiseGate implements Statable {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'level':
           if (typeof value === 'number') {
             this.level = value;

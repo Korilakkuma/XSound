@@ -74,11 +74,14 @@ export class NoiseSuppressor implements Statable {
    * @return {NoiseSuppressorParams[keyof NoiseSuppressorParams]|NoiseSuppressor} Return value is parameter for noise suppressor if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'threshold'): number;
   public param(params: NoiseSuppressorParams): NoiseSuppressor;
   public param(params: keyof NoiseSuppressorParams | NoiseSuppressorParams): NoiseSuppressorParams[keyof NoiseSuppressorParams] | NoiseSuppressor {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'threshold':
           return this.threshold;
         default:
@@ -88,6 +91,12 @@ export class NoiseSuppressor implements Statable {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'threshold':
           if (typeof value === 'number') {
             if (value >= 0) {

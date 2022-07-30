@@ -118,6 +118,7 @@ export class Wah extends Effector {
    * @return {WahParams[keyof WahParams]|Wah} Return value is parameter for wah effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'auto'): boolean;
   public param(params: 'cutoff'): number;
   public param(params: 'depth'): number;
@@ -127,6 +128,8 @@ export class Wah extends Effector {
   public param(params: keyof WahParams | WahParams): WahParams[keyof WahParams] | Wah {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'auto':
           return this.auto;
         case 'cutoff':
@@ -144,6 +147,12 @@ export class Wah extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'auto':
           if (typeof value === 'boolean') {
             this.auto = value;

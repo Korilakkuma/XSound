@@ -93,6 +93,7 @@ export class Delay extends Effector {
    * @return {DelayParams[keyof DelayParams]|Delay} Return value is parameter for delay effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'time'): number;
   public param(params: 'dry'): number;
   public param(params: 'wet'): number;
@@ -102,6 +103,8 @@ export class Delay extends Effector {
   public param(params: keyof DelayParams | DelayParams): DelayParams[keyof DelayParams] | Delay {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'time':
           return this.delay.delayTime.value;
         case 'dry':
@@ -119,6 +122,12 @@ export class Delay extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'time':
           if (typeof value === 'number') {
             this.delay.delayTime.value = value;

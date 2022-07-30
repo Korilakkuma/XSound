@@ -38,11 +38,14 @@ export class VocalCanceler implements Statable {
    * @return {VocalCancelerParams[keyof VocalCancelerParams]|VocalCanceler} Return value is parameter for vocal canceler if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'depth'): number;
   public param(params: VocalCancelerParams): VocalCanceler;
   public param(params: keyof VocalCancelerParams | VocalCancelerParams): VocalCancelerParams[keyof VocalCancelerParams] | VocalCanceler {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'depth':
           return this.depth;
         default:
@@ -52,6 +55,12 @@ export class VocalCanceler implements Statable {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'depth':
           if (typeof value === 'number') {
             this.depth = value;

@@ -85,6 +85,8 @@ export class Tremolo extends Effector {
   public param(params: keyof TremoloParams | TremoloParams): TremoloParams[keyof TremoloParams] | Tremolo {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'type':
           return this.lfo.type;
         case 'depth':
@@ -98,6 +100,12 @@ export class Tremolo extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'type':
           if (typeof value === 'string') {
             this.lfo.type = value;

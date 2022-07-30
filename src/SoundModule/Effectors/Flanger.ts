@@ -101,6 +101,7 @@ export class Flanger extends Effector {
    * @return {FlangerParams[keyof FlangerParams]|Flanger} Return value is parameter for flanger effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'time'): number;
   public param(params: 'depth'): number;
   public param(params: 'rate'): number;
@@ -111,6 +112,8 @@ export class Flanger extends Effector {
   public param(params: keyof FlangerParams | FlangerParams): FlangerParams[keyof FlangerParams] | Flanger {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'time':
           return this.delay.delayTime.value;
         case 'depth':
@@ -130,6 +133,12 @@ export class Flanger extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'time':
           if (typeof value === 'number') {
             this.delay.delayTime.value = value;

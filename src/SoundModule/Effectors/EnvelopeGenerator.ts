@@ -130,6 +130,7 @@ export class EnvelopeGenerator implements Statable {
    * @return {EnvelopeGeneratorParams[keyof EnvelopeGeneratorParams]|EnvelopeGenerator} Return value is parameter for envelope generator if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'attack'): number;
   public param(params: 'decay'): number;
   public param(params: 'sustain'): number;
@@ -138,6 +139,8 @@ export class EnvelopeGenerator implements Statable {
   public param(params: keyof EnvelopeGeneratorParams | EnvelopeGeneratorParams): EnvelopeGeneratorParams[keyof EnvelopeGeneratorParams] | EnvelopeGenerator {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'attack':
           return this.attack;
         case 'decay':
@@ -153,6 +156,12 @@ export class EnvelopeGenerator implements Statable {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'attack':
           if (typeof value === 'number') {
             this.attack = value;

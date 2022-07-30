@@ -120,11 +120,14 @@ export class Stereo extends Effector {
    * @return {StereoParams[keyof StereoParams]|Stereo} Return value is parameter for stereo effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'time'): number;
   public param(params: StereoParams): Stereo;
   public param(params: keyof StereoParams | StereoParams): StereoParams[keyof StereoParams] | Stereo {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'time':
           return this.delayL.delayTime.value;
         default:
@@ -134,6 +137,12 @@ export class Stereo extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'time':
           if (typeof value === 'number') {
             this.delayL.delayTime.value = value;

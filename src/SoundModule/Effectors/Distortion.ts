@@ -533,6 +533,7 @@ export class Distortion extends Effector {
    * @return {DistortionParams[keyof DistortionParams]|Distortion} Return value is parameter for distortion effector if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): boolean;
   public param(params: 'curve'): DistortionType;
   public param(params: 'samples'): number;
   public param(params: 'pre'): PreEqualizerParams;
@@ -542,6 +543,8 @@ export class Distortion extends Effector {
   public param(params: keyof DistortionParams | DistortionParams): DistortionParams[keyof DistortionParams] | Distortion {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'curve':
           return this.type;
         case 'samples':
@@ -559,6 +562,12 @@ export class Distortion extends Effector {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'curve': {
           let curve = null;
 

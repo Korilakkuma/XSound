@@ -128,6 +128,7 @@ export class Oscillator implements Connectable, Statable {
    * @return {OscillatorParams[keyof OscillatorParams]} Return value is parameter for oscillator if getter.
    *     Otherwise, return value is for method chain.
    */
+  public param(params: 'state'): OscillatorType | OscillatorCustomType;
   public param(params: 'type'): OscillatorType | OscillatorCustomType;
   public param(params: 'octave'): number;
   public param(params: 'fine'): number;
@@ -136,6 +137,8 @@ export class Oscillator implements Connectable, Statable {
   public param(params: keyof OscillatorParams | OscillatorParams): OscillatorParams[keyof OscillatorParams] | Oscillator {
     if (typeof params === 'string') {
       switch (params) {
+        case 'state':
+          return this.isActive;
         case 'type':
           return this.source.type;
         case 'octave':
@@ -151,6 +154,12 @@ export class Oscillator implements Connectable, Statable {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            this.isActive = value;
+          }
+
+          break;
         case 'type':
           if (typeof value === 'string') {
             this.source.type = value;

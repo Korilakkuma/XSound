@@ -128,7 +128,7 @@ export class Oscillator implements Connectable, Statable {
    * @return {OscillatorParams[keyof OscillatorParams]} Return value is parameter for oscillator if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: 'state'): OscillatorType | OscillatorCustomType;
+  public param(params: 'state'): boolean;
   public param(params: 'type'): OscillatorType | OscillatorCustomType;
   public param(params: 'octave'): number;
   public param(params: 'fine'): number;

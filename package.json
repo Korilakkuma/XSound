@@ -21,9 +21,9 @@
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",
     "test:detect": "jest --detectOpenHandles",
-    "release:patch": "npm version patch && git push && git push origin --tags",
-    "release:minor": "npm version minor && git push && git push origin --tags",
-    "release:major": "npm version major && git push && git push origin --tags",
+    "release:patch": "npm version patch --message 'v%s' && git push && git push origin --tags",
+    "release:minor": "npm version minor --message 'v%s' && git push && git push origin --tags",
+    "release:major": "npm version major --message 'v%s' && git push && git push origin --tags",
     "prepublishOnly": "npm run build",
     "docs": "rm -rf docs && typedoc"
   },

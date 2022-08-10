@@ -227,11 +227,11 @@ export class Recorder implements Connectable {
    * This method creates WAVE file as one of Base64, Data URL, Blob, Object URL.
    * @param {number} trackNumber This argument is track number for mixing. If this argument is -1, target is the all of tracks.
    * @param {RecordType} numberOfChannels This argument is in order to select monaural or stereo.
-   * @param {QuantizationBit} qbit This argument is quantization bit for PCM.
+   * @param {QuantizationBit} qbits This argument is quantization bit for PCM.
    * @param {WaveExportType} type This argument is one of 'base64', 'dataURL', 'blob', 'objectURL'.
    * @return {string|Blob} Return value is one of Base64, Data URL, Blob, Object URL as WAVE file.
    */
-  public create(trackNumber: number, numberOfChannels: RecordType, qbit: QuantizationBit, type: WaveExportType): string | Blob {
+  public create(trackNumber: number, numberOfChannels: RecordType, qbits: QuantizationBit, type: WaveExportType): string | Blob {
     // on the way of recording ?
     if (this.activeTrack !== -1) {
       this.stop();
@@ -256,34 +256,52 @@ export class Recorder implements Connectable {
     }
 
     // PCM parameters
-    const RATE    = this.sampleRate;
-    const QBIT    = qbit;
-    const CHANNEL = numberOfChannels;
+    const RATE     = this.sampleRate;
+    const QBITS    = qbits;
+    const CHANNELS = numberOfChannels;
 
     // Parameters for WAVE file
-    const SIZE            = (CHANNEL === 1) ? Math.min(soundLs.length, soundRs.length) : (2 * Math.min(soundLs.length, soundRs.length));
-    const FORM_TYPE_SIZE  = 4;
-    const FMT_CHUNK_SIZE  = 24;  // 48 byte if extensible WAVE (ExWAVE)
-    const DATA_CHUNK_SIZE = 8 + (SIZE * (QBIT / 8));
-    const CHUNK_SIZE      = FORM_TYPE_SIZE + FMT_CHUNK_SIZE + DATA_CHUNK_SIZE;
-    const RIFF_CHUNK_SIZE = 8 + CHUNK_SIZE;
-    const BPS             = RATE * CHANNEL * (QBIT / 8);
-    const DATA_SIZE       = SIZE * (QBIT / 8);
+
+    // the number of total samples in entire channels
+    const SAMPLES = CHANNELS * Math.min(soundLs.length, soundRs.length);
+
+    // chunk ID size + chunk data size
+    const CHUNK_SIZE = 4 + 4;
+
+    // 1 byte * 4 ('W', 'A', 'V', 'E')
+    const FORM_TYPE_ID_SIZE  = 4;
+
+    // 16 bytes (Format Tag size + Channels size + Sample rate size + BPS size + Block size + Bits per sample size)
+    // (+ 2 bytes if Non-PCM)
+    // (+ 24 bytes if extensible WAVE (ExWAVE))
+    const FMT_CHUNK_SIZE  = CHUNK_SIZE + 16;
+
+    const DATA_CHUNK_SIZE = CHUNK_SIZE + (SAMPLES * (QBITS / 8));
+
+    // WAVE file size
+    const SIZE = CHUNK_SIZE + FORM_TYPE_ID_SIZE + FMT_CHUNK_SIZE + DATA_CHUNK_SIZE;
+
+    // total size - (RIFF chunk ID size + Form type ID size)
+    const RIFF_CHUNK_SIZE = SIZE - (4 + 4);
+
+    const BPS = RATE * CHANNELS * (QBITS / 8);
+
+    const DATA_SIZE = SAMPLES * (QBITS / 8);
 
     let sounds: Uint8Array | Int16Array | null = null;
 
-    switch (QBIT) {
+    switch (QBITS) {
       case 8:
-        sounds = new Uint8Array(SIZE);
+        sounds = new Uint8Array(SAMPLES);
 
-        for (let i = 0; i < SIZE; i++) {
-          // Convert 8 bit unsigned integer (-1 -> 0, 0 -> 128, 1 -> 255)
+        for (let i = 0; i < SAMPLES; i++) {
+          // Convert to 8 bits unsigned integer (-1 -> 0, 0 -> 128, 1 -> 255)
           let binary = 0;
 
-          if ((i % CHANNEL) === 0) {
-            binary = Math.round(((soundLs[Math.trunc(i / CHANNEL)] + 1) / 2) * ((2 ** 8) - 1));  // Left channel
+          if ((i % CHANNELS) === 0) {
+            binary = Math.round(((soundLs[Math.trunc(i / CHANNELS)] + 1) / 2) * ((2 ** 8) - 1));  // Left channel
           } else {
-            binary = Math.round(((soundRs[Math.trunc(i / CHANNEL)] + 1) / 2) * ((2 ** 8) - 1));  // Right channel
+            binary = Math.round(((soundRs[Math.trunc(i / CHANNELS)] + 1) / 2) * ((2 ** 8) - 1));  // Right channel
           }
 
           // for preventing from clipping
@@ -295,16 +313,16 @@ export class Recorder implements Connectable {
 
         break;
       case 16:
-        sounds = new Int16Array(SIZE);
+        sounds = new Int16Array(SAMPLES);
 
-        for (let i = 0; i < SIZE; i++) {
-          // Convert 16 bit integer (-1 -> -32768, 0 -> 0, 1 -> 32767)
+        for (let i = 0; i < SAMPLES; i++) {
+          // Convert to 16 bits signed integer (-1 -> -32768, 0 -> 0, 1 -> 32767)
           let binary = 0;
 
-          if ((i % CHANNEL) === 0) {
-            binary = Math.round(soundLs[Math.trunc(i / CHANNEL)] * (2 ** 15));  // Left channel
+          if ((i % CHANNELS) === 0) {
+            binary = Math.round(soundLs[Math.trunc(i / CHANNELS)] * (2 ** 15));  // Left channel
           } else {
-            binary = Math.round(soundRs[Math.trunc(i / CHANNEL)] * (2 ** 15));  // Right channel
+            binary = Math.round(soundRs[Math.trunc(i / CHANNELS)] * (2 ** 15));  // Right channel
           }
 
           // for preventing from clipping
@@ -323,81 +341,103 @@ export class Recorder implements Connectable {
       return '';
     }
 
-    const wave = new Uint8Array(RIFF_CHUNK_SIZE);
+    // Byte order is little endian
+    const wave = new Uint8Array(SIZE);
 
+    // RIFF chunk
+
+    // chunk ID
     wave[0] = 0x52;  // 'R'
     wave[1] = 0x49;  // 'I'
     wave[2] = 0x46;  // 'F'
     wave[3] = 0x46;  // 'F'
 
-    wave[4] = (CHUNK_SIZE >>  0) & 0xFF;
-    wave[5] = (CHUNK_SIZE >>  8) & 0xFF;
-    wave[6] = (CHUNK_SIZE >> 16) & 0xFF;
-    wave[7] = (CHUNK_SIZE >> 24) & 0xFF;
+    // chunk data size
+    wave[4] = (RIFF_CHUNK_SIZE >>  0) & 0xFF;
+    wave[5] = (RIFF_CHUNK_SIZE >>  8) & 0xFF;
+    wave[6] = (RIFF_CHUNK_SIZE >> 16) & 0xFF;
+    wave[7] = (RIFF_CHUNK_SIZE >> 24) & 0xFF;
 
+    // Form type ID
     wave[8]  = 0x57;  // 'W'
     wave[9]  = 0x41;  // 'A'
     wave[10] = 0x56;  // 'V'
     wave[11] = 0x45;  // 'E'
 
     // fmt chunk
+
+    // chunk ID
     wave[12] = 0x66;  // 'f'
     wave[13] = 0x6D;  // 'm'
     wave[14] = 0x74;  // 't'
     wave[15] = 0x20;  // ' '
 
+    // chunk data size
     wave[16] = 16;
     wave[17] =  0;
     wave[18] =  0;
     wave[19] =  0;
 
+    // Format Tag
+    // 1: PCM (Pulse Code Modulation)
+    // 2: MS ADPCM (Adaptive Differential PCM)
+    // 6: A-law
+    // 7: μ-law
+    // ... etc
     wave[20] = 1;
     wave[21] = 0;
 
-    // fmt chunk -> Channels (Monaural or Stereo)
-    wave[22] = CHANNEL;
+    // Channels
+    // 1: Monaural
+    // 2: Stereo
+    wave[22] = CHANNELS;
     wave[23] = 0;
 
-    // fmt chunk -> Sample rate
+    // Sample rate
     wave[24] = (RATE >>  0) & 0xFF;
     wave[25] = (RATE >>  8) & 0xFF;
     wave[26] = (RATE >> 16) & 0xFF;
     wave[27] = (RATE >> 24) & 0xFF;
 
-    // fmt chunk -> Byte per second
+    // (Average) Bytes per second
     wave[28] = (BPS >>  0) & 0xFF;
     wave[29] = (BPS >>  8) & 0xFF;
     wave[30] = (BPS >> 16) & 0xFF;
     wave[31] = (BPS >> 24) & 0xFF;
 
-    // fmt chunk -> Block size
-    wave[32] = CHANNEL * (QBIT / 8);
+    // Block size
+    wave[32] = CHANNELS * (QBITS / 8);
     wave[33] = 0;
 
-    // fmt chunk -> Byte per Sample
-    wave[34] = QBIT;
+    // Bits per sample
+    wave[34] = QBITS;
     wave[35] = 0;
 
     // data chunk
+
+    // chunk ID
     wave[36] = 0x64;  // 'd'
     wave[37] = 0x61;  // 'a'
     wave[38] = 0x74;  // 't
     wave[39] = 0x61;  // 'a'
 
+    // chunk data size
     wave[40] = (DATA_SIZE >>  0) & 0xFF;
     wave[41] = (DATA_SIZE >>  8) & 0xFF;
     wave[42] = (DATA_SIZE >> 16) & 0xFF;
     wave[43] = (DATA_SIZE >> 24) & 0xFF;
 
-    for (let i = 0; i < SIZE; i++) {
-      switch (QBIT) {
+    // PCM data
+    for (let i = 0; i < SAMPLES; i++) {
+      const offset = SIZE - DATA_SIZE;
+
+      switch (QBITS) {
         case  8:
-          wave[(RIFF_CHUNK_SIZE - DATA_SIZE) + i] = sounds[i];
+          wave[offset + i] = sounds[i];
           break;
         case 16:
-          // Byte order is little endian
-          wave[(RIFF_CHUNK_SIZE - DATA_SIZE) + (2 * i) + 0] = ((sounds[i] >> 0) & 0x00FF);
-          wave[(RIFF_CHUNK_SIZE - DATA_SIZE) + (2 * i) + 1] = ((sounds[i] >> 8) & 0x00FF);
+          wave[offset + (2 * i) + 0] = ((sounds[i] >> 0) & 0x00FF);
+          wave[offset + (2 * i) + 1] = ((sounds[i] >> 8) & 0x00FF);
           break;
         default:
           break;

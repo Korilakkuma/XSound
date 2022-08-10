@@ -58,7 +58,6 @@ describe(Phaser.name, () => {
     /* eslint-disable dot-notation */
     const originalInput      = phaser['input'];
     const originalMix        = phaser['mix'];
-    const originalFeedback   = phaser['feedback'];
     const originalConnect    = BiquadFilterNode.prototype.connect;
     const originalDisconnect = BiquadFilterNode.prototype.disconnect;
     /* eslint-enable dot-notation */
@@ -67,7 +66,6 @@ describe(Phaser.name, () => {
       /* eslint-disable dot-notation */
       phaser['input']                       = originalInput;
       phaser['mix']                         = originalMix;
-      phaser['feedback']                    = originalFeedback;
       BiquadFilterNode.prototype.connect    = originalConnect;
       BiquadFilterNode.prototype.disconnect = originalDisconnect;
       /* eslint-enable dot-notation */
@@ -82,16 +80,12 @@ describe(Phaser.name, () => {
       const filterDisconnectMock   = jest.fn();
       const mixConnectMock         = jest.fn();
       const mixDisconnectMock      = jest.fn();
-      const feedbackConnectMock    = jest.fn();
-      const feedbackDisconnectMock = jest.fn();
 
       /* eslint-disable dot-notation */
       phaser['input'].connect               = inputConnectMock;
       phaser['input'].disconnect            = inputDisconnectMock;
       phaser['mix'].connect                 = mixConnectMock;
       phaser['mix'].disconnect              = mixDisconnectMock;
-      phaser['feedback'].connect            = feedbackConnectMock;
-      phaser['feedback'].disconnect         = feedbackDisconnectMock;
       BiquadFilterNode.prototype.connect    = filterConnectMock;
       BiquadFilterNode.prototype.disconnect = filterDisconnectMock;
       /* eslint-enable dot-notation */
@@ -102,22 +96,17 @@ describe(Phaser.name, () => {
       expect(filterConnectMock).toHaveBeenCalledTimes(0);
       expect(mixConnectMock).toHaveBeenCalledTimes(0);
       expect(mixConnectMock).toHaveBeenCalledTimes(0);
-      expect(feedbackConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(filterDisconnectMock).toHaveBeenCalledTimes(24);
       expect(mixDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(feedbackDisconnectMock).toHaveBeenCalledTimes(1);
 
       phaser.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(3);
-      expect(filterConnectMock).toHaveBeenCalledTimes(13);
+      expect(filterConnectMock).toHaveBeenCalledTimes(12);
       expect(mixConnectMock).toHaveBeenCalledTimes(1);
-      expect(feedbackConnectMock).toHaveBeenCalledTimes(1);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
       expect(filterDisconnectMock).toHaveBeenCalledTimes(48);
       expect(mixDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(feedbackDisconnectMock).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -128,8 +117,7 @@ describe(Phaser.name, () => {
       resonance: 1,
       depth    : 0,
       rate     : 0,
-      mix      : 0,
-      feedback : 0
+      mix      : 0
     };
 
     const params: PhaserParams = {
@@ -138,8 +126,7 @@ describe(Phaser.name, () => {
       resonance: 10,
       depth    : 0.5,
       rate     : 0.5,
-      mix      : 0.5,
-      feedback : 0.5
+      mix      : 0.5
     };
 
     beforeAll(() => {
@@ -173,10 +160,6 @@ describe(Phaser.name, () => {
     test('should return `mix`', () => {
       expect(phaser.param('mix')).toBeCloseTo(0.5, 1);
     });
-
-    test('should return `feedback`', () => {
-      expect(phaser.param('feedback')).toBeCloseTo(0.5, 1);
-    });
   });
 
   describe(phaser.params.name, () => {
@@ -188,8 +171,7 @@ describe(Phaser.name, () => {
         resonance: 1,
         depth    : 0,
         rate     : 0,
-        mix      : 0,
-        feedback : 0
+        mix      : 0
       });
     });
   });

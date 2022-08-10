@@ -9,8 +9,7 @@ export type PhaserParams = {
   resonance?: number,
   depth?: number,
   rate?: number,
-  mix?: number,
-  feedback?: number
+  mix?: number
 };
 
 /**
@@ -24,7 +23,6 @@ export class Phaser extends Effector {
   private numberOfStages: PhaserNumberOfStages = 12;  // The default number of All-pass Filters
   private filters: BiquadFilterNode[] = [];
   private mix: GainNode;
-  private feedback: GainNode;
   private depthRate = 0;
 
   /**
@@ -44,14 +42,12 @@ export class Phaser extends Effector {
       this.filters.push(filter);
     }
 
-    this.mix      = context.createGain();
-    this.feedback = context.createGain();
+    this.mix = context.createGain();
 
     // Initialize parameters
-    this.depth.gain.value    = 0;
-    this.rate.value          = 0;
-    this.mix.gain.value      = 0;
-    this.feedback.gain.value = 0;
+    this.depth.gain.value = 0;
+    this.rate.value       = 0;
+    this.mix.gain.value   = 0;
 
     // `Phaser` is not connected by default
     this.deactivate();
@@ -89,7 +85,6 @@ export class Phaser extends Effector {
     }
 
     this.mix.disconnect(0);
-    this.feedback.disconnect(0);
 
     // GainNode (Input) -> GainNode (Output)
     this.input.connect(this.output);
@@ -105,13 +100,11 @@ export class Phaser extends Effector {
         } else {
           this.filters[i].connect(this.mix);
           this.mix.connect(this.output);
-
-          // Feedback
-          // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Feedback) -> BiquadFilterNode (All-pass Filter x N) ...
-          this.filters[i].connect(this.feedback);
-          this.feedback.connect(this.filters[0]);
         }
       }
+
+      // Phaser don't work in Firefox if there is feedback connection.
+      // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Feedback) -> BiquadFilterNode (All-pass Filter x N) ...
     }
 
     return this.output;
@@ -131,7 +124,6 @@ export class Phaser extends Effector {
   public param(params: 'depth'): number;
   public param(params: 'rate'): number;
   public param(params: 'mix'): number;
-  public param(params: 'feedback'): number;
   public param(params: PhaserParams): Phaser;
   public param(params: keyof PhaserParams | PhaserParams): PhaserParams[keyof PhaserParams] | Phaser {
     if (typeof params === 'string') {
@@ -150,8 +142,6 @@ export class Phaser extends Effector {
           return this.rate.value;
         case 'mix':
           return this.mix.gain.value;
-        case 'feedback':
-          return this.feedback.gain.value;
         default:
           return this;
       }
@@ -218,12 +208,6 @@ export class Phaser extends Effector {
           }
 
           break;
-        case 'feedback':
-          if (typeof value === 'number') {
-            this.feedback.gain.value = value;
-          }
-
-          break;
         default:
           break;
       }
@@ -241,8 +225,7 @@ export class Phaser extends Effector {
       resonance: this.filters[0].Q.value,
       depth    : this.depthRate,
       rate     : this.rate.value,
-      mix      : this.mix.gain.value,
-      feedback : this.feedback.gain.value
+      mix      : this.mix.gain.value
     };
   }
 

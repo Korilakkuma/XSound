@@ -83,12 +83,9 @@ export class Wah extends Effector {
         this.input.connect(this.sensitivity);
         this.sensitivity.connect(this.output);
 
-        // WaveShaperNode (Envelope Follower) -> BiquadFilterNode (Low-Pass filter) -> GainNode (Depth) -> AudioParam (frequency)
+        // WaveShaperNode (Envelope Follower) -> BiquadFilterNode (Low-Pass filter) -> GainNode (Depth) -> AudioParam (frequency) ->  GainNode (Depth) -> AudioParam (frequency)
         this.input.connect(this.envelopeFollower);
         this.envelopeFollower.connect(this.lowpass);
-
-        // LFO
-        // OscillatorNode (LFO) -> GainNode (Depth) -> AudioParam (frequency)
         this.lowpass.connect(this.depth);
         this.depth.connect(this.sensitivity.frequency);
       } else {

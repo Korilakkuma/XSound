@@ -25,7 +25,7 @@
     "release:minor": "npm version minor --message 'v%s' && git push && git push origin --tags",
     "release:major": "npm version major --message 'v%s' && git push && git push origin --tags",
     "prepublishOnly": "npm run build",
-    "docs": "rm -rf docs && typedoc"
+    "docs": "rimraf -rf docs && typedoc"
   },
   "husky": {
     "hooks": {

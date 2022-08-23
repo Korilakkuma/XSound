@@ -76,18 +76,14 @@ export class Part {
 
     const tokenizer       = new Tokenizer(mml);
     const treeConstructor = new TreeConstructor(tokenizer);
-    const sequencer       = new Sequencer(treeConstructor);
+    const sequencer       = new Sequencer(treeConstructor, this.errorCallback);
     const sequences       = sequencer.get();
 
-    this.syntaxTree = sequencer.getSyntaxTree();
-
-    if (sequences instanceof MMLSyntaxError) {
-      if (this.errorCallback) {
-        this.errorCallback(sequences);
-      }
-    } else {
+    if (sequences) {
       this.sequences = sequences;
     }
+
+    this.syntaxTree = sequencer.getSyntaxTree();
   }
 
   /**

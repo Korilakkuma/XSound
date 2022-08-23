@@ -9,6 +9,7 @@ import {
   computeIndex,
   computeFrequency
 } from '../XSound';
+import { Token } from './Token';
 import { Tree, MMLSyntaxError } from './Tree';
 import { TreeConstructor } from './TreeConstructor';
 import { Sequence } from './Sequence';
@@ -26,25 +27,42 @@ export class Sequencer {
   private octave      = -1;
   private currentTime = 0;
 
+  private errorCallback: (error: MMLSyntaxError) => void;
+
   /**
    * @param {TreeConstructor} treeConstructor This argument is instance of `TreeConstructor`.
+   * @param {function} errorCallback This argument is invoked on error.
    */
-  constructor(treeConstructor: TreeConstructor) {
+  constructor(treeConstructor: TreeConstructor, errorCallback?: (error: MMLSyntaxError) => void) {
     this.treeConstructor = treeConstructor;
+
+    if (errorCallback) {
+      this.errorCallback = errorCallback;
+    } else {
+      this.errorCallback = (error: MMLSyntaxError) => {
+        throw error;
+      };
+    }
   }
 
   /**
    * This method calculates pitch and music time from Parse Tree.
-   * @return {Array<Sequence>|MMLSyntaxError} Return value is array that contains instance of `Sequence`.
-   *     If error occurs, return value is `MMLSyntaxError`.
+   * @return {Array<Sequence>} Return value is array that contains instance of `Sequence`.
+   *     If error occurs, error handler is invoked. Return value is `undefined`.
    */
-  public get(): Sequence[] | MMLSyntaxError {
+  public get(): Sequence[] | void {
     TreeConstructor.id = 0;
 
     const trees = this.treeConstructor.parse();
 
+    if (!trees) {
+      this.errorCallback(new MMLSyntaxError(new Token('1', 'UNKNOWN', '')));
+      return;
+    }
+
     if (trees instanceof MMLSyntaxError) {
-      return trees;
+      this.errorCallback(trees);
+      return;
     }
 
     this.timeOf4note = 0;
@@ -54,8 +72,14 @@ export class Sequencer {
     let tree: Tree | null = trees[0];
 
     while (tree !== null) {
+      if (!tree) {
+        this.errorCallback(new MMLSyntaxError(new Token((this.sequences.length + 1).toString(10), 'UNKNOWN', '')));
+        return;
+      }
+
       if (tree instanceof MMLSyntaxError) {
-        return tree;
+        this.errorCallback(tree);
+        return;
       }
 
       const operator = tree.operator;
@@ -68,7 +92,8 @@ export class Sequencer {
       switch (type) {
         case 'TEMPO':
           if (value <= 0) {
-            return new MMLSyntaxError(operator);
+            this.errorCallback(new MMLSyntaxError(operator));
+            return;
           }
 
           this.timeOf4note = 60 / value;
@@ -77,7 +102,8 @@ export class Sequencer {
           break;
         case 'OCTAVE':
           if (value < 0) {
-            return new MMLSyntaxError(operator);
+            this.errorCallback(new MMLSyntaxError(operator));
+            return;
           }
 
           this.octave = value;
@@ -90,7 +116,8 @@ export class Sequencer {
           const r = this.push(type === 'TIE' ? tree.right : tree);
 
           if (r instanceof MMLSyntaxError) {
-            return r;
+            this.errorCallback(r);
+            return;
           }
 
           if (type === 'TIE') {
@@ -108,7 +135,8 @@ export class Sequencer {
           tree = tree.right;
           break;
         default:
-          return new MMLSyntaxError(tree.operator);
+          this.errorCallback(new MMLSyntaxError(tree.operator));
+          return;
       }
     }
 
@@ -285,9 +313,8 @@ export class Sequencer {
         duration += (0.0625 * this.timeOf4note) / 3;
         break;
       default:
-        // eslint-disable-next-line no-console
-        console.assert();
-        break;
+        this.errorCallback(new MMLSyntaxError(leftToken));
+        return;
     }
 
     const id    = (this.sequences.length + 1).toString(10);

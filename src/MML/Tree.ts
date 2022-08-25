@@ -87,18 +87,16 @@ ${space}${this._left?.operator.token ?? ''}${((this._right !== null) && (this._r
 }
 
 /**
- * This class is error class for MML syntax error (extends `Error`).
+ * This class is error class for MML syntax error.
  * @constructor
  */
-export class MMLSyntaxError extends Error {
+export class MMLSyntaxError {
   private _token: Token;
 
   /**
    * @param {Token} token This argument is instance of `Token` that error occurs in.
    */
   constructor(token: Token) {
-    super();
-
     this._token = token;
   }
 

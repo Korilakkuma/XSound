@@ -429,13 +429,22 @@ export function read(params: {
 
     let result = reader.result;
 
-    // Escape `<script>` in case of text
-    if ((typeof result === 'string') && !result.startsWith('data:') && !result.startsWith('blob:')) {
-      result = result.replace(/<(\/?script.*?)>/gi, '&lt;$1&gt;');
-    }
+    // Escape `<script>` if `FileReaderType` is either `text` or `json`
+    switch (type) {
+      case 'text':
+        if (typeof result === 'string') {
+          result = result.replace(/<(\/?script.*?)>/gi, '&lt;$1&gt;');
+        }
 
-    if ((typeof result === 'string') && (type === 'json')) {
-      result = JSON.parse(result.replace(/<(\/?script.*?)>/gi, '&lt;$1&gt;'));
+        break;
+      case 'json':
+        if (typeof result === 'string') {
+          result = JSON.parse(result.replace(/<(\/?script.*?)>/gi, '&lt;$1&gt;'));
+        }
+
+        break;
+      default:
+        break;
     }
 
     successCallback(event, result);

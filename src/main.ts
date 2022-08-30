@@ -106,7 +106,7 @@ import {
   toFrequencies,
   toTextFile,
   FileEvent,
-  FileReadType,
+  FileReaderType,
   FileReaderErrorText
 } from './XSound';
 
@@ -518,7 +518,7 @@ export type {
   PitchChar,
   ConvertedTime,
   FileEvent,
-  FileReadType,
+  FileReaderType,
   FileReaderErrorText
 };
 

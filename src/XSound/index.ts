@@ -103,7 +103,7 @@ export interface FileEvent extends Event {
 
 // Utility types and functions
 
-export type FileReadType        = 'arraybuffer' | 'dataURL' | 'text' | 'json';
+export type FileReaderType      = 'arraybuffer' | 'dataURL' | 'text' | 'json';
 export type FileReaderErrorText = 'NOT_FOUND_ERR' | 'SECURITY_ERR' | 'ABORT_ERR' | 'NOT_READABLE_ERR' | 'ERR' | '';
 
 /**
@@ -372,14 +372,14 @@ export function exitFullscreen(): Promise<void> {
 /**
  * This class (static) method reads file.
  * @param {File} file This argument is instance of `File`.
- * @param {FileReadType} type This argument is one of 'arraybuffer', 'dataURL', 'text', 'json'.
+ * @param {FileReaderType} type This argument is one of 'arraybuffer', 'dataURL', 'text', 'json'.
  * @param {function} successCallback This argument is invoked on success.
  * @param {function} errorCallback This argument is invoked on failure.
  * @param {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
  */
 export function read(params: {
   file: File;
-  type: FileReadType;
+  type: FileReaderType;
   successCallback?(event: ProgressEvent, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
   errorCallback?(event: ProgressEvent, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;
@@ -460,7 +460,7 @@ export function read(params: {
 /**
  * This class (static) method gets instance of `File` from `DataTransfer`.
  * @param {DragEvent} event This argument is instance of `DragEvent`.
- * @param {FileReadType|string} type This argument is one of 'arraybuffer', 'dataURL', 'objectURL', 'text', 'json'.
+ * @param {FileReaderType|string} type This argument is one of 'arraybuffer', 'dataURL', 'objectURL', 'text', 'json'.
  * @param {function} successCallback This argument is invoked on success.
  * @param {function} errorCallback This argument is invoked on failure.
  * @param {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
@@ -468,7 +468,7 @@ export function read(params: {
  */
 export function drop(params: {
   event: DragEvent;
-  type: FileReadType | 'objectURL';
+  type: FileReaderType | 'objectURL';
   successCallback?(event: ProgressEvent, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
   errorCallback?(event: ProgressEvent, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;
@@ -501,7 +501,7 @@ export function drop(params: {
 /**
  * This class (static) method gets instance of `File`.
  * @param {Event} event This argument is instance of `Event` by `HTMLInputElement`.
- * @param {FileReadType|string} type This argument is one of 'arraybuffer', 'dataURL', 'objectURL', 'text', 'json'.
+ * @param {FileReaderType|string} type This argument is one of 'arraybuffer', 'dataURL', 'objectURL', 'text', 'json'.
  * @param {function} successCallback This argument is invoked on success.
  * @param {function} errorCallback This argument is invoked on failure.
  * @param {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
@@ -509,7 +509,7 @@ export function drop(params: {
  */
 export function file(params: {
   event: FileEvent;
-  type: FileReadType | 'objectURL';
+  type: FileReaderType | 'objectURL';
   successCallback?(event: ProgressEvent, result: ArrayBuffer | ReturnType<typeof JSON.parse> | string | null): void;
   errorCallback?(event: ProgressEvent, textStatus: FileReaderErrorText): void;
   progressCallback?(event: ProgressEvent): void;

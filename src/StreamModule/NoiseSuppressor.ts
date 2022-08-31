@@ -23,26 +23,26 @@ export class NoiseSuppressor implements Statable {
    * This method detects background noise and removes this.
    * @param {Float32Array} inputs This argument is instance of `Float32Array` for FFT/IFFT.
    * @param {Float32Array} outputs This argument is instance of `Float32Array` for FFT/IFFT.
-   * @param {number} size This argument is FFT/IFFT size (power of two).
+   * @param {number} fftSize This argument is FFT/IFFT size (power of two).
    */
-  public start(inputs: Float32Array, outputs: Float32Array, bufferSize: number): void {
+  public start(inputs: Float32Array, outputs: Float32Array, fftSize: number): void {
     if (!this.isActive || (this.threshold === 0)) {
       outputs.set(inputs);
       return;
     }
 
     const xreals = new Float32Array(inputs);
-    const ximags = new Float32Array(bufferSize);
+    const ximags = new Float32Array(fftSize);
 
-    const yreals = new Float32Array(bufferSize);
-    const yimags = new Float32Array(bufferSize);
+    const yreals = new Float32Array(fftSize);
+    const yimags = new Float32Array(fftSize);
 
-    const amplitudes = new Float32Array(bufferSize);
-    const phases     = new Float32Array(bufferSize);
+    const amplitudes = new Float32Array(fftSize);
+    const phases     = new Float32Array(fftSize);
 
-    fft(xreals, ximags, bufferSize);
+    fft(xreals, ximags, fftSize);
 
-    for (let k = 0; k < bufferSize; k++) {
+    for (let k = 0; k < fftSize; k++) {
       amplitudes[k] = Math.sqrt((xreals[k] ** 2) + (ximags[k] ** 2));
 
       if ((xreals[k] !== 0) && (ximags[k] !== 0)) {
@@ -50,7 +50,7 @@ export class NoiseSuppressor implements Statable {
       }
     }
 
-    for (let k = 0; k < bufferSize; k++) {
+    for (let k = 0; k < fftSize; k++) {
       amplitudes[k] -= this.threshold;
 
       if (amplitudes[k] < 0) {
@@ -58,12 +58,12 @@ export class NoiseSuppressor implements Statable {
       }
     }
 
-    for (let k = 0; k < bufferSize; k++) {
+    for (let k = 0; k < fftSize; k++) {
       yreals[k] = amplitudes[k] * Math.cos(phases[k]);
       yimags[k] = amplitudes[k] * Math.sin(phases[k]);
     }
 
-    ifft(yreals, yimags, bufferSize);
+    ifft(yreals, yimags, fftSize);
 
     outputs.set(yreals);
   }

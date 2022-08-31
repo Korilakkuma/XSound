@@ -205,7 +205,7 @@ export abstract class SoundModule implements Connectable {
 
   /**
    * This method changes buffer size for `ScriptProcessorNode`.
-   * @param {number} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    * @return {SoundModule} Return value is for method chain.
    */
   public resize(bufferSize: BufferSize): SoundModule {
@@ -215,7 +215,7 @@ export abstract class SoundModule implements Connectable {
 
   /**
    * This method gets buffer size for `ScriptProcessorNode`.
-   * @return {number}
+   * @return {BufferSize}
    */
   public getBufferSize(): number {
     return this.processor.bufferSize;

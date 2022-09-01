@@ -30,7 +30,7 @@ describe(Sequencer.name, () => {
         ${'T74 O4 C. R2. C4&C4'}  | ${{ type: 'NUMBER',  token: '.' }}
         ${'T74 O4 C4. R2. C4&'}   | ${{ type: 'NUMBER',  token: '&' }}
         ${'T74 O4 L4 R2. C4&C4'}  | ${{ type: 'UNKNOWN', token: 'L' }}
-      `('%s should invoke error handler with %o', ({ mml, expected }) => {
+      `('"$mml" should invoke error handler with `$expected`', ({ mml, expected }) => {
       const treeConstructor = new TreeConstructor(new Tokenizer(mml));
 
       const sequencer = new Sequencer(treeConstructor, (error: MMLSyntaxError) => {

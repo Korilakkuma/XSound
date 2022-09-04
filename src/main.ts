@@ -1,114 +1,52 @@
 'use strict';
 
 import './types';
-import { SoundModule, SoundModuleParams } from './SoundModule';
-import {
-  OscillatorModule,
-  OscillatorModuleParams,
-  Glide,
-  GlideParams,
-  GlideType,
-  Oscillator,
-  OscillatorParams,
-  OscillatorCustomType
-} from './OscillatorModule';
-import { OneshotModule, OneshotModuleParams, OneshotSetting, OneshotSettings, OneshotErrorText } from './OneshotModule';
-import { NoiseModule, NoiseModuleParams, NoiseType } from './NoiseModule';
-import { AudioModule, AudioModuleParams, AudioBufferSprite } from './AudioModule';
-import { MediaModule, MediaModuleParams } from './MediaModule';
-import { StreamModule, StreamModuleParams, NoiseGate, NoiseGateParams, NoiseSuppressor, NoiseSuppressorParams, MediaStreamTrackAudioSourceNode } from './StreamModule';
+import { OscillatorModule } from './OscillatorModule';
+import { OneshotModule } from './OneshotModule';
+import { NoiseModule } from './NoiseModule';
+import { AudioModule } from './AudioModule';
+import { MediaModule } from './MediaModule';
+import { StreamModule } from './StreamModule';
 import { ProcessorModule } from './ProcessorModule';
 import { MixerModule } from './MixerModule';
-import { MIDI } from './MIDI';
-import { MML, Part, Sequence, MMLSyntaxError, Tree, TokenType, TokenMap, Token } from './MML';
-import {
-  Analyser,
-  AnalyserParams,
-  Domain,
-  DataType,
-  FFTSize,
-  Visualizer,
-  VisualizerParams,
-  Color,
-  GraphicsApi,
-  Gradient,
-  Gradients,
-  Shape,
-  Font,
-  GraphicsStyles,
-  TimeOverview,
-  TimeOverviewParams,
-  MouseEventTypes,
-  DragMode,
-  DragCallbackFunction,
-  CurrentTimeStyles,
-  Time,
-  TimeParams,
-  FFT,
-  FFTParams
-} from './SoundModule/Analyser';
-import { Recorder, RecorderParams, RecordType, QuantizationBit, WaveExportType, Track, Channel } from './SoundModule/Recorder';
-import { Session, SessionSetupParams, SessionConnectionParams, NumberOfSessionChannels, Room, RoomMap } from './SoundModule/Session';
-import { Effector } from './SoundModule/Effectors/Effector';
-import { Autopanner, AutopannerParams } from './SoundModule/Effectors/Autopanner';
-import { Chorus, ChorusParams } from './SoundModule/Effectors/Chorus';
-import { Compressor, CompressorParams } from './SoundModule/Effectors/Compressor';
-import { Delay, DelayParams } from './SoundModule/Effectors/Delay';
-import {
-  Distortion,
-  DistortionParams,
-  DistortionType,
-  DistortionCurve,
-  PreEqualizer,
-  PreEqualizerParams,
-  PostEqualizer,
-  PostEqualizerParams,
-  Cabinet,
-  CabinetParams
-} from './SoundModule/Effectors/Distortion';
-import { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effectors/EnvelopeGenerator';
-import { Equalizer, EqualizerParams } from './SoundModule/Effectors/Equalizer';
-import { Filter, FilterParams } from './SoundModule/Effectors/Filter';
-import { Flanger, FlangerParams } from './SoundModule/Effectors/Flanger';
-import { Listener, ListenerParams } from './SoundModule/Effectors/Listener';
-import { Panner, PannerParams, Position3D } from './SoundModule/Effectors/Panner';
-import { Phaser, PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
-import { PitchShifter, PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
-import { Reverb, ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
-import { Ringmodulator, RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
-import { Stereo, StereoParams } from './SoundModule/Effectors/Stereo';
-import { Tremolo, TremoloParams } from './SoundModule/Effectors/Tremolo';
-import { VocalCanceler, VocalCancelerParams } from './SoundModule/Effectors/VocalCanceler';
-import { Wah, WahParams } from './SoundModule/Effectors/Wah';
-import {
-  EQUAL_TEMPERAMENT,
-  FREQUENCY_RATIO,
-  MIN_A,
-  QUARTER_NOTE,
-  HALF_UP,
-  HALF_DOWN,
-  DOT,
-  PitchChar,
-  ConvertedTime,
-  isPitchChar,
-  computeIndex,
-  computeFrequency,
-  fft,
-  ifft,
-  ajax,
-  convertTime,
-  decode,
-  requestFullscreen,
-  exitFullscreen,
-  read,
-  drop,
-  file,
-  toFrequencies,
-  toTextFile,
-  FileEvent,
-  FileReaderType,
-  FileReaderErrorText
-} from './XSound';
+import { MIDI }  from './MIDI';
+import { MML }  from './MML';
+
+export * from './SoundModule';
+export * from './OscillatorModule';
+export * from './OneshotModule';
+export * from './NoiseModule';
+export * from './AudioModule';
+export * from './MediaModule';
+export * from './StreamModule';
+export * from './ProcessorModule';
+export * from './MixerModule';
+export * from './MIDI';
+export * from './MML';
+export * from './SoundModule/Analyser';
+export * from './SoundModule/Recorder';
+export * from './SoundModule/Session';
+export * from './SoundModule/Effectors/Effector';
+export * from './SoundModule/Effectors/Autopanner';
+export * from './SoundModule/Effectors/Chorus';
+export * from './SoundModule/Effectors/Compressor';
+export * from './SoundModule/Effectors/Delay';
+export * from './SoundModule/Effectors/Distortion';
+export * from './SoundModule/Effectors/EnvelopeGenerator';
+export * from './SoundModule/Effectors/Equalizer';
+export * from './SoundModule/Effectors/Filter';
+export * from './SoundModule/Effectors/Flanger';
+export * from './SoundModule/Effectors/Listener';
+export * from './SoundModule/Effectors/Panner';
+export * from './SoundModule/Effectors/Phaser';
+export * from './SoundModule/Effectors/PitchShifter';
+export * from './SoundModule/Effectors/Reverb';
+export * from './SoundModule/Effectors/Ringmodulator';
+export * from './SoundModule/Effectors/Stereo';
+export * from './SoundModule/Effectors/Tremolo';
+export * from './SoundModule/Effectors/VocalCanceler';
+export * from './SoundModule/Effectors/Wah';
+export * from './XSound';
 
 export type Source     = OscillatorModule | OneshotModule | NoiseModule | AudioModule | MediaModule | StreamModule | ProcessorModule | MixerModule | MIDI | MML;
 export type SourceName = 'oscillator' | 'oneshot' | 'noise' | 'audio' | 'media' | 'stream' | 'processor' | 'mixer' | 'midi' | 'mml';
@@ -177,63 +115,12 @@ function XSound(sourecName: string): Source | null {
 }
 
 /**
- * Class (Static) properties
- */
-XSound.SAMPLE_RATE       = audiocontext.sampleRate;
-XSound.EQUAL_TEMPERAMENT = EQUAL_TEMPERAMENT;
-XSound.FREQUENCY_RATIO   = FREQUENCY_RATIO;
-XSound.MIN_A             = MIN_A;
-XSound.QUARTER_NOT       = QUARTER_NOTE;
-XSound.HALF_UP           = HALF_UP;
-XSound.HALF_DOWN         = HALF_DOWN;
-XSound.DOT               = DOT;
-XSound.isPitchChar       = isPitchChar;
-XSound.computeIndex      = computeIndex;
-XSound.computeFrequency  = computeFrequency;
-XSound.fft               = fft;
-XSound.ifft              = ifft;
-XSound.ajax              = ajax;
-XSound.convertTime       = convertTime;
-XSound.decode            = decode;
-XSound.requestFullscreen = requestFullscreen;
-XSound.exitFullscreen    = exitFullscreen;
-XSound.read              = read;
-XSound.drop              = drop;
-XSound.file              = file;
-XSound.toFrequencies     = toFrequencies;
-XSound.toTextFile        = toTextFile;
-
-// Export classes
-XSound.Analyser = Analyser;
-XSound.Recorder = Recorder;
-XSound.Session  = Session;
-
-XSound.Effector      = Effector;
-XSound.Autopanner    = Autopanner;
-XSound.Chorus        = Chorus;
-XSound.Compressor    = Compressor;
-XSound.Delay         = Delay;
-XSound.Distortion    = Distortion;
-XSound.Equalizer     = Equalizer;
-XSound.Filter        = Filter;
-XSound.Flanger       = Flanger;
-XSound.Listener      = Listener;
-XSound.Panner        = Panner;
-XSound.Phaser        = Phaser;
-XSound.PitchShifter  = PitchShifter;
-XSound.Reverb        = Reverb;
-XSound.Ringmodulator = Ringmodulator;
-XSound.Stereo        = Stereo;
-XSound.Tremolo       = Tremolo;
-XSound.Wah           = Wah;
-
-/**
  * This class (static) method changes `AudioContextState` to 'running'.
  * Initial state is 'suspended' by Autoplay Policy.
  * Therefore, this method must be invoked by user gestures.
  * @return {Promise<void>} Return value is `Promise`.
  */
-XSound.setup = (): Promise<void> => {
+export const setup = (): Promise<void> => {
   if (audiocontext.state !== 'running') {
     return audiocontext.resume();
   }
@@ -245,7 +132,7 @@ XSound.setup = (): Promise<void> => {
  * This class (static) method returns closure that gets cloned instance of `Source`.
  * @return {function}
  */
-XSound.clone = (): typeof ClonedXSound => {
+export const clone = (): typeof ClonedXSound => {
   const clonedSources: { [sourceName: string]: Source | null } = {
     oscillator: new OscillatorModule(audiocontext, 0),
     oneshot   : new OneshotModule(audiocontext, 0),
@@ -319,7 +206,7 @@ XSound.clone = (): typeof ClonedXSound => {
  * This class (static) method releases memory of unused instances.
  * @param {Array<Source>} unusedSources This argument is array that contains unused instance of `Source`.
  */
-XSound.free = (unusedSources: Source[]): void => {
+export const free = (unusedSources: Source[]): void => {
   for (const unusedSource of unusedSources) {
     // Already deleted ?
     if (unusedSource === null) {
@@ -340,7 +227,7 @@ XSound.free = (unusedSources: Source[]): void => {
  *     If this value is `true`, both of global objects are deleted.
  * @return {XSound}
  */
-XSound.noConflict = (deep: boolean): typeof XSound => {
+export const noConflict = (deep: boolean): typeof XSound => {
   if (window.X === XSound) {
     window.X = undefined;
   }
@@ -357,7 +244,7 @@ XSound.noConflict = (deep: boolean): typeof XSound => {
  * This class (static) method gets instance of `AudioContext`.
  * @return {AudioContext}
  */
-XSound.get = (): AudioContext => {
+export const get = (): AudioContext => {
   return audiocontext;
 };
 
@@ -365,161 +252,27 @@ XSound.get = (): AudioContext => {
  * This class (static) method gets elapsed time from creating instance of `AudioContext`.
  * @return {number}
  */
-XSound.getCurrentTime = (): number => {
+export const getCurrentTime = (): number => {
   return audiocontext.currentTime;
 };
 
 // for Autoplay Policy
-const setup = (): void => {
-  XSound.setup().then(() => {}).catch(() => {});
+const setupListener = (): void => {
+  setup().then(() => {}).catch(() => {});
 
-  document.removeEventListener('click',      setup, false);
-  document.removeEventListener('mousedown',  setup, false);
-  document.removeEventListener('mouseup',    setup, false);
-  document.removeEventListener('touchstart', setup, false);
-  document.removeEventListener('touchend',   setup, false);
+  document.removeEventListener('click',      setupListener, false);
+  document.removeEventListener('mousedown',  setupListener, false);
+  document.removeEventListener('mouseup',    setupListener, false);
+  document.removeEventListener('touchstart', setupListener, false);
+  document.removeEventListener('touchend',   setupListener, false);
 };
 
-document.addEventListener('click',      setup, false);
-document.addEventListener('mousedown',  setup, false);
-document.addEventListener('mouseup',    setup, false);
-document.addEventListener('touchstart', setup, false);
-document.addEventListener('touchend',   setup, false);
+document.addEventListener('click',      setupListener, false);
+document.addEventListener('mousedown',  setupListener, false);
+document.addEventListener('mouseup',    setupListener, false);
+document.addEventListener('touchstart', setupListener, false);
+document.addEventListener('touchend',   setupListener, false);
 
-export type {
-  SoundModule,
-  SoundModuleParams,
-  OscillatorModule,
-  OscillatorModuleParams,
-  Glide,
-  GlideParams,
-  GlideType,
-  Oscillator,
-  OscillatorParams,
-  OscillatorCustomType,
-  OneshotModule,
-  OneshotModuleParams,
-  OneshotSetting,
-  OneshotSettings,
-  OneshotErrorText,
-  NoiseModule,
-  NoiseModuleParams,
-  NoiseType,
-  AudioModule,
-  AudioModuleParams,
-  AudioBufferSprite,
-  MediaModule,
-  MediaModuleParams,
-  StreamModule,
-  StreamModuleParams,
-  NoiseGate,
-  NoiseGateParams,
-  NoiseSuppressor,
-  NoiseSuppressorParams,
-  MediaStreamTrackAudioSourceNode,
-  ProcessorModule,
-  MixerModule,
-  MIDI,
-  MML,
-  Part,
-  Sequence,
-  MMLSyntaxError,
-  Tree,
-  TokenType,
-  TokenMap,
-  Token,
-  Analyser,
-  AnalyserParams,
-  Domain,
-  DataType,
-  FFTSize,
-  Color,
-  Visualizer,
-  VisualizerParams,
-  GraphicsApi,
-  Gradient,
-  Gradients,
-  Shape,
-  Font,
-  GraphicsStyles,
-  TimeOverview,
-  TimeOverviewParams,
-  MouseEventTypes,
-  DragMode,
-  DragCallbackFunction,
-  CurrentTimeStyles,
-  Time,
-  TimeParams,
-  FFT,
-  FFTParams,
-  Recorder,
-  RecorderParams,
-  RecordType,
-  QuantizationBit,
-  WaveExportType,
-  Track,
-  Channel,
-  Session,
-  SessionSetupParams,
-  SessionConnectionParams,
-  NumberOfSessionChannels,
-  Room,
-  RoomMap,
-  Effector,
-  Autopanner,
-  AutopannerParams,
-  Chorus,
-  ChorusParams,
-  Compressor,
-  CompressorParams,
-  Delay,
-  DelayParams,
-  Distortion,
-  DistortionParams,
-  DistortionType,
-  DistortionCurve,
-  PreEqualizer,
-  PreEqualizerParams,
-  PostEqualizer,
-  PostEqualizerParams,
-  Cabinet,
-  CabinetParams,
-  EnvelopeGenerator,
-  EnvelopeGeneratorParams,
-  Equalizer,
-  EqualizerParams,
-  Filter,
-  FilterParams,
-  Flanger,
-  FlangerParams,
-  Listener,
-  ListenerParams,
-  Panner,
-  PannerParams,
-  Position3D,
-  Phaser,
-  PhaserParams,
-  PhaserNumberOfStages,
-  PitchShifter,
-  PitchShifterParams,
-  Reverb,
-  ReverbParams,
-  ReverbErrorText,
-  Ringmodulator,
-  RingmodulatorParams,
-  Stereo,
-  StereoParams,
-  Tremolo,
-  TremoloParams,
-  VocalCanceler,
-  VocalCancelerParams,
-  Wah,
-  WahParams,
-  PitchChar,
-  ConvertedTime,
-  FileEvent,
-  FileReaderType,
-  FileReaderErrorText
-};
+export const SAMPLE_RATE = audiocontext.sampleRate;
 
 export { XSound, XSound as X };

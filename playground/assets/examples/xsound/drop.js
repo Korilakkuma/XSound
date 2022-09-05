@@ -19,7 +19,7 @@ dropArea.ondrop = (event) => {
 
   dropArea.textContent = 'Upload';
 
-  const file = X.drop({
+  const file = drop({
     event           : event,
     type            : 'arraybuffer',
     successCallback : (event, arraybuffer) => {

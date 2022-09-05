@@ -1,6 +1,6 @@
 const result = document.getElementById('result-text');
 
-X.ajax({
+ajax({
   url             : 'https://weblike-curtaincall.ssl-lolipop.jp/assets/mp3/forever-love-piano-instruments.mp3',
   type            : 'arraybuffer',
   timeout         : 120000,

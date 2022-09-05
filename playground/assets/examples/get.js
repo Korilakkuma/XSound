@@ -1,6 +1,6 @@
 const result = document.getElementById('result-text');
 
-const audiocontext = X.get();
+const audiocontext = get();
 
 const ul = document.createElement('ul');
 

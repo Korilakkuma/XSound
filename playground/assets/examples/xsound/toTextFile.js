@@ -1,6 +1,6 @@
 const result = document.getElementById('result-text');
 
-const textFile = X.toTextFile('abcABCあいうえお');
+const textFile = toTextFile('abcABCあいうえお');
 
 const a = document.createElement('a');
 

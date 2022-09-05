@@ -10,7 +10,7 @@ for (let i = 0; i < FFT_SIZE; i++) {
   imags[i] = 0;
 }
 
-X.fft(reals, imags, FFT_SIZE);
+fft(reals, imags, FFT_SIZE);
 
 const ul = document.createElement('ul');
 
@@ -30,7 +30,7 @@ imags.forEach((imag) => {
   ul.append(li);
 });
 
-X.ifft(reals, imags, FFT_SIZE);
+ifft(reals, imags, FFT_SIZE);
 
 reals.forEach((real) => {
   const li = document.createElement('li');

@@ -1,11 +1,11 @@
 const result = document.getElementById('result-text');
 
-ajax({
+X.ajax({
   url             : 'https://weblike-curtaincall.ssl-lolipop.jp/assets/mp3/forever-love-piano-instruments.mp3',
   type            : 'arraybuffer',
   timeout         : 120000,
   successCallback : (event, arraybuffer) => {
-    decode(get(), arraybuffer, (buffer) => {
+    X.decode(X.get(), arraybuffer, (buffer) => {
       result.innerHTML = `
         <ul>
           <li>sampleRate: ${buffer.sampleRate} Hz</li>

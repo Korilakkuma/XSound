@@ -4,7 +4,7 @@ const ul = document.createElement('ul');
 
 const base = 40;
 
-const frequencies = toFrequencies([base, base + 4, base + 7, base + 10]);
+const frequencies = X.toFrequencies([base, base + 4, base + 7, base + 10]);
 
 frequencies.forEach((frequency) => {
   const li = document.createElement('li');

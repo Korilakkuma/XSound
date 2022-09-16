@@ -1,4 +1,4 @@
-const ClonedX = clone();
+const ClonedX = X.clone();
 
 ClonedX('oscillator').setup([true, true, false, false]);
 

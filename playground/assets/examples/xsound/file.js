@@ -7,7 +7,7 @@ document.getElementById('button-uploader').onclick = () => {
 };
 
 uploader.onchange = (event) => {
-  const file = file({
+  const file = X.file({
     event           : event,
     type            : 'arraybuffer',
     successCallback : (event, arraybuffer) => {

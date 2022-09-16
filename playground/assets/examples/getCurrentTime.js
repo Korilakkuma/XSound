@@ -5,7 +5,7 @@ let animationId = null;
 
 const update = () => {
   animationId = requestAnimationFrame(() => {
-    result.textContent = getCurrentTime();
+    result.textContent = X.getCurrentTime();
     update();
   });
 };

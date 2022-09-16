@@ -6,7 +6,7 @@ const ul = document.createElement('ul');
   ['C', 'D', 'G', 'F', 'G', 'A', 'B', 'R'].forEach((pitchChar) => {
     const li = document.createElement('li');
 
-    li.textContent = computeFrequency(computeIndex(octave, pitchChar)).toString(10);
+    li.textContent = X.computeFrequency(X.computeIndex(octave, pitchChar)).toString(10);
 
     ul.append(li);
   });

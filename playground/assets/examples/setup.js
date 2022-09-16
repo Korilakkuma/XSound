@@ -1,8 +1,8 @@
 const result = document.getElementById('result-text');
 
-const audiocontext = get();
+const audiocontext = X.get();
 
-setup()
+X.setup()
   .then(() => {
     result.textContent = audiocontext.state;
   })
@@ -10,8 +10,8 @@ setup()
     result.textContent = audiocontext.state;
   });
 
-const setupListener = () => {
-  setup()
+const setup = () => {
+  X.setup()
     .then(() => {
       result.textContent = audiocontext.state;
     })
@@ -19,7 +19,7 @@ const setupListener = () => {
       result.textContent = audiocontext.state;
     });
 
-  document.removeEventListener('click', setupListener);
+  document.removeEventListener('click', setup);
 };
 
-document.addEventListener('click', setupListener);
+document.addEventListener('click', setup);

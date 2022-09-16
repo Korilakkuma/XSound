@@ -1,6 +1,6 @@
 const result = document.getElementById('result-text');
 
-const $ = noConflict();
+const $ = X.noConflict();
 
 result.innerHTML = `
   <ul>

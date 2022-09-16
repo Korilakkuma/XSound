@@ -43,10 +43,10 @@ or, in case of using as **module base** (For example, use chorus effector) ...
 
 ```JavaScript
 // The instance of `AudioContext`
-const context = get();
+const context = X.get();
 
 // Create the instance of `Chorus` that is defined by XSound
-const chorus = new Chorus(context);
+const chorus = new X.Chorus(context);
 
 const oscillator = context.createOscillator();
 
@@ -75,28 +75,28 @@ XSound enable to using the following classes (Refer to [API Documentation](https
 type BufferSize = 0 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384;
 type RecordType = 1 | 2;  // Monaural | Stereo
 
-Analyser(context: AudioContext);
-Recorder(context: AudioContext, bufferSize: BufferSize, numberOfInputs: RecordType, numberOfOutputs: RecordType);
-Session(context: AudioContext);
+X.Analyser(context: AudioContext);
+X.Recorder(context: AudioContext, bufferSize: BufferSize, numberOfInputs: RecordType, numberOfOutputs: RecordType);
+X.Session(context: AudioContext);
 
 // Effectors
-Autopanner(context: AudioContext);
-Chorus(context: AudioContext);
-Compressor(context: AudioContext);
-Delay(context: AudioContext);
-Distortion(context: AudioContext);
-Equalizer(context: AudioContext);
-Filter(context: AudioContext);
-Flanger(context: AudioContext);
-Listener(context: AudioContext);
-Panner(context: AudioContext);
-Phaser(context: AudioContext);
-PitchShifter(context: AudioContext, size: BufferSize);
-Reverb(context: AudioContext);
-Ringmodulator(context: AudioContext);
-Stereo(context: AudioContext, size, size: BufferSize);
-Tremolo(context: AudioContext);
-Wah(context: AudioContext);
+X.Autopanner(context: AudioContext);
+X.Chorus(context: AudioContext);
+X.Compressor(context: AudioContext);
+X.Delay(context: AudioContext);
+X.Distortion(context: AudioContext);
+X.Equalizer(context: AudioContext);
+X.Filter(context: AudioContext);
+X.Flanger(context: AudioContext);
+X.Listener(context: AudioContext);
+X.Panner(context: AudioContext);
+X.Phaser(context: AudioContext);
+X.PitchShifter(context: AudioContext, size: BufferSize);
+X.Reverb(context: AudioContext);
+X.Ringmodulator(context: AudioContext);
+X.Stereo(context: AudioContext, size, size: BufferSize);
+X.Tremolo(context: AudioContext);
+X.Wah(context: AudioContext);
 ```
 
 ## Demo

@@ -9,15 +9,7 @@ import { MixerModule } from '../src/MixerModule';
 import { ProcessorModule } from '../src/ProcessorModule';
 import { MIDI } from '../src/MIDI';
 import { MML } from '../src/MML';
-import {
-  XSound,
-  setup,
-  clone,
-  free,
-  noConflict,
-  get,
-  getCurrentTime
-} from '../src/main';
+import { XSound } from '../src/main';
 
 describe(XSound.name, () => {
   test('should return instance of `Source`', () => {
@@ -34,11 +26,11 @@ describe(XSound.name, () => {
   });
 });
 
-describe(setup.name, () => {
+describe(XSound.setup.name, () => {
   test('should be `running` after success', () => {
-    return setup()
+    return XSound.setup()
       .then(() => {
-        const context = get();
+        const context = XSound.get();
 
         expect(context.state).toBe('running');
       })
@@ -47,8 +39,8 @@ describe(setup.name, () => {
   });
 });
 
-describe(clone.name, () => {
-  const ClonedXSound = clone();
+describe(XSound.clone.name, () => {
+  const ClonedXSound = XSound.clone();
 
   test('should return cloned instance of `Source`', () => {
     expect(ClonedXSound('oscillator')).toBeInstanceOf(OscillatorModule);
@@ -90,9 +82,9 @@ describe(clone.name, () => {
   });
 });
 
-describe(free.name, () => {
+describe(XSound.free.name, () => {
   test('should return instance of `Source` except unused', () => {
-    free([XSound('oscillator'), XSound('midi')]);
+    XSound.free([XSound('oscillator'), XSound('midi')]);
 
     expect(XSound('oscillator')).toBe(null);
     expect(XSound('oneshot')).toBeInstanceOf(OneshotModule);
@@ -107,26 +99,26 @@ describe(free.name, () => {
   });
 });
 
-describe(noConflict.name, () => {
+describe(XSound.noConflict.name, () => {
   test('should return `XSound`', () => {
     const Y = XSound;
 
-    expect(noConflict(false)).toBe(XSound);
-    expect(noConflict(true)).toBe(Y);
+    expect(XSound.noConflict(false)).toBe(XSound);
+    expect(XSound.noConflict(true)).toBe(Y);
 
     window.XSound = Y;
     window.X      = Y;
   });
 });
 
-describe(get.name, () => {
+describe(XSound.get.name, () => {
   test('should return instance of `AudioContext`', () => {
-    expect(get()).toBeInstanceOf(AudioContext);
+    expect(XSound.get()).toBeInstanceOf(AudioContext);
   });
 });
 
-describe(getCurrentTime.name, () => {
+describe(XSound.getCurrentTime.name, () => {
   test('should return elapsed time from creating instance of `AudioContext`', () => {
-    expect(getCurrentTime()).toBeGreaterThanOrEqual(0);
+    expect(XSound.getCurrentTime()).toBeGreaterThanOrEqual(0);
   });
 });

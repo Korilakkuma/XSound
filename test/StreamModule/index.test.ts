@@ -7,10 +7,13 @@ import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
 import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
 import { Delay } from '../../src/SoundModule/Effectors/Delay';
 import { Distortion } from '../../src/SoundModule/Effectors/Distortion';
+import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
 import { Filter } from '../../src/SoundModule/Effectors/Filter';
 import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
 import { Listener } from '../../src/SoundModule/Effectors/Listener';
+import { NoiseGate } from '../../src/SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor } from '../../src/SoundModule/Effectors/NoiseSuppressor';
 import { Panner } from '../../src/SoundModule/Effectors/Panner';
 import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
@@ -19,9 +22,6 @@ import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
-import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
-import { NoiseGate } from '../../src/StreamModule/NoiseGate';
-import { NoiseSuppressor } from '../../src/StreamModule/NoiseSuppressor';
 import { StreamModule, StreamModuleParams } from '../../src/StreamModule';
 
 type Params = Partial<Pick<StreamModuleParams, 'mastervolume' | 'output' | 'track'>>;
@@ -360,10 +360,13 @@ describe(StreamModule.name, () => {
       expect(streamModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(streamModule.module('delay')).toBeInstanceOf(Delay);
       expect(streamModule.module('distortion')).toBeInstanceOf(Distortion);
+      expect(streamModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(streamModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(streamModule.module('filter')).toBeInstanceOf(Filter);
       expect(streamModule.module('flanger')).toBeInstanceOf(Flanger);
       expect(streamModule.module('listener')).toBeInstanceOf(Listener);
+      expect(streamModule.module('noisegate')).toBeInstanceOf(NoiseGate);
+      expect(streamModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
       expect(streamModule.module('panner')).toBeInstanceOf(Panner);
       expect(streamModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(streamModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
@@ -372,9 +375,6 @@ describe(StreamModule.name, () => {
       expect(streamModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(streamModule.module('tremolo')).toBeInstanceOf(Tremolo);
       expect(streamModule.module('wah')).toBeInstanceOf(Wah);
-      expect(streamModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
-      expect(streamModule.module('noisegate')).toBeInstanceOf(NoiseGate);
-      expect(streamModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
     });
   });
 
@@ -385,8 +385,7 @@ describe(StreamModule.name, () => {
         mastervolume     : 1,
         output           : true,
         track            : false,
-        noisegate        : streamModule['noisegate'].params(),
-        noisesuppressor  : streamModule['noisesuppressor'].params(),
+        envelopegenerator: streamModule['envelopegenerator'].params(),
         stereo           : streamModule['stereo'].params(),
         compressor       : streamModule['compressor'].params(),
         distortion       : streamModule['distortion'].params(),
@@ -404,7 +403,8 @@ describe(StreamModule.name, () => {
         reverb           : streamModule['reverb'].params(),
         panner           : streamModule['panner'].params(),
         listener         : streamModule['listener'].params(),
-        envelopegenerator: streamModule['envelopegenerator'].params()
+        noisegate        : streamModule['noisegate'].params(),
+        noisesuppressor  : streamModule['noisesuppressor'].params()
       });
       /* eslint-enable dot-notation */
     });

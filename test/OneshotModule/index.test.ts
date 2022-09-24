@@ -8,10 +8,13 @@ import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
 import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
 import { Delay } from '../../src/SoundModule/Effectors/Delay';
 import { Distortion } from '../../src/SoundModule/Effectors/Distortion';
+import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
 import { Filter } from '../../src/SoundModule/Effectors/Filter';
 import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
 import { Listener } from '../../src/SoundModule/Effectors/Listener';
+import { NoiseGate } from '../../src/SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor } from '../../src/SoundModule/Effectors/NoiseSuppressor';
 import { Panner } from '../../src/SoundModule/Effectors/Panner';
 import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
@@ -20,7 +23,6 @@ import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
-import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { OneshotModule, OneshotModuleParams, OneshotSettings } from '../../src/OneshotModule';
 
 type Params = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;
@@ -270,10 +272,13 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(oneshotModule.module('delay')).toBeInstanceOf(Delay);
       expect(oneshotModule.module('distortion')).toBeInstanceOf(Distortion);
+      expect(oneshotModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(oneshotModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(oneshotModule.module('filter')).toBeInstanceOf(Filter);
       expect(oneshotModule.module('flanger')).toBeInstanceOf(Flanger);
       expect(oneshotModule.module('listener')).toBeInstanceOf(Listener);
+      expect(oneshotModule.module('noisegate')).toBeInstanceOf(NoiseGate);
+      expect(oneshotModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
       expect(oneshotModule.module('panner')).toBeInstanceOf(Panner);
       expect(oneshotModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(oneshotModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
@@ -282,7 +287,6 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(oneshotModule.module('tremolo')).toBeInstanceOf(Tremolo);
       expect(oneshotModule.module('wah')).toBeInstanceOf(Wah);
-      expect(oneshotModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
     });
   });
 
@@ -292,6 +296,7 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.params()).toStrictEqual({
         mastervolume     : 1,
         transpose        : 1,
+        envelopegenerator: oneshotModule['envelopegenerator'].params(),
         stereo           : oneshotModule['stereo'].params(),
         compressor       : oneshotModule['compressor'].params(),
         distortion       : oneshotModule['distortion'].params(),
@@ -309,7 +314,8 @@ describe(OneshotModule.name, () => {
         reverb           : oneshotModule['reverb'].params(),
         panner           : oneshotModule['panner'].params(),
         listener         : oneshotModule['listener'].params(),
-        envelopegenerator: oneshotModule['envelopegenerator'].params()
+        noisegate        : oneshotModule['noisegate'].params(),
+        noisesuppressor  : oneshotModule['noisesuppressor'].params()
       });
       /* eslint-enable dot-notation */
     });

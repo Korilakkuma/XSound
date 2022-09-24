@@ -13,6 +13,8 @@ import { Equalizer } from '../SoundModule/Effectors/Equalizer';
 import { Filter } from '../SoundModule/Effectors/Filter';
 import { Flanger } from '../SoundModule/Effectors/Flanger';
 import { Listener } from '../SoundModule/Effectors/Listener';
+import { NoiseGate } from '../SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor } from '../SoundModule/Effectors/NoiseSuppressor';
 import { Panner } from '../SoundModule/Effectors/Panner';
 import { Phaser } from '../SoundModule/Effectors/Phaser';
 import { PitchShifter } from '../SoundModule/Effectors/PitchShifter';
@@ -222,10 +224,13 @@ export class ProcessorModule extends SoundModule {
   public module(moduleName: 'compressor'): Compressor;
   public module(moduleName: 'delay'): Delay;
   public module(moduleName: 'distortion'): Distortion;
+  public module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
   public module(moduleName: 'equalizer'): Equalizer;
   public module(moduleName: 'filter'): Filter;
   public module(moduleName: 'flanger'): Flanger;
   public module(moduleName: 'listener'): Listener;
+  public module(moduleName: 'noisegate'): NoiseGate;
+  public module(moduleName: 'noisesuppressor'): NoiseSuppressor;
   public module(moduleName: 'panner'): Panner;
   public module(moduleName: 'phaser'): Phaser;
   public module(moduleName: 'pitchshifter'): PitchShifter;
@@ -234,7 +239,6 @@ export class ProcessorModule extends SoundModule {
   public module(moduleName: 'stereo'): Stereo;
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'wah'): Wah;
-  public module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
   public module(moduleName: ModuleName): Module | null {
     switch (moduleName) {
       case 'analyser':
@@ -253,6 +257,8 @@ export class ProcessorModule extends SoundModule {
         return this.delay;
       case 'distortion':
         return this.distortion;
+      case 'envelopegenerator':
+        return this.envelopegenerator;
       case 'equalizer':
         return this.equalizer;
       case 'filter':
@@ -261,6 +267,10 @@ export class ProcessorModule extends SoundModule {
         return this.flanger;
       case 'listener':
         return this.listener;
+      case 'noisegate':
+        return this.noisegate;
+      case 'noisesuppressor':
+        return this.noisesuppressor;
       case 'panner':
         return this.panner;
       case 'phaser':
@@ -277,8 +287,6 @@ export class ProcessorModule extends SoundModule {
         return this.tremolo;
       case 'wah':
         return this.wah;
-      case 'envelopegenerator':
-        return this.envelopegenerator;
       default:
         return null;
     }

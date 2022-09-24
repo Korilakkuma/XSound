@@ -13,6 +13,8 @@ import { Equalizer } from '../SoundModule/Effectors/Equalizer';
 import { Filter } from '../SoundModule/Effectors/Filter';
 import { Flanger } from '../SoundModule/Effectors/Flanger';
 import { Listener } from '../SoundModule/Effectors/Listener';
+import { NoiseGate } from '../SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor } from '../SoundModule/Effectors/NoiseSuppressor';
 import { Panner } from '../SoundModule/Effectors/Panner';
 import { Phaser } from '../SoundModule/Effectors/Phaser';
 import { PitchShifter } from '../SoundModule/Effectors/PitchShifter';
@@ -21,23 +23,12 @@ import { Ringmodulator } from '../SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../SoundModule/Effectors/Stereo';
 import { Tremolo } from '../SoundModule/Effectors/Tremolo';
 import { Wah } from '../SoundModule/Effectors/Wah';
-import { NoiseGate, NoiseGateParams }  from './NoiseGate';
-import { NoiseSuppressor, NoiseSuppressorParams }  from './NoiseSuppressor';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface MediaStreamTrackAudioSourceNode extends AudioNode {
 }
 
-export type {
-  NoiseGate,
-  NoiseGateParams,
-  NoiseSuppressor,
-  NoiseSuppressorParams
-};
-
 export type StreamModuleParams = SoundModuleParams & {
-  noisegate?: NoiseGateParams,
-  noisesuppressor?: NoiseSuppressorParams,
   output?: boolean,
   track?: boolean
 };
@@ -61,18 +52,12 @@ export class StreamModule extends SoundModule {
 
   private paused = true;
 
-  private noisegate: NoiseGate;
-  private noisesuppressor: NoiseSuppressor;
-
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
   constructor(context: AudioContext, bufferSize: BufferSize) {
     super(context, bufferSize);
-
-    this.noisegate       = new NoiseGate();
-    this.noisesuppressor = new NoiseSuppressor();
   }
 
   /**
@@ -143,8 +128,6 @@ export class StreamModule extends SoundModule {
       return this;
     }
 
-    const bufferSize = this.processor.bufferSize;
-
     if (this.track) {
       // Get instance of `MediaStreamTrack` for audio
       const audioTracks = this.stream.getAudioTracks();
@@ -191,22 +174,8 @@ export class StreamModule extends SoundModule {
       const outputLs = event.outputBuffer.getChannelData(0);
       const outputRs = event.outputBuffer.getChannelData(1);
 
-      const threshold = this.noisesuppressor.param('threshold');
-      const level     = this.noisegate.param('level');
-
-      // Give priority to Noise Suppressor
-      if ((typeof threshold === 'number') && (threshold > 0)) {
-        this.noisesuppressor.start(inputLs, outputLs, bufferSize);
-        this.noisesuppressor.start(inputRs, outputRs, bufferSize);
-      } else if ((typeof level === 'number') && (level > 0)) {
-        for (let i = 0; i < bufferSize; i++) {
-          outputLs[i] = this.noisegate.start(inputLs[i]);
-          outputRs[i] = this.noisegate.start(inputRs[i]);
-        }
-      } else {
-        outputLs.set(inputLs);
-        outputRs.set(inputRs);
-      }
+      outputLs.set(inputLs);
+      outputRs.set(inputRs);
     };
 
     return this;
@@ -393,8 +362,8 @@ export class StreamModule extends SoundModule {
 
   /**
    * This method gets instance of `Module` (Analyser, Recorder, Effector ... etc).
-   * @param {ModuleName|'noisegate'|'noisesuppressor'} moduleName This argument selects module.
-   * @return {Module|NoiseGate|NoiseSuppressor}
+   * @param {ModuleName} moduleName This argument selects module.
+   * @return {Module}
    */
   public module(moduleName: 'analyser'): Analyser;
   public module(moduleName: 'recorder'): Recorder;
@@ -404,10 +373,13 @@ export class StreamModule extends SoundModule {
   public module(moduleName: 'compressor'): Compressor;
   public module(moduleName: 'delay'): Delay;
   public module(moduleName: 'distortion'): Distortion;
+  public module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
   public module(moduleName: 'equalizer'): Equalizer;
   public module(moduleName: 'filter'): Filter;
   public module(moduleName: 'flanger'): Flanger;
   public module(moduleName: 'listener'): Listener;
+  public module(moduleName: 'noisegate'): NoiseGate;
+  public module(moduleName: 'noisesuppressor'): NoiseSuppressor;
   public module(moduleName: 'panner'): Panner;
   public module(moduleName: 'phaser'): Phaser;
   public module(moduleName: 'pitchshifter'): PitchShifter;
@@ -416,10 +388,7 @@ export class StreamModule extends SoundModule {
   public module(moduleName: 'stereo'): Stereo;
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'wah'): Wah;
-  public module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
-  public module(moduleName: 'noisegate'): NoiseGate;
-  public module(moduleName: 'noisesuppressor'): NoiseSuppressor;
-  public module(moduleName: ModuleName | 'noisegate' | 'noisesuppressor'): Module | NoiseGate | NoiseSuppressor | null {
+  public module(moduleName: ModuleName): Module | null {
     switch (moduleName) {
       case 'analyser':
         return this.analyser;
@@ -437,6 +406,8 @@ export class StreamModule extends SoundModule {
         return this.delay;
       case 'distortion':
         return this.distortion;
+      case 'envelopegenerator':
+        return this.envelopegenerator;
       case 'equalizer':
         return this.equalizer;
       case 'filter':
@@ -445,6 +416,10 @@ export class StreamModule extends SoundModule {
         return this.flanger;
       case 'listener':
         return this.listener;
+      case 'noisegate':
+        return this.noisegate;
+      case 'noisesuppressor':
+        return this.noisesuppressor;
       case 'panner':
         return this.panner;
       case 'phaser':
@@ -461,12 +436,6 @@ export class StreamModule extends SoundModule {
         return this.tremolo;
       case 'wah':
         return this.wah;
-      case 'envelopegenerator':
-        return this.envelopegenerator;
-      case 'noisegate':
-        return this.noisegate;
-      case 'noisesuppressor':
-        return this.noisesuppressor;
       default:
         return null;
     }

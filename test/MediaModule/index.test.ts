@@ -12,6 +12,8 @@ import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
 import { Filter } from '../../src/SoundModule/Effectors/Filter';
 import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
 import { Listener } from '../../src/SoundModule/Effectors/Listener';
+import { NoiseGate } from '../../src/SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor } from '../../src/SoundModule/Effectors/NoiseSuppressor';
 import { Panner } from '../../src/SoundModule/Effectors/Panner';
 import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
@@ -19,8 +21,8 @@ import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
-import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
+import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
 import { MediaModule, MediaModuleParams } from '../../src/MediaModule';
 
 type Params = Partial<Pick<MediaModuleParams, 'mastervolume' | 'autoplay' | 'playbackRate' | 'currentTime' | 'controls' | 'loop' | 'muted' | 'duration'>>;
@@ -275,10 +277,13 @@ describe(MediaModule.name, () => {
       expect(mediaModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(mediaModule.module('delay')).toBeInstanceOf(Delay);
       expect(mediaModule.module('distortion')).toBeInstanceOf(Distortion);
+      expect(mediaModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(mediaModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(mediaModule.module('filter')).toBeInstanceOf(Filter);
       expect(mediaModule.module('flanger')).toBeInstanceOf(Flanger);
       expect(mediaModule.module('listener')).toBeInstanceOf(Listener);
+      expect(mediaModule.module('noisegate')).toBeInstanceOf(NoiseGate);
+      expect(mediaModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
       expect(mediaModule.module('panner')).toBeInstanceOf(Panner);
       expect(mediaModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(mediaModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
@@ -287,7 +292,6 @@ describe(MediaModule.name, () => {
       expect(mediaModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(mediaModule.module('tremolo')).toBeInstanceOf(Tremolo);
       expect(mediaModule.module('wah')).toBeInstanceOf(Wah);
-      expect(mediaModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(mediaModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
     });
   });
@@ -304,6 +308,7 @@ describe(MediaModule.name, () => {
         loop             : false,
         muted            : false,
         duration         : 0,
+        envelopegenerator: mediaModule['envelopegenerator'].params(),
         vocalcanceler    : mediaModule['vocalcanceler'].params(),
         stereo           : mediaModule['stereo'].params(),
         compressor       : mediaModule['compressor'].params(),
@@ -322,7 +327,8 @@ describe(MediaModule.name, () => {
         reverb           : mediaModule['reverb'].params(),
         panner           : mediaModule['panner'].params(),
         listener         : mediaModule['listener'].params(),
-        envelopegenerator: mediaModule['envelopegenerator'].params()
+        noisegate        : mediaModule['noisegate'].params(),
+        noisesuppressor  : mediaModule['noisesuppressor'].params()
       });
       /* eslint-enable dot-notation */
     });

@@ -16,7 +16,7 @@ import { OneshotModule, OneshotModuleParams, OneshotSetting, OneshotSettings, On
 import { NoiseModule, NoiseModuleParams, NoiseType } from './NoiseModule';
 import { AudioModule, AudioModuleParams, AudioBufferSprite } from './AudioModule';
 import { MediaModule, MediaModuleParams } from './MediaModule';
-import { StreamModule, StreamModuleParams, NoiseGate, NoiseGateParams, NoiseSuppressor, NoiseSuppressorParams, MediaStreamTrackAudioSourceNode } from './StreamModule';
+import { StreamModule, StreamModuleParams, MediaStreamTrackAudioSourceNode } from './StreamModule';
 import { ProcessorModule } from './ProcessorModule';
 import { MixerModule } from './MixerModule';
 import { MIDI } from './MIDI';
@@ -71,6 +71,8 @@ import { Equalizer, EqualizerParams } from './SoundModule/Effectors/Equalizer';
 import { Filter, FilterParams } from './SoundModule/Effectors/Filter';
 import { Flanger, FlangerParams } from './SoundModule/Effectors/Flanger';
 import { Listener, ListenerParams } from './SoundModule/Effectors/Listener';
+import { NoiseGate, NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor, NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
 import { Panner, PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import { Phaser, PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
 import { PitchShifter, PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
@@ -208,24 +210,26 @@ XSound.Analyser = Analyser;
 XSound.Recorder = Recorder;
 XSound.Session  = Session;
 
-XSound.Effector      = Effector;
-XSound.Autopanner    = Autopanner;
-XSound.Chorus        = Chorus;
-XSound.Compressor    = Compressor;
-XSound.Delay         = Delay;
-XSound.Distortion    = Distortion;
-XSound.Equalizer     = Equalizer;
-XSound.Filter        = Filter;
-XSound.Flanger       = Flanger;
-XSound.Listener      = Listener;
-XSound.Panner        = Panner;
-XSound.Phaser        = Phaser;
-XSound.PitchShifter  = PitchShifter;
-XSound.Reverb        = Reverb;
-XSound.Ringmodulator = Ringmodulator;
-XSound.Stereo        = Stereo;
-XSound.Tremolo       = Tremolo;
-XSound.Wah           = Wah;
+XSound.Effector        = Effector;
+XSound.Autopanner      = Autopanner;
+XSound.Chorus          = Chorus;
+XSound.Compressor      = Compressor;
+XSound.Delay           = Delay;
+XSound.Distortion      = Distortion;
+XSound.Equalizer       = Equalizer;
+XSound.Filter          = Filter;
+XSound.Flanger         = Flanger;
+XSound.Listener        = Listener;
+XSound.NoiseGate       = NoiseGate;
+XSound.NoiseSuppressor = NoiseSuppressor;
+XSound.Panner          = Panner;
+XSound.Phaser          = Phaser;
+XSound.PitchShifter    = PitchShifter;
+XSound.Reverb          = Reverb;
+XSound.Ringmodulator   = Ringmodulator;
+XSound.Stereo          = Stereo;
+XSound.Tremolo         = Tremolo;
+XSound.Wah             = Wah;
 
 /**
  * This class (static) method changes `AudioContextState` to 'running'.
@@ -412,10 +416,6 @@ export type {
   MediaModuleParams,
   StreamModule,
   StreamModuleParams,
-  NoiseGate,
-  NoiseGateParams,
-  NoiseSuppressor,
-  NoiseSuppressorParams,
   MediaStreamTrackAudioSourceNode,
   ProcessorModule,
   MixerModule,
@@ -494,6 +494,10 @@ export type {
   FlangerParams,
   Listener,
   ListenerParams,
+  NoiseGate,
+  NoiseGateParams,
+  NoiseSuppressor,
+  NoiseSuppressorParams,
   Panner,
   PannerParams,
   Position3D,

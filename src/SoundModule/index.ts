@@ -14,6 +14,8 @@ import { Equalizer, EqualizerParams } from './Effectors/Equalizer';
 import { Filter, FilterParams } from './Effectors/Filter';
 import { Flanger, FlangerParams } from './Effectors/Flanger';
 import { Listener, ListenerParams } from './Effectors/Listener';
+import { NoiseGate, NoiseGateParams }  from '../SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor, NoiseSuppressorParams }  from '../SoundModule/Effectors/NoiseSuppressor';
 import { Panner, PannerParams } from './Effectors/Panner';
 import { Phaser, PhaserParams } from './Effectors/Phaser';
 import { PitchShifter, PitchShifterParams } from './Effectors/PitchShifter';
@@ -23,8 +25,8 @@ import { Stereo, StereoParams } from './Effectors/Stereo';
 import { Tremolo, TremoloParams } from './Effectors/Tremolo';
 import { Wah, WahParams } from './Effectors/Wah';
 
-export type Module     = Analyser | Recorder | Session | Stereo | Compressor | Distortion | Wah | PitchShifter | Equalizer | Filter | Autopanner | Tremolo | Ringmodulator | Phaser | Flanger | Chorus | Delay | Reverb | Panner | Listener | EnvelopeGenerator;
-export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'chorus' | 'compressor' | 'delay' | 'distortion' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator';
+export type Module     = Analyser | Recorder | Session | Stereo | Compressor | Distortion | Wah | PitchShifter | Equalizer | Filter | Autopanner | Tremolo | Ringmodulator | Phaser | Flanger | Chorus | Delay | Reverb | Panner | Listener | EnvelopeGenerator | NoiseGate | NoiseSuppressor;
+export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'chorus' | 'compressor' | 'delay' | 'distortion' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator' | 'noisegate' | 'noisesuppressor';
 
 export type SoundModuleParams = {
   mastervolume?: number,
@@ -45,7 +47,9 @@ export type SoundModuleParams = {
   reverb?: ReverbParams,
   panner?: PannerParams,
   listener?: ListenerParams,
-  envelopegenerator?: EnvelopeGeneratorParams
+  envelopegenerator?: EnvelopeGeneratorParams,
+  noisegate?: NoiseGateParams,
+  noisesuppressor?: NoiseSuppressorParams
 };
 
 /**
@@ -87,6 +91,8 @@ export abstract class SoundModule implements Connectable {
   protected panner: Panner;
   protected listener: Listener;
   protected envelopegenerator: EnvelopeGenerator;
+  protected noisegate: NoiseGate;
+  protected noisesuppressor: NoiseSuppressor;
 
   protected runningAnalyser = false;
   protected mixed = false;
@@ -122,6 +128,8 @@ export abstract class SoundModule implements Connectable {
     this.panner            = new Panner(context);
     this.listener          = new Listener(context);
     this.envelopegenerator = new EnvelopeGenerator(context);
+    this.noisegate         = new NoiseGate(context);
+    this.noisesuppressor   = new NoiseSuppressor(context, bufferSize);
 
     // The default order for connection
     this.modules = [
@@ -140,7 +148,9 @@ export abstract class SoundModule implements Connectable {
       this.chorus,
       this.delay,
       this.reverb,
-      this.panner
+      this.panner,
+      this.noisegate,
+      this.noisesuppressor
     ];
   }
 
@@ -335,7 +345,9 @@ export abstract class SoundModule implements Connectable {
       reverb           : this.reverb.params(),
       panner           : this.panner.params(),
       listener         : this.listener.params(),
-      envelopegenerator: this.envelopegenerator.params()
+      envelopegenerator: this.envelopegenerator.params(),
+      noisegate        : this.noisegate.params(),
+      noisesuppressor  : this.noisesuppressor.params()
     };
   }
 
@@ -406,6 +418,8 @@ export abstract class SoundModule implements Connectable {
     this.panner            = new Panner(context);
     this.listener          = new Listener(context);
     this.envelopegenerator = new EnvelopeGenerator(context);
+    this.noisegate         = new NoiseGate(context);
+    this.noisesuppressor   = new NoiseSuppressor(context, bufferSize);
 
     // The default order for connection
     this.modules = [
@@ -424,7 +438,9 @@ export abstract class SoundModule implements Connectable {
       this.chorus,
       this.delay,
       this.reverb,
-      this.panner
+      this.panner,
+      this.noisegate,
+      this.noisesuppressor
     ];
   }
 }

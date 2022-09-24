@@ -7,10 +7,13 @@ import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
 import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
 import { Delay } from '../../src/SoundModule/Effectors/Delay';
 import { Distortion } from '../../src/SoundModule/Effectors/Distortion';
+import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
 import { Filter } from '../../src/SoundModule/Effectors/Filter';
 import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
 import { Listener } from '../../src/SoundModule/Effectors/Listener';
+import { NoiseGate } from '../../src/SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor } from '../../src/SoundModule/Effectors/NoiseSuppressor';
 import { Panner } from '../../src/SoundModule/Effectors/Panner';
 import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
@@ -19,7 +22,6 @@ import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
-import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { Glide } from '../../src/OscillatorModule/Glide';
 import { Oscillator } from '../../src/OscillatorModule/Oscillator';
 import { OscillatorModule, OscillatorModuleParams } from '../../src/OscillatorModule';
@@ -199,10 +201,13 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(oscillatorModule.module('delay')).toBeInstanceOf(Delay);
       expect(oscillatorModule.module('distortion')).toBeInstanceOf(Distortion);
+      expect(oscillatorModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(oscillatorModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(oscillatorModule.module('filter')).toBeInstanceOf(Filter);
       expect(oscillatorModule.module('flanger')).toBeInstanceOf(Flanger);
       expect(oscillatorModule.module('listener')).toBeInstanceOf(Listener);
+      expect(oscillatorModule.module('noisegate')).toBeInstanceOf(NoiseGate);
+      expect(oscillatorModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
       expect(oscillatorModule.module('panner')).toBeInstanceOf(Panner);
       expect(oscillatorModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(oscillatorModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
@@ -211,7 +216,6 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(oscillatorModule.module('tremolo')).toBeInstanceOf(Tremolo);
       expect(oscillatorModule.module('wah')).toBeInstanceOf(Wah);
-      expect(oscillatorModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(oscillatorModule.module('glide')).toBeInstanceOf(Glide);
     });
   });
@@ -223,6 +227,7 @@ describe(OscillatorNode.name, () => {
       /* eslint-disable dot-notation */
       expect(oscillatorModule.params()).toStrictEqual({
         mastervolume     : 1,
+        envelopegenerator: oscillatorModule['envelopegenerator'].params(),
         stereo           : oscillatorModule['stereo'].params(),
         compressor       : oscillatorModule['compressor'].params(),
         distortion       : oscillatorModule['distortion'].params(),
@@ -240,7 +245,8 @@ describe(OscillatorNode.name, () => {
         reverb           : oscillatorModule['reverb'].params(),
         panner           : oscillatorModule['panner'].params(),
         listener         : oscillatorModule['listener'].params(),
-        envelopegenerator: oscillatorModule['envelopegenerator'].params(),
+        noisegate        : oscillatorModule['noisegate'].params(),
+        noisesuppressor  : oscillatorModule['noisesuppressor'].params(),
         oscillator: {
           glide: {
             state: true,

@@ -4,8 +4,6 @@ import { EnvelopeGenerator } from './SoundModule/Effectors/EnvelopeGenerator';
 import { VocalCanceler } from './SoundModule/Effectors/VocalCanceler';
 import { Oscillator } from './OscillatorModule/Oscillator';
 import { Glide } from './OscillatorModule/Glide';
-import { NoiseGate } from './StreamModule/NoiseGate';
-import { NoiseSuppressor } from './StreamModule/NoiseSuppressor';
 
 /**
  * This interface is implemented by class that abstracts `AudioNode` connections (such as `Effector` class).
@@ -22,6 +20,6 @@ export interface Connectable {
  */
 export interface Statable {
   state(): boolean;
-  activate(): Visualizer | Effector | EnvelopeGenerator | VocalCanceler | Oscillator | Glide | NoiseGate | NoiseSuppressor;
-  deactivate(): Visualizer | Effector | EnvelopeGenerator | VocalCanceler | Oscillator | Glide | NoiseGate | NoiseSuppressor;
+  activate(): Visualizer | Effector | EnvelopeGenerator | VocalCanceler | Oscillator | Glide;
+  deactivate(): Visualizer | Effector | EnvelopeGenerator | VocalCanceler | Oscillator | Glide;
 }

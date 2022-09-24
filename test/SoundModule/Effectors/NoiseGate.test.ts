@@ -1,21 +1,30 @@
-import { NoiseGate, NoiseGateParams } from '../../src/StreamModule/NoiseGate';
+import { AudioContextMock } from '../../../mock/AudioContextMock';
+import { NoiseGate, NoiseGateParams } from '../../../src/SoundModule/Effectors/NoiseGate';
 
 describe(NoiseGate.name, () => {
-  const noisegate = new NoiseGate();
+  const context = new AudioContextMock();
 
-  describe(noisegate.start.name, () => {
+  // @ts-ignore
+  const noisegate = new NoiseGate(context);
+
+  // eslint-disable-next-line dot-notation
+  describe(noisegate['gate'].name, () => {
     beforeAll(() => {
       noisegate.param({ level: 0.002 });
     });
 
     test('should return raw data', () => {
-      expect(noisegate.start(0.005)).toBeCloseTo(0.005, 3);
-      expect(noisegate.start(-0.005)).toBeCloseTo(-0.005, 3);
+      /* eslint-disable-next-line dot-notation */
+      expect(noisegate['gate'](0.005)).toBeCloseTo(0.005, 3);
+      expect(noisegate['gate'](-0.005)).toBeCloseTo(-0.005, 3);
+      /* eslint-enable-next-line dot-notation */
     });
 
     test('should return `0`', () => {
-      expect(noisegate.start(0.002)).toBeCloseTo(0, 3);
-      expect(noisegate.start(-0.002)).toBeCloseTo(0, 3);
+      /* eslint-disable-next-line dot-notation */
+      expect(noisegate['gate'](0.002)).toBeCloseTo(0, 3);
+      expect(noisegate['gate'](-0.002)).toBeCloseTo(0, 3);
+      /* eslint-enable-next-line dot-notation */
     });
   });
 

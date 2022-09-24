@@ -89,6 +89,8 @@ X.Equalizer(context: AudioContext);
 X.Filter(context: AudioContext);
 X.Flanger(context: AudioContext);
 X.Listener(context: AudioContext);
+X.NoiseGate(context: AudioContext);
+X.NoiseSuppressor(context: AudioContext, size: BufferSize);
 X.Panner(context: AudioContext);
 X.Phaser(context: AudioContext);
 X.PitchShifter(context: AudioContext, size: BufferSize);

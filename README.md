@@ -98,6 +98,7 @@ X.Reverb(context: AudioContext);
 X.Ringmodulator(context: AudioContext);
 X.Stereo(context: AudioContext, size, size: BufferSize);
 X.Tremolo(context: AudioContext);
+X.VocalCanceler(context: AudioContext, size: BufferSize);
 X.Wah(context: AudioContext);
 ```
 

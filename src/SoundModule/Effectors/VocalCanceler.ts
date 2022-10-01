@@ -1,4 +1,5 @@
-import { Statable } from '../../interfaces';
+import { BufferSize } from '../../types';
+import { Effector } from './Effector';
 
 export type VocalCancelerParams = {
   state?: boolean,
@@ -8,30 +9,78 @@ export type VocalCancelerParams = {
 /**
  * This private class is for Vocal Canceler.
  * @constructor
- * @implements {Statable}
+ * @extends {Effector}
  */
-export class VocalCanceler implements Statable {
-  private depth = 0;
-  private isActive = true;
+export class VocalCanceler extends Effector {
+  /**
+   * @param {AudioContext} context This argument is in order to use Web Audio API.
+   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
+   */
+  constructor(context: AudioContext, bufferSize: BufferSize) {
+    super(context, bufferSize);
 
-  // eslint-disable-next-line no-useless-constructor
-  constructor() {
+    this.depth.gain.value = 0;
+
+    this.activate();
   }
 
-  /**
-   * This method removes vocal part from audio on playing.
-   * @param {number} dataL This argument is gain level for Left channel.
-   * @param {number} dataR This argument is gain level for Right channel.
-   * @return {number} Return value is audio data except vocal part.
-   */
-  public start(dataL: number, dataR: number): number {
-    if (this.isActive) {
-      return dataL - (this.depth * dataR);
+  /** @override */
+  public override start(): void {
+    if (!this.isActive || !this.paused) {
+      return;
     }
 
-    return dataL;
+    this.paused = false;
+
+    const bufferSize = this.processor.bufferSize;
+
+    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
+      const inputLs  = event.inputBuffer.getChannelData(0);
+      const inputRs  = event.inputBuffer.getChannelData(1);
+      const outputLs = event.outputBuffer.getChannelData(0);
+      const outputRs = event.outputBuffer.getChannelData(1);
+
+      for (let i = 0; i < bufferSize; i++) {
+        outputLs[i] = this.cancel(inputLs[i], inputRs[i]);
+        outputRs[i] = this.cancel(inputRs[i], inputLs[i]);
+      }
+    };
   }
 
+  /** @override */
+  public override stop(): void {
+    // Effector's state is active ?
+    if (!this.isActive) {
+      return;
+    }
+
+    this.paused = true;
+
+    // Stop `onaudioprocess` event
+    this.processor.disconnect(0);
+    this.processor.onaudioprocess = null;
+
+    // Connect `AudioNode`s again
+    this.connect();
+  }
+
+  /** @override */
+  public override connect(): GainNode {
+    // Clear connection
+    this.input.disconnect(0);
+    this.processor.disconnect(0);
+
+    if (this.isActive) {
+      // GainNode (Input) -> ScriptProcessorNode (Vocal Canceler) -> GainNode (Output);
+      this.input.connect(this.processor);
+      this.processor.connect(this.output);
+    } else {
+      // GainNode (Input) -> GainNode (Output)
+      this.input.connect(this.output);
+    }
+
+    return this.output;
+  }
   /**
    * This method gets or sets parameters for vocal canceler.
    * @param {keyof VocalCancelerParams|VocalCancelerParams} params This argument is string if getter. Otherwise, setter.
@@ -47,7 +96,7 @@ export class VocalCanceler implements Statable {
         case 'state':
           return this.isActive;
         case 'depth':
-          return this.depth;
+          return this.depth.gain.value;
         default:
           return this;
       }
@@ -63,7 +112,7 @@ export class VocalCanceler implements Statable {
           break;
         case 'depth':
           if (typeof value === 'number') {
-            this.depth = value;
+            this.depth.gain.value = value;
           }
 
           break;
@@ -82,33 +131,33 @@ export class VocalCanceler implements Statable {
   public params(): Required<VocalCancelerParams> {
     return {
       state: this.isActive,
-      depth: this.depth
+      depth: this.depth.gain.value
     };
   }
 
-  /**
-   * This method gets vocal canceler state. If returns `true`, vocal canceler is active.
-   * @return {boolean}
-   */
-  public state(): boolean {
-    return this.isActive;
+  /** @override */
+  public override activate(): VocalCanceler {
+    super.activate();
+    return this;
   }
 
-  /**
-   * This method activates vocal canceler.
-   * @return {VocalCanceler} Return value is for method chain.
-   */
-  public activate(): VocalCanceler {
-    this.isActive = true;
+  /** @override */
+  public override deactivate(): VocalCanceler {
+    super.deactivate();
     return this;
   }
 
   /**
-   * This method deactivates vocal canceler.
-   * @return {VocalCanceler} Return value is for method chain.
+   * This method removes vocal part from audio on playing.
+   * @param {number} dataL This argument is gain level for Left channel.
+   * @param {number} dataR This argument is gain level for Right channel.
+   * @return {number} Return value is audio data except vocal part.
    */
-  public deactivate(): VocalCanceler {
-    this.isActive = false;
-    return this;
+  private cancel(dataL: number, dataR: number): number {
+    if (this.isActive) {
+      return dataL - (this.depth.gain.value * dataR);
+    }
+
+    return dataL;
   }
 }

@@ -21,6 +21,7 @@ import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { NoiseModule, NoiseModuleParams } from '../../src/NoiseModule';
 
@@ -140,6 +141,7 @@ describe(NoiseModule.name, () => {
       expect(noiseModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(noiseModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(noiseModule.module('tremolo')).toBeInstanceOf(Tremolo);
+      expect(noiseModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
       expect(noiseModule.module('wah')).toBeInstanceOf(Wah);
     });
   });
@@ -169,7 +171,8 @@ describe(NoiseModule.name, () => {
         panner           : noiseModule['panner'].params(),
         listener         : noiseModule['listener'].params(),
         noisegate        : noiseModule['noisegate'].params(),
-        noisesuppressor  : noiseModule['noisesuppressor'].params()
+        noisesuppressor  : noiseModule['noisesuppressor'].params(),
+        vocalcanceler    : noiseModule['vocalcanceler'].params()
       });
       /* eslint-enable dot-notation */
     });

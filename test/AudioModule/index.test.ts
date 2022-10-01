@@ -22,8 +22,8 @@ import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
-import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
+import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { AudioModule, AudioModuleParams } from '../../src/AudioModule';
 
 type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
@@ -343,8 +343,8 @@ describe(AudioModule.name, () => {
       expect(audioModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(audioModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(audioModule.module('tremolo')).toBeInstanceOf(Tremolo);
-      expect(audioModule.module('wah')).toBeInstanceOf(Wah);
       expect(audioModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
+      expect(audioModule.module('wah')).toBeInstanceOf(Wah);
     });
   });
 
@@ -361,7 +361,6 @@ describe(AudioModule.name, () => {
         sampleRate       : 44100,
         numberOfChannels : 0,
         envelopegenerator: audioModule['envelopegenerator'].params(),
-        vocalcanceler    : audioModule['vocalcanceler'].params(),
         stereo           : audioModule['stereo'].params(),
         compressor       : audioModule['compressor'].params(),
         distortion       : audioModule['distortion'].params(),
@@ -380,7 +379,8 @@ describe(AudioModule.name, () => {
         panner           : audioModule['panner'].params(),
         listener         : audioModule['listener'].params(),
         noisegate        : audioModule['noisegate'].params(),
-        noisesuppressor  : audioModule['noisesuppressor'].params()
+        noisesuppressor  : audioModule['noisesuppressor'].params(),
+        vocalcanceler    : audioModule['vocalcanceler'].params()
       });
       /* eslint-enable dot-notation */
     });

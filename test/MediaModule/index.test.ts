@@ -21,8 +21,8 @@ import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
-import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
+import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { MediaModule, MediaModuleParams } from '../../src/MediaModule';
 
 type Params = Partial<Pick<MediaModuleParams, 'mastervolume' | 'autoplay' | 'playbackRate' | 'currentTime' | 'controls' | 'loop' | 'muted' | 'duration'>>;
@@ -291,8 +291,8 @@ describe(MediaModule.name, () => {
       expect(mediaModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(mediaModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(mediaModule.module('tremolo')).toBeInstanceOf(Tremolo);
-      expect(mediaModule.module('wah')).toBeInstanceOf(Wah);
       expect(mediaModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
+      expect(mediaModule.module('wah')).toBeInstanceOf(Wah);
     });
   });
 
@@ -309,7 +309,6 @@ describe(MediaModule.name, () => {
         muted            : false,
         duration         : 0,
         envelopegenerator: mediaModule['envelopegenerator'].params(),
-        vocalcanceler    : mediaModule['vocalcanceler'].params(),
         stereo           : mediaModule['stereo'].params(),
         compressor       : mediaModule['compressor'].params(),
         distortion       : mediaModule['distortion'].params(),
@@ -328,7 +327,8 @@ describe(MediaModule.name, () => {
         panner           : mediaModule['panner'].params(),
         listener         : mediaModule['listener'].params(),
         noisegate        : mediaModule['noisegate'].params(),
-        noisesuppressor  : mediaModule['noisesuppressor'].params()
+        noisesuppressor  : mediaModule['noisesuppressor'].params(),
+        vocalcanceler    : mediaModule['vocalcanceler'].params()
       });
       /* eslint-enable dot-notation */
     });

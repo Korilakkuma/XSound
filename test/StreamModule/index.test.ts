@@ -21,6 +21,7 @@ import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { StreamModule, StreamModuleParams } from '../../src/StreamModule';
 
@@ -374,6 +375,7 @@ describe(StreamModule.name, () => {
       expect(streamModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(streamModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(streamModule.module('tremolo')).toBeInstanceOf(Tremolo);
+      expect(streamModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
       expect(streamModule.module('wah')).toBeInstanceOf(Wah);
     });
   });
@@ -404,7 +406,8 @@ describe(StreamModule.name, () => {
         panner           : streamModule['panner'].params(),
         listener         : streamModule['listener'].params(),
         noisegate        : streamModule['noisegate'].params(),
-        noisesuppressor  : streamModule['noisesuppressor'].params()
+        noisesuppressor  : streamModule['noisesuppressor'].params(),
+        vocalcanceler    : streamModule['vocalcanceler'].params()
       });
       /* eslint-enable dot-notation */
     });

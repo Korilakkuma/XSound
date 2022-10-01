@@ -22,6 +22,7 @@ import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { OneshotModule, OneshotModuleParams, OneshotSettings } from '../../src/OneshotModule';
 
@@ -286,6 +287,7 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(oneshotModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(oneshotModule.module('tremolo')).toBeInstanceOf(Tremolo);
+      expect(oneshotModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
       expect(oneshotModule.module('wah')).toBeInstanceOf(Wah);
     });
   });
@@ -315,7 +317,8 @@ describe(OneshotModule.name, () => {
         panner           : oneshotModule['panner'].params(),
         listener         : oneshotModule['listener'].params(),
         noisegate        : oneshotModule['noisegate'].params(),
-        noisesuppressor  : oneshotModule['noisesuppressor'].params()
+        noisesuppressor  : oneshotModule['noisesuppressor'].params(),
+        vocalcanceler    : oneshotModule['vocalcanceler'].params()
       });
       /* eslint-enable dot-notation */
     });

@@ -22,6 +22,7 @@ import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { OscillatorModule } from '../../src/OscillatorModule';
 import { OneshotModule } from '../../src/OneshotModule';
@@ -308,6 +309,7 @@ describe(MixerModule.name, () => {
       expect(mixerModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(mixerModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(mixerModule.module('tremolo')).toBeInstanceOf(Tremolo);
+      expect(mixerModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
       expect(mixerModule.module('wah')).toBeInstanceOf(Wah);
     });
   });

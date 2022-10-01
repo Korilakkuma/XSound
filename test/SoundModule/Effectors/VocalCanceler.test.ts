@@ -1,15 +1,22 @@
+import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { VocalCanceler, VocalCancelerParams } from '../../../src/SoundModule/Effectors/VocalCanceler';
 
 describe(VocalCanceler.name, () => {
-  const vocalcanceler = new VocalCanceler();
+  const context = new AudioContextMock();
 
-  describe(vocalcanceler.start.name, () => {
+  // @ts-ignore
+  const vocalcanceler = new VocalCanceler(context, 2048);
+
+  // eslint-disable-next-line dot-notation
+  describe(vocalcanceler['cancel'].name, () => {
     test('should return difference between left and right channel', () => {
-      expect(vocalcanceler.start(1, 1)).toBeCloseTo(1, 1);
+      // eslint-disable-next-line dot-notation
+      expect(vocalcanceler['cancel'](1, 1)).toBeCloseTo(1, 1);
 
       vocalcanceler.param({ depth: 0.5 });
 
-      expect(vocalcanceler.start(1, 1)).toBeCloseTo(0.5, 1);
+      // eslint-disable-next-line dot-notation
+      expect(vocalcanceler['cancel'](1, 1)).toBeCloseTo(0.5, 1);
     });
   });
 

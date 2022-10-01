@@ -22,13 +22,12 @@ import { Reverb } from '../SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../SoundModule/Effectors/Stereo';
 import { Tremolo } from '../SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from '../SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../SoundModule/Effectors/Wah';
-import { VocalCanceler, VocalCancelerParams } from '../SoundModule/Effectors/VocalCanceler';
 
 export type AudioBufferSprite = { [spriteName: string]: AudioBuffer };
 
 export type AudioModuleParams = SoundModuleParams & {
-  vocalcanceler?: VocalCancelerParams,
   playbackRate?: number,
   detune?: number,
   loop?: boolean,
@@ -50,8 +49,6 @@ export class AudioModule extends SoundModule {
   private source: AudioBufferSourceNode;
   private buffer: AudioBuffer | null = null;
 
-  private vocalcanceler: VocalCanceler;
-
   private currentTime = 0;
   private stopped = true;
 
@@ -67,8 +64,7 @@ export class AudioModule extends SoundModule {
   constructor(context: AudioContext, bufferSize: BufferSize) {
     super(context, bufferSize);
 
-    this.source        = context.createBufferSource();
-    this.vocalcanceler = new VocalCanceler();
+    this.source = context.createBufferSource();
   }
 
   /**
@@ -216,10 +212,10 @@ export class AudioModule extends SoundModule {
       }
 
       if (this.currentTime < Math.trunc(this.source.loopEnd)) {
-        for (let i = 0; i < bufferSize; i++) {
-          outputLs[i] = this.vocalcanceler.start(inputLs[i], inputRs[i]);
-          outputRs[i] = this.vocalcanceler.start(inputRs[i], inputLs[i]);
+        outputLs.set(inputLs);
+        outputRs.set(inputRs);
 
+        for (let i = 0; i < bufferSize; i++) {
           const detune       = this.source.detune.value;
           const playbackRate = this.source.playbackRate.value + (detune / 1200);
 
@@ -566,8 +562,8 @@ export class AudioModule extends SoundModule {
 
   /**
    * This method gets instance of `Module` (Analyser, Recorder, Effector ... etc).
-   * @param {ModuleName|'vocalcanceler'} moduleName This argument selects module.
-   * @return {Module|VocalCanceler}
+   * @param {ModuleName} moduleName This argument selects module.
+   * @return {Module}
    */
   public module(moduleName: 'analyser'): Analyser;
   public module(moduleName: 'recorder'): Recorder;
@@ -591,9 +587,9 @@ export class AudioModule extends SoundModule {
   public module(moduleName: 'ringmodulator'): Ringmodulator;
   public module(moduleName: 'stereo'): Stereo;
   public module(moduleName: 'tremolo'): Tremolo;
-  public module(moduleName: 'wah'): Wah;
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
-  public module(moduleName: ModuleName | 'vocalcanceler'): Module | VocalCanceler | null {
+  public module(moduleName: 'wah'): Wah;
+  public module(moduleName: ModuleName): Module | null {
     switch (moduleName) {
       case 'analyser':
         return this.analyser;
@@ -639,10 +635,10 @@ export class AudioModule extends SoundModule {
         return this.stereo;
       case 'tremolo':
         return this.tremolo;
-      case 'wah':
-        return this.wah;
       case 'vocalcanceler':
         return this.vocalcanceler;
+      case 'wah':
+        return this.wah;
       default:
         return null;
     }

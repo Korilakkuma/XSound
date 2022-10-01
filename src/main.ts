@@ -229,6 +229,7 @@ XSound.Reverb          = Reverb;
 XSound.Ringmodulator   = Ringmodulator;
 XSound.Stereo          = Stereo;
 XSound.Tremolo         = Tremolo;
+XSound.VocalCanceler   = VocalCanceler;
 XSound.Wah             = Wah;
 
 /**

@@ -1,7 +1,6 @@
 import { Visualizer } from './SoundModule/Analyser/Visualizer';
 import { Effector } from './SoundModule/Effectors/Effector';
 import { EnvelopeGenerator } from './SoundModule/Effectors/EnvelopeGenerator';
-import { VocalCanceler } from './SoundModule/Effectors/VocalCanceler';
 import { Oscillator } from './OscillatorModule/Oscillator';
 import { Glide } from './OscillatorModule/Glide';
 
@@ -20,6 +19,6 @@ export interface Connectable {
  */
 export interface Statable {
   state(): boolean;
-  activate(): Visualizer | Effector | EnvelopeGenerator | VocalCanceler | Oscillator | Glide;
-  deactivate(): Visualizer | Effector | EnvelopeGenerator | VocalCanceler | Oscillator | Glide;
+  activate(): Visualizer | Effector | EnvelopeGenerator | Oscillator | Glide;
+  deactivate(): Visualizer | Effector | EnvelopeGenerator | Oscillator | Glide;
 }

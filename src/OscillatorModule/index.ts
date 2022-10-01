@@ -22,6 +22,7 @@ import { Reverb } from '../SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../SoundModule/Effectors/Stereo';
 import { Tremolo } from '../SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from '../SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../SoundModule/Effectors/Wah';
 import { Glide, GlideParams, GlideType } from './Glide';
 import { Oscillator, OscillatorParams, OscillatorCustomType } from './Oscillator';
@@ -282,6 +283,7 @@ export class OscillatorModule extends SoundModule {
   public module(moduleName: 'ringmodulator'): Ringmodulator;
   public module(moduleName: 'stereo'): Stereo;
   public module(moduleName: 'tremolo'): Tremolo;
+  public module(moduleName: 'vocalcanceler'): VocalCanceler;
   public module(moduleName: 'wah'): Wah;
   public module(moduleName: 'glide'): Glide;
   public module(moduleName: ModuleName | 'glide'): Module | Glide | null {
@@ -330,6 +332,8 @@ export class OscillatorModule extends SoundModule {
         return this.stereo;
       case 'tremolo':
         return this.tremolo;
+      case 'vocalcanceler':
+        return this.vocalcanceler;
       case 'wah':
         return this.wah;
       case 'glide':

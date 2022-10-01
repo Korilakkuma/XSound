@@ -21,6 +21,7 @@ import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '../../src/SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from '../../src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../../src/SoundModule/Effectors/Wah';
 import { Glide } from '../../src/OscillatorModule/Glide';
 import { Oscillator } from '../../src/OscillatorModule/Oscillator';
@@ -215,6 +216,7 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(oscillatorModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(oscillatorModule.module('tremolo')).toBeInstanceOf(Tremolo);
+      expect(oscillatorModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
       expect(oscillatorModule.module('wah')).toBeInstanceOf(Wah);
       expect(oscillatorModule.module('glide')).toBeInstanceOf(Glide);
     });
@@ -247,6 +249,7 @@ describe(OscillatorNode.name, () => {
         listener         : oscillatorModule['listener'].params(),
         noisegate        : oscillatorModule['noisegate'].params(),
         noisesuppressor  : oscillatorModule['noisesuppressor'].params(),
+        vocalcanceler    : oscillatorModule['vocalcanceler'].params(),
         oscillator: {
           glide: {
             state: true,

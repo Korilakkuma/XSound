@@ -432,6 +432,42 @@ export class Cabinet extends Effector {
     return this.output;
   }
 
+  /**
+   * This method gets or sets parameters for cabinet.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof CabinetParams|CabinetParams} params This argument is string if getter. Otherwise, setter.
+   * @return {CabinetParams[keyof CabinetParams]} Return value is parameter for cabinet if getter.
+   */
+  public param(params: 'state'): boolean;
+  public param(params: CabinetParams): void;
+  public param(params: keyof CabinetParams | CabinetParams): CabinetParams[keyof CabinetParams] | void {
+    if (typeof params === 'string') {
+      switch (params) {
+        case 'state':
+          return this.isActive;
+        default:
+          return;
+      }
+    }
+
+    for (const [key, value] of Object.entries(params)) {
+      switch (key) {
+        case 'state':
+          if (typeof value === 'boolean') {
+            if (value) {
+              this.activate();
+            } else {
+              this.deactivate();
+            }
+          }
+
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
   /** @override */
   public override params(): Required<CabinetParams> {
     return {
@@ -625,10 +661,8 @@ export class Distortion extends Effector {
 
           break;
         case 'cabinet':
-          if (this.cabinet.state()) {
-            this.cabinet.deactivate();
-          } else {
-            this.cabinet.activate();
+          if (typeof value === 'object') {
+            this.cabinet.param(value);
           }
 
           break;

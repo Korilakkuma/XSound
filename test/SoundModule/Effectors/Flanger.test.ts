@@ -155,6 +155,12 @@ describe(Flanger.name, () => {
       flanger.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Flanger`', () => {
+      expect(flanger.param(params)).toBeInstanceOf(Flanger);
+    });
+
+    // Getter
     test('should return `time`', () => {
       expect(flanger.param('time')).toBeCloseTo(0.25, 2);
     });

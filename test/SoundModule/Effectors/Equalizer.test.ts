@@ -2,47 +2,31 @@ import { AudioContextMock } from '../../../mock/AudioContextMock';
 import { Equalizer, EqualizerParams } from '../../../src/SoundModule/Effectors/Equalizer';
 
 describe(Equalizer.name, () => {
-  const context = new AudioContextMock();
-
-  // @ts-ignore
+  const context = new AudioContextMock(); // @ts-ignore
   const equalizer = new Equalizer(context);
 
   describe(equalizer.connect.name, () => {
-    // eslint-disable-next-line dot-notation
-    const originalInput = equalizer['input'];
-
-    // eslint-disable-next-line dot-notation
-    const originalBass = equalizer['bass'];
-
-    // eslint-disable-next-line dot-notation
-    const originalMiddle = equalizer['middle'];
-
-    // eslint-disable-next-line dot-notation
-    const originalTreable = equalizer['treble'];
-
-    // eslint-disable-next-line dot-notation
+    /* eslint-disable dot-notation */
+    const originalInput    = equalizer['input'];
+    const originalBass     = equalizer['bass'];
+    const originalMiddle   = equalizer['middle'];
+    const originalTreable  = equalizer['treble'];
     const originalPresence = equalizer['presence'];
+    /* eslint-enable dot-notation */
 
     afterAll(() => {
-      // eslint-disable-next-line dot-notation
-      equalizer['input'] = originalInput;
-
-      // eslint-disable-next-line dot-notation
-      equalizer['bass'] = originalBass;
-
-      // eslint-disable-next-line dot-notation
-      equalizer['middle'] = originalMiddle;
-
-      // eslint-disable-next-line dot-notation
-      equalizer['treble'] = originalTreable;
-
-      // eslint-disable-next-line dot-notation
+      /* eslint-disable dot-notation */
+      equalizer['input']    = originalInput;
+      equalizer['bass']     = originalBass;
+      equalizer['middle']   = originalMiddle;
+      equalizer['treble']   = originalTreable;
       equalizer['presence'] = originalPresence;
+      /* eslint-enable dot-notation */
 
       equalizer.deactivate();
     });
 
-    test('should call connect method', () => {
+    test('should call `connect` method', () => {
       const inputConnectMock       = jest.fn();
       const inputDisconnectMock    = jest.fn();
       const bassConnectMock        = jest.fn();
@@ -54,50 +38,18 @@ describe(Equalizer.name, () => {
       const presenceConnectMock    = jest.fn();
       const presenceDisconnectMock = jest.fn();
 
-      Object.defineProperty(equalizer, 'input', {
-        configurable: true,
-        writable    : true,
-        value       : {
-          connect   : inputConnectMock,
-          disconnect: inputDisconnectMock
-        }
-      });
-
-      Object.defineProperty(equalizer, 'bass', {
-        configurable: true,
-        writable    : true,
-        value       : {
-          connect   : bassConnectMock,
-          disconnect: bassDisconnectMock
-        }
-      });
-
-      Object.defineProperty(equalizer, 'middle', {
-        configurable: true,
-        writable    : true,
-        value       : {
-          connect   : middleConnectMock,
-          disconnect: middleDisconnectMock
-        }
-      });
-
-      Object.defineProperty(equalizer, 'treble', {
-        configurable: true,
-        writable    : true,
-        value       : {
-          connect   : trebleConnectMock,
-          disconnect: trebleDisconnectMock
-        }
-      });
-
-      Object.defineProperty(equalizer, 'presence', {
-        configurable: true,
-        writable    : true,
-        value       : {
-          connect   : presenceConnectMock,
-          disconnect: presenceDisconnectMock
-        }
-      });
+      /* eslint-disable dot-notation */
+      equalizer['input'].connect       = inputConnectMock;
+      equalizer['input'].disconnect    = inputDisconnectMock;
+      equalizer['bass'].connect        = bassConnectMock;
+      equalizer['bass'].disconnect     = bassDisconnectMock;
+      equalizer['middle'].connect      = middleConnectMock;
+      equalizer['middle'].disconnect   = middleDisconnectMock;
+      equalizer['treble'].connect      = trebleConnectMock;
+      equalizer['treble'].disconnect   = trebleDisconnectMock;
+      equalizer['presence'].connect    = presenceConnectMock;
+      equalizer['presence'].disconnect = presenceDisconnectMock;
+      /* eslint-enable dot-notation */
 
       equalizer.connect();
 
@@ -146,30 +98,30 @@ describe(Equalizer.name, () => {
     });
 
     // Setter
-    test('should return instance of Equalizer', () => {
+    test('should return instance of `Equalizer`', () => {
       expect(equalizer.param(params)).toBeInstanceOf(Equalizer);
     });
 
     // Getter
-    test('should return bass', () => {
+    test('should return `bass`', () => {
       expect(equalizer.param('bass')).toBeCloseTo(10, 1);
     });
 
-    test('should return middle', () => {
+    test('should return `middle`', () => {
       expect(equalizer.param('middle')).toBeCloseTo(-10, 1);
     });
 
-    test('should return treble', () => {
+    test('should return `treble`', () => {
       expect(equalizer.param('treble')).toBeCloseTo(10, 1);
     });
 
-    test('should return presence', () => {
+    test('should return `presence`', () => {
       expect(equalizer.param('presence')).toBeCloseTo(8, 1);
     });
   });
 
   describe(equalizer.params.name, () => {
-    test('should return parameters for compressor effector as associative array', () => {
+    test('should return parameters for equalizer effector as associative array', () => {
       expect(equalizer.params()).toStrictEqual({
         state   : false,
         bass    : 0,

@@ -172,6 +172,12 @@ describe(Filter.name, () => {
       filter.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Filter`', () => {
+      expect(filter.param(params)).toBeInstanceOf(Filter);
+    });
+
+    // Getter
     test('should return `frequency`', () => {
       expect(filter.param('frequency')).toBeCloseTo(4000, 1);
     });

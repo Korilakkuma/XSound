@@ -14,7 +14,7 @@ describe(NoiseSuppressor.name, () => {
     const outputs    = new Float32Array(bufferSize);
 
     test('should return raw data (if threshold is `0`)', () => {
-      // eslint-disable-next-line dot-notation
+      // eslint-disable dot-notation
       noisesuppressor['suppress'](inputs, outputs, bufferSize);
 
       expect(outputs).toStrictEqual(inputs);
@@ -23,7 +23,7 @@ describe(NoiseSuppressor.name, () => {
     test('should return sound data that background noise is removed from', () => {
       noisesuppressor.param({ threshold: 0.3 });
 
-      // eslint-disable-next-line dot-notation
+      // eslint-disable dot-notation
       noisesuppressor['suppress'](inputs, outputs, bufferSize);
 
       expect(outputs[0]).toBeCloseTo(0.35177671909332275, 5);
@@ -54,6 +54,12 @@ describe(NoiseSuppressor.name, () => {
       noisesuppressor.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `NoiseSuppressor`', () => {
+      expect(noisesuppressor.param(params)).toBeInstanceOf(NoiseSuppressor);
+    });
+
+    // Getter
     test('should return `threshold`', () => {
       expect(noisesuppressor.param('threshold')).toBeCloseTo(0.03, 2);
     });

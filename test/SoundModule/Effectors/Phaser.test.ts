@@ -73,7 +73,7 @@ describe(Phaser.name, () => {
       phaser.deactivate();
     });
 
-    test('should call connect method', () => {
+    test('should call `connect` method', () => {
       const inputConnectMock       = jest.fn();
       const inputDisconnectMock    = jest.fn();
       const filterConnectMock      = jest.fn();
@@ -137,6 +137,12 @@ describe(Phaser.name, () => {
       phaser.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Phaser`', () => {
+      expect(phaser.param(params)).toBeInstanceOf(Phaser);
+    });
+
+    // Getter
     test('should return `stage`', () => {
       expect(phaser.param('stage')).toBe(8);
     });

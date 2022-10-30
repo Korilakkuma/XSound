@@ -94,6 +94,12 @@ describe(Panner.name, () => {
       panner.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Panner`', () => {
+      expect(panner.param(params)).toBeInstanceOf(Panner);
+    });
+
+    // Getter
     test('should return `positionX`', () => {
       expect(panner.param('x')).toBeCloseTo(1, 1);
     });

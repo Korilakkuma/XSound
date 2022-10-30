@@ -69,7 +69,7 @@ describe(Stereo.name, () => {
       stereo.deactivate();
     });
 
-    test('should call connect method', () => {
+    test('should call `connect` method', () => {
       const inputConnectMock       = jest.fn();
       const inputDisconnectMock    = jest.fn();
       const splitterConnectMock    = jest.fn();
@@ -139,6 +139,12 @@ describe(Stereo.name, () => {
       stereo.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Stereo`', () => {
+      expect(stereo.param(params)).toBeInstanceOf(Stereo);
+    });
+
+    // Getter
     test('should return `time`', () => {
       expect(stereo.param('time')).toBeCloseTo(0.5, 1);
     });

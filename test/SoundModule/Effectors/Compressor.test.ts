@@ -76,23 +76,29 @@ describe(Compressor.name, () => {
       compressor.param(defaultParams);
     });
 
-    test('should return threshold', () => {
+    // Setter
+    test('should return instance of `Compressor`', () => {
+      expect(compressor.param(params)).toBeInstanceOf(Compressor);
+    });
+
+    // Getter
+    test('should return `threshold`', () => {
       expect(compressor.param('threshold')).toBeCloseTo(-100, 1);
     });
 
-    test('should return knee', () => {
+    test('should return `knee`', () => {
       expect(compressor.param('knee')).toBeCloseTo(50, 1);
     });
 
-    test('should return ratio', () => {
+    test('should return `ratio`', () => {
       expect(compressor.param('ratio')).toBeCloseTo(4, 1);
     });
 
-    test('should return attack', () => {
+    test('should return `attack`', () => {
       expect(compressor.param('attack')).toBeCloseTo(0.05, 2);
     });
 
-    test('should return release', () => {
+    test('should return `release`', () => {
       expect(compressor.param('release')).toBeCloseTo(0.5, 1);
     });
   });

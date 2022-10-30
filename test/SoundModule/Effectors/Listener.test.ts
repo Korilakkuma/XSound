@@ -40,6 +40,12 @@ describe(Listener.name, () => {
       listener.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Listener`', () => {
+      expect(listener.param(params)).toBeInstanceOf(Listener);
+    });
+
+    // Getter
     test('should return `positionX`', () => {
       expect(listener.param('x')).toBeCloseTo(1, 1);
     });

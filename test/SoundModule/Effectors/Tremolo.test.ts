@@ -119,6 +119,12 @@ describe(Tremolo.name, () => {
       tremolo.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Tremolo`', () => {
+      expect(tremolo.param(params)).toBeInstanceOf(Tremolo);
+    });
+
+    // Getter
     test('should return `type`', () => {
       expect(tremolo.param('type')).toBe('triangle');
     });

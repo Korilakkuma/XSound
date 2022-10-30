@@ -33,10 +33,16 @@ describe(VocalCanceler.name, () => {
       vocalcanceler.param(params);
     });
 
-    afterEach(() => {
+    afterAll(() => {
       vocalcanceler.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `VocalCanceler`', () => {
+      expect(vocalcanceler.param(params)).toBeInstanceOf(VocalCanceler);
+    });
+
+    // Getter
     test('should return `depth`', () => {
       expect(vocalcanceler.param('depth')).toBeCloseTo(1, 1);
     });

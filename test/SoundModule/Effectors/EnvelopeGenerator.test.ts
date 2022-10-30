@@ -9,7 +9,7 @@ describe(EnvelopeGenerator.name, () => {
   const envelopegenerator = new EnvelopeGenerator(context);
 
   describe(envelopegenerator.ready.name, () => {
-    test('should call connect method', () => {
+    test('should call `connect` method', () => {
       const input  = new GainNodeMock();
       const output = new GainNodeMock();
 
@@ -55,7 +55,7 @@ describe(EnvelopeGenerator.name, () => {
       input.connect = originalInputConnect;
     });
 
-    test('should call connect method (only generator)', () => {
+    test('should call `connect` method (only generator)', () => {
       const output = new GainNodeMock();
 
       envelopegenerator.setGenerator(0);
@@ -150,6 +150,12 @@ describe(EnvelopeGenerator.name, () => {
       envelopegenerator.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `EnvelopeGenerator`', () => {
+      expect(envelopegenerator.param(params)).toBeInstanceOf(EnvelopeGenerator);
+    });
+
+    // Getter
     test('should return `attack`', () => {
       expect(envelopegenerator.param('attack')).toBeCloseTo(0.5, 2);
     });

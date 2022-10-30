@@ -158,6 +158,12 @@ describe(Wah.name, () => {
         wah.param({ ...defaultParams, auto: false, cutoff: 350 });
       });
 
+      // Setter
+      test('should return instance of `Wah`', () => {
+        expect(wah.param(params)).toBeInstanceOf(Wah);
+      });
+
+      // Getter
       test('should return `auto`', () => {
         expect(wah.param('auto')).toBe(true);
       });

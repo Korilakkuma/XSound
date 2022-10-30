@@ -29,7 +29,7 @@ describe(Reverb.name, () => {
       reverb.deactivate();
     });
 
-    test('should call connect method', () => {
+    test('should call `connect` method', () => {
       const inputConnectMock        = jest.fn();
       const inputDisconnectMock     = jest.fn();
       const convolverConnectMock    = jest.fn();
@@ -108,6 +108,12 @@ describe(Reverb.name, () => {
       reverb.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Reverb`', () => {
+      expect(reverb.param(params)).toBeInstanceOf(Reverb);
+    });
+
+    // Getter
     test('should return `buffer`', () => {
       expect(reverb.param('buffer')).toBeInstanceOf(AudioBufferMock);
     });

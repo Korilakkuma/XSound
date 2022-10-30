@@ -116,6 +116,12 @@ describe(Delay.name, () => {
       delay.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Delay`', () => {
+      expect(delay.param(params)).toBeInstanceOf(Delay);
+    });
+
+    // Getter
     test('should return `time`', () => {
       expect(delay.param('time')).toBeCloseTo(5, 1);
     });

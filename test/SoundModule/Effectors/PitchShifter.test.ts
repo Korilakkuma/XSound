@@ -109,6 +109,12 @@ describe(PitchShifter.name, () => {
       pitchshifter.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `PitchShifter`', () => {
+      expect(pitchshifter.param(params)).toBeInstanceOf(PitchShifter);
+    });
+
+    // Getter
     test('should return `pitch`', () => {
       expect(pitchshifter.param('pitch')).toBeCloseTo(1.5, 1);
     });

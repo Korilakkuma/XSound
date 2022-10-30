@@ -15,9 +15,9 @@ describe(Distortion.name, () => {
 
   describe(distortion.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput  = distortion['input'];
-    const originalPreEQ  = distortion['preEQ']['output'];
-    const originalPostEQ = distortion['postEQ']['output'];
+    const originalInput   = distortion['input'];
+    const originalPreEQ   = distortion['preEQ']['output'];
+    const originalPostEQ  = distortion['postEQ']['output'];
     const originalCabinet = distortion['cabinet']['output'];
     /* eslint-enable dot-notation */
 
@@ -142,11 +142,17 @@ describe(Distortion.name, () => {
       distortion.param(defaultParams);
     });
 
-    test('should return curve', () => {
+    // Setter
+    test('should return instance of `Distortion`', () => {
+      expect(distortion.param(params)).toBeInstanceOf(Distortion);
+    });
+
+    // Getter
+    test('should return `curve`', () => {
       expect(distortion.param('curve')).toBe('overdrive');
     });
 
-    test('should return samples', () => {
+    test('should return `samples`', () => {
       expect(distortion.param('samples')).toBe(4);
     });
 

@@ -117,6 +117,12 @@ describe(Ringmodulator.name, () => {
       ringmodulator.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Ringmodulator`', () => {
+      expect(ringmodulator.param(params)).toBeInstanceOf(Ringmodulator);
+    });
+
+    // Getter
     test('should return `depth`', () => {
       expect(ringmodulator.param('depth')).toBeCloseTo(0.5, 1);
     });

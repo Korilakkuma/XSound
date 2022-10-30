@@ -14,17 +14,17 @@ describe(NoiseGate.name, () => {
     });
 
     test('should return raw data', () => {
-      /* eslint-disable-next-line dot-notation */
+      /* eslint-disable dot-notation */
       expect(noisegate['gate'](0.005)).toBeCloseTo(0.005, 3);
       expect(noisegate['gate'](-0.005)).toBeCloseTo(-0.005, 3);
-      /* eslint-enable-next-line dot-notation */
+      /* eslint-enable dot-notation */
     });
 
     test('should return `0`', () => {
-      /* eslint-disable-next-line dot-notation */
+      /* eslint-disable dot-notation */
       expect(noisegate['gate'](0.002)).toBeCloseTo(0, 3);
       expect(noisegate['gate'](-0.002)).toBeCloseTo(0, 3);
-      /* eslint-enable-next-line dot-notation */
+      /* eslint-enable dot-notation */
     });
   });
 
@@ -45,6 +45,12 @@ describe(NoiseGate.name, () => {
       noisegate.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `NoiseGate`', () => {
+      expect(noisegate.param(params)).toBeInstanceOf(NoiseGate);
+    });
+
+    // Getter
     test('should return `level`', () => {
       expect(noisegate.param('level')).toBeCloseTo(0.5, 1);
     });

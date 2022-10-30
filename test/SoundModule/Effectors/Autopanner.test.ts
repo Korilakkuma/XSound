@@ -69,7 +69,7 @@ describe(Autopanner.name, () => {
       autopanner.deactivate();
     });
 
-    test('should call connect method', () => {
+    test('should call `connect` method', () => {
       const inputConnectMock     = jest.fn();
       const inputDisconnectMock  = jest.fn();
       const pannerConnectMock    = jest.fn();
@@ -117,6 +117,12 @@ describe(Autopanner.name, () => {
       autopanner.param(defaultParams);
     });
 
+    // Setter
+    test('should return instance of `Autopanner`', () => {
+      expect(autopanner.param(params)).toBeInstanceOf(Autopanner);
+    });
+
+    // Getter
     test('should return `depth`', () => {
       expect(autopanner.param('depth')).toBeCloseTo(0.5, 1);
     });

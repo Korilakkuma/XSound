@@ -69,7 +69,7 @@ export class NoiseGate extends Effector {
     this.processor.disconnect(0);
 
     if (this.isActive) {
-      // GainNode (Input) -> ScriptProcessorNode (Pitch Shifter) -> GainNode (Output);
+      // GainNode (Input) -> ScriptProcessorNode (Noise Gate) -> GainNode (Output);
       this.input.connect(this.processor);
       this.processor.connect(this.output);
     } else {

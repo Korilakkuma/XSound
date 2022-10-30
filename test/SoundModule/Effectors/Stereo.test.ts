@@ -152,4 +152,49 @@ describe(Stereo.name, () => {
       });
     });
   });
+
+  describe(stereo.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = stereo.connect;
+
+      const connectMock = jest.fn();
+
+      stereo.connect = connectMock;
+
+      stereo.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      stereo.connect = originalConnect;
+    });
+  });
+
+  describe(stereo.deactivate.name, () => {
+    test('should call `connect` method and stop `onaudioprocess` event handler', () => {
+      const originalConnect = stereo.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalProcessor = stereo['processor'];
+
+      const connectMock    = jest.fn();
+      const disconnectMock = jest.fn();
+
+      stereo.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      stereo['processor'].disconnect = disconnectMock;
+
+      stereo.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(2);
+
+      // eslint-disable-next-line dot-notation
+      expect(stereo['processor'].onaudioprocess).toBe(null);
+
+      stereo.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      stereo['processor'] = originalProcessor;
+    });
+  });
 });

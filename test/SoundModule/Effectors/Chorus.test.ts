@@ -193,4 +193,58 @@ describe(Chorus.name, () => {
       });
     });
   });
+
+  describe(chorus.activate.name, () => {
+    test('should call `connect` method and start LFO', () => {
+      const originalConnect = chorus.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalLFO = chorus['lfo'];
+
+      const connectMock  = jest.fn();
+      const lfoStartMock = jest.fn();
+
+      chorus.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      chorus['lfo'].start = lfoStartMock;
+
+      chorus.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(lfoStartMock).toHaveBeenCalledTimes(1);
+
+      chorus.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      chorus['lfo'] = originalLFO;
+    });
+  });
+
+  describe(chorus.deactivate.name, () => {
+    test('should call `connect` method and stop LFO', () => {
+      const originalConnect = chorus.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalLFO = chorus['lfo'];
+
+      const connectMock = jest.fn();
+      const lfoStopMock = jest.fn();
+
+      chorus.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      chorus['lfo'].stop = lfoStopMock;
+
+      chorus.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(lfoStopMock).toHaveBeenCalledTimes(1);
+
+      chorus.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      chorus['lfo'] = originalLFO;
+    });
+  });
 });

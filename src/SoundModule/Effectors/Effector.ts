@@ -133,13 +133,13 @@ export abstract class Effector implements Connectable, Statable {
    * @return {Effector} Return value is for method chain.
    */
   public deactivate(): Effector {
+    // Stop LFO
+    this.stop(0);
+
     this.isActive = false;
 
     // Update connection
     this.connect();
-
-    // Stop LFO
-    this.stop(0);
 
     return this;
   }

@@ -175,4 +175,58 @@ describe(Phaser.name, () => {
       });
     });
   });
+
+  describe(phaser.activate.name, () => {
+    test('should call `connect` method and start LFO', () => {
+      const originalConnect = phaser.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalLFO = phaser['lfo'];
+
+      const connectMock  = jest.fn();
+      const lfoStartMock = jest.fn();
+
+      phaser.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      phaser['lfo'].start = lfoStartMock;
+
+      phaser.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(lfoStartMock).toHaveBeenCalledTimes(1);
+
+      phaser.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      phaser['lfo'] = originalLFO;
+    });
+  });
+
+  describe(phaser.deactivate.name, () => {
+    test('should call `connect` method and stop LFO', () => {
+      const originalConnect = phaser.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalLFO = phaser['lfo'];
+
+      const connectMock = jest.fn();
+      const lfoStopMock = jest.fn();
+
+      phaser.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      phaser['lfo'].stop = lfoStopMock;
+
+      phaser.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(lfoStopMock).toHaveBeenCalledTimes(1);
+
+      phaser.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      phaser['lfo'] = originalLFO;
+    });
+  });
 });

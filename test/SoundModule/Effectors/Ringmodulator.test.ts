@@ -135,4 +135,58 @@ describe(Ringmodulator.name, () => {
       });
     });
   });
+
+  describe(ringmodulator.activate.name, () => {
+    test('should call `connect` method and start LFO', () => {
+      const originalConnect = ringmodulator.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalLFO = ringmodulator['lfo'];
+
+      const connectMock  = jest.fn();
+      const lfoStartMock = jest.fn();
+
+      ringmodulator.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      ringmodulator['lfo'].start = lfoStartMock;
+
+      ringmodulator.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(lfoStartMock).toHaveBeenCalledTimes(1);
+
+      ringmodulator.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      ringmodulator['lfo'] = originalLFO;
+    });
+  });
+
+  describe(ringmodulator.deactivate.name, () => {
+    test('should call `connect` method and stop LFO', () => {
+      const originalConnect = ringmodulator.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalLFO = ringmodulator['lfo'];
+
+      const connectMock = jest.fn();
+      const lfoStopMock = jest.fn();
+
+      ringmodulator.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      ringmodulator['lfo'].stop = lfoStopMock;
+
+      ringmodulator.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(lfoStopMock).toHaveBeenCalledTimes(1);
+
+      ringmodulator.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      ringmodulator['lfo'] = originalLFO;
+    });
+  });
 });

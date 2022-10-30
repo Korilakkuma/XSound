@@ -179,4 +179,36 @@ describe(Equalizer.name, () => {
       });
     });
   });
+
+  describe(equalizer.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = equalizer.connect;
+
+      const connectMock = jest.fn();
+
+      equalizer.connect = connectMock;
+
+      equalizer.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      equalizer.connect = originalConnect;
+    });
+  });
+
+  describe(equalizer.deactivate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = equalizer.connect;
+
+      const connectMock = jest.fn();
+
+      equalizer.connect = connectMock;
+
+      equalizer.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      equalizer.connect = originalConnect;
+    });
+  });
 });

@@ -135,4 +135,58 @@ describe(Autopanner.name, () => {
       });
     });
   });
+
+  describe(autopanner.activate.name, () => {
+    test('should call `connect` method and start LFO', () => {
+      const originalConnect = autopanner.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalLFO = autopanner['lfo'];
+
+      const connectMock  = jest.fn();
+      const lfoStartMock = jest.fn();
+
+      autopanner.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      autopanner['lfo'].start = lfoStartMock;
+
+      autopanner.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(lfoStartMock).toHaveBeenCalledTimes(1);
+
+      autopanner.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      autopanner['lfo'] = originalLFO;
+    });
+  });
+
+  describe(autopanner.deactivate.name, () => {
+    test('should call `connect` method and stop LFO', () => {
+      const originalConnect = autopanner.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalLFO = autopanner['lfo'];
+
+      const connectMock = jest.fn();
+      const lfoStopMock = jest.fn();
+
+      autopanner.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      autopanner['lfo'].stop = lfoStopMock;
+
+      autopanner.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(lfoStopMock).toHaveBeenCalledTimes(1);
+
+      autopanner.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      autopanner['lfo'] = originalLFO;
+    });
+  });
 });

@@ -175,4 +175,36 @@ describe(Distortion.name, () => {
       });
     });
   });
+
+  describe(distortion.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = distortion.connect;
+
+      const connectMock = jest.fn();
+
+      distortion.connect = connectMock;
+
+      distortion.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      distortion.connect = originalConnect;
+    });
+  });
+
+  describe(distortion.deactivate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = distortion.connect;
+
+      const connectMock = jest.fn();
+
+      distortion.connect = connectMock;
+
+      distortion.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      distortion.connect = originalConnect;
+    });
+  });
 });

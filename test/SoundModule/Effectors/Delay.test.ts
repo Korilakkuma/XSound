@@ -149,4 +149,36 @@ describe(Delay.name, () => {
       });
     });
   });
+
+  describe(delay.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = delay.connect;
+
+      const connectMock = jest.fn();
+
+      delay.connect = connectMock;
+
+      delay.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      delay.connect = originalConnect;
+    });
+  });
+
+  describe(delay.deactivate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = delay.connect;
+
+      const connectMock = jest.fn();
+
+      delay.connect = connectMock;
+
+      delay.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      delay.connect = originalConnect;
+    });
+  });
 });

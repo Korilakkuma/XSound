@@ -50,4 +50,49 @@ describe(VocalCanceler.name, () => {
       });
     });
   });
+
+  describe(vocalcanceler.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = vocalcanceler.connect;
+
+      const connectMock = jest.fn();
+
+      vocalcanceler.connect = connectMock;
+
+      vocalcanceler.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      vocalcanceler.connect = originalConnect;
+    });
+  });
+
+  describe(vocalcanceler.deactivate.name, () => {
+    test('should call `connect` method and stop `onaudioprocess` event handler', () => {
+      const originalConnect = vocalcanceler.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalProcessor = vocalcanceler['processor'];
+
+      const connectMock    = jest.fn();
+      const disconnectMock = jest.fn();
+
+      vocalcanceler.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      vocalcanceler['processor'].disconnect = disconnectMock;
+
+      vocalcanceler.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(2);
+
+      // eslint-disable-next-line dot-notation
+      expect(vocalcanceler['processor'].onaudioprocess).toBe(null);
+
+      vocalcanceler.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      vocalcanceler['processor'] = originalProcessor;
+    });
+  });
 });

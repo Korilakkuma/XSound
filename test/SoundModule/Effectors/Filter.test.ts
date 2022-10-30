@@ -221,4 +221,38 @@ describe(Filter.name, () => {
       });
     });
   });
+
+  describe(filter.activate.name, () => {
+    test('should be active and call `connect` method', () => {
+      const originalConnect = filter.connect;
+
+      const connectMock = jest.fn();
+
+      filter.connect = connectMock;
+
+      filter.activate();
+
+      expect(filter.state()).toBe(true);
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      filter.connect = originalConnect;
+    });
+  });
+
+  describe(filter.deactivate.name, () => {
+    test('should be inactive and call `connect` method', () => {
+      const originalConnect = filter.connect;
+
+      const connectMock = jest.fn();
+
+      filter.connect = connectMock;
+
+      filter.deactivate();
+
+      expect(filter.state()).toBe(false);
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      filter.connect = originalConnect;
+    });
+  });
 });

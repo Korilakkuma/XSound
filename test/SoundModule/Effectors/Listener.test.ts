@@ -92,4 +92,36 @@ describe(Listener.name, () => {
       });
     });
   });
+
+  describe(listener.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = listener.connect;
+
+      const connectMock = jest.fn();
+
+      listener.connect = connectMock;
+
+      listener.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      listener.connect = originalConnect;
+    });
+  });
+
+  describe(listener.deactivate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = listener.connect;
+
+      const connectMock = jest.fn();
+
+      listener.connect = connectMock;
+
+      listener.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      listener.connect = originalConnect;
+    });
+  });
 });

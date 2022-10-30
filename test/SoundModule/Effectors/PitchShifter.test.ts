@@ -122,4 +122,49 @@ describe(PitchShifter.name, () => {
       });
     });
   });
+
+  describe(pitchshifter.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = pitchshifter.connect;
+
+      const connectMock = jest.fn();
+
+      pitchshifter.connect = connectMock;
+
+      pitchshifter.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      pitchshifter.connect = originalConnect;
+    });
+  });
+
+  describe(pitchshifter.deactivate.name, () => {
+    test('should call `connect` method and stop `onaudioprocess` event handler', () => {
+      const originalConnect = pitchshifter.connect;
+
+      // eslint-disable-next-line dot-notation
+      const originalProcessor = pitchshifter['processor'];
+
+      const connectMock    = jest.fn();
+      const disconnectMock = jest.fn();
+
+      pitchshifter.connect = connectMock;
+
+      // eslint-disable-next-line dot-notation
+      pitchshifter['processor'].disconnect = disconnectMock;
+
+      pitchshifter.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(2);
+
+      // eslint-disable-next-line dot-notation
+      expect(pitchshifter['processor'].onaudioprocess).toBe(null);
+
+      pitchshifter.connect = originalConnect;
+
+      // eslint-disable-next-line dot-notation
+      pitchshifter['processor'] = originalProcessor;
+    });
+  });
 });

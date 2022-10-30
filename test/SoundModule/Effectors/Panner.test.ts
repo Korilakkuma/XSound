@@ -172,4 +172,36 @@ describe(Panner.name, () => {
       });
     });
   });
+
+  describe(panner.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = panner.connect;
+
+      const connectMock = jest.fn();
+
+      panner.connect = connectMock;
+
+      panner.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      panner.connect = originalConnect;
+    });
+  });
+
+  describe(panner.deactivate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = panner.connect;
+
+      const connectMock = jest.fn();
+
+      panner.connect = connectMock;
+
+      panner.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      panner.connect = originalConnect;
+    });
+  });
 });

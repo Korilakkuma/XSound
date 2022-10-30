@@ -189,4 +189,36 @@ describe(Reverb.name, () => {
       });
     });
   });
+
+  describe(reverb.activate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = reverb.connect;
+
+      const connectMock = jest.fn();
+
+      reverb.connect = connectMock;
+
+      reverb.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      reverb.connect = originalConnect;
+    });
+  });
+
+  describe(reverb.deactivate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = reverb.connect;
+
+      const connectMock = jest.fn();
+
+      reverb.connect = connectMock;
+
+      reverb.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      reverb.connect = originalConnect;
+    });
+  });
 });

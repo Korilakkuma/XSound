@@ -198,4 +198,23 @@ describe(EnvelopeGenerator.name, () => {
       });
     });
   });
+
+  describe(envelopegenerator.activate.name, () => {
+    test('should be active', () => {
+      envelopegenerator.activate();
+
+      expect(envelopegenerator.state()).toBe(true);
+    });
+  });
+
+  describe(envelopegenerator.deactivate.name, () => {
+    test('should be inactive', () => {
+      envelopegenerator.deactivate();
+
+      expect(envelopegenerator.state()).toBe(false);
+
+      // envelope generator is active by default
+      envelopegenerator.activate();
+    });
+  });
 });

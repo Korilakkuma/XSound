@@ -109,4 +109,42 @@ describe(Compressor.name, () => {
       });
     });
   });
+
+  describe(compressor.activate.name, () => {
+    test('should call `connect` method', () => {
+      // compressor is active by default
+      compressor.deactivate();
+
+      const originalConnect = compressor.connect;
+
+      const connectMock = jest.fn();
+
+      compressor.connect = connectMock;
+
+      compressor.activate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      compressor.connect = originalConnect;
+    });
+  });
+
+  describe(compressor.deactivate.name, () => {
+    test('should call `connect` method', () => {
+      const originalConnect = compressor.connect;
+
+      const connectMock = jest.fn();
+
+      compressor.connect = connectMock;
+
+      compressor.deactivate();
+
+      expect(connectMock).toHaveBeenCalledTimes(1);
+
+      compressor.connect = originalConnect;
+
+      // compressor is active by default
+      compressor.activate();
+    });
+  });
 });

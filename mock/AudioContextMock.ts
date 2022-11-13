@@ -6,6 +6,7 @@ import { AudioListenerMock } from './AudioListenerMock';
 import { BiquadFilterNodeMock } from './BiquadFilterNodeMock';
 import { ChannelMergerNodeMock } from './ChannelMergerNodeMock';
 import { ChannelSplitterNodeMock } from './ChannelSplitterNodeMock';
+import { ConstantSourceNodeMock } from './ConstantSourceNodeMock';
 import { ConvolverNodeMock } from './ConvolverNodeMock';
 import { DelayNodeMock } from './DelayNodeMock';
 import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
@@ -66,7 +67,7 @@ export class AudioContextMock {
   }
 
   createConstantSource() {
-    return {} as ConstantSourceNode;
+    return new ConstantSourceNodeMock();
   }
 
   createConvolver() {

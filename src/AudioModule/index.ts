@@ -4,6 +4,7 @@ import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
 import { Autopanner } from '../SoundModule/Effectors/Autopanner';
+import { BitCrusher } from '../SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../SoundModule/Effectors/Chorus';
 import { Compressor } from '../SoundModule/Effectors/Compressor';
 import { Delay } from '../SoundModule/Effectors/Delay';
@@ -569,6 +570,7 @@ export class AudioModule extends SoundModule {
   public module(moduleName: 'recorder'): Recorder;
   public module(moduleName: 'session'): Session;
   public module(moduleName: 'autopanner'): Autopanner;
+  public module(moduleName: 'bitcrusher'): BitCrusher;
   public module(moduleName: 'chorus'): Chorus;
   public module(moduleName: 'compressor'): Compressor;
   public module(moduleName: 'delay'): Delay;
@@ -599,6 +601,8 @@ export class AudioModule extends SoundModule {
         return this.session;
       case 'autopanner':
         return this.autopanner;
+      case 'bitcrusher':
+        return this.bitcrusher;
       case 'chorus':
         return this.chorus;
       case 'compressor':

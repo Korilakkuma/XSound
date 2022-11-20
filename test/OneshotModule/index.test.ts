@@ -4,6 +4,7 @@ import { Analyser } from '../../src/SoundModule/Analyser';
 import { Recorder } from '../../src/SoundModule/Recorder';
 import { Session } from '../../src/SoundModule/Session';
 import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
+import { BitCrusher } from '../../src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
 import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
 import { Delay } from '../../src/SoundModule/Effectors/Delay';
@@ -269,6 +270,7 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.module('recorder')).toBeInstanceOf(Recorder);
       expect(oneshotModule.module('session')).toBeInstanceOf(Session);
       expect(oneshotModule.module('autopanner')).toBeInstanceOf(Autopanner);
+      expect(oneshotModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(oneshotModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(oneshotModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(oneshotModule.module('delay')).toBeInstanceOf(Delay);
@@ -301,6 +303,7 @@ describe(OneshotModule.name, () => {
         envelopegenerator: oneshotModule['envelopegenerator'].params(),
         stereo           : oneshotModule['stereo'].params(),
         compressor       : oneshotModule['compressor'].params(),
+        bitcrusher       : oneshotModule['bitcrusher'].params(),
         distortion       : oneshotModule['distortion'].params(),
         wah              : oneshotModule['wah'].params(),
         pitchshifter     : oneshotModule['pitchshifter'].params(),

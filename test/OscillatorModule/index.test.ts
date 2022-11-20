@@ -3,6 +3,7 @@ import { Analyser } from '../../src/SoundModule/Analyser';
 import { Recorder } from '../../src/SoundModule/Recorder';
 import { Session } from '../../src/SoundModule/Session';
 import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
+import { BitCrusher } from '../../src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
 import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
 import { Delay } from '../../src/SoundModule/Effectors/Delay';
@@ -198,6 +199,7 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('recorder')).toBeInstanceOf(Recorder);
       expect(oscillatorModule.module('session')).toBeInstanceOf(Session);
       expect(oscillatorModule.module('autopanner')).toBeInstanceOf(Autopanner);
+      expect(oscillatorModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(oscillatorModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(oscillatorModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(oscillatorModule.module('delay')).toBeInstanceOf(Delay);
@@ -232,6 +234,7 @@ describe(OscillatorNode.name, () => {
         envelopegenerator: oscillatorModule['envelopegenerator'].params(),
         stereo           : oscillatorModule['stereo'].params(),
         compressor       : oscillatorModule['compressor'].params(),
+        bitcrusher       : oscillatorModule['bitcrusher'].params(),
         distortion       : oscillatorModule['distortion'].params(),
         wah              : oscillatorModule['wah'].params(),
         pitchshifter     : oscillatorModule['pitchshifter'].params(),

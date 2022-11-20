@@ -51,6 +51,7 @@ import { Recorder, RecorderParams, RecordType, QuantizationBit, WaveExportType, 
 import { Session, SessionSetupParams, SessionConnectionParams, NumberOfSessionChannels, Room, RoomMap } from './SoundModule/Session';
 import { Effector } from './SoundModule/Effectors/Effector';
 import { Autopanner, AutopannerParams } from './SoundModule/Effectors/Autopanner';
+import { BitCrusher, BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
 import { Chorus, ChorusParams } from './SoundModule/Effectors/Chorus';
 import { Compressor, CompressorParams } from './SoundModule/Effectors/Compressor';
 import { Delay, DelayParams } from './SoundModule/Effectors/Delay';
@@ -212,6 +213,7 @@ XSound.Session  = Session;
 
 XSound.Effector        = Effector;
 XSound.Autopanner      = Autopanner;
+XSound.BitCrusher      = BitCrusher;
 XSound.Chorus          = Chorus;
 XSound.Compressor      = Compressor;
 XSound.Delay           = Delay;
@@ -469,6 +471,8 @@ export type {
   Effector,
   Autopanner,
   AutopannerParams,
+  BitCrusher,
+  BitCrusherParams,
   Chorus,
   ChorusParams,
   Compressor,

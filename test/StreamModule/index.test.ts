@@ -3,6 +3,7 @@ import { Analyser } from '../../src/SoundModule/Analyser';
 import { Recorder } from '../../src/SoundModule/Recorder';
 import { Session } from '../../src/SoundModule/Session';
 import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
+import { BitCrusher } from '../../src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
 import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
 import { Delay } from '../../src/SoundModule/Effectors/Delay';
@@ -357,6 +358,7 @@ describe(StreamModule.name, () => {
       expect(streamModule.module('recorder')).toBeInstanceOf(Recorder);
       expect(streamModule.module('session')).toBeInstanceOf(Session);
       expect(streamModule.module('autopanner')).toBeInstanceOf(Autopanner);
+      expect(streamModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(streamModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(streamModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(streamModule.module('delay')).toBeInstanceOf(Delay);
@@ -390,6 +392,7 @@ describe(StreamModule.name, () => {
         envelopegenerator: streamModule['envelopegenerator'].params(),
         stereo           : streamModule['stereo'].params(),
         compressor       : streamModule['compressor'].params(),
+        bitcrusher       : streamModule['bitcrusher'].params(),
         distortion       : streamModule['distortion'].params(),
         wah              : streamModule['wah'].params(),
         pitchshifter     : streamModule['pitchshifter'].params(),

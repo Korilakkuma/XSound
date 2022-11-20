@@ -4,6 +4,7 @@ import { Analyser } from '../../src/SoundModule/Analyser';
 import { Recorder } from '../../src/SoundModule/Recorder';
 import { Session } from '../../src/SoundModule/Session';
 import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
+import { BitCrusher } from '../../src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
 import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
 import { Delay } from '../../src/SoundModule/Effectors/Delay';
@@ -162,6 +163,7 @@ describe(ProcessorModule.name, () => {
       expect(processorModule.module('recorder')).toBeInstanceOf(Recorder);
       expect(processorModule.module('session')).toBeInstanceOf(Session);
       expect(processorModule.module('autopanner')).toBeInstanceOf(Autopanner);
+      expect(processorModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(processorModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(processorModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(processorModule.module('delay')).toBeInstanceOf(Delay);

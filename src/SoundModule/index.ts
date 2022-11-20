@@ -5,6 +5,7 @@ import { Recorder } from './Recorder';
 import { Session } from './Session';
 import { Effector } from './Effectors/Effector';
 import { Autopanner, AutopannerParams } from './Effectors/Autopanner';
+import { BitCrusher, BitCrusherParams } from './Effectors/BitCrusher';
 import { Chorus, ChorusParams } from './Effectors/Chorus';
 import { Compressor, CompressorParams } from './Effectors/Compressor';
 import { Delay, DelayParams } from './Effectors/Delay';
@@ -26,13 +27,14 @@ import { Tremolo, TremoloParams } from './Effectors/Tremolo';
 import { VocalCanceler, VocalCancelerParams } from './Effectors/VocalCanceler';
 import { Wah, WahParams } from './Effectors/Wah';
 
-export type Module     = Analyser | Recorder | Session | Stereo | Compressor | Distortion | Wah | PitchShifter | Equalizer | Filter | Autopanner | Tremolo | Ringmodulator | Phaser | Flanger | Chorus | Delay | Reverb | Panner | Listener | EnvelopeGenerator | NoiseGate | NoiseSuppressor | VocalCanceler;
-export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'chorus' | 'compressor' | 'delay' | 'distortion' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator' | 'noisegate' | 'noisesuppressor' | 'vocalcanceler';
+export type Module     = Analyser | Recorder | Session | Stereo | Compressor | BitCrusher | Distortion | Wah | PitchShifter | Equalizer | Filter | Autopanner | Tremolo | Ringmodulator | Phaser | Flanger | Chorus | Delay | Reverb | Panner | Listener | EnvelopeGenerator | NoiseGate | NoiseSuppressor | VocalCanceler;
+export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'bitcrusher' | 'chorus' | 'compressor' | 'delay' | 'distortion' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator' | 'noisegate' | 'noisesuppressor' | 'vocalcanceler';
 
 export type SoundModuleParams = {
   mastervolume?: number,
   stereo?: StereoParams,
   compressor?: CompressorParams,
+  bitcrusher?: BitCrusherParams,
   distortion?: DistortionParams,
   wah?: WahParams,
   pitchshifter?: PitchShifterParams,
@@ -77,6 +79,7 @@ export abstract class SoundModule implements Connectable {
 
   protected stereo: Stereo;
   protected compressor: Compressor;
+  protected bitcrusher: BitCrusher;
   protected distortion: Distortion;
   protected wah: Wah;
   protected pitchshifter: PitchShifter;
@@ -115,6 +118,7 @@ export abstract class SoundModule implements Connectable {
     this.session           = new Session(context);
     this.stereo            = new Stereo(context, bufferSize);
     this.compressor        = new Compressor(context);
+    this.bitcrusher        = new BitCrusher(context);
     this.distortion        = new Distortion(context);
     this.wah               = new Wah(context);
     this.pitchshifter      = new PitchShifter(context, bufferSize);
@@ -139,6 +143,7 @@ export abstract class SoundModule implements Connectable {
     this.modules = [
       this.stereo,
       this.compressor,
+      this.bitcrusher,
       this.distortion,
       this.wah,
       this.pitchshifter,
@@ -259,6 +264,7 @@ export abstract class SoundModule implements Connectable {
     const s = startTime ?? this.context.currentTime;
 
     this.stereo.start();
+    this.bitcrusher.start();
     this.chorus.start(s);
     this.flanger.start(s);
     this.phaser.start(s);
@@ -280,6 +286,7 @@ export abstract class SoundModule implements Connectable {
     const s = stopTime ?? this.context.currentTime;
 
     this.stereo.stop();
+    this.bitcrusher.stop();
     this.chorus.stop(s);
     this.flanger.stop(s);
     this.phaser.stop(s);
@@ -335,6 +342,7 @@ export abstract class SoundModule implements Connectable {
       mastervolume     : this.mastervolume.gain.value,
       stereo           : this.stereo.params(),
       compressor       : this.compressor.params(),
+      bitcrusher       : this.bitcrusher.params(),
       distortion       : this.distortion.params(),
       wah              : this.wah.params(),
       pitchshifter     : this.pitchshifter.params(),
@@ -408,6 +416,7 @@ export abstract class SoundModule implements Connectable {
     this.session           = new Session(context);
     this.stereo            = new Stereo(context, bufferSize);
     this.compressor        = new Compressor(context);
+    this.bitcrusher        = new BitCrusher(context);
     this.distortion        = new Distortion(context);
     this.wah               = new Wah(context);
     this.pitchshifter      = new PitchShifter(context, bufferSize);
@@ -432,6 +441,7 @@ export abstract class SoundModule implements Connectable {
     this.modules = [
       this.stereo,
       this.compressor,
+      this.bitcrusher,
       this.distortion,
       this.wah,
       this.pitchshifter,

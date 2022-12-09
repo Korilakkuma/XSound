@@ -16,6 +16,7 @@ import { Flanger } from '../SoundModule/Effectors/Flanger';
 import { Listener } from '../SoundModule/Effectors/Listener';
 import { NoiseGate } from '../SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from '../SoundModule/Effectors/NoiseSuppressor';
+import { OverDrive } from '../SoundModule/Effectors/OverDrive';
 import { Panner } from '../SoundModule/Effectors/Panner';
 import { Phaser } from '../SoundModule/Effectors/Phaser';
 import { PitchShifter } from '../SoundModule/Effectors/PitchShifter';
@@ -257,6 +258,7 @@ export class NoiseModule extends SoundModule {
   public module(moduleName: 'listener'): Listener;
   public module(moduleName: 'noisegate'): NoiseGate;
   public module(moduleName: 'noisesuppressor'): NoiseSuppressor;
+  public module(moduleName: 'overdrive'): OverDrive;
   public module(moduleName: 'panner'): Panner;
   public module(moduleName: 'phaser'): Phaser;
   public module(moduleName: 'pitchshifter'): PitchShifter;
@@ -300,6 +302,8 @@ export class NoiseModule extends SoundModule {
         return this.noisegate;
       case 'noisesuppressor':
         return this.noisesuppressor;
+      case 'overdrive':
+        return this.overdrive;
       case 'panner':
         return this.panner;
       case 'phaser':

@@ -74,6 +74,7 @@ import { Flanger, FlangerParams } from './SoundModule/Effectors/Flanger';
 import { Listener, ListenerParams } from './SoundModule/Effectors/Listener';
 import { NoiseGate, NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor, NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
+import { OverDrive, OverDriveParams } from './SoundModule/Effectors/OverDrive';
 import { Panner, PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import { Phaser, PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
 import { PitchShifter, PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
@@ -224,6 +225,7 @@ XSound.Flanger         = Flanger;
 XSound.Listener        = Listener;
 XSound.NoiseGate       = NoiseGate;
 XSound.NoiseSuppressor = NoiseSuppressor;
+XSound.OverDrive       = OverDrive;
 XSound.Panner          = Panner;
 XSound.Phaser          = Phaser;
 XSound.PitchShifter    = PitchShifter;
@@ -503,6 +505,8 @@ export type {
   NoiseGateParams,
   NoiseSuppressor,
   NoiseSuppressorParams,
+  OverDrive,
+  OverDriveParams,
   Panner,
   PannerParams,
   Position3D,

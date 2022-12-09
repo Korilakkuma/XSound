@@ -16,6 +16,7 @@ import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
 import { Listener } from '../../src/SoundModule/Effectors/Listener';
 import { NoiseGate } from '../../src/SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from '../../src/SoundModule/Effectors/NoiseSuppressor';
+import { OverDrive } from '../../src/SoundModule/Effectors/OverDrive';
 import { Panner } from '../../src/SoundModule/Effectors/Panner';
 import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
@@ -175,6 +176,7 @@ describe(ProcessorModule.name, () => {
       expect(processorModule.module('listener')).toBeInstanceOf(Listener);
       expect(processorModule.module('noisegate')).toBeInstanceOf(NoiseGate);
       expect(processorModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
+      expect(processorModule.module('overdrive')).toBeInstanceOf(OverDrive);
       expect(processorModule.module('panner')).toBeInstanceOf(Panner);
       expect(processorModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(processorModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);

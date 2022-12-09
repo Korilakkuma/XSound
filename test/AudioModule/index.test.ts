@@ -16,6 +16,7 @@ import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
 import { Listener } from '../../src/SoundModule/Effectors/Listener';
 import { NoiseGate } from '../../src/SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from '../../src/SoundModule/Effectors/NoiseSuppressor';
+import { OverDrive } from '../../src/SoundModule/Effectors/OverDrive';
 import { Panner } from '../../src/SoundModule/Effectors/Panner';
 import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
@@ -338,6 +339,7 @@ describe(AudioModule.name, () => {
       expect(audioModule.module('listener')).toBeInstanceOf(Listener);
       expect(audioModule.module('noisegate')).toBeInstanceOf(NoiseGate);
       expect(audioModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
+      expect(audioModule.module('overdrive')).toBeInstanceOf(OverDrive);
       expect(audioModule.module('panner')).toBeInstanceOf(Panner);
       expect(audioModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(audioModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
@@ -366,6 +368,7 @@ describe(AudioModule.name, () => {
         stereo           : audioModule['stereo'].params(),
         compressor       : audioModule['compressor'].params(),
         bitcrusher       : audioModule['bitcrusher'].params(),
+        overdrive        : audioModule['overdrive'].params(),
         distortion       : audioModule['distortion'].params(),
         wah              : audioModule['wah'].params(),
         pitchshifter     : audioModule['pitchshifter'].params(),

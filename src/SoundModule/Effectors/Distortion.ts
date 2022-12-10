@@ -406,8 +406,8 @@ export class Cabinet extends Effector {
     this.notch.Q.value         = 1;
     this.notch.gain.value      = 0;  // Not used
 
-    // `Cabinet` is not connected by default
-    this.deactivate();
+    // `Cabinet` is connected by default
+    this.activate();
   }
 
   /** @override */

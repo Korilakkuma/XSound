@@ -17,6 +17,6 @@
     "frequency": 500
   },
   "cabine": {
-    "state": false
+    "state": true
   }
 }

@@ -95,7 +95,7 @@ describe(Distortion.name, () => {
     };
 
     const defaultCabinetParams: CabinetParams = {
-      state: false
+      state: true
     };
 
     const defaultParams: DistortionParams = {
@@ -123,7 +123,7 @@ describe(Distortion.name, () => {
     };
 
     const cabinetParams: CabinetParams = {
-      state: true
+      state: false
     };
 
     const params: DistortionParams = {

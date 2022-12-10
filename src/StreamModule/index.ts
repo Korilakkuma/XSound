@@ -13,6 +13,7 @@ import { EnvelopeGenerator } from '../SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer } from '../SoundModule/Effectors/Equalizer';
 import { Filter } from '../SoundModule/Effectors/Filter';
 import { Flanger } from '../SoundModule/Effectors/Flanger';
+import { Fuzz } from '../SoundModule/Effectors/Fuzz';
 import { Listener } from '../SoundModule/Effectors/Listener';
 import { NoiseGate } from '../SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from '../SoundModule/Effectors/NoiseSuppressor';
@@ -381,6 +382,7 @@ export class StreamModule extends SoundModule {
   public module(moduleName: 'equalizer'): Equalizer;
   public module(moduleName: 'filter'): Filter;
   public module(moduleName: 'flanger'): Flanger;
+  public module(moduleName: 'fuzz'): Fuzz;
   public module(moduleName: 'listener'): Listener;
   public module(moduleName: 'noisegate'): NoiseGate;
   public module(moduleName: 'noisesuppressor'): NoiseSuppressor;
@@ -422,6 +424,8 @@ export class StreamModule extends SoundModule {
         return this.filter;
       case 'flanger':
         return this.flanger;
+      case 'fuzz':
+        return this.fuzz;
       case 'listener':
         return this.listener;
       case 'noisegate':

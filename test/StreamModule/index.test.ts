@@ -12,6 +12,7 @@ import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGener
 import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
 import { Filter } from '../../src/SoundModule/Effectors/Filter';
 import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
+import { Fuzz } from '../../src/SoundModule/Effectors/Fuzz';
 import { Listener } from '../../src/SoundModule/Effectors/Listener';
 import { NoiseGate } from '../../src/SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from '../../src/SoundModule/Effectors/NoiseSuppressor';
@@ -368,6 +369,7 @@ describe(StreamModule.name, () => {
       expect(streamModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(streamModule.module('filter')).toBeInstanceOf(Filter);
       expect(streamModule.module('flanger')).toBeInstanceOf(Flanger);
+      expect(streamModule.module('fuzz')).toBeInstanceOf(Fuzz);
       expect(streamModule.module('listener')).toBeInstanceOf(Listener);
       expect(streamModule.module('noisegate')).toBeInstanceOf(NoiseGate);
       expect(streamModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
@@ -396,6 +398,7 @@ describe(StreamModule.name, () => {
         compressor       : streamModule['compressor'].params(),
         bitcrusher       : streamModule['bitcrusher'].params(),
         overdrive        : streamModule['overdrive'].params(),
+        fuzz             : streamModule['fuzz'].params(),
         distortion       : streamModule['distortion'].params(),
         wah              : streamModule['wah'].params(),
         pitchshifter     : streamModule['pitchshifter'].params(),

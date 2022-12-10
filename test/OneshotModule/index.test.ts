@@ -13,6 +13,7 @@ import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGener
 import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
 import { Filter } from '../../src/SoundModule/Effectors/Filter';
 import { Flanger } from '../../src/SoundModule/Effectors/Flanger';
+import { Fuzz } from '../../src/SoundModule/Effectors/Fuzz';
 import { Listener } from '../../src/SoundModule/Effectors/Listener';
 import { NoiseGate } from '../../src/SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from '../../src/SoundModule/Effectors/NoiseSuppressor';
@@ -280,6 +281,7 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(oneshotModule.module('filter')).toBeInstanceOf(Filter);
       expect(oneshotModule.module('flanger')).toBeInstanceOf(Flanger);
+      expect(oneshotModule.module('fuzz')).toBeInstanceOf(Fuzz);
       expect(oneshotModule.module('listener')).toBeInstanceOf(Listener);
       expect(oneshotModule.module('noisegate')).toBeInstanceOf(NoiseGate);
       expect(oneshotModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);
@@ -307,6 +309,7 @@ describe(OneshotModule.name, () => {
         compressor       : oneshotModule['compressor'].params(),
         bitcrusher       : oneshotModule['bitcrusher'].params(),
         overdrive        : oneshotModule['overdrive'].params(),
+        fuzz             : oneshotModule['fuzz'].params(),
         distortion       : oneshotModule['distortion'].params(),
         wah              : oneshotModule['wah'].params(),
         pitchshifter     : oneshotModule['pitchshifter'].params(),

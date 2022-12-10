@@ -71,6 +71,7 @@ import { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effect
 import { Equalizer, EqualizerParams } from './SoundModule/Effectors/Equalizer';
 import { Filter, FilterParams } from './SoundModule/Effectors/Filter';
 import { Flanger, FlangerParams } from './SoundModule/Effectors/Flanger';
+import { Fuzz, FuzzParams } from './SoundModule/Effectors/Fuzz';
 import { Listener, ListenerParams } from './SoundModule/Effectors/Listener';
 import { NoiseGate, NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor, NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
@@ -222,6 +223,7 @@ XSound.Distortion      = Distortion;
 XSound.Equalizer       = Equalizer;
 XSound.Filter          = Filter;
 XSound.Flanger         = Flanger;
+XSound.Fuzz            = Fuzz;
 XSound.Listener        = Listener;
 XSound.NoiseGate       = NoiseGate;
 XSound.NoiseSuppressor = NoiseSuppressor;
@@ -499,6 +501,8 @@ export type {
   FilterParams,
   Flanger,
   FlangerParams,
+  Fuzz,
+  FuzzParams,
   Listener,
   ListenerParams,
   NoiseGate,

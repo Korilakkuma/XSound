@@ -81,15 +81,18 @@ X.Session(context: AudioContext);
 
 // Effectors
 X.Autopanner(context: AudioContext);
+X.BitCrusher(context: AudioContext);
 X.Chorus(context: AudioContext);
 X.Compressor(context: AudioContext);
 X.Delay(context: AudioContext);
 X.Equalizer(context: AudioContext);
 X.Filter(context: AudioContext);
 X.Flanger(context: AudioContext);
+X.Fuzz(context: AudioContext);
 X.Listener(context: AudioContext);
 X.NoiseGate(context: AudioContext);
 X.NoiseSuppressor(context: AudioContext, size: BufferSize);
+X.OverDrive(context: AudioContext);
 X.Panner(context: AudioContext);
 X.Phaser(context: AudioContext);
 X.PitchShifter(context: AudioContext, size: BufferSize);

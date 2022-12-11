@@ -1,35 +1,35 @@
 import { AudioContextMock } from '../../../mock/AudioContextMock';
 import {
-  Distortion,
-  DistortionParams,
+  Preamp,
+  PreampParams,
   PreEqualizerParams,
   PostEqualizerParams,
   CabinetParams
-} from '../../../src/SoundModule/Effectors/Distortion';
+} from '../../../src/SoundModule/Effectors/Preamp';
 
-describe(Distortion.name, () => {
+describe(Preamp.name, () => {
   const context = new AudioContextMock();
 
   // @ts-ignore
-  const distortion = new Distortion(context);
+  const preamp = new Preamp(context);
 
-  describe(distortion.connect.name, () => {
+  describe(preamp.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput   = distortion['input'];
-    const originalPreEQ   = distortion['preEQ']['output'];
-    const originalPostEQ  = distortion['postEQ']['output'];
-    const originalCabinet = distortion['cabinet']['output'];
+    const originalInput   = preamp['input'];
+    const originalPreEQ   = preamp['preEQ']['output'];
+    const originalPostEQ  = preamp['postEQ']['output'];
+    const originalCabinet = preamp['cabinet']['output'];
     /* eslint-enable dot-notation */
 
     afterAll(() => {
       /* eslint-disable dot-notation */
-      distortion['input']             = originalInput;
-      distortion['preEQ']['output']   = originalPreEQ;
-      distortion['postEQ']['output']  = originalPostEQ;
-      distortion['cabinet']['output'] = originalCabinet;
+      preamp['input']             = originalInput;
+      preamp['preEQ']['output']   = originalPreEQ;
+      preamp['postEQ']['output']  = originalPostEQ;
+      preamp['cabinet']['output'] = originalCabinet;
       /* eslint-enable dot-notation */
 
-      distortion.deactivate();
+      preamp.deactivate();
     });
 
     test('should call `connect` method', () => {
@@ -43,17 +43,17 @@ describe(Distortion.name, () => {
       const cabinetDisconnectMock = jest.fn();
 
       /* eslint-disable dot-notation */
-      distortion['input'].connect                = inputConnectMock;
-      distortion['input'].disconnect             = inputDisconnectMock;
-      distortion['preEQ']['output'].connect      = preEQConnectMock;
-      distortion['preEQ']['output'].disconnect   = preEQDisconnectMock;
-      distortion['postEQ']['output'].connect     = postEQConnectMock;
-      distortion['postEQ']['output'].disconnect  = postEQDisconnectMock;
-      distortion['cabinet']['output'].connect    = cabinetConnectMock;
-      distortion['cabinet']['output'].disconnect = cabinetDisconnectMock;
+      preamp['input'].connect                = inputConnectMock;
+      preamp['input'].disconnect             = inputDisconnectMock;
+      preamp['preEQ']['output'].connect      = preEQConnectMock;
+      preamp['preEQ']['output'].disconnect   = preEQDisconnectMock;
+      preamp['postEQ']['output'].connect     = postEQConnectMock;
+      preamp['postEQ']['output'].disconnect  = postEQDisconnectMock;
+      preamp['cabinet']['output'].connect    = cabinetConnectMock;
+      preamp['cabinet']['output'].disconnect = cabinetDisconnectMock;
       /* eslint-enable dot-notation */
 
-      distortion.connect();
+      preamp.connect();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(preEQConnectMock).toHaveBeenCalledTimes(0);
@@ -64,7 +64,7 @@ describe(Distortion.name, () => {
       expect(postEQDisconnectMock).toHaveBeenCalledTimes(0);
       expect(cabinetDisconnectMock).toHaveBeenCalledTimes(0);
 
-      distortion.activate();
+      preamp.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(2);
       expect(preEQConnectMock).toHaveBeenCalledTimes(1);
@@ -77,7 +77,7 @@ describe(Distortion.name, () => {
     });
   });
 
-  describe(distortion.param.name, () => {
+  describe(preamp.param.name, () => {
     const defaultPreEQParams: PreEqualizerParams = {
       state: false,
       curve: null,
@@ -98,9 +98,9 @@ describe(Distortion.name, () => {
       state: true
     };
 
-    const defaultParams: DistortionParams = {
-      curve  : 'clean',
-      samples: 256,
+    const defaultParams: PreampParams = {
+      level  : 0,
+      samples: 1024,
       pre    : defaultPreEQParams,
       post   : defaultPostEQParams,
       cabinet: defaultCabinetParams
@@ -126,91 +126,91 @@ describe(Distortion.name, () => {
       state: false
     };
 
-    const params: DistortionParams = {
-      curve  : 'overdrive',
-      samples: 4,
+    const params: PreampParams = {
+      level  : 0.5,
+      samples: 2048,
       pre    : preEQParams,
       post   : postEQParams,
       cabinet: cabinetParams
     };
 
     beforeAll(() => {
-      distortion.param(params);
+      preamp.param(params);
     });
 
     afterAll(() => {
-      distortion.param(defaultParams);
+      preamp.param(defaultParams);
     });
 
     // Setter
-    test('should return instance of `Distortion`', () => {
-      expect(distortion.param(params)).toBeInstanceOf(Distortion);
+    test('should return instance of `Preamp`', () => {
+      expect(preamp.param(params)).toBeInstanceOf(Preamp);
     });
 
     // Getter
-    test('should return `curve`', () => {
-      expect(distortion.param('curve')).toBe('overdrive');
+    test('should return `level`', () => {
+      expect(preamp.param('level')).toBeCloseTo(0.5, 1);
     });
 
     test('should return `samples`', () => {
-      expect(distortion.param('samples')).toBe(4);
+      expect(preamp.param('samples')).toBe(2048);
     });
 
     test('should return Pre-Equalizer parameters', () => {
-      expect(distortion.param('pre')).toStrictEqual(preEQParams);
+      expect(preamp.param('pre')).toStrictEqual(preEQParams);
     });
 
     test('should return Post-Equalizer parameters', () => {
-      expect(distortion.param('post')).toStrictEqual(postEQParams);
+      expect(preamp.param('post')).toStrictEqual(postEQParams);
     });
 
     test('should return Cabinet parameters', () => {
-      expect(distortion.param('cabinet')).toStrictEqual(cabinetParams);
+      expect(preamp.param('cabinet')).toStrictEqual(cabinetParams);
     });
   });
 
-  describe(distortion.params.name, () => {
-    test('should return parameters for distortion effector as associative array', () => {
-      expect(distortion.params()).toStrictEqual({
+  describe(preamp.params.name, () => {
+    test('should return parameters for preamp effector as associative array', () => {
+      expect(preamp.params()).toStrictEqual({
         state  : false,
-        curve  : 'clean',
-        samples: 256,
-        pre    : distortion.param('pre'),
-        post   : distortion.param('post'),
-        cabinet: distortion.param('cabinet')
+        level  : 0,
+        samples: 1024,
+        pre    : preamp.param('pre'),
+        post   : preamp.param('post'),
+        cabinet: preamp.param('cabinet')
       });
     });
   });
 
-  describe(distortion.activate.name, () => {
+  describe(preamp.activate.name, () => {
     test('should call `connect` method', () => {
-      const originalConnect = distortion.connect;
+      const originalConnect = preamp.connect;
 
       const connectMock = jest.fn();
 
-      distortion.connect = connectMock;
+      preamp.connect = connectMock;
 
-      distortion.activate();
+      preamp.activate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
-      distortion.connect = originalConnect;
+      preamp.connect = originalConnect;
     });
   });
 
-  describe(distortion.deactivate.name, () => {
+  describe(preamp.deactivate.name, () => {
     test('should call `connect` method', () => {
-      const originalConnect = distortion.connect;
+      const originalConnect = preamp.connect;
 
       const connectMock = jest.fn();
 
-      distortion.connect = connectMock;
+      preamp.connect = connectMock;
 
-      distortion.deactivate();
+      preamp.deactivate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
-      distortion.connect = originalConnect;
+      preamp.connect = originalConnect;
     });
   });
 });

@@ -55,18 +55,6 @@ import { BitCrusher, BitCrusherParams } from './SoundModule/Effectors/BitCrusher
 import { Chorus, ChorusParams } from './SoundModule/Effectors/Chorus';
 import { Compressor, CompressorParams } from './SoundModule/Effectors/Compressor';
 import { Delay, DelayParams } from './SoundModule/Effectors/Delay';
-import {
-  Distortion,
-  DistortionParams,
-  DistortionType,
-  DistortionCurve,
-  PreEqualizer,
-  PreEqualizerParams,
-  PostEqualizer,
-  PostEqualizerParams,
-  Cabinet,
-  CabinetParams
-} from './SoundModule/Effectors/Distortion';
 import { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer, EqualizerParams } from './SoundModule/Effectors/Equalizer';
 import { Filter, FilterParams } from './SoundModule/Effectors/Filter';
@@ -79,6 +67,17 @@ import { OverDrive, OverDriveParams } from './SoundModule/Effectors/OverDrive';
 import { Panner, PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import { Phaser, PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
 import { PitchShifter, PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
+import {
+  Preamp,
+  PreampParams,
+  PreampCurve,
+  PreEqualizer,
+  PreEqualizerParams,
+  PostEqualizer,
+  PostEqualizerParams,
+  Cabinet,
+  CabinetParams
+} from './SoundModule/Effectors/Preamp';
 import { Reverb, ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
 import { Ringmodulator, RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
 import { Stereo, StereoParams } from './SoundModule/Effectors/Stereo';
@@ -219,7 +218,6 @@ XSound.BitCrusher      = BitCrusher;
 XSound.Chorus          = Chorus;
 XSound.Compressor      = Compressor;
 XSound.Delay           = Delay;
-XSound.Distortion      = Distortion;
 XSound.Equalizer       = Equalizer;
 XSound.Filter          = Filter;
 XSound.Flanger         = Flanger;
@@ -231,6 +229,7 @@ XSound.OverDrive       = OverDrive;
 XSound.Panner          = Panner;
 XSound.Phaser          = Phaser;
 XSound.PitchShifter    = PitchShifter;
+XSound.Preamp          = Preamp;
 XSound.Reverb          = Reverb;
 XSound.Ringmodulator   = Ringmodulator;
 XSound.Stereo          = Stereo;
@@ -483,16 +482,6 @@ export type {
   CompressorParams,
   Delay,
   DelayParams,
-  Distortion,
-  DistortionParams,
-  DistortionType,
-  DistortionCurve,
-  PreEqualizer,
-  PreEqualizerParams,
-  PostEqualizer,
-  PostEqualizerParams,
-  Cabinet,
-  CabinetParams,
   EnvelopeGenerator,
   EnvelopeGeneratorParams,
   Equalizer,
@@ -519,6 +508,15 @@ export type {
   PhaserNumberOfStages,
   PitchShifter,
   PitchShifterParams,
+  Preamp,
+  PreampParams,
+  PreampCurve,
+  PreEqualizer,
+  PreEqualizerParams,
+  PostEqualizer,
+  PostEqualizerParams,
+  Cabinet,
+  CabinetParams,
   Reverb,
   ReverbParams,
   ReverbErrorText,

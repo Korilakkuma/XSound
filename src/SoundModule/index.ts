@@ -9,7 +9,6 @@ import { BitCrusher, BitCrusherParams } from './Effectors/BitCrusher';
 import { Chorus, ChorusParams } from './Effectors/Chorus';
 import { Compressor, CompressorParams } from './Effectors/Compressor';
 import { Delay, DelayParams } from './Effectors/Delay';
-import { Distortion, DistortionParams } from './Effectors/Distortion';
 import { EnvelopeGenerator, EnvelopeGeneratorParams } from './Effectors/EnvelopeGenerator';
 import { Equalizer, EqualizerParams } from './Effectors/Equalizer';
 import { Filter, FilterParams } from './Effectors/Filter';
@@ -22,6 +21,7 @@ import { OverDrive, OverDriveParams }  from '../SoundModule/Effectors/OverDrive'
 import { Panner, PannerParams } from './Effectors/Panner';
 import { Phaser, PhaserParams } from './Effectors/Phaser';
 import { PitchShifter, PitchShifterParams } from './Effectors/PitchShifter';
+import { Preamp, PreampParams } from './Effectors/Preamp';
 import { Reverb, ReverbParams } from './Effectors/Reverb';
 import { Ringmodulator, RingmodulatorParams } from './Effectors/Ringmodulator';
 import { Stereo, StereoParams } from './Effectors/Stereo';
@@ -29,8 +29,8 @@ import { Tremolo, TremoloParams } from './Effectors/Tremolo';
 import { VocalCanceler, VocalCancelerParams } from './Effectors/VocalCanceler';
 import { Wah, WahParams } from './Effectors/Wah';
 
-export type Module     = Analyser | Recorder | Session | Stereo | Compressor | BitCrusher | OverDrive | Fuzz | Distortion | Wah | PitchShifter | Equalizer | Filter | Autopanner | Tremolo | Ringmodulator | Phaser | Flanger | Chorus | Delay | Reverb | Panner | Listener | EnvelopeGenerator | NoiseGate | NoiseSuppressor | VocalCanceler;
-export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'bitcrusher' | 'overdrive' | 'fuzz' | 'chorus' | 'compressor' | 'delay' | 'distortion' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator' | 'noisegate' | 'noisesuppressor' | 'vocalcanceler';
+export type Module     = Analyser | Recorder | Session | Stereo | Compressor | BitCrusher | OverDrive | Fuzz | Preamp | Wah | PitchShifter | Equalizer | Filter | Autopanner | Tremolo | Ringmodulator | Phaser | Flanger | Chorus | Delay | Reverb | Panner | Listener | EnvelopeGenerator | NoiseGate | NoiseSuppressor | VocalCanceler;
+export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'bitcrusher' | 'overdrive' | 'fuzz' | 'chorus' | 'compressor' | 'delay' | 'preamp' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator' | 'noisegate' | 'noisesuppressor' | 'vocalcanceler';
 
 export type SoundModuleParams = {
   mastervolume?: number,
@@ -39,7 +39,7 @@ export type SoundModuleParams = {
   bitcrusher?: BitCrusherParams,
   overdrive?: OverDriveParams,
   fuzz?: FuzzParams,
-  distortion?: DistortionParams,
+  preamp?: PreampParams,
   wah?: WahParams,
   pitchshifter?: PitchShifterParams,
   equalizer?: EqualizerParams,
@@ -86,7 +86,7 @@ export abstract class SoundModule implements Connectable {
   protected bitcrusher: BitCrusher;
   protected overdrive: OverDrive;
   protected fuzz: Fuzz;
-  protected distortion: Distortion;
+  protected preamp: Preamp;
   protected wah: Wah;
   protected pitchshifter: PitchShifter;
   protected equalizer: Equalizer;
@@ -127,7 +127,7 @@ export abstract class SoundModule implements Connectable {
     this.bitcrusher        = new BitCrusher(context);
     this.overdrive         = new OverDrive(context);
     this.fuzz              = new Fuzz(context);
-    this.distortion        = new Distortion(context);
+    this.preamp            = new Preamp(context);
     this.wah               = new Wah(context);
     this.pitchshifter      = new PitchShifter(context, bufferSize);
     this.equalizer         = new Equalizer(context);
@@ -154,7 +154,7 @@ export abstract class SoundModule implements Connectable {
       this.bitcrusher,
       this.overdrive,
       this.fuzz,
-      this.distortion,
+      this.preamp,
       this.wah,
       this.pitchshifter,
       this.equalizer,
@@ -359,7 +359,7 @@ export abstract class SoundModule implements Connectable {
       bitcrusher       : this.bitcrusher.params(),
       overdrive        : this.overdrive.params(),
       fuzz             : this.fuzz.params(),
-      distortion       : this.distortion.params(),
+      preamp           : this.preamp.params(),
       wah              : this.wah.params(),
       pitchshifter     : this.pitchshifter.params(),
       equalizer        : this.equalizer.params(),
@@ -435,7 +435,7 @@ export abstract class SoundModule implements Connectable {
     this.bitcrusher        = new BitCrusher(context);
     this.overdrive         = new OverDrive(context);
     this.fuzz              = new Fuzz(context);
-    this.distortion        = new Distortion(context);
+    this.preamp            = new Preamp(context);
     this.wah               = new Wah(context);
     this.pitchshifter      = new PitchShifter(context, bufferSize);
     this.equalizer         = new Equalizer(context);
@@ -462,7 +462,7 @@ export abstract class SoundModule implements Connectable {
       this.bitcrusher,
       this.overdrive,
       this.fuzz,
-      this.distortion,
+      this.preamp,
       this.wah,
       this.pitchshifter,
       this.equalizer,

@@ -7,7 +7,6 @@ import { BitCrusher } from '../../src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
 import { Compressor } from './../../src/SoundModule/Effectors/Compressor';
 import { Delay } from '../../src/SoundModule/Effectors/Delay';
-import { Distortion } from '../../src/SoundModule/Effectors/Distortion';
 import { EnvelopeGenerator } from '../../src/SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer } from '../../src/SoundModule/Effectors/Equalizer';
 import { Filter } from '../../src/SoundModule/Effectors/Filter';
@@ -20,6 +19,7 @@ import { OverDrive } from '../../src/SoundModule/Effectors/OverDrive';
 import { Panner } from '../../src/SoundModule/Effectors/Panner';
 import { Phaser } from '../../src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from './../../src/SoundModule/Effectors/PitchShifter';
+import { Preamp } from '../../src/SoundModule/Effectors/Preamp';
 import { Reverb } from '../../src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../../src/SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../../src/SoundModule/Effectors/Stereo';
@@ -205,7 +205,6 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(oscillatorModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(oscillatorModule.module('delay')).toBeInstanceOf(Delay);
-      expect(oscillatorModule.module('distortion')).toBeInstanceOf(Distortion);
       expect(oscillatorModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(oscillatorModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(oscillatorModule.module('filter')).toBeInstanceOf(Filter);
@@ -218,6 +217,7 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('panner')).toBeInstanceOf(Panner);
       expect(oscillatorModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(oscillatorModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
+      expect(oscillatorModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(oscillatorModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(oscillatorModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(oscillatorModule.module('stereo')).toBeInstanceOf(Stereo);
@@ -241,7 +241,7 @@ describe(OscillatorNode.name, () => {
         bitcrusher       : oscillatorModule['bitcrusher'].params(),
         overdrive        : oscillatorModule['overdrive'].params(),
         fuzz             : oscillatorModule['fuzz'].params(),
-        distortion       : oscillatorModule['distortion'].params(),
+        preamp           : oscillatorModule['preamp'].params(),
         wah              : oscillatorModule['wah'].params(),
         pitchshifter     : oscillatorModule['pitchshifter'].params(),
         equalizer        : oscillatorModule['equalizer'].params(),

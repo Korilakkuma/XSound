@@ -8,7 +8,6 @@ import { BitCrusher } from '../SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../SoundModule/Effectors/Chorus';
 import { Compressor } from '../SoundModule/Effectors/Compressor';
 import { Delay } from '../SoundModule/Effectors/Delay';
-import { Distortion } from '../SoundModule/Effectors/Distortion';
 import { EnvelopeGenerator } from '../SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer } from '../SoundModule/Effectors/Equalizer';
 import { Filter } from '../SoundModule/Effectors/Filter';
@@ -21,6 +20,7 @@ import { OverDrive } from '../SoundModule/Effectors/OverDrive';
 import { Panner } from '../SoundModule/Effectors/Panner';
 import { Phaser } from '../SoundModule/Effectors/Phaser';
 import { PitchShifter } from '../SoundModule/Effectors/PitchShifter';
+import { Preamp } from '../SoundModule/Effectors/Preamp';
 import { Reverb } from '../SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '../SoundModule/Effectors/Ringmodulator';
 import { Stereo } from '../SoundModule/Effectors/Stereo';
@@ -384,7 +384,6 @@ export class OneshotModule extends SoundModule {
   public module(moduleName: 'chorus'): Chorus;
   public module(moduleName: 'compressor'): Compressor;
   public module(moduleName: 'delay'): Delay;
-  public module(moduleName: 'distortion'): Distortion;
   public module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
   public module(moduleName: 'equalizer'): Equalizer;
   public module(moduleName: 'filter'): Filter;
@@ -397,6 +396,7 @@ export class OneshotModule extends SoundModule {
   public module(moduleName: 'panner'): Panner;
   public module(moduleName: 'phaser'): Phaser;
   public module(moduleName: 'pitchshifter'): PitchShifter;
+  public module(moduleName: 'preamp'): Preamp;
   public module(moduleName: 'reverb'): Reverb;
   public module(moduleName: 'ringmodulator'): Ringmodulator;
   public module(moduleName: 'stereo'): Stereo;
@@ -421,8 +421,6 @@ export class OneshotModule extends SoundModule {
         return this.compressor;
       case 'delay':
         return this.delay;
-      case 'distortion':
-        return this.distortion;
       case 'envelopegenerator':
         return this.envelopegenerator;
       case 'equalizer':
@@ -447,6 +445,8 @@ export class OneshotModule extends SoundModule {
         return this.phaser;
       case 'pitchshifter':
         return this.pitchshifter;
+      case 'preamp':
+        return this.preamp;
       case 'reverb':
         return this.reverb;
       case 'ringmodulator':

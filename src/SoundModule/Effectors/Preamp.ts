@@ -1,18 +1,17 @@
 import { Effector } from './Effector';
 
-export type DistortionCurve = Float32Array | null;
-export type DistortionType  = 'clean' | 'crunch' | 'overdrive' | 'distortion' | 'fuzz';
+export type PreampCurve = Float32Array | null;
 
 export type PreEqualizerParams = {
   state?: boolean,
-  curve?: DistortionCurve,
+  curve?: PreampCurve,
   gain?: number,
   lead?: number
 };
 
 export type PostEqualizerParams = {
   state?: boolean,
-  curve?: DistortionCurve,
+  curve?: PreampCurve,
   bass?: number,
   middle?: number,
   treble?: number,
@@ -23,9 +22,9 @@ export type CabinetParams = {
   state?: boolean
 };
 
-export type DistortionParams = {
+export type PreampParams = {
   state?: boolean,
-  curve?: DistortionType,
+  level?: number,
   samples?: number,
   pre?: PreEqualizerParams,
   post?: PostEqualizerParams,
@@ -38,7 +37,7 @@ export type DistortionParams = {
  * @extends {Effector}
  */
 export class PreEqualizer extends Effector {
-  private preAmp: WaveShaperNode;
+  private shaper: WaveShaperNode;
   private gain: GainNode;
   private leadGain: GainNode;
   private lowpass: BiquadFilterNode;
@@ -52,7 +51,7 @@ export class PreEqualizer extends Effector {
   constructor(context: AudioContext) {
     super(context, 0);
 
-    this.preAmp = context.createWaveShaper();
+    this.shaper = context.createWaveShaper();
 
     this.gain     = context.createGain();
     this.leadGain = context.createGain();
@@ -108,8 +107,8 @@ export class PreEqualizer extends Effector {
       this.leadGain.connect(this.highpass3);
 
       // BiquadFilterNode (High-pass) -> WaveShaperNode (Preamplifier) -> GainNode (Output)
-      this.highpass3.connect(this.preAmp);
-      this.preAmp.connect(this.output);
+      this.highpass3.connect(this.shaper);
+      this.shaper.connect(this.output);
     } else {
       // Effect OFF
 
@@ -137,7 +136,7 @@ export class PreEqualizer extends Effector {
         case 'state':
           return this.isActive;
         case 'curve':
-          return this.preAmp.curve;
+          return this.shaper.curve;
         case 'gain':
           return this.gain.gain.value;
         case 'lead':
@@ -161,7 +160,9 @@ export class PreEqualizer extends Effector {
           break;
         case 'curve':
           if ((typeof value !== 'number') && (typeof value !== 'boolean')) {
-            this.preAmp.curve = value;
+            if ((value instanceof Float32Array) || (value === null)) {
+              this.shaper.curve = value;
+            }
           }
 
           break;
@@ -187,7 +188,7 @@ export class PreEqualizer extends Effector {
   public override params(): Required<PreEqualizerParams> {
     return {
       state: this.isActive,
-      curve: this.preAmp.curve,
+      curve: this.shaper.curve,
       gain : this.gain.gain.value,
       lead : this.leadGain.gain.value
     };
@@ -200,7 +201,7 @@ export class PreEqualizer extends Effector {
  * @extends {Effector}
  */
 export class PostEqualizer extends Effector {
-  private distortion: WaveShaperNode;
+  private shaper: WaveShaperNode;
 
   private bass: BiquadFilterNode;
   private middle: BiquadFilterNode;
@@ -215,7 +216,7 @@ export class PostEqualizer extends Effector {
   constructor(context: AudioContext) {
     super(context, 0);
 
-    this.distortion = context.createWaveShaper();
+    this.shaper = context.createWaveShaper();
 
     this.bass   = context.createBiquadFilter();
     this.middle = context.createBiquadFilter();
@@ -265,11 +266,11 @@ export class PostEqualizer extends Effector {
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> BiquadFilterNode (Low-pass) -> BiquadFilterNode (High-pass) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass: Low-shelving) -> BiquadFilterNode (Middle: Peaking) -> BiquadFilterNode (Treble: High-shelving) -> GainNode (Output)
+      // GainNode (Input) -> BiquadFilterNode (Low-pass) -> BiquadFilterNode (High-pass) -> WaveShaperNode (Preamplifier) -> BiquadFilterNode (Bass: Low-shelving) -> BiquadFilterNode (Middle: Peaking) -> BiquadFilterNode (Treble: High-shelving) -> GainNode (Output)
       this.input.connect(this.lowpass);
       this.lowpass.connect(this.highpass);
-      this.highpass.connect(this.distortion);
-      this.distortion.connect(this.bass);
+      this.highpass.connect(this.shaper);
+      this.shaper.connect(this.bass);
       this.bass.connect(this.middle);
       this.middle.connect(this.treble);
       this.treble.connect(this.output);
@@ -302,7 +303,7 @@ export class PostEqualizer extends Effector {
         case 'state':
           return this.isActive;
         case 'curve':
-          return this.distortion.curve;
+          return this.shaper.curve;
         case 'bass':
           return this.bass.gain.value;
         case 'middle':
@@ -330,7 +331,9 @@ export class PostEqualizer extends Effector {
           break;
         case 'curve':
           if ((typeof value !== 'number') && (typeof value !== 'boolean')) {
-            this.distortion.curve = value;
+            if ((value instanceof Float32Array) || (value === null)) {
+              this.shaper.curve = value;
+            }
           }
 
           break;
@@ -368,7 +371,7 @@ export class PostEqualizer extends Effector {
   public override params(): Required<PostEqualizerParams> {
     return {
       state    : this.isActive,
-      curve    : this.distortion.curve,
+      curve    : this.shaper.curve,
       bass     : this.bass.gain.value,
       middle   : this.middle.gain.value,
       treble   : this.treble.gain.value,
@@ -477,23 +480,23 @@ export class Cabinet extends Effector {
 }
 
 /**
- * Effector's subclass for Distortion.
+ * Effector's subclass for Preamplifier.
  * @constructor
  * @extends {Effector}
  */
-export class Distortion extends Effector {
+export class Preamp extends Effector {
   /**
-   * This class (static) method creates instance of `Float32Array` for distortion.
-   * @param {number} drive This argument is distortion amount.
-   * @param {number} numberOfSamples This argument is distortion curve size.
+   * This class (static) method creates instance of `Float32Array` for `WaveShaperNode`.
+   * @param {number} level This argument is preamp effect level.
+   * @param {number} numberOfSamples This argument is curve size.
    * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
    */
-  public static createCurve(drive: number, numberOfSamples: number): Float32Array | null {
+  public static createCurve(level: number, numberOfSamples: number): Float32Array | null {
     const index = Math.trunc((numberOfSamples - 1) / 2);
 
     const curves = new Float32Array(numberOfSamples);
 
-    const d = (10 ** ((drive / 5.0) - 1.0)) - 0.1;
+    const d = (10 ** ((level / 5.0) - 1.0)) - 0.1;
     const c = (d / 5.0) + 1.0;
 
     let peak = 0.4;
@@ -518,8 +521,9 @@ export class Distortion extends Effector {
   private postEQ: PostEqualizer;
   private cabinet: Cabinet;
 
-  private type: DistortionType;
-  private numberOfSamples = 256;  // for creating curve
+  // for creating curve
+  private level           = 0;
+  private numberOfSamples = 1024;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -531,11 +535,7 @@ export class Distortion extends Effector {
     this.postEQ  = new PostEqualizer(context);
     this.cabinet = new Cabinet(context);
 
-    this.type = 'clean';
-
-    this.param({ curve: 'clean' });
-
-    // `Distortion` is not connected by default
+    // `Preamp` is not connected by default
     this.deactivate();
   }
 
@@ -547,7 +547,7 @@ export class Distortion extends Effector {
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> Pre-Equalizer -> Preamplifier -> Distortion -> Post-Equalizer -> Cabinet -> GainNode (Output)
+      // GainNode (Input) -> Pre-Equalizer -> Post-Equalizer -> Cabinet -> GainNode (Output)
       this.input.connect(this.preEQ.INPUT);
       this.preEQ.OUTPUT.connect(this.postEQ.INPUT);
       this.postEQ.OUTPUT.connect(this.cabinet.INPUT);
@@ -563,26 +563,26 @@ export class Distortion extends Effector {
   }
 
   /**
-   * This method gets or sets parameters for distortion effector.
+   * This method gets or sets parameters for preamp effector.
    * This method is overloaded for type interface and type check.
-   * @param {keyof DistortionParams|DistortionParams} params This argument is string if getter. Otherwise, setter.
-   * @return {DistortionParams[keyof DistortionParams]|Distortion} Return value is parameter for distortion effector if getter.
+   * @param {keyof PreampParams|PreampParams} params This argument is string if getter. Otherwise, setter.
+   * @return {PreampParams[keyof PreampParams]|Preamp} Return value is parameter for preamp effector if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
-  public param(params: 'curve'): DistortionType;
+  public param(params: 'level'): number;
   public param(params: 'samples'): number;
   public param(params: 'pre'): PreEqualizerParams;
   public param(params: 'post'): PostEqualizerParams;
   public param(params: 'cabinet'): CabinetParams;
-  public param(params: DistortionParams): Distortion;
-  public param(params: keyof DistortionParams | DistortionParams): DistortionParams[keyof DistortionParams] | Distortion {
+  public param(params: PreampParams): Preamp;
+  public param(params: keyof PreampParams | PreampParams): PreampParams[keyof PreampParams] | Preamp {
     if (typeof params === 'string') {
       switch (params) {
         case 'state':
           return this.isActive;
-        case 'curve':
-          return this.type;
+        case 'level':
+          return this.level;
         case 'samples':
           return this.numberOfSamples;
         case 'pre':
@@ -604,44 +604,17 @@ export class Distortion extends Effector {
           }
 
           break;
-        case 'curve': {
-          let curve = null;
+        case 'level':
+          if (typeof value === 'number') {
+            this.level = value;
 
-          switch (value) {
-            case 'clean':
-              this.type = 'clean';
-              curve = Distortion.createCurve(0.0, this.numberOfSamples);
-              break;
-            case 'crunch':
-              this.type = 'crunch';
-              curve = Distortion.createCurve(3.0, this.numberOfSamples);
-              break;
-            case 'overdrive':
-              this.type = 'overdrive';
-              curve = Distortion.createCurve(5.0, this.numberOfSamples);
-              break;
-            case 'distortion':
-              this.type = 'distortion';
-              curve = Distortion.createCurve(8.0, this.numberOfSamples);
-              break;
-            case 'fuzz':
-              this.type = 'fuzz';
-              curve = Distortion.createCurve(10.0, this.numberOfSamples);
-              break;
-            default:
-              if (value instanceof Float32Array) {
-                curve = value;
-              }
+            const curve = Preamp.createCurve(this.level, this.numberOfSamples);
 
-              break;
+            this.preEQ.param({ curve });
+            this.postEQ.param({ curve });
           }
 
-          this.preEQ.param({ curve });
-          this.postEQ.param({ curve });
-
           break;
-        }
-
         case 'samples':
           if (typeof value === 'number') {
             this.numberOfSamples = value;
@@ -675,10 +648,10 @@ export class Distortion extends Effector {
   }
 
   /** @override */
-  public override params(): Required<DistortionParams> {
+  public override params(): Required<PreampParams> {
     return {
       state  : this.isActive,
-      curve  : this.type,
+      level  : this.level,
       samples: this.numberOfSamples,
       pre    : this.preEQ.params(),
       post   : this.postEQ.params(),
@@ -687,13 +660,13 @@ export class Distortion extends Effector {
   }
 
   /** @override */
-  public override activate(): Distortion {
+  public override activate(): Preamp {
     super.activate();
     return this;
   }
 
   /** @override */
-  public override deactivate(): Distortion {
+  public override deactivate(): Preamp {
     super.deactivate();
     return this;
   }

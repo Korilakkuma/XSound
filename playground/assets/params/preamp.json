@@ -1,22 +1,20 @@
 {
   "state": false,
-  "curve": "clean",
-  "samples": 256,
+  "level": 0,
+  "samples": 1024,
   "pre": {
     "state": false,
-    "curve": null,
     "gain": 0.5,
     "lead": 0.5
   },
   "post": {
     "state": false,
-    "curve": null,
     "bass": 0,
     "middle": 0,
     "treble": 0,
     "frequency": 500
   },
-  "cabine": {
-    "state": false
+  "cabinet": {
+    "state": true
   }
 }

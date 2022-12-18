@@ -149,17 +149,17 @@ export abstract class SoundModule implements Connectable {
 
     // The default order for connection
     this.modules = [
-      this.stereo,
       this.compressor,
+      this.wah,
       this.bitcrusher,
       this.overdrive,
       this.fuzz,
       this.preamp,
-      this.wah,
-      this.pitchshifter,
       this.equalizer,
       this.filter,
-      this.autopanner,
+      this.noisegate,
+      this.noisesuppressor,
+      this.pitchshifter,
       this.tremolo,
       this.ringmodulator,
       this.phaser,
@@ -168,9 +168,9 @@ export abstract class SoundModule implements Connectable {
       this.delay,
       this.reverb,
       this.panner,
-      this.noisegate,
-      this.noisesuppressor,
-      this.vocalcanceler
+      this.autopanner,
+      this.vocalcanceler,
+      this.stereo
     ];
   }
 
@@ -457,17 +457,17 @@ export abstract class SoundModule implements Connectable {
 
     // The default order for connection
     this.modules = [
-      this.stereo,
       this.compressor,
+      this.wah,
       this.bitcrusher,
       this.overdrive,
       this.fuzz,
       this.preamp,
-      this.wah,
-      this.pitchshifter,
       this.equalizer,
       this.filter,
-      this.autopanner,
+      this.noisegate,
+      this.noisesuppressor,
+      this.pitchshifter,
       this.tremolo,
       this.ringmodulator,
       this.phaser,
@@ -476,9 +476,9 @@ export abstract class SoundModule implements Connectable {
       this.delay,
       this.reverb,
       this.panner,
-      this.noisegate,
-      this.noisesuppressor,
-      this.vocalcanceler
+      this.autopanner,
+      this.vocalcanceler,
+      this.stereo
     ];
   }
 }

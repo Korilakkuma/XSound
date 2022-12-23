@@ -235,6 +235,7 @@ export abstract class SoundModule implements Connectable {
 
   /**
    * This method changes buffer size for `ScriptProcessorNode`.
+   * If resize is needed, should invoke this method on initialization.
    * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    * @return {SoundModule} Return value is for method chain.
    */

@@ -319,4 +319,17 @@ describe(MixerModule.name, () => {
       expect(mixerModule.module('wah')).toBeInstanceOf(Wah);
     });
   });
+
+  describe(mixerModule.edit.name, () => {
+    test('should set edited modules and return previous modules', () => {
+      // eslint-disable-next-line dot-notation
+      const previousModules = mixerModule['modules'];
+
+      const modules = [mixerModule.module('delay'), mixerModule.module('reverb')];
+
+      expect(mixerModule.edit(modules)).toStrictEqual(previousModules);
+      expect(modules[0]).toBeInstanceOf(Delay);
+      expect(modules[1]).toBeInstanceOf(Reverb);
+    });
+  });
 });

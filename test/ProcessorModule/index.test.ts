@@ -190,4 +190,17 @@ describe(ProcessorModule.name, () => {
       expect(processorModule.module('wah')).toBeInstanceOf(Wah);
     });
   });
+
+  describe(processorModule.edit.name, () => {
+    test('should set edited modules and return previous modules', () => {
+      // eslint-disable-next-line dot-notation
+      const previousModules = processorModule['modules'];
+
+      const modules = [processorModule.module('delay'), processorModule.module('reverb')];
+
+      expect(processorModule.edit(modules)).toStrictEqual(previousModules);
+      expect(modules[0]).toBeInstanceOf(Delay);
+      expect(modules[1]).toBeInstanceOf(Reverb);
+    });
+  });
 });

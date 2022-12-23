@@ -179,17 +179,17 @@ export abstract class SoundModule implements Connectable {
    * @param {AudioNode} source This argument is `AudioNode` as sound source.
    */
   public connect(source: AudioNode): void {
-    const input = this.modules[0].INPUT;
-
-    if (input === null) {
-      return;
-    }
-
     // Start connection
     // AudioSourceNode (Input)-> AudioNode -> ... -> AudioNode -> GainNode (Master Volume) -> AnalyserNode  -> AudioDestinationNode (Output)
     source.disconnect(0);  // Clear connection
 
     if (this.modules.length > 0) {
+      const input = this.modules[0].INPUT;
+
+      if (input === null) {
+        return;
+      }
+
       source.connect(input);
     } else {
       source.connect(this.mastervolume);
@@ -382,6 +382,19 @@ export abstract class SoundModule implements Connectable {
   }
 
   /**
+   * This method edits module to use and module connection order.
+   * @param {Array<Connectable>} modules This argument is edited modules.
+   * @return {Array<Connectable>} Return value is previous modules.
+   */
+  public edit(modules: Connectable[]): Connectable[] {
+    const previousModules = this.modules;
+
+    this.modules = modules;
+
+    return previousModules;
+  }
+
+  /**
    * This method gets effector's parameters as JSON.
    * @return {string}
    */
@@ -405,25 +418,23 @@ export abstract class SoundModule implements Connectable {
    * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
   protected init(context: AudioContext, bufferSize: BufferSize): void {
-    if (this.modules.length > 0) {
-      this.mastervolume.disconnect(0);
-      this.processor.disconnect(0);
-      this.analyser.INPUT.disconnect(0);
-      this.recorder.INPUT.disconnect(0);
-      this.session.INPUT.disconnect(0);
+    this.mastervolume.disconnect(0);
+    this.processor.disconnect(0);
+    this.analyser.INPUT.disconnect(0);
+    this.recorder.INPUT.disconnect(0);
+    this.session.INPUT.disconnect(0);
 
-      for (const module of this.modules) {
-        if (module.INPUT) {
-          module.INPUT.disconnect(0);
-        }
-
-        if (module.OUTPUT) {
-          module.OUTPUT.disconnect(0);
-        }
+    for (const module of this.modules) {
+      if (module.INPUT) {
+        module.INPUT.disconnect(0);
       }
 
-      this.modules.length = 0;
+      if (module.OUTPUT) {
+        module.OUTPUT.disconnect(0);
+      }
     }
+
+    this.modules.length = 0;
 
     this.processor = context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
 

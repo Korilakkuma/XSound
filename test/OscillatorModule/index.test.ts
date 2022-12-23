@@ -286,4 +286,17 @@ describe(OscillatorNode.name, () => {
     });
     /* eslint-enable dot-notation */
   });
+
+  describe(oscillatorModule.edit.name, () => {
+    test('should set edited modules and return previous modules', () => {
+      // eslint-disable-next-line dot-notation
+      const previousModules = oscillatorModule['modules'];
+
+      const modules = [oscillatorModule.module('delay'), oscillatorModule.module('reverb')];
+
+      expect(oscillatorModule.edit(modules)).toStrictEqual(previousModules);
+      expect(modules[0]).toBeInstanceOf(Delay);
+      expect(modules[1]).toBeInstanceOf(Reverb);
+    });
+  });
 });

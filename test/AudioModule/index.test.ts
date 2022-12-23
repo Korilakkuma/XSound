@@ -394,4 +394,17 @@ describe(AudioModule.name, () => {
       /* eslint-enable dot-notation */
     });
   });
+
+  describe(audioModule.edit.name, () => {
+    test('should set edited modules and return previous modules', () => {
+      // eslint-disable-next-line dot-notation
+      const previousModules = audioModule['modules'];
+
+      const modules = [audioModule.module('delay'), audioModule.module('reverb')];
+
+      expect(audioModule.edit(modules)).toStrictEqual(previousModules);
+      expect(modules[0]).toBeInstanceOf(Delay);
+      expect(modules[1]).toBeInstanceOf(Reverb);
+    });
+  });
 });

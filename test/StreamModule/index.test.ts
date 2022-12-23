@@ -421,4 +421,17 @@ describe(StreamModule.name, () => {
       /* eslint-enable dot-notation */
     });
   });
+
+  describe(streamModule.edit.name, () => {
+    test('should set edited modules and return previous modules', () => {
+      // eslint-disable-next-line dot-notation
+      const previousModules = streamModule['modules'];
+
+      const modules = [streamModule.module('delay'), streamModule.module('reverb')];
+
+      expect(streamModule.edit(modules)).toStrictEqual(previousModules);
+      expect(modules[0]).toBeInstanceOf(Delay);
+      expect(modules[1]).toBeInstanceOf(Reverb);
+    });
+  });
 });

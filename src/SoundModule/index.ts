@@ -29,35 +29,90 @@ import { Tremolo, TremoloParams } from './Effectors/Tremolo';
 import { VocalCanceler, VocalCancelerParams } from './Effectors/VocalCanceler';
 import { Wah, WahParams } from './Effectors/Wah';
 
-export type Module     = Analyser | Recorder | Session | Stereo | Compressor | BitCrusher | OverDrive | Fuzz | Preamp | Wah | PitchShifter | Equalizer | Filter | Autopanner | Tremolo | Ringmodulator | Phaser | Flanger | Chorus | Delay | Reverb | Panner | Listener | EnvelopeGenerator | NoiseGate | NoiseSuppressor | VocalCanceler;
-export type ModuleName = 'analyser' | 'recorder' | 'session' | 'autopanner' | 'bitcrusher' | 'overdrive' | 'fuzz' | 'chorus' | 'compressor' | 'delay' | 'preamp' | 'equalizer' | 'filter' | 'flanger' | 'listener' | 'panner' | 'phaser' | 'pitchshifter' | 'reverb' | 'ringmodulator' | 'stereo' | 'tremolo' | 'wah' | 'envelopegenerator' | 'noisegate' | 'noisesuppressor' | 'vocalcanceler';
+export type Module =
+  Analyser          |
+  Recorder          |
+  Session           |
+  Autopanner        |
+  BitCrusher        |
+  Chorus            |
+  Compressor        |
+  Delay             |
+  EnvelopeGenerator |
+  Equalizer         |
+  Filter            |
+  Flanger           |
+  Fuzz              |
+  Listener          |
+  NoiseGate         |
+  NoiseSuppressor   |
+  OverDrive         |
+  Panner            |
+  Phaser            |
+  PitchShifter      |
+  Preamp            |
+  Reverb            |
+  Ringmodulator     |
+  Stereo            |
+  Tremolo           |
+  VocalCanceler     |
+  Wah;
+
+export type ModuleName =
+  'analyser'          |
+  'recorder'          |
+  'session'           |
+  'autopanner'        |
+  'bitcrusher'        |
+  'chorus'            |
+  'compressor'        |
+  'delay'             |
+  'envelopegenerator' |
+  'equalizer'         |
+  'filter'            |
+  'flanger'           |
+  'fuzz'              |
+  'listener'          |
+  'noisegate'         |
+  'noisesuppressor'   |
+  'overdrive'         |
+  'panner'            |
+  'phaser'            |
+  'pitchshifter'      |
+  'preamp'            |
+  'reverb'            |
+  'ringmodulator'     |
+  'stereo'            |
+  'tremolo'           |
+  'vocalcanceler'     |
+  'wah';
 
 export type SoundModuleParams = {
   mastervolume?: number,
-  stereo?: StereoParams,
-  compressor?: CompressorParams,
+  autopanner?: AutopannerParams,
   bitcrusher?: BitCrusherParams,
-  overdrive?: OverDriveParams,
-  fuzz?: FuzzParams,
-  preamp?: PreampParams,
-  wah?: WahParams,
-  pitchshifter?: PitchShifterParams,
+  chorus?: ChorusParams,
+  compressor?: CompressorParams,
+  delay?: DelayParams,
+  envelopegenerator?: EnvelopeGeneratorParams,
   equalizer?: EqualizerParams,
   filter?: FilterParams,
-  autopanner?: AutopannerParams,
-  tremolo?: TremoloParams,
-  ringmodulator?: RingmodulatorParams,
-  phaser?: PhaserParams,
   flanger?: FlangerParams,
-  chorus?: ChorusParams,
-  delay?: DelayParams,
-  reverb?: ReverbParams,
-  panner?: PannerParams,
+  fuzz?: FuzzParams,
   listener?: ListenerParams,
-  envelopegenerator?: EnvelopeGeneratorParams,
   noisegate?: NoiseGateParams,
   noisesuppressor?: NoiseSuppressorParams,
-  vocalcanceler?: VocalCancelerParams
+  overdrive?: OverDriveParams,
+  panner?: PannerParams,
+  phaser?: PhaserParams,
+  pitchshifter?: PitchShifterParams,
+  preamp?: PreampParams,
+  reverb?: ReverbParams,
+  ringmodulator?: RingmodulatorParams,
+  stereo?: StereoParams,
+  tremolo?: TremoloParams,
+  vocalcanceler?: VocalCancelerParams,
+  wah?: WahParams
 };
 
 /**
@@ -81,30 +136,30 @@ export abstract class SoundModule implements Connectable {
   protected recorder: Recorder;
   protected session: Session;
 
-  protected stereo: Stereo;
-  protected compressor: Compressor;
+  protected autopanner: Autopanner;
   protected bitcrusher: BitCrusher;
-  protected overdrive: OverDrive;
-  protected fuzz: Fuzz;
-  protected preamp: Preamp;
-  protected wah: Wah;
-  protected pitchshifter: PitchShifter;
+  protected chorus: Chorus;
+  protected compressor: Compressor;
+  protected delay: Delay;
+  protected envelopegenerator: EnvelopeGenerator;
   protected equalizer: Equalizer;
   protected filter: Filter;
-  protected autopanner: Autopanner;
-  protected tremolo: Tremolo;
-  protected ringmodulator: Ringmodulator;
-  protected phaser: Phaser;
   protected flanger: Flanger;
-  protected chorus: Chorus;
-  protected delay: Delay;
-  protected reverb: Reverb;
-  protected panner: Panner;
+  protected fuzz: Fuzz;
   protected listener: Listener;
-  protected envelopegenerator: EnvelopeGenerator;
   protected noisegate: NoiseGate;
   protected noisesuppressor: NoiseSuppressor;
+  protected overdrive: OverDrive;
+  protected panner: Panner;
+  protected phaser: Phaser;
+  protected pitchshifter: PitchShifter;
+  protected preamp: Preamp;
+  protected reverb: Reverb;
+  protected ringmodulator: Ringmodulator;
+  protected stereo: Stereo;
+  protected tremolo: Tremolo;
   protected vocalcanceler: VocalCanceler;
+  protected wah: Wah;
 
   protected runningAnalyser = false;
   protected mixed = false;
@@ -122,30 +177,30 @@ export abstract class SoundModule implements Connectable {
     this.analyser          = new Analyser(context);
     this.recorder          = new Recorder(context, bufferSize, 2, 2);
     this.session           = new Session(context);
-    this.stereo            = new Stereo(context, bufferSize);
-    this.compressor        = new Compressor(context);
+    this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
-    this.overdrive         = new OverDrive(context);
-    this.fuzz              = new Fuzz(context);
-    this.preamp            = new Preamp(context);
-    this.wah               = new Wah(context);
-    this.pitchshifter      = new PitchShifter(context, bufferSize);
+    this.chorus            = new Chorus(context);
+    this.compressor        = new Compressor(context);
+    this.delay             = new Delay(context);
+    this.envelopegenerator = new EnvelopeGenerator(context);
     this.equalizer         = new Equalizer(context);
     this.filter            = new Filter(context);
-    this.autopanner        = new Autopanner(context);
-    this.tremolo           = new Tremolo(context);
-    this.ringmodulator     = new Ringmodulator(context);
-    this.phaser            = new Phaser(context);
     this.flanger           = new Flanger(context);
-    this.chorus            = new Chorus(context);
-    this.delay             = new Delay(context);
-    this.reverb            = new Reverb(context);
-    this.panner            = new Panner(context);
+    this.fuzz              = new Fuzz(context);
     this.listener          = new Listener(context);
-    this.envelopegenerator = new EnvelopeGenerator(context);
     this.noisegate         = new NoiseGate(context);
     this.noisesuppressor   = new NoiseSuppressor(context, bufferSize);
+    this.overdrive         = new OverDrive(context);
+    this.panner            = new Panner(context);
+    this.phaser            = new Phaser(context);
+    this.pitchshifter      = new PitchShifter(context, bufferSize);
+    this.preamp            = new Preamp(context);
+    this.reverb            = new Reverb(context);
+    this.ringmodulator     = new Ringmodulator(context);
+    this.stereo            = new Stereo(context, bufferSize);
+    this.tremolo           = new Tremolo(context);
     this.vocalcanceler     = new VocalCanceler(context, bufferSize);
+    this.wah               = new Wah(context);
 
     // The default order for connection
     this.modules = [
@@ -274,18 +329,18 @@ export abstract class SoundModule implements Connectable {
   public on(startTime?: number): SoundModule {
     const s = startTime ?? this.context.currentTime;
 
-    this.stereo.start();
-    this.bitcrusher.start();
-    this.overdrive.start();
-    this.fuzz.start();
-    this.chorus.start(s);
-    this.flanger.start(s);
-    this.phaser.start(s);
     this.autopanner.start(s);
-    this.tremolo.start(s);
-    this.ringmodulator.start(s);
-    this.wah.start(s);
+    this.bitcrusher.start(s);
+    this.chorus.start(s);
     this.filter.start(s);
+    this.flanger.start(s);
+    this.fuzz.start(s);
+    this.overdrive.start(s);
+    this.phaser.start(s);
+    this.ringmodulator.start(s);
+    this.stereo.start();
+    this.tremolo.start(s);
+    this.wah.start(s);
 
     return this;
   }
@@ -298,18 +353,18 @@ export abstract class SoundModule implements Connectable {
   public off(stopTime?: number): SoundModule {
     const s = stopTime ?? this.context.currentTime;
 
-    this.stereo.stop();
-    this.bitcrusher.stop();
-    this.overdrive.stop();
-    this.fuzz.stop();
-    this.chorus.stop(s);
-    this.flanger.stop(s);
-    this.phaser.stop(s);
     this.autopanner.stop(s);
-    this.tremolo.stop(s);
-    this.ringmodulator.stop(s);
-    this.wah.stop(s);
+    this.bitcrusher.stop(s);
+    this.chorus.stop(s);
     this.filter.stop(s);
+    this.flanger.stop(s);
+    this.fuzz.stop(s);
+    this.overdrive.stop(s);
+    this.phaser.stop(s);
+    this.ringmodulator.stop(s);
+    this.stereo.stop();
+    this.tremolo.stop(s);
+    this.wah.stop(s);
 
     return this;
   }
@@ -442,30 +497,30 @@ export abstract class SoundModule implements Connectable {
     this.analyser          = new Analyser(context);
     this.recorder          = new Recorder(context, bufferSize, 2, 2);
     this.session           = new Session(context);
-    this.stereo            = new Stereo(context, bufferSize);
-    this.compressor        = new Compressor(context);
+    this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
-    this.overdrive         = new OverDrive(context);
-    this.fuzz              = new Fuzz(context);
-    this.preamp            = new Preamp(context);
-    this.wah               = new Wah(context);
-    this.pitchshifter      = new PitchShifter(context, bufferSize);
+    this.chorus            = new Chorus(context);
+    this.compressor        = new Compressor(context);
+    this.delay             = new Delay(context);
+    this.envelopegenerator = new EnvelopeGenerator(context);
     this.equalizer         = new Equalizer(context);
     this.filter            = new Filter(context);
-    this.autopanner        = new Autopanner(context);
-    this.tremolo           = new Tremolo(context);
-    this.ringmodulator     = new Ringmodulator(context);
-    this.phaser            = new Phaser(context);
     this.flanger           = new Flanger(context);
-    this.chorus            = new Chorus(context);
-    this.delay             = new Delay(context);
-    this.reverb            = new Reverb(context);
-    this.panner            = new Panner(context);
+    this.fuzz              = new Fuzz(context);
     this.listener          = new Listener(context);
-    this.envelopegenerator = new EnvelopeGenerator(context);
     this.noisegate         = new NoiseGate(context);
     this.noisesuppressor   = new NoiseSuppressor(context, bufferSize);
+    this.overdrive         = new OverDrive(context);
+    this.panner            = new Panner(context);
+    this.phaser            = new Phaser(context);
+    this.pitchshifter      = new PitchShifter(context, bufferSize);
+    this.preamp            = new Preamp(context);
+    this.reverb            = new Reverb(context);
+    this.ringmodulator     = new Ringmodulator(context);
+    this.stereo            = new Stereo(context, bufferSize);
+    this.tremolo           = new Tremolo(context);
     this.vocalcanceler     = new VocalCanceler(context, bufferSize);
+    this.wah               = new Wah(context);
 
     // The default order for connection
     this.modules = [

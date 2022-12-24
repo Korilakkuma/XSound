@@ -1,7 +1,7 @@
 'use strict';
 
 import './types';
-import { SoundModule, SoundModuleParams } from './SoundModule';
+import { SoundModule, SoundModuleParams, Module, ModuleName } from './SoundModule';
 import {
   OscillatorModule,
   OscillatorModuleParams,
@@ -399,6 +399,8 @@ document.addEventListener('touchend',   setup, false);
 export type {
   SoundModule,
   SoundModuleParams,
+  Module,
+  ModuleName,
   OscillatorModule,
   OscillatorModuleParams,
   Glide,

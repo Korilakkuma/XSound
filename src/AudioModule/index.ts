@@ -542,7 +542,7 @@ export class AudioModule extends SoundModule {
 
   /**
    *  This method sprites audio.
-   *  @param {Object<string, Array<number>>} sprites This argument is associative array that contains sprite times.
+   *  @param {Object.<string, Array<number>>} sprites This argument is associative array that contains sprite times.
    *  @return {AudioBufferSprite} Return value is associative array that contains sprited `AudioBuffer`.
    */
   public sprite(sprites: { [spriteName: string]: [number, number] }): AudioBufferSprite | null {

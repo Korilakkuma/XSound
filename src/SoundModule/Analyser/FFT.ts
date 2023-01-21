@@ -2,10 +2,15 @@ import { ChannelNumber } from '../../types';
 import { DataType } from '../Analyser';
 import { Visualizer, VisualizerParams, GraphicsStyles } from './Visualizer';
 
+export type SpectrumScale = 'linear' | 'logarithmic';
+
 export type FFTParams = VisualizerParams & {
   type?: DataType,
   size?: number,
-  textInterval?: number
+  textInterval?: number,
+  scale?: SpectrumScale,
+  readonly minFrequency?: number,
+  readonly maxFrequency?: number
 };
 
 /**
@@ -14,6 +19,11 @@ export type FFTParams = VisualizerParams & {
  * @extends {Visualizer}
  */
 export class FFT extends Visualizer {
+  // for logarithmic
+  private static readonly MIN_FREQUENCY           = 62.5 as const;
+  private static readonly MAX_FREQUENCY           = 8000 as const;
+  private static readonly LOGARITHMIC_FREQUENCIES = [62.5, 125, 250, 500, 1000, 2000, 4000, 8000] as const;
+
   private type: DataType = 'uint';
 
   // Range for visualization
@@ -21,6 +31,8 @@ export class FFT extends Visualizer {
 
   // Visualize text at intervals of this value [Hz]
   private textInterval = 1000;
+
+  private scale: SpectrumScale = 'linear';
 
   /**
    * @param {number} sampleRate This argument is sample rate.
@@ -50,6 +62,9 @@ export class FFT extends Visualizer {
   public override param(params: 'type'): DataType;
   public override param(params: 'size'): number;
   public override param(params: 'textInterval'): number;
+  public override param(params: 'scale'): SpectrumScale;
+  public override param(params: 'minFrequency'): number;
+  public override param(params: 'maxFrequency'): number;
   public override param(params: FFTParams): FFT;
   public override param(params: keyof FFTParams | FFTParams): FFTParams[keyof FFTParams] | FFT {
     if (typeof params === 'string') {
@@ -60,6 +75,12 @@ export class FFT extends Visualizer {
           return this.size;
         case 'textInterval':
           return this.textInterval;
+        case 'scale':
+          return this.scale;
+        case 'minFrequency':
+          return FFT.MIN_FREQUENCY;
+        case 'maxFrequency':
+          return FFT.MAX_FREQUENCY;
         case 'interval':
           return super.param(params);
         case 'styles':
@@ -88,6 +109,14 @@ export class FFT extends Visualizer {
         case 'textInterval':
           if (typeof value === 'number') {
             this.textInterval = value;
+          }
+
+          break;
+        case 'scale':
+          if (typeof value === 'string') {
+            if ((value === 'linear') || (value === 'logarithmic')) {
+              this.scale = value;
+            }
           }
 
           break;
@@ -178,15 +207,40 @@ export class FFT extends Visualizer {
         // Visualize wave
         context.beginPath();
 
-        for (let i = 0; i < actualSize; i++) {
-          const x = ((i / actualSize) * innerWidth) + left;
-          const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+        switch (this.scale) {
+          case 'linear':
+            for (let i = 0; i < actualSize; i++) {
+              const x = ((i / actualSize) * innerWidth) + left;
+              const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
-          if (i === 0) {
-            context.moveTo((x + (lineWidth / 2)), y);
-          } else {
-            context.lineTo(x, y);
-          }
+              if (i === 0) {
+                context.moveTo((x + (lineWidth / 2)), y);
+              } else {
+                context.lineTo(x, y);
+              }
+            }
+
+            break;
+          case 'logarithmic':
+            for (let i = 0; i < data.length; i++) {
+              const f = i * frequencyResolution;
+              const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
+              const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+
+              if ((x < left) || (x > (left + innerWidth))) {
+                continue;
+              }
+
+              if (i === 0) {
+                context.moveTo((left + (lineWidth / 2)), y);
+              } else {
+                context.lineTo(x, y);
+              }
+            }
+
+            break;
+          default:
+            break;
         }
 
         context.stroke();
@@ -255,11 +309,31 @@ export class FFT extends Visualizer {
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {
       // Visualize grid and text (X axis)
-      for (let i = 0; i < actualSize; i++) {
-        if ((i % numberOfTexts) === 0) {
-          const x = Math.trunc((i / actualSize) * innerWidth) + left;
+      if ((this.type === 'uint') || ((this.type === 'float') && (this.scale === 'linear'))) {
+        for (let i = 0; i < actualSize; i++) {
+          if ((i % numberOfTexts) === 0) {
+            const x = Math.trunc((i / actualSize) * innerWidth) + left;
 
-          const f = Math.trunc(this.textInterval * (i / numberOfTexts));
+            const f = Math.trunc(this.textInterval * (i / numberOfTexts));
+            const t = (f < 1000) ? `${f} Hz` : `${(f / 1000).toString(10).slice(0, 3)} kHz`;
+
+            // Visualize grid
+            if (gridColor !== 'none') {
+              context.fillStyle = gridColor;
+              context.fillRect(x, top, 1, innerHeight);
+            }
+
+            // Visualize text
+            if (textColor !== 'none') {
+              context.fillStyle = textColor;
+              context.font      = this.createFontString();
+              context.fillText(t, (x - (context.measureText(t).width / 2)), (top + innerHeight + fontSize));
+            }
+          }
+        }
+      } else {
+        FFT.LOGARITHMIC_FREQUENCIES.forEach((f: 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000) => {
+          const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
           const t = (f < 1000) ? `${f} Hz` : `${(f / 1000).toString(10).slice(0, 3)} kHz`;
 
           // Visualize grid
@@ -274,7 +348,7 @@ export class FFT extends Visualizer {
             context.font      = this.createFontString();
             context.fillText(t, (x - (context.measureText(t).width / 2)), (top + innerHeight + fontSize));
           }
-        }
+        });
       }
 
       // Visualize grid and text (Y axis)
@@ -380,15 +454,50 @@ export class FFT extends Visualizer {
 
         let d = '';
 
-        for (let i = 0; i < actualSize; i++) {
-          const x = Math.trunc((i / actualSize) * innerWidth) + left;
-          const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+        switch (this.scale) {
+          case 'linear':
+            for (let i = 0; i < actualSize; i++) {
+              const x = Math.trunc((i / actualSize) * innerWidth) + left;
+              const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
-          if (i === 0) {
-            d += `M${x + (lineWidth / 2)} ${y}`;
-          } else {
-            d += ` L${x} ${y}`;
-          }
+              // HACK: Because of infinity sometimes
+              if (!isFinite(x) || !isFinite(y)) {
+                continue;
+              }
+
+              if (d === '') {
+                d += `M${x + (lineWidth / 2)} ${y}`;
+              } else {
+                d += ` L${x} ${y}`;
+              }
+            }
+
+            break;
+          case 'logarithmic':
+            for (let i = 0; i < data.length; i++) {
+              const f = i * frequencyResolution;
+              const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
+              const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+
+              // HACK: Because of infinity sometimes
+              if (!isFinite(x) || !isFinite(y)) {
+                continue;
+              }
+
+              if ((x < left) || (x > (left + innerWidth))) {
+                continue;
+              }
+
+              if (d === '') {
+                d += `M${left + (lineWidth / 2)} ${top}`;
+              } else {
+                d += ` L${x} ${y}`;
+              }
+            }
+
+            break;
+          default:
+            break;
         }
 
         path.setAttribute('d', d);
@@ -488,11 +597,52 @@ export class FFT extends Visualizer {
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {
       // Visualize grid and text (X axis)
-      for (let i = 0; i < actualSize; i++) {
-        if ((i % numberOfTexts) === 0) {
-          const x = Math.trunc((i / actualSize) * innerWidth) + left;
+      if ((this.type === 'uint') || ((this.type === 'float') && (this.scale === 'linear'))) {
+        for (let i = 0; i < actualSize; i++) {
+          if ((i % numberOfTexts) === 0) {
+            const x = Math.trunc((i / actualSize) * innerWidth) + left;
 
-          const f = Math.trunc(this.textInterval * (i / numberOfTexts));
+            const f = Math.trunc(this.textInterval * (i / numberOfTexts));
+            const t = (f < 1000) ? `${f} Hz` : `${(f / 1000).toString(10).slice(0, 3)} kHz`;
+
+            // Visualize grid
+            if (gridColor !== 'none') {
+              const rect = document.createElementNS(FFT.XMLNS, 'rect');
+
+              rect.setAttribute('x',      x.toString(10));
+              rect.setAttribute('y',      top.toString(10));
+              rect.setAttribute('width',  '1');
+              rect.setAttribute('height', innerHeight.toString(10));
+              rect.setAttribute('stroke', 'none');
+              rect.setAttribute('fill',   gridColor);
+
+              svg.appendChild(rect);
+            }
+
+            // Visualize text
+            if (textColor !== 'none') {
+              const text = document.createElementNS(FFT.XMLNS, 'text');
+
+              text.textContent = t;
+
+              text.setAttribute('x', x.toString(10));
+              text.setAttribute('y', (top + innerHeight + bottom).toString(10));
+
+              text.setAttribute('text-anchor', 'middle');
+              text.setAttribute('stroke',      'none');
+              text.setAttribute('fill',        textColor);
+              text.setAttribute('font-family', (this.styles.font?.family ?? 'Arial'));
+              text.setAttribute('font-size',   fontSize.toString(10));
+              text.setAttribute('font-style',  this.styles.font?.style ?? 'normal');
+              text.setAttribute('font-weight', this.styles.font?.weight ?? 'normal');
+
+              svg.appendChild(text);
+            }
+          }
+        }
+      } else {
+        FFT.LOGARITHMIC_FREQUENCIES.forEach((f: 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000) => {
+          const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
           const t = (f < 1000) ? `${f} Hz` : `${(f / 1000).toString(10).slice(0, 3)} kHz`;
 
           // Visualize grid
@@ -516,7 +666,7 @@ export class FFT extends Visualizer {
             text.textContent = t;
 
             text.setAttribute('x', x.toString(10));
-            text.setAttribute('y', (top + innerHeight).toString(10));
+            text.setAttribute('y', (top + innerHeight + bottom).toString(10));
 
             text.setAttribute('text-anchor', 'middle');
             text.setAttribute('stroke',      'none');
@@ -524,11 +674,11 @@ export class FFT extends Visualizer {
             text.setAttribute('font-family', (this.styles.font?.family ?? 'Arial'));
             text.setAttribute('font-size',   fontSize.toString(10));
             text.setAttribute('font-style',  this.styles.font?.style ?? 'normal');
-            text.setAttribute('font-weight',  this.styles.font?.weight ?? 'normal');
+            text.setAttribute('font-weight', this.styles.font?.weight ?? 'normal');
 
             svg.appendChild(text);
           }
-        }
+        });
       }
 
       // Visualize grid and text (Y axis)

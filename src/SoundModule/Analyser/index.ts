@@ -3,7 +3,7 @@ import { ChannelNumber } from '../../types';
 import { Visualizer, VisualizerParams, Color, GraphicsApi, Gradient, Gradients, Shape, Font, GraphicsStyles } from './Visualizer';
 import { TimeOverview, TimeOverviewParams, CurrentTimeStyles, MouseEventTypes, DragMode, DragCallbackFunction } from './TimeOverview';
 import { Time, TimeParams } from './Time';
-import { FFT, FFTParams } from './FFT';
+import { FFT, FFTParams, SpectrumScale } from './FFT';
 
 export type Domain   = 'timeoverview' | 'time' | 'fft';
 export type DataType = 'uint' | 'float';  // unsigned int 8 bit (`Uint8Array`) or float 32 bit (`Float32Array`)
@@ -28,7 +28,8 @@ export type {
   Time,
   TimeParams,
   FFT,
-  FFTParams
+  FFTParams,
+  SpectrumScale
 };
 
 export type AnalyserParams = {

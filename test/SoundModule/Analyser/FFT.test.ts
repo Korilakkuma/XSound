@@ -15,6 +15,7 @@ describe(FFT.name, () => {
         type        : 'uint',
         size        : 256,
         textInterval: 1000,
+        scale       : 'linear',
         interval    : 1000,
         styles      : {
           shape    : 'line',
@@ -50,6 +51,7 @@ describe(FFT.name, () => {
         type        : 'float',
         size        : 128,
         textInterval: 120,
+        scale       : 'logarithmic',
         interval    : 0,
         styles      : {
           shape     : 'rect',
@@ -103,6 +105,18 @@ describe(FFT.name, () => {
 
       test('should return `textInterval`', () => {
         expect(fft.param('textInterval')).toBeCloseTo(120, 1);
+      });
+
+      test('should return `scale`', () => {
+        expect(fft.param('scale')).toBe('logarithmic');
+      });
+
+      test('should return `minFrequency`', () => {
+        expect(fft.param('minFrequency')).toBeCloseTo(62.5, 1);
+      });
+
+      test('should return `maxFrequency`', () => {
+        expect(fft.param('maxFrequency')).toBeCloseTo(8000, 1);
       });
 
       test('should return `interval`', () => {
@@ -160,6 +174,7 @@ describe(FFT.name, () => {
         type        : 'uint',
         size        : 256,
         textInterval: 1000,
+        scale       : 'linear',
         interval    : 1000,
         styles      : {
           shape    : 'line',

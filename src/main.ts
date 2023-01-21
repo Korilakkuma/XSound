@@ -45,7 +45,8 @@ import {
   Time,
   TimeParams,
   FFT,
-  FFTParams
+  FFTParams,
+  SpectrumScale
 } from './SoundModule/Analyser';
 import { Recorder, RecorderParams, RecordType, QuantizationBit, WaveExportType, Track, Channel } from './SoundModule/Recorder';
 import { Session, SessionSetupParams, SessionConnectionParams, NumberOfSessionChannels, Room, RoomMap } from './SoundModule/Session';
@@ -460,6 +461,7 @@ export type {
   TimeParams,
   FFT,
   FFTParams,
+  SpectrumScale,
   Recorder,
   RecorderParams,
   RecordType,

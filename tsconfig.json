@@ -4,7 +4,8 @@
     "forceConsistentCasingInFileNames": true,
     "lib": [
       "dom",
-      "esnext"
+      "esnext",
+      "webworker"
     ],
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,

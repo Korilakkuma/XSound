@@ -1,3 +1,5 @@
+import { MMLScheduleWorkerEventData } from '../types';
+import { createWorkerObjectURL } from '../worker';
 import { OscillatorModule } from '../OscillatorModule';
 import { OneshotModule } from '../OneshotModule';
 import { NoiseModule } from '../NoiseModule';
@@ -6,6 +8,7 @@ import { Tokenizer } from './Tokenizer';
 import { TreeConstructor } from './TreeConstructor';
 import { Sequencer } from './Sequencer';
 import { Sequence } from './Sequence';
+import { schedule } from './ScheduleWorker';
 
 /**
  * This class starts and stops each MML part.
@@ -17,7 +20,7 @@ export class Part {
   private mml: string;
   private syntaxTree: string;
   private previous: Sequence | null = null;
-  private timerId: number | null = null;
+  private scheduleWorker: Worker | null = null;
   private currentIndex = 0;
   private currentPosition = 0;
   private offset = 0;
@@ -84,6 +87,12 @@ export class Part {
     }
 
     this.syntaxTree = sequencer.getSyntaxTree();
+
+    const workerObjectURL = createWorkerObjectURL(schedule.toString());
+
+    this.scheduleWorker = new Worker(workerObjectURL);
+
+    window.URL.revokeObjectURL(workerObjectURL);
   }
 
   /**
@@ -91,6 +100,10 @@ export class Part {
    * @param {boolean} highlight This argument is `true` in case of surrounding by `span.x-highlight` HTML.
    */
   public start(highlight: boolean): void {
+    if (this.scheduleWorker === null) {
+      return;
+    }
+
     if (!this.sequences[this.currentIndex]) {
       this.stop();
 
@@ -143,7 +156,19 @@ export class Part {
       }
     }
 
-    this.timerId = window.setTimeout(() => {
+    // ref: https://web.dev/audio-scheduling/
+    const message: MMLScheduleWorkerEventData = {
+      type    : 'schedule',
+      duration: sequence.duration
+    };
+
+    this.scheduleWorker.postMessage(message);
+
+    this.scheduleWorker.onmessage = (event: MessageEvent<MMLScheduleWorkerEventData>) => {
+      if (event.data.type !== 'next') {
+        return;
+      }
+
       if (this.source instanceof OscillatorModule) {
         if (this.stopCallback) {
           this.stopCallback(sequence);
@@ -165,13 +190,17 @@ export class Part {
 
       // Start next sequence
       this.start(highlight);
-    }, (sequence.duration * 1000));
+    };
   }
 
   /**
    * This method stops MML.
    */
   public stop(): void {
+    if (this.scheduleWorker === null) {
+      return;
+    }
+
     if (this.previous === null) {
       return;
     }
@@ -200,11 +229,11 @@ export class Part {
       }
     }
 
-    if (this.timerId) {
-      window.clearTimeout(this.timerId);
-    }
+    const message: MMLScheduleWorkerEventData = { type: 'stop' };
 
-    this.timerId = null;
+    this.scheduleWorker.postMessage(message);
+    this.scheduleWorker.terminate();
+    this.scheduleWorker = null;
   }
 
   /**
@@ -241,7 +270,7 @@ export class Part {
    * @return {boolean} If MML part are paused, this value is `true`. Otherwise, this value is `false`.
    */
   public paused(): boolean {
-    return this.timerId === null;
+    return this.scheduleWorker === null;
   }
 
   /**

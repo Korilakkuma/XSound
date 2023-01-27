@@ -1,4 +1,5 @@
 import { AudioContextMock } from '../../mock/AudioContextMock';
+import { WorkerMock } from '../../mock/WorkerMock';
 import { OscillatorModule } from '../../src/OscillatorModule';
 import { Sequence } from '../../src/MML/Sequence';
 import { Part } from '../../src/MML/Part';
@@ -6,6 +7,36 @@ import { MML } from '../../src/MML/index';
 
 describe(MML.name, () => {
   const mml = new MML();
+
+  const originalWebWorker       = window.Worker;
+  const originalCreateObjectURL = URL.createObjectURL;
+  const originalRevokeObjectURL = URL.revokeObjectURL;
+
+  beforeAll(() => {
+    Object.defineProperty(window, 'Worker', {
+      configurable: true,
+      writable    : true,
+      value       : WorkerMock
+    });
+
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      writable    : true,
+      value       : () => 'https://xxx'
+    });
+
+    Object.defineProperty(URL, 'revokeObjectURL', {
+      configurable: true,
+      writable    : true,
+      value       : () => {}
+    });
+  });
+
+  afterAll(() => {
+    window.Worker       = originalWebWorker;
+    URL.createObjectURL = originalCreateObjectURL;
+    URL.revokeObjectURL = originalRevokeObjectURL;
+  });
 
   afterEach(() => {
     mml.clear();

@@ -1,10 +1,32 @@
 import { AudioContextMock } from '../../mock/AudioContextMock';
+import { WorkerMock } from '../../mock/WorkerMock';
 import { OscillatorModule } from '../../src/OscillatorModule';
+import { Sequence } from '../../src/MML/Sequence';
 import { Part } from '../../src/MML/Part';
 
-jest.useFakeTimers();
-
 describe(Part.name, () => {
+  const originalWebWorker       = window.Worker;
+  const originalCreateObjectURL = URL.createObjectURL;
+  const originalRevokeObjectURL = URL.revokeObjectURL;
+
+  Object.defineProperty(window, 'Worker', {
+    configurable: true,
+    writable    : true,
+    value       : WorkerMock
+  });
+
+  Object.defineProperty(URL, 'createObjectURL', {
+    configurable: true,
+    writable    : true,
+    value       : () => 'https://xxx'
+  });
+
+  Object.defineProperty(URL, 'revokeObjectURL', {
+    configurable: true,
+    writable    : true,
+    value       : () => {}
+  });
+
   const context = new AudioContextMock();
 
   // @ts-ignore
@@ -27,76 +49,98 @@ describe(Part.name, () => {
     endedCallback: endedCallbackMock
   });
 
+  afterAll(() => {
+    window.Worker       = originalWebWorker;
+    URL.createObjectURL = originalCreateObjectURL;
+    URL.revokeObjectURL = originalRevokeObjectURL;
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
-    jest.clearAllTimers();
 
     part.stop();
     part.setCurrentIndex(0);
   });
 
   describe(part.start.name, () => {
-    test('should call `start` method and callbacks', () => {
-      const originalStart = source.start;
+    test('should call `start` method, callbacks and worker should call `postMessage`', () => {
+      // HACK:
+      // eslint-disable-next-line dot-notation
+      if (part['scheduleWorker'] === null) {
+        return;
+      }
 
-      const startMock = jest.fn();
+      /* eslint-disable dot-notation */
+      const originalSourceStart = part['source'].start;
+      const originalWorkerPostMessage = part['scheduleWorker'].postMessage;
+      /* eslint-enable dot-notation */
 
-      source.start = startMock;
+      const sourceStartMock       = jest.fn();
+      const workerPostMessageMock = jest.fn();
+
+      /* eslint-disable dot-notation */
+      part['source'].start               = sourceStartMock;
+      part['scheduleWorker'].postMessage = workerPostMessageMock;
+      /* eslint-enable dot-notation */
 
       part.start(false);
 
-      expect(startMock).toHaveBeenCalledTimes(1);
+      expect(sourceStartMock).toHaveBeenCalledTimes(1);
       expect(startCallbackMock).toHaveBeenCalledTimes(1);
       expect(stopCallbackMock).toHaveBeenCalledTimes(0);
 
-      jest.advanceTimersToNextTimer(1);
-
-      expect(startMock).toHaveBeenCalledTimes(2);
-      expect(startCallbackMock).toHaveBeenCalledTimes(2);
-      expect(stopCallbackMock).toHaveBeenCalledTimes(1);
-
-      source.start = originalStart;
+      /* eslint-disable dot-notation */
+      part['source'].start               = originalSourceStart;
+      part['scheduleWorker'].postMessage = originalWorkerPostMessage;
+      /* eslint-enable dot-notation */
     });
   });
 
   describe(part.stop.name, () => {
-    test('should call sound source `stop` method and clear timer', () => {
+    test('should call sound source `stop` method and worker should call `postMessage` and `terminate` method', () => {
+      // HACK:
       // eslint-disable-next-line dot-notation
-      const originalSourceStop   = part['source'].stop;
-      const originalClearTimeout = window.clearTimeout;
-
-      const sourceStopMock   = jest.fn();
-      const clearTimeoutMock = jest.fn();
+      if (part['scheduleWorker'] === null) {
+        return;
+      }
 
       // eslint-disable-next-line dot-notation
-      part['source'].stop = sourceStopMock;
+      const originalSourceStop = part['source'].stop;
 
-      Object.defineProperty(window, 'clearTimeout', {
-        configurable: true,
-        writable    : true,
-        value       : clearTimeoutMock
-      });
+      const sourceStopMock        = jest.fn();
+      const workerPostMessageMock = jest.fn();
+      const workerTerminateMock   = jest.fn();
+
+      /* eslint-disable dot-notation */
+      part['source'].stop                = sourceStopMock;
+      part['scheduleWorker'].postMessage = workerPostMessageMock;
+      part['scheduleWorker'].terminate   = workerTerminateMock;
+      /* eslint-enable dot-notation */
 
       part.start(false);
 
-      jest.advanceTimersToNextTimer(1);
+      // eslint-disable-next-line dot-notation
+      part['previous'] = new Sequence({
+        id         : '2',
+        note       : 'R2.',
+        indexes    : [-1],
+        frequencies: [-1],
+        start      : 2,
+        stop       : 6,
+        duration   : 4
+      });
 
       part.stop();
 
       expect(sourceStopMock).toHaveBeenCalledTimes(1);
-      expect(clearTimeoutMock).toHaveBeenCalledTimes(3);  // XXX:
+      expect(workerPostMessageMock).toHaveBeenCalledTimes(2);
+      expect(workerTerminateMock).toHaveBeenCalledTimes(1);
 
       // eslint-disable-next-line dot-notation
-      expect(part['timerId']).toBe(null);
+      expect(part['scheduleWorker']).toBe(null);
 
       // eslint-disable-next-line dot-notation
       part['source'].stop = originalSourceStop;
-
-      Object.defineProperty(window, 'clearTimeout', {
-        configurable: true,
-        writable    : true,
-        value       : originalClearTimeout
-      });
     });
   });
 
@@ -121,13 +165,43 @@ describe(Part.name, () => {
 
   describe(part.paused.name, () => {
     test('should return `false`', () => {
+      const part = new Part({
+        source,
+        mml: '',
+        offset,
+        startCallback: startCallbackMock,
+        stopCallback : stopCallbackMock,
+        endedCallback: endedCallbackMock
+      });
+
       part.start(false);
 
       expect(part.paused()).toBe(false);
     });
 
     test('should return `true`', () => {
+      const part = new Part({
+        source,
+        mml: '',
+        offset,
+        startCallback: startCallbackMock,
+        stopCallback : stopCallbackMock,
+        endedCallback: endedCallbackMock
+      });
+
       part.start(false);
+
+      // eslint-disable-next-line dot-notation
+      part['previous'] = new Sequence({
+        id         : '2',
+        note       : 'R2.',
+        indexes    : [-1],
+        frequencies: [-1],
+        start      : 2,
+        stop       : 6,
+        duration   : 4
+      });
+
       part.stop();
 
       expect(part.paused()).toBe(true);

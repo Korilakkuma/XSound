@@ -190,11 +190,11 @@ export class Reverb extends Effector {
 
   /**
    * This method creates and appends to Reverb presets instance of `AudioBuffer` by Ajax.
-   * @param {Array<string>|Array<AudioBuffer>} rirs This argument is array that contains URL or instance of `AudioBuffer` for impulse response.
-   * @param {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
-   * @param {function} successCallback This argument is invoked on success.
-   * @param {function} errorCallback This argument is invoked on failure.
-   * @param {function} progressCallback This argument is invoked during receiving audio data.
+   * @property {Array<string>|Array<AudioBuffer>} rirs This argument is array that contains URL or instance of `AudioBuffer` for impulse response.
+   * @property {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
+   * @property {function} successCallback This argument is invoked on success.
+   * @property {function} errorCallback This argument is invoked on failure.
+   * @property {function} progressCallback This argument is invoked during receiving audio data.
    */
   public preset(params: {
       rirs: string[] | AudioBuffer[];
@@ -250,12 +250,12 @@ export class Reverb extends Effector {
 
   /**
    * This method retrives `ArrayBuffer` and creates instance of `AudioBuffer`.
-   * @param {string} url This argument is resource URL for one-shot audio.
-   * @param {number} index This argument is in order to assign instance of `AudioBuffer`.
-   * @param {number} timeout This argument is Ajax timeout.
-   * @param {function} successCallback This argument is invoked on success.
-   * @param {function} errorCallback This argument is invoked on failure
-   * @param {function} progressCallback This argument is invoked during receiving audio data.
+   * @property {string} url This argument is resource URL for one-shot audio.
+   * @property {number} index This argument is in order to assign instance of `AudioBuffer`.
+   * @property {number} timeout This argument is Ajax timeout.
+   * @property {function} successCallback This argument is invoked on success.
+   * @property {function} errorCallback This argument is invoked on failure
+   * @property {function} progressCallback This argument is invoked during receiving audio data.
    */
   private load(params: {
     rir: string;

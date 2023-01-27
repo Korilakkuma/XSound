@@ -13,9 +13,9 @@ export class MIDI {
 
   /**
    * This method invokes `requestMIDIAccess` and gets instance of `MIDIAccess`.
-   * @param {MIDIOptions} options This argument is object based on `MIDIOptions` dictionary.
-   * @param {function} successCallback This argument is invoked on `requestMIDIAccess` success.
-   * @param {function} errorCallback This argument is invoked on `requestMIDIAccess` failure.
+   * @property {MIDIOptions} options This argument is object based on `MIDIOptions` dictionary.
+   * @property {function} successCallback This argument is invoked on `requestMIDIAccess` success.
+   * @property {function} errorCallback This argument is invoked on `requestMIDIAccess` failure.
    * @return {Promise<MIDIAccess|void>} Return value is `Promise` that `requestMIDIAccess` method returns.
    */
   public setup(params: {

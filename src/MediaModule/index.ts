@@ -84,10 +84,10 @@ export class MediaModule extends SoundModule {
 
   /**
    * This method gets `HTMLMediaElement` and selects media format. In addition, this method adds event listeners that are defined by `HTMLMediaElement`.
-   * @param {HTMLAudioElement|HTMLVideoElement} media This argument is either `HTMLAudioElement` or `HTMLVideoElement`.
-   * @param {Array<string>} formats This argument is usable media format. For example, 'wav', 'ogg', 'webm', 'mp4' ...etc.
-   * @param {boolean} autoplay This argument is in order to determine autoplay. The default value is `false`.
-   * @param {{ [eventType: string]: (event: Event | Error) => void }} listeners This argument is event listeners that are defined by `HTMLMediaElement`.
+   * @property {HTMLAudioElement|HTMLVideoElement} media This argument is either `HTMLAudioElement` or `HTMLVideoElement`.
+   * @property {Array<string>} formats This argument is usable media format. For example, 'wav', 'ogg', 'webm', 'mp4' ...etc.
+   * @property {boolean} autoplay This argument is in order to determine autoplay. The default value is `false`.
+   * @property {{ [eventType: string]: (event: Event | Error) => void }} listeners This argument is event listeners that are defined by `HTMLMediaElement`.
    * @return {MediaModule} Return value is for method chain.
    */
   public setup(params: {
@@ -191,7 +191,7 @@ export class MediaModule extends SoundModule {
 
   /**
    * This method prepares for playing media anytime after loading media resource.
-   * @param {string} source This argument is Object URL or file name for media resource.
+   * @param {string} src This argument is Object URL or file name for media resource.
    * @param {string} mimeType This argument is required in case of audio streaming.
    * @return {MediaModule} Return value is for method chain.
    */

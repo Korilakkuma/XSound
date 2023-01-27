@@ -41,7 +41,7 @@ export class Recorder implements Connectable {
 
   /**
    * This method sets the max number of tracks.
-   * @param {RecordType} numberOfTracks This argument is the number of channels (not used currently).
+   * @param {RecordType} numberOfChannels This argument is the number of channels (not used currently).
    * @param {number} numberOfTracks This argument is the max number of tracks.
    * @return {Recorder} Return value is for method chain.
    */

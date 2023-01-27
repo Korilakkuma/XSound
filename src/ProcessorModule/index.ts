@@ -51,7 +51,7 @@ export class ProcessorModule extends SoundModule {
 
   /**
    * This method sets registered processor name and options for `AudioWorkletNode` constructor.
-   * @param {string} name This argument is name of `AudioWorkletProcessor`.
+   * @param {string} processorName This argument is name of `AudioWorkletProcessor`.
    * @param {AudioWorkletNodeOptions} options This argument is object based on `AudioWorkletNodeOptions` dictionary.
    * @return {ProcessorModule} Return value is for method chain.
    */
@@ -167,7 +167,7 @@ export class ProcessorModule extends SoundModule {
 
   /**
    * This method sets event handler that is invoked on receiving message.
-   * @param {function} This argument is invoked on receiving message.
+   * @param {function} callback This argument is invoked on receiving message.
    * @return {ProcessorModule} Return value is for method chain.
    */
   public onMessage(callback: (event: MessageEvent) => void): ProcessorModule {
@@ -182,7 +182,7 @@ export class ProcessorModule extends SoundModule {
 
   /**
    * This method sets event handler that is invoked on receiving message that cannot be deserialized.
-   * @param {function} This argument is invoked on receiving message that cannot be deserialized.
+   * @param {function} callback This argument is invoked on receiving message that cannot be deserialized.
    * @return {ProcessorModule} Return value is for method chain.
    */
   public onMessageError(callback: (event: MessageEvent) => void): ProcessorModule {

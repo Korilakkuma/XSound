@@ -67,7 +67,7 @@ export class Session implements Connectable {
   }
 
   /**
-   * This method creates instance of `Room`
+   * This method creates instance of `Room`.
    * @param {SessionSetupParams} params This argument is in order to create instance of `Room`.
    * @return {Session} Return value is for method chain.
    */
@@ -77,7 +77,7 @@ export class Session implements Connectable {
   }
 
   /**
-   * This method creates instance of `WebSocket`
+   * This method creates instance of `WebSocket`.
    * @param {SessionConnectionParams} params This argument is in order to create instance of `WebSocket`.
    * @return {Session} Return value is for method chain.
    */

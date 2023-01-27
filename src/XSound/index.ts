@@ -249,12 +249,12 @@ export function ifft(reals: Float32Array, imags: Float32Array, size: number): vo
 
 /**
  * This class (static) method retrieves resource on web by Ajax.
- * @param {string} url This argument is URL for resource.
- * @param {XMLHttpRequestResponseType} type This argument is response type that is one of 'arraybuffer', 'blob', 'document', 'json', 'text'. The default value is 'arraybuffer'.
- * @param {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
- * @param {function} successCallback This argument is invoked on success.
- * @param {function} errorCallback This argument is invoked on failure.
- * @param {function} progressCallback This argument is invoked during receiving data.
+ * @property {string} url This argument is URL for resource.
+ * @property {XMLHttpRequestResponseType} type This argument is response type that is one of 'arraybuffer', 'blob', 'document', 'json', 'text'. The default value is 'arraybuffer'.
+ * @property {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
+ * @property {function} successCallback This argument is invoked on success.
+ * @property {function} errorCallback This argument is invoked on failure.
+ * @property {function} progressCallback This argument is invoked during receiving data.
  */
 export function ajax(params: {
   url: string;
@@ -371,11 +371,11 @@ export function exitFullscreen(): Promise<void> {
 
 /**
  * This class (static) method reads file.
- * @param {File} file This argument is instance of `File`.
- * @param {FileReaderType} type This argument is one of 'arraybuffer', 'dataURL', 'text', 'json'.
- * @param {function} successCallback This argument is invoked on success.
- * @param {function} errorCallback This argument is invoked on failure.
- * @param {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
+ * @property {File} file This argument is instance of `File`.
+ * @property {FileReaderType} type This argument is one of 'arraybuffer', 'dataURL', 'text', 'json'.
+ * @property {function} successCallback This argument is invoked on success.
+ * @property {function} errorCallback This argument is invoked on failure.
+ * @property {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
  */
 export function read(params: {
   file: File;
@@ -468,11 +468,11 @@ export function read(params: {
 
 /**
  * This class (static) method gets instance of `File` from `DataTransfer`.
- * @param {DragEvent} event This argument is instance of `DragEvent`.
- * @param {FileReaderType|string} type This argument is one of 'arraybuffer', 'dataURL', 'objectURL', 'text', 'json'.
- * @param {function} successCallback This argument is invoked on success.
- * @param {function} errorCallback This argument is invoked on failure.
- * @param {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
+ * @property {DragEvent} event This argument is instance of `DragEvent`.
+ * @property {FileReaderType|string} type This argument is one of 'arraybuffer', 'dataURL', 'objectURL', 'text', 'json'.
+ * @property {function} successCallback This argument is invoked on success.
+ * @property {function} errorCallback This argument is invoked on failure.
+ * @property {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
  * @return {string|File|null} Return value is Object URL or instance of `File` on success. Otherwise, it is `null`.
  */
 export function drop(params: {
@@ -509,11 +509,11 @@ export function drop(params: {
 
 /**
  * This class (static) method gets instance of `File`.
- * @param {Event} event This argument is instance of `Event` by `HTMLInputElement`.
- * @param {FileReaderType|string} type This argument is one of 'arraybuffer', 'dataURL', 'objectURL', 'text', 'json'.
- * @param {function} successCallback This argument is invoked on success.
- * @param {function} errorCallback This argument is invoked on failure.
- * @param {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
+ * @property {Event} event This argument is instance of `Event` by `HTMLInputElement`.
+ * @property {FileReaderType|string} type This argument is one of 'arraybuffer', 'dataURL', 'objectURL', 'text', 'json'.
+ * @property {function} successCallback This argument is invoked on success.
+ * @property {function} errorCallback This argument is invoked on failure.
+ * @property {function} progressCallback This argument is invoked as `onprogress` event handler in instance of `FileReader`.
  * @return {string|File|null} Return value is Object URL or instance of `File` on success. Otherwise, it is `null`.
  */
 export function file(params: {

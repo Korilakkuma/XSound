@@ -12,13 +12,13 @@ export class Sequence {
   private _duration: number;
 
   /**
-   * @param {string} id This argument is string that identifies sequence.
-   * @param {string} note This argument is string that corresponds to MML token.
-   * @param {Array<number>} indexes This argument is array that contains index that corresponds to 12 equal temperament.
-   * @param {Array<number>} frequencies This argument is array that contains frequency.
-   * @param {number} start This argument is start time.
-   * @param {number} stop This argument is stop time.
-   * @param {number} duration This argument is duration.
+   * @property {string} id This argument is string that identifies sequence.
+   * @property {string} note This argument is string that corresponds to MML token.
+   * @property {Array<number>} indexes This argument is array that contains index that corresponds to 12 equal temperament.
+   * @property {Array<number>} frequencies This argument is array that contains frequency.
+   * @property {number} start This argument is start time.
+   * @property {number} stop This argument is stop time.
+   * @property {number} duration This argument is duration.
    */
   constructor(params: {
     id: string;

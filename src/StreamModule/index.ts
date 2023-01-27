@@ -79,9 +79,9 @@ export class StreamModule extends SoundModule {
 
   /**
    * This method opens devices or sets instance of `MediaStream`.
-   * @param {MediaStream} stream This argument is instance of `MediaStream`.
-   * @param {function} successCallback This argument is invoked on success.
-   * @param {function} errorCallback This argument is invoked on failure.
+   * @property {MediaStream} stream This argument is instance of `MediaStream`.
+   * @property {function} successCallback This argument is invoked on success.
+   * @property {function} errorCallback This argument is invoked on failure.
    * @return {Promise<MediaStream|Error>} Return value is `Promise` that `getUserMedia` returns.
    */
   public ready(params?: {

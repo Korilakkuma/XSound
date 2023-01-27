@@ -33,10 +33,10 @@ export class MML {
   }
 
   /**
-   * @param {function} startCallback This argument is invoked on starting MML.
-   * @param {function} stopCallback This argument is invoked on stopping MML.
-   * @param {function} endedCallback This argument is invoked on ending MML.
-   * @param {function} errorCallback This argument is invoked on occurring MML syntax error.
+   * @property {function} startCallback This argument is invoked on starting MML.
+   * @property {function} stopCallback This argument is invoked on stopping MML.
+   * @property {function} endedCallback This argument is invoked on ending MML.
+   * @property {function} errorCallback This argument is invoked on occurring MML syntax error.
    */
   public setup(callbacks?: {
     startCallback?(sequence: Sequence, offset?: number): void;
@@ -65,9 +65,9 @@ export class MML {
 
   /**
    * This method parses MML string.
-   * @param {OscillatorModule|OneshotModule|NoiseModule} source This argument selects sound source.
-   * @param {Array<string>} mmls This argument is MML strings.
-   * @param {number} offset This argument is in order to adjust index of one-shot audio.
+   * @property {OscillatorModule|OneshotModule|NoiseModule} source This argument selects sound source.
+   * @property {Array<string>} mmls This argument is MML strings.
+   * @property {number} offset This argument is in order to adjust index of one-shot audio.
    * @return {MML} Return value is for method chain.
    */
   public ready(params: {

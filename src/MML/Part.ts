@@ -30,13 +30,13 @@ export class Part {
   private errorCallback?(error: MMLSyntaxError): void;
 
   /**
-   * @param {OscillatorModule|OneshotModule|NoiseModule} source This argument selects sound source.
-   * @param {string} mml This argument is MML string.
-   * @param {number} offset This argument corrects index of one-shot audio.
-   * @param {function} startCallback This argument is invoked on start musical note.
-   * @param {function} stopCallback This argument is invoked on stop musical note.
-   * @param {function} endedCallback This argument is invoked on ended.
-   * @param {function} errorCallback This argument is invoked on syntax error.
+   * @property {OscillatorModule|OneshotModule|NoiseModule} source This argument selects sound source.
+   * @property {string} mml This argument is MML string.
+   * @property {number} offset This argument corrects index of one-shot audio.
+   * @property {function} startCallback This argument is invoked on start musical note.
+   * @property {function} stopCallback This argument is invoked on stop musical note.
+   * @property {function} endedCallback This argument is invoked on ended.
+   * @property {function} errorCallback This argument is invoked on syntax error.
    */
   constructor(params: {
     source: OscillatorModule | OneshotModule | NoiseModule;

@@ -80,13 +80,13 @@ export class OneshotModule extends SoundModule {
 
   /**
    * This method creates instances of `AudioBuffer` by Ajax.
-   * @param {Array<string>|Array<AudioBuffer>} resources This argument is array that contains URL or instance of `AudioBuffer` for audio resources.
-   * @param {OneshotSettings} settings This argument is settings (such as `playbackRate`, `loop` ... etc) each audio sources.
-   * @param {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
-   * @param {function} successCallback This argument is invoked on success;
-   * @param {function} errorCallback This argument is invoked on failure.
-   * @param {function} progressCallback This argument is invoked during receiving audio data.
-   * @return {OneshotModule} Return value is for method chain.
+   * @property {Array<string>|Array<AudioBuffer>} resources This argument is array that contains URL or instance of `AudioBuffer` for audio resources.
+   * @property {OneshotSettings} settings This argument is settings (such as `playbackRate`, `loop` ... etc) each audio sources.
+   * @property {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
+   * @property {function} successCallback This argument is invoked on success;
+   * @property {function} errorCallback This argument is invoked on failure.
+   * @property {function} progressCallback This argument is invoked during receiving audio data.
+   * @property {OneshotModule} Return value is for method chain.
    */
   public setup(params: {
     resources: string[] | AudioBuffer[];
@@ -247,7 +247,7 @@ export class OneshotModule extends SoundModule {
 
   /**
    * This method stops one-shot audio.
-   * @param {Array<number>} index This argument selects instance of `AudioBufferSourceNode`.
+   * @param {Array<number>} indexes This argument selects instance of `AudioBufferSourceNode`.
    * @return {OneshotModule} Return value is for method chain.
    */
   public stop(indexes: number[]): OneshotModule {
@@ -526,12 +526,12 @@ export class OneshotModule extends SoundModule {
 
   /**
    * This method gets `ArrayBuffer` and creates instance of `AudioBuffer`.
-   * @param {string} url This argument is resource URL for one-shot audio.
-   * @param {number} index This argument is in order to assign instance of `AudioBuffer`.
-   * @param {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
-   * @param {function} successCallback This argument is invoked on success;
-   * @param {function} errorCallback This argument is invoked on failure.
-   * @param {function} progressCallback This argument is invoked during receiving audio data.
+   * @property {string} url This argument is resource URL for one-shot audio.
+   * @property {number} index This argument is in order to assign instance of `AudioBuffer`.
+   * @property {number} timeout This argument is timeout of Ajax. The default value is 60000 msec (1 minutes).
+   * @property {function} successCallback This argument is invoked on success;
+   * @property {function} errorCallback This argument is invoked on failure.
+   * @property {function} progressCallback This argument is invoked during receiving audio data.
    */
   private load(params: {
     url: string;

@@ -269,12 +269,12 @@ export class Recorder implements Connectable {
     const CHUNK_SIZE = 4 + 4;
 
     // 1 byte * 4 ('W', 'A', 'V', 'E')
-    const FORM_TYPE_ID_SIZE  = 4;
+    const FORM_TYPE_ID_SIZE = 4;
 
     // 16 bytes (Format Tag size + Channels size + Sample rate size + BPS size + Block size + Bits per sample size)
     // (+ 2 bytes if Non-PCM)
     // (+ 24 bytes if extensible WAVE (ExWAVE))
-    const FMT_CHUNK_SIZE  = CHUNK_SIZE + 16;
+    const FMT_CHUNK_SIZE = CHUNK_SIZE + 16;
 
     const DATA_CHUNK_SIZE = CHUNK_SIZE + (SAMPLES * (QBITS / 8));
 

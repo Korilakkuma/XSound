@@ -457,7 +457,6 @@ export class Recorder implements Connectable {
         return `data:audio/wav;base64,${base64}`;
       }
 
-        break;
       case 'blob'     :
       case 'objectURL': {
         const blob = new Blob([wave], { type: 'audio/wav' });

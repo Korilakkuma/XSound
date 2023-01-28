@@ -181,8 +181,10 @@ export class MediaModule extends SoundModule {
         .then(() => {
           this.start(this.media?.currentTime ?? 0);
         })
-        .catch(() => {
-          throw new Error('Autoplay is failed');
+        .catch((error: Error) => {
+          if (this.listeners.error) {
+            this.listeners.error(error);
+          }
         });
     }
 
@@ -214,36 +216,30 @@ export class MediaModule extends SoundModule {
       }
     }
 
-    try {
-      if (mimeType) {
-        // Audio Streaming
-        if (!MediaSource || !MediaSource.isTypeSupported(mimeType)) {
-          throw new Error('This Browser does not support `MediaSource` or MIME type');
-        }
-
-        this.media.removeAttribute('src');
-
-        this.media.load();
-
-        this.mediaSource = new MediaSource();
-        this.media.src   = window.URL.createObjectURL(this.mediaSource);
-        this.mimeType    = mimeType;
-        this.file        = src;
-
-        this.mediaSource.addEventListener('sourceopen',  this.onSourceOpen,  false);
-        this.mediaSource.addEventListener('sourceended', this.onSourceEnded, false);
-        this.mediaSource.addEventListener('sourceclose', this.onSourceClose, false);
-      } else if (src.startsWith('blob:') || (this.ext === '')) {
-        // Object URL or file name
-        this.media.src = src;
-      } else {
-        // file name (except extension)
-        this.media.src = `${src}.${this.ext}`;
+    if (mimeType) {
+      // Audio Streaming
+      if (!MediaSource || !MediaSource.isTypeSupported(mimeType)) {
+        return this;
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
+
+      this.media.removeAttribute('src');
+
+      this.media.load();
+
+      this.mediaSource = new MediaSource();
+      this.media.src   = window.URL.createObjectURL(this.mediaSource);
+      this.mimeType    = mimeType;
+      this.file        = src;
+
+      this.mediaSource.addEventListener('sourceopen',  this.onSourceOpen,  false);
+      this.mediaSource.addEventListener('sourceended', this.onSourceEnded, false);
+      this.mediaSource.addEventListener('sourceclose', this.onSourceClose, false);
+    } else if (src.startsWith('blob:') || (this.ext === '')) {
+      // Object URL or file name
+      this.media.src = src;
+    } else {
+      // file name (except extension)
+      this.media.src = `${src}.${this.ext}`;
     }
 
     return this;

@@ -1,3 +1,4 @@
+import './AudioWorkletNodeMock';
 import { BufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';

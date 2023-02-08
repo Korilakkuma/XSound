@@ -4,7 +4,7 @@
     "forceConsistentCasingInFileNames": true,
     "lib": [
       "dom",
-      "esnext",
+      "es2022",
       "webworker"
     ],
     "moduleResolution": "node",
@@ -18,7 +18,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es5"
+    "target": "es2022"
   },
   "include": [
     "src/**/*",

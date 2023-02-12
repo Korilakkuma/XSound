@@ -40,45 +40,47 @@ describe(XSound.setup.name, () => {
 });
 
 describe(XSound.clone.name, () => {
-  const ClonedXSound = XSound.clone();
-
   test('should return cloned instance of `Source`', () => {
-    expect(ClonedXSound('oscillator')).toBeInstanceOf(OscillatorModule);
-    expect(ClonedXSound('oneshot')).toBeInstanceOf(OneshotModule);
-    expect(ClonedXSound('noise')).toBeInstanceOf(NoiseModule);
-    expect(ClonedXSound('audio')).toBeInstanceOf(AudioModule);
-    expect(ClonedXSound('media')).toBeInstanceOf(MediaModule);
-    expect(ClonedXSound('stream')).toBeInstanceOf(StreamModule);
-    expect(ClonedXSound('processor')).toBeInstanceOf(ProcessorModule);
-    expect(ClonedXSound('mixer')).toBeInstanceOf(MixerModule);
-    expect(ClonedXSound('midi')).toBeInstanceOf(MIDI);
-    expect(ClonedXSound('mml')).toBeInstanceOf(MML);
+    const clonedXSound = XSound.clone();
 
-    expect(ClonedXSound('oscillator') === XSound('oscillator')).toBe(false);
-    expect(ClonedXSound('oneshot') === XSound('oneshot')).toBe(false);
-    expect(ClonedXSound('noise') === XSound('noise')).toBe(false);
-    expect(ClonedXSound('audio') === XSound('audio')).toBe(false);
-    expect(ClonedXSound('media') === XSound('media')).toBe(false);
-    expect(ClonedXSound('stream') === XSound('stream')).toBe(false);
-    expect(ClonedXSound('processor') === XSound('processor')).toBe(false);
-    expect(ClonedXSound('mixer') === XSound('mixer')).toBe(false);
-    expect(ClonedXSound('midi') === XSound('midi')).toBe(false);
-    expect(ClonedXSound('mml') === XSound('mml')).toBe(false);
+    expect(clonedXSound('oscillator')).toBeInstanceOf(OscillatorModule);
+    expect(clonedXSound('oneshot')).toBeInstanceOf(OneshotModule);
+    expect(clonedXSound('noise')).toBeInstanceOf(NoiseModule);
+    expect(clonedXSound('audio')).toBeInstanceOf(AudioModule);
+    expect(clonedXSound('media')).toBeInstanceOf(MediaModule);
+    expect(clonedXSound('stream')).toBeInstanceOf(StreamModule);
+    expect(clonedXSound('processor')).toBeInstanceOf(ProcessorModule);
+    expect(clonedXSound('mixer')).toBeInstanceOf(MixerModule);
+    expect(clonedXSound('midi')).toBeInstanceOf(MIDI);
+    expect(clonedXSound('mml')).toBeInstanceOf(MML);
+
+    expect(clonedXSound('oscillator') === XSound('oscillator')).toBe(false);
+    expect(clonedXSound('oneshot') === XSound('oneshot')).toBe(false);
+    expect(clonedXSound('noise') === XSound('noise')).toBe(false);
+    expect(clonedXSound('audio') === XSound('audio')).toBe(false);
+    expect(clonedXSound('media') === XSound('media')).toBe(false);
+    expect(clonedXSound('stream') === XSound('stream')).toBe(false);
+    expect(clonedXSound('processor') === XSound('processor')).toBe(false);
+    expect(clonedXSound('mixer') === XSound('mixer')).toBe(false);
+    expect(clonedXSound('midi') === XSound('midi')).toBe(false);
+    expect(clonedXSound('mml') === XSound('mml')).toBe(false);
   });
 
   test('should return instance of `Source` except unused', () => {
-    ClonedXSound.free([ClonedXSound('oscillator'), ClonedXSound('midi')]);
+    const clonedXSound = XSound.clone();
 
-    expect(ClonedXSound('oscillator')).toBe(null);
-    expect(ClonedXSound('oneshot')).toBeInstanceOf(OneshotModule);
-    expect(ClonedXSound('noise')).toBeInstanceOf(NoiseModule);
-    expect(ClonedXSound('audio')).toBeInstanceOf(AudioModule);
-    expect(ClonedXSound('media')).toBeInstanceOf(MediaModule);
-    expect(ClonedXSound('stream')).toBeInstanceOf(StreamModule);
-    expect(ClonedXSound('processor')).toBeInstanceOf(ProcessorModule);
-    expect(ClonedXSound('mixer')).toBeInstanceOf(MixerModule);
-    expect(ClonedXSound('midi')).toBe(null);
-    expect(ClonedXSound('mml')).toBeInstanceOf(MML);
+    clonedXSound.free([clonedXSound('oscillator'), clonedXSound('midi')]);
+
+    expect(clonedXSound('oscillator')).toBe(null);
+    expect(clonedXSound('oneshot')).toBeInstanceOf(OneshotModule);
+    expect(clonedXSound('noise')).toBeInstanceOf(NoiseModule);
+    expect(clonedXSound('audio')).toBeInstanceOf(AudioModule);
+    expect(clonedXSound('media')).toBeInstanceOf(MediaModule);
+    expect(clonedXSound('stream')).toBeInstanceOf(StreamModule);
+    expect(clonedXSound('processor')).toBeInstanceOf(ProcessorModule);
+    expect(clonedXSound('mixer')).toBeInstanceOf(MixerModule);
+    expect(clonedXSound('midi')).toBe(null);
+    expect(clonedXSound('mml')).toBeInstanceOf(MML);
   });
 });
 

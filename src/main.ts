@@ -85,6 +85,11 @@ import { Stereo, StereoParams } from './SoundModule/Effectors/Stereo';
 import { Tremolo, TremoloParams } from './SoundModule/Effectors/Tremolo';
 import { VocalCanceler, VocalCancelerParams } from './SoundModule/Effectors/VocalCanceler';
 import { Wah, WahParams } from './SoundModule/Effectors/Wah';
+import { NoiseGateProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/NoiseGateProcessor';
+import { NoiseSuppressorProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/NoiseSuppressorProcessor';
+import { PitchShifterProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/PitchShifterProcessor';
+import { StereoProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/StereoProcessor';
+import { VocalCancelerProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/VocalCancelerProcessor';
 import {
   EQUAL_TEMPERAMENT,
   FREQUENCY_RATIO,
@@ -114,6 +119,13 @@ import {
   FileReaderType,
   FileReaderErrorText
 } from './XSound';
+import {
+  addAudioWorklet,
+  FrozenArray,
+  Inputs,
+  Outputs,
+  Parameters
+} from './worklet';
 
 export type Source     = OscillatorModule | OneshotModule | NoiseModule | AudioModule | MediaModule | StreamModule | ProcessorModule | MixerModule | MIDI | MML;
 export type SourceName = 'oscillator' | 'oneshot' | 'noise' | 'audio' | 'media' | 'stream' | 'processor' | 'mixer' | 'midi' | 'mml';
@@ -126,17 +138,41 @@ const audiocontext = new AudioContext();
 
 // Memoize instance
 const sources: { [sourceName: string]: Source | null } = {
-  oscillator: new OscillatorModule(audiocontext, 0),
-  oneshot   : new OneshotModule(audiocontext, 0),
-  noise     : new NoiseModule(audiocontext, 0),
-  audio     : new AudioModule(audiocontext, 0),
-  media     : new MediaModule(audiocontext, 0),
-  stream    : new StreamModule(audiocontext, 0),
-  processor : new ProcessorModule(audiocontext, 0),
-  mixer     : new MixerModule(audiocontext, 0),
-  midi      : new MIDI(),
-  mml       : new MML()
+  oscillator: null,
+  oneshot   : null,
+  noise     : null,
+  audio     : null,
+  media     : null,
+  stream    : null,
+  processor : null,
+  mixer     : null,
+  midi      : null,
+  mml       : null
 };
+
+Promise
+  .all([
+    addAudioWorklet(audiocontext, NoiseGateProcessor),
+    addAudioWorklet(audiocontext, NoiseSuppressorProcessor),
+    addAudioWorklet(audiocontext, PitchShifterProcessor),
+    addAudioWorklet(audiocontext, StereoProcessor),
+    addAudioWorklet(audiocontext, VocalCancelerProcessor),
+  ])
+  .then(() => {
+    sources.oscillator = new OscillatorModule(audiocontext, 0);
+    sources.oneshot    = new OneshotModule(audiocontext, 0);
+    sources.noise      = new NoiseModule(audiocontext, 0);
+    sources.audio      = new AudioModule(audiocontext, 0);
+    sources.media      = new MediaModule(audiocontext, 0);
+    sources.stream     = new StreamModule(audiocontext, 0);
+    sources.processor  = new ProcessorModule(audiocontext, 0);
+    sources.mixer      = new MixerModule(audiocontext, 0);
+    sources.midi       = new MIDI();
+    sources.mml        = new MML();
+  })
+  .catch((error: Error) => {
+    throw error;
+  });
 
 /**
  * This function gets instance of `Source`.
@@ -258,16 +294,16 @@ XSound.setup = (): Promise<void> => {
  */
 XSound.clone = (): typeof ClonedXSound => {
   const clonedSources: { [sourceName: string]: Source | null } = {
-    oscillator: new OscillatorModule(audiocontext, 0),
-    oneshot   : new OneshotModule(audiocontext, 0),
-    noise     : new NoiseModule(audiocontext, 0),
-    audio     : new AudioModule(audiocontext, 0),
-    media     : new MediaModule(audiocontext, 0),
-    stream    : new StreamModule(audiocontext, 0),
-    mixer     : new MixerModule(audiocontext, 0),
-    processor : new ProcessorModule(audiocontext, 0),
-    midi      : new MIDI(),
-    mml       : new MML()
+    oscillator: null,
+    oneshot   : null,
+    noise     : null,
+    audio     : null,
+    media     : null,
+    stream    : null,
+    processor : null,
+    mixer     : null,
+    midi      : null,
+    mml       : null
   };
 
   function ClonedXSound(sourceName: 'oscillator'): OscillatorModule;
@@ -321,6 +357,17 @@ XSound.clone = (): typeof ClonedXSound => {
       });
     }
   };
+
+  clonedSources.oscillator = new OscillatorModule(audiocontext, 0);
+  clonedSources.oneshot    = new OneshotModule(audiocontext, 0);
+  clonedSources.noise      = new NoiseModule(audiocontext, 0);
+  clonedSources.audio      = new AudioModule(audiocontext, 0);
+  clonedSources.media      = new MediaModule(audiocontext, 0);
+  clonedSources.stream     = new StreamModule(audiocontext, 0);
+  clonedSources.processor  = new ProcessorModule(audiocontext, 0);
+  clonedSources.mixer      = new MixerModule(audiocontext, 0);
+  clonedSources.midi       = new MIDI();
+  clonedSources.mml        = new MML();
 
   // Closure
   return ClonedXSound;
@@ -500,8 +547,10 @@ export type {
   ListenerParams,
   NoiseGate,
   NoiseGateParams,
+  NoiseGateProcessor,
   NoiseSuppressor,
   NoiseSuppressorParams,
+  NoiseSuppressorProcessor,
   OverDrive,
   OverDriveParams,
   Panner,
@@ -512,6 +561,7 @@ export type {
   PhaserNumberOfStages,
   PitchShifter,
   PitchShifterParams,
+  PitchShifterProcessor,
   Preamp,
   PreampParams,
   PreampCurve,
@@ -528,17 +578,23 @@ export type {
   RingmodulatorParams,
   Stereo,
   StereoParams,
+  StereoProcessor,
   Tremolo,
   TremoloParams,
   VocalCanceler,
   VocalCancelerParams,
+  VocalCancelerProcessor,
   Wah,
   WahParams,
   PitchChar,
   ConvertedTime,
   FileEvent,
   FileReaderType,
-  FileReaderErrorText
+  FileReaderErrorText,
+  FrozenArray,
+  Inputs,
+  Outputs,
+  Parameters
 };
 
 export { XSound, XSound as X };

@@ -29,7 +29,7 @@ export class Phaser extends Effector {
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
-    super(context, 0);
+    super(context);
 
     for (let i = 0; i < Phaser.MAX_STAGES; i++) {
       const filter = context.createBiquadFilter();

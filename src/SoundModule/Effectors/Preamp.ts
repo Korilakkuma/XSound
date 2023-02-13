@@ -49,7 +49,7 @@ export class PreEqualizer extends Effector {
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
-    super(context, 0);
+    super(context);
 
     this.shaper = context.createWaveShaper();
 
@@ -214,7 +214,7 @@ export class PostEqualizer extends Effector {
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
-    super(context, 0);
+    super(context);
 
     this.shaper = context.createWaveShaper();
 
@@ -393,7 +393,7 @@ export class Cabinet extends Effector {
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
-    super(context, 0);
+    super(context);
 
     this.lowpass = context.createBiquadFilter();
     this.notch   = context.createBiquadFilter();
@@ -529,7 +529,7 @@ export class Preamp extends Effector {
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
-    super(context, 0);
+    super(context);
 
     this.preEQ   = new PreEqualizer(context);
     this.postEQ  = new PostEqualizer(context);

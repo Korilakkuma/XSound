@@ -1,5 +1,4 @@
 import { Connectable, Statable } from '../../interfaces';
-import { BufferSize } from '../../types';
 
 /**
  * This class is superclass for effector classes.
@@ -17,16 +16,14 @@ export abstract class Effector implements Connectable, Statable {
   protected lfo: OscillatorNode;
   protected depth: GainNode;
   protected rate: AudioParam;
-  protected processor: ScriptProcessorNode;
 
   protected isActive = true;
   protected paused = true;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
+  constructor(context: AudioContext) {
     this.context = context;
 
     // for connecting external modules
@@ -35,10 +32,9 @@ export abstract class Effector implements Connectable, Statable {
 
     // for LFO (Low Frequency Oscillator)
     // LFO changes parameter cyclically
-    this.lfo       = context.createOscillator();
-    this.depth     = context.createGain();
-    this.rate      = this.lfo.frequency;
-    this.processor = context.createScriptProcessor(bufferSize, 2, 2);
+    this.lfo   = context.createOscillator();
+    this.depth = context.createGain();
+    this.rate  = this.lfo.frequency;
   }
 
   /**

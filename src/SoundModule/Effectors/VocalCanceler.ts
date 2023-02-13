@@ -1,5 +1,5 @@
-import { BufferSize } from '../../types';
 import { Effector } from './Effector';
+import { VocalCancelerProcessor } from './AudioWorkletProcessors/VocalCancelerProcessor';
 
 export type VocalCancelerParams = {
   state?: boolean,
@@ -12,56 +12,26 @@ export type VocalCancelerParams = {
  * @extends {Effector}
  */
 export class VocalCanceler extends Effector {
+  private processor: AudioWorkletNode;
+
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
 
     this.depth.gain.value = 0;
 
+    this.processor = new AudioWorkletNode(this.context, VocalCancelerProcessor.name);
     this.activate();
   }
 
   /** @override */
   public override start(): void {
-    if (!this.isActive || !this.paused) {
-      return;
-    }
-
-    this.paused = false;
-
-    const bufferSize = this.processor.bufferSize;
-
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      const inputLs  = event.inputBuffer.getChannelData(0);
-      const inputRs  = event.inputBuffer.getChannelData(1);
-      const outputLs = event.outputBuffer.getChannelData(0);
-      const outputRs = event.outputBuffer.getChannelData(1);
-
-      for (let i = 0; i < bufferSize; i++) {
-        outputLs[i] = this.cancel(inputLs[i], inputRs[i]);
-        outputRs[i] = this.cancel(inputRs[i], inputLs[i]);
-      }
-    };
   }
 
   /** @override */
   public override stop(): void {
-    // Effector's state is active ?
-    if (!this.isActive) {
-      return;
-    }
-
-    this.paused = true;
-
-    // Stop `onaudioprocess` event
-    this.processor.disconnect(0);
-    this.processor.onaudioprocess = null;
-
-    // Connect `AudioNode`s again
-    this.connect();
   }
 
   /** @override */
@@ -70,8 +40,16 @@ export class VocalCanceler extends Effector {
     this.input.disconnect(0);
     this.processor.disconnect(0);
 
+    this.processor = new AudioWorkletNode(this.context, VocalCancelerProcessor.name);
+
+    const message: VocalCancelerParams = {
+      depth: this.depth.gain.value
+    };
+
+    this.processor.port.postMessage(message);
+
     if (this.isActive) {
-      // GainNode (Input) -> ScriptProcessorNode (Vocal Canceler) -> GainNode (Output);
+      // GainNode (Input) -> AudioWorkletNode (Vocal Canceler) -> GainNode (Output);
       this.input.connect(this.processor);
       this.processor.connect(this.output);
     } else {
@@ -81,6 +59,7 @@ export class VocalCanceler extends Effector {
 
     return this.output;
   }
+
   /**
    * This method gets or sets parameters for vocal canceler.
    * @param {keyof VocalCancelerParams|VocalCancelerParams} params This argument is string if getter. Otherwise, setter.
@@ -107,12 +86,24 @@ export class VocalCanceler extends Effector {
         case 'state':
           if (typeof value === 'boolean') {
             this.isActive = value;
+
+            if (this.processor) {
+              const message: VocalCancelerParams = { state: value };
+
+              this.processor.port.postMessage(message);
+            }
           }
 
           break;
         case 'depth':
           if (typeof value === 'number') {
             this.depth.gain.value = value;
+
+            if (this.processor) {
+              const message: VocalCancelerParams = { depth: value };
+
+              this.processor.port.postMessage(message);
+            }
           }
 
           break;
@@ -145,19 +136,5 @@ export class VocalCanceler extends Effector {
   public override deactivate(): VocalCanceler {
     super.deactivate();
     return this;
-  }
-
-  /**
-   * This method removes vocal part from audio on playing.
-   * @param {number} dataL This argument is gain level for Left channel.
-   * @param {number} dataR This argument is gain level for Right channel.
-   * @return {number} Return value is audio data except vocal part.
-   */
-  private cancel(dataL: number, dataR: number): number {
-    if (this.isActive) {
-      return dataL - (this.depth.gain.value * dataR);
-    }
-
-    return dataL;
   }
 }

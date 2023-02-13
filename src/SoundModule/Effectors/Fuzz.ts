@@ -28,7 +28,7 @@ export class Fuzz extends Effector {
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
-    super(context, 0);
+    super(context);
 
     this.positiveShaper     = this.context.createWaveShaper();
     this.negativeShaper     = this.context.createWaveShaper();

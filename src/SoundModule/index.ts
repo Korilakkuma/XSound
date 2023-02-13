@@ -189,17 +189,17 @@ export abstract class SoundModule implements Connectable {
     this.fuzz              = new Fuzz(context);
     this.listener          = new Listener(context);
     this.noisegate         = new NoiseGate(context);
-    this.noisesuppressor   = new NoiseSuppressor(context, bufferSize);
+    this.noisesuppressor   = new NoiseSuppressor(context);
     this.overdrive         = new OverDrive(context);
     this.panner            = new Panner(context);
     this.phaser            = new Phaser(context);
-    this.pitchshifter      = new PitchShifter(context, bufferSize);
+    this.pitchshifter      = new PitchShifter(context);
     this.preamp            = new Preamp(context);
     this.reverb            = new Reverb(context);
     this.ringmodulator     = new Ringmodulator(context);
-    this.stereo            = new Stereo(context, bufferSize);
+    this.stereo            = new Stereo(context);
     this.tremolo           = new Tremolo(context);
-    this.vocalcanceler     = new VocalCanceler(context, bufferSize);
+    this.vocalcanceler     = new VocalCanceler(context);
     this.wah               = new Wah(context);
 
     // The default order for connection
@@ -338,7 +338,6 @@ export abstract class SoundModule implements Connectable {
     this.overdrive.start(s);
     this.phaser.start(s);
     this.ringmodulator.start(s);
-    this.stereo.start();
     this.tremolo.start(s);
     this.wah.start(s);
 
@@ -362,7 +361,6 @@ export abstract class SoundModule implements Connectable {
     this.overdrive.stop(s);
     this.phaser.stop(s);
     this.ringmodulator.stop(s);
-    this.stereo.stop();
     this.tremolo.stop(s);
     this.wah.stop(s);
 
@@ -509,17 +507,17 @@ export abstract class SoundModule implements Connectable {
     this.fuzz              = new Fuzz(context);
     this.listener          = new Listener(context);
     this.noisegate         = new NoiseGate(context);
-    this.noisesuppressor   = new NoiseSuppressor(context, bufferSize);
+    this.noisesuppressor   = new NoiseSuppressor(context);
     this.overdrive         = new OverDrive(context);
     this.panner            = new Panner(context);
     this.phaser            = new Phaser(context);
-    this.pitchshifter      = new PitchShifter(context, bufferSize);
+    this.pitchshifter      = new PitchShifter(context);
     this.preamp            = new Preamp(context);
     this.reverb            = new Reverb(context);
     this.ringmodulator     = new Ringmodulator(context);
-    this.stereo            = new Stereo(context, bufferSize);
+    this.stereo            = new Stereo(context);
     this.tremolo           = new Tremolo(context);
-    this.vocalcanceler     = new VocalCanceler(context, bufferSize);
+    this.vocalcanceler     = new VocalCanceler(context);
     this.wah               = new Wah(context);
 
     // The default order for connection

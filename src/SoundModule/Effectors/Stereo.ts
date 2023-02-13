@@ -1,5 +1,5 @@
-import { BufferSize } from '../../types';
 import { Effector } from './Effector';
+import { StereoProcessor } from './AudioWorkletProcessors/StereoProcessor';
 
 export type StereoParams = {
   state?: boolean,
@@ -14,6 +14,8 @@ export type StereoParams = {
 export class Stereo extends Effector {
   public static MAX_DELAY_TIME = 1;  // Max delay time is 1000 [ms]
 
+  private processor: AudioWorkletNode;
+
   private splitter: ChannelSplitterNode;
   private merger: ChannelMergerNode;
   private delayL: DelayNode;
@@ -21,13 +23,12 @@ export class Stereo extends Effector {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
 
     this.splitter = context.createChannelSplitter(2);
-    this.merger   = context.createScriptProcessor(bufferSize, 2, 2);
+    this.merger   = context.createChannelMerger(2);
     this.delayL   = context.createDelay(Stereo.MAX_DELAY_TIME);
     this.delayR   = context.createDelay(Stereo.MAX_DELAY_TIME);
 
@@ -35,53 +36,16 @@ export class Stereo extends Effector {
     this.delayL.delayTime.value = 0;
     this.delayR.delayTime.value = 0;
 
-    // `Stereo` is not connected by default
+    this.processor = new AudioWorkletNode(this.context, StereoProcessor.name);
     this.deactivate();
   }
 
   /** @override */
   public override start(): void {
-    if (!this.isActive || !this.paused) {
-      return;
-    }
-
-    this.paused = false;
-
-    const bufferSize = this.processor.bufferSize;
-
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      const inputLs  = event.inputBuffer.getChannelData(0);
-      const inputRs  = event.inputBuffer.getChannelData(1);
-      const outputLs = event.outputBuffer.getChannelData(0);
-      const outputRs = event.outputBuffer.getChannelData(1);
-
-      if (this.isActive && (this.delayL.delayTime.value !== 0) && (this.delayR.delayTime.value !== 0)) {
-        for (let i = 0; i < bufferSize; i++) {
-          outputLs[i] =  inputLs[i];
-          outputRs[i] = -inputRs[i];
-        }
-      } else {
-        outputLs.set(inputLs);
-        outputRs.set(inputRs);
-      }
-    };
   }
 
   /** @override */
   public override stop(): void {
-    // Effector's state is active ?
-    if (!this.isActive) {
-      return;
-    }
-
-    this.paused = true;
-
-    // Stop `onaudioprocess` event
-    this.processor.disconnect(0);
-    this.processor.onaudioprocess = null;
-
-    // Connect `AudioNode`s again
-    this.connect();
   }
 
   /** @override */
@@ -92,16 +56,26 @@ export class Stereo extends Effector {
     this.delayL.disconnect(0);
     this.delayR.disconnect(0);
     this.merger.disconnect(0);
+    this.processor.disconnect(0);
+
+    this.processor = new AudioWorkletNode(this.context, StereoProcessor.name);
+
+    const message: StereoParams = {
+      time: this.delayL.delayTime.value
+    };
+
+    this.processor.port.postMessage(message);
 
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> ChannelSplitterNode -> DelayNode (L) / (R) -> ScriptProcessorNode (Stereo) -> GainNode (Output)
+      // GainNode (Input) -> ChannelSplitterNode -> DelayNode (L) / (R) -> AudioWorkletNode (Stereo) -> ChannelMergerNode -> GainNode (Output)
       this.input.connect(this.splitter);
       this.splitter.connect(this.delayL, 0, 0);
       this.splitter.connect(this.delayR, 1, 0);
-      this.delayL.connect(this.merger);
-      this.delayR.connect(this.merger);
+      this.delayL.connect(this.processor);
+      this.delayR.connect(this.processor);
+      this.processor.connect(this.merger);
       this.merger.connect(this.output);
     } else {
       // Effect OFF
@@ -140,6 +114,12 @@ export class Stereo extends Effector {
         case 'state':
           if (typeof value === 'boolean') {
             this.isActive = value;
+
+            if (this.processor) {
+              const message: StereoParams = { state: value };
+
+              this.processor.port.postMessage(message);
+            }
           }
 
           break;

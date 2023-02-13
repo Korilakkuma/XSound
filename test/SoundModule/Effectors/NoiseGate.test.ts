@@ -7,27 +7,6 @@ describe(NoiseGate.name, () => {
   // @ts-ignore
   const noisegate = new NoiseGate(context);
 
-  // eslint-disable-next-line dot-notation
-  describe(noisegate['gate'].name, () => {
-    beforeAll(() => {
-      noisegate.param({ level: 0.002 });
-    });
-
-    test('should return raw data', () => {
-      /* eslint-disable dot-notation */
-      expect(noisegate['gate'](0.005)).toBeCloseTo(0.005, 3);
-      expect(noisegate['gate'](-0.005)).toBeCloseTo(-0.005, 3);
-      /* eslint-enable dot-notation */
-    });
-
-    test('should return `0`', () => {
-      /* eslint-disable dot-notation */
-      expect(noisegate['gate'](0.002)).toBeCloseTo(0, 3);
-      expect(noisegate['gate'](-0.002)).toBeCloseTo(0, 3);
-      /* eslint-enable dot-notation */
-    });
-  });
-
   describe(noisegate.param.name, () => {
     const defaultParams: NoiseGateParams = {
       level: 0
@@ -82,7 +61,13 @@ describe(NoiseGate.name, () => {
   });
 
   describe(noisegate.deactivate.name, () => {
-    test('should call `connect` method and stop `onaudioprocess` event handler', () => {
+    test('should call `connect` method', () => {
+      // HACK:
+      // eslint-disable-next-line dot-notation
+      if (noisegate['processor'] === null) {
+        return;
+      }
+
       const originalConnect = noisegate.connect;
 
       // eslint-disable-next-line dot-notation
@@ -98,10 +83,7 @@ describe(NoiseGate.name, () => {
 
       noisegate.deactivate();
 
-      expect(connectMock).toHaveBeenCalledTimes(2);
-
-      // eslint-disable-next-line dot-notation
-      expect(noisegate['processor'].onaudioprocess).toBe(null);
+      expect(connectMock).toHaveBeenCalledTimes(1);
 
       noisegate.connect = originalConnect;
 

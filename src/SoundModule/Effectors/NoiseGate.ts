@@ -1,4 +1,5 @@
 import { Effector } from './Effector';
+import { NoiseGateProcessor } from './AudioWorkletProcessors/NoiseGateProcessor';
 
 export type NoiseGateParams = {
   state?: boolean,
@@ -11,55 +12,26 @@ export type NoiseGateParams = {
  * @extends {Effector}
  */
 export class NoiseGate extends Effector {
+  private processor: AudioWorkletNode;
+
   private level = 0;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
-    super(context, 0);
+    super(context);
 
+    this.processor = new AudioWorkletNode(this.context, NoiseGateProcessor.name);
     this.activate();
   }
 
   /** @override */
   public override start(): void {
-    if (!this.isActive || !this.paused) {
-      return;
-    }
-
-    this.paused = false;
-
-    const bufferSize = this.processor.bufferSize;
-
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      const inputLs  = event.inputBuffer.getChannelData(0);
-      const inputRs  = event.inputBuffer.getChannelData(1);
-      const outputLs = event.outputBuffer.getChannelData(0);
-      const outputRs = event.outputBuffer.getChannelData(1);
-
-      for (let i = 0; i < bufferSize; i++) {
-        outputLs[i] = this.gate(inputLs[i]);
-        outputRs[i] = this.gate(inputRs[i]);
-      }
-    };
   }
 
   /** @override */
   public override stop(): void {
-    // Effector's state is active ?
-    if (!this.isActive) {
-      return;
-    }
-
-    this.paused = true;
-
-    // Stop `onaudioprocess` event
-    this.processor.disconnect(0);
-    this.processor.onaudioprocess = null;
-
-    // Connect `AudioNode`s again
-    this.connect();
   }
 
   /** @override */
@@ -68,8 +40,16 @@ export class NoiseGate extends Effector {
     this.input.disconnect(0);
     this.processor.disconnect(0);
 
+    this.processor = new AudioWorkletNode(this.context, NoiseGateProcessor.name);
+
+    const message: NoiseGateParams = {
+      level: this.level
+    };
+
+    this.processor.port.postMessage(message);
+
     if (this.isActive) {
-      // GainNode (Input) -> ScriptProcessorNode (Noise Gate) -> GainNode (Output);
+      // GainNode (Input) -> AudioWorkletNode (Noise Gate) -> GainNode (Output);
       this.input.connect(this.processor);
       this.processor.connect(this.output);
     } else {
@@ -106,12 +86,24 @@ export class NoiseGate extends Effector {
         case 'state':
           if (typeof value === 'boolean') {
             this.isActive = value;
+
+            if (this.processor) {
+              const message: NoiseGateParams = { state: value };
+
+              this.processor.port.postMessage(message);
+            }
           }
 
           break;
         case 'level':
           if (typeof value === 'number') {
             this.level = value;
+
+            if (this.processor) {
+              const message: NoiseGateParams = { level: value };
+
+              this.processor.port.postMessage(message);
+            }
           }
 
           break;
@@ -141,20 +133,5 @@ export class NoiseGate extends Effector {
   public override deactivate(): NoiseGate {
     super.deactivate();
     return this;
-  }
-
-  /**
-   * This method detects background noise and removes this.
-   * @param {number} data This argument is amplitude (between -1 and 1).
-   * @return {number} Return value is `0` or raw data.
-   */
-  private gate(data: number): number {
-    if (!this.isActive) {
-      return data;
-    }
-
-    // data : Amplitude is equal to argument.
-    //    0 : Because signal is detected as background noise, amplitude is `0`.
-    return (Math.abs(data) > this.level) ? data : 0;
   }
 }

@@ -23,7 +23,7 @@ export class Equalizer extends Effector {
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    **/
   constructor(context: AudioContext) {
-    super(context, 0);
+    super(context);
 
     this.bass     = context.createBiquadFilter();
     this.middle   = context.createBiquadFilter();

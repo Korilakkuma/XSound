@@ -285,7 +285,7 @@ XSound.setup = (): Promise<void> => {
     return audiocontext.resume();
   }
 
-  return Promise.reject();
+  return Promise.resolve();
 };
 
 /**

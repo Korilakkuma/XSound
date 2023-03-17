@@ -427,22 +427,19 @@ XSound.getCurrentTime = (): number => {
   return audiocontext.currentTime;
 };
 
-// for Autoplay Policy
-const setup = (): void => {
-  XSound.setup().then(() => {}).catch(() => {});
+const setup = (event: MouseEvent | TouchEvent): void => {
+  event.stopImmediatePropagation();
 
-  document.removeEventListener('click',      setup, false);
-  document.removeEventListener('mousedown',  setup, false);
-  document.removeEventListener('mouseup',    setup, false);
-  document.removeEventListener('touchstart', setup, false);
-  document.removeEventListener('touchend',   setup, false);
+  XSound
+    .setup()
+    .finally(() => {
+      document.removeEventListener('mousedown',  setup, false);
+      document.removeEventListener('touchstart', setup, false);
+    });
 };
 
-document.addEventListener('click',      setup, false);
 document.addEventListener('mousedown',  setup, false);
-document.addEventListener('mouseup',    setup, false);
 document.addEventListener('touchstart', setup, false);
-document.addEventListener('touchend',   setup, false);
 
 export type {
   SoundModule,

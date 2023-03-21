@@ -80,6 +80,18 @@ main a:focus {
 
 #result-text {
   margin: 12px 16px;
+  max-width: 900px;
+}
+
+#melody-note,
+#bass-note {
+  overflow-x: auto !important;  /* overwrite styles by abcjs */
+}
+
+#melody-note > svg,
+#bass-note > svg {
+  color: #333;
+  background-color: #fff;
 }
 
 h2 {

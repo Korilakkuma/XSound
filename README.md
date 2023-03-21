@@ -127,16 +127,16 @@ $ yarn add xsound
 
 ## Usage
 
-In case of using CDN,
-
-```HTML
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js"></script>
-```
-
 In case of using ES Modules (for SSR ... etc),
 
 ```JavaScript
 import { XSound, X } from 'xsound';
+```
+
+In case of using CDN,
+
+```HTML
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js"></script>
 ```
 
 ### Connect to WebSocket Server

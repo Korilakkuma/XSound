@@ -34,6 +34,11 @@ export type NoiseModuleParams = SoundModuleParams & {
   type?: NoiseType
 };
 
+/**
+ * This subclass is for generating noise.
+ * @constructor
+ * @extends {SoundModule}
+ */
 export class NoiseModule extends SoundModule {
   private type: NoiseType = 'whitenoise';
 

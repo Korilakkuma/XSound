@@ -28,6 +28,11 @@ import { Tremolo } from '../SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '../SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../SoundModule/Effectors/Wah';
 
+/**
+ * This subclass is for using `AudioWorkletNode` as sound source.
+ * @constructor
+ * @extends {SoundModule}
+ */
 export class ProcessorModule extends SoundModule {
   private workletNode: AudioWorkletNode | ScriptProcessorNode | null = null;
   private processorName = '';

@@ -90,35 +90,49 @@ for (let i = 0; i < 88; i++) {
 }
 
 const successCallback = () => {
-  X('mml').setup();
-
   fetch(`${BASE_URL}/assets/mmls/forever-love.json`)
     .then((response) => response.json())
     .then((data) => {
       const { title, artist, melody, bass } = data;
 
-      X('mml').ready({ source: X('oneshot'), mmls: [melody, bass], offset: 0 });
+      result.innerHTML = `
+        <h2>${title} | ${artist}</h2>
+        <dl>
+          <dt>Melody</dt>
+          <dd id="melody-mml">${melody}</dd>
+          <dd id="melody-note"></dd>
+          <dt>Bass</dt>
+          <dd id="bass-mml">${bass}</dd>
+          <dd id="bass-note"></dd>
+        </dl>
+      `;
+
+      const melodyMML = document.getElementById('melody-mml');
+      const bassMML   = document.getElementById('bass-mml');
+
+      let domLoaded = false;
 
       document.getElementById('button-start').onclick = () => {
-        X('mml').start(0, false);
-        X('mml').start(1, false);
+        if (!domLoaded) {
+          X('mml').setup({
+            startCallback: () => {
+              melodyMML.innerHTML = X('mml').getMML(0);
+              bassMML.innerHTML   = X('mml').getMML(1);
+            }
+          });
+
+          X('mml').ready({ source: X('oneshot'), mmls: [melody, bass], offset: 0 });
+
+          domLoaded = true;
+        }
+
+        X('mml').start(0, true);
+        X('mml').start(1, true);
       };
 
       document.getElementById('button-stop').onclick = () => {
         X('mml').stop();
       };
-
-      result.innerHTML = `
-        <h2>${title} | ${artist}</h2>
-        <dl>
-          <dt>Melody</dt>
-          <dd>${melody}</dd>
-          <dd id="melody-note"></dd>
-          <dt>Bass</dt>
-          <dd>${bass}</dd>
-          <dd id="bass-note"></dd>
-        </dl>
-      `;
 
       ABCJS.renderAbc('melody-note', X('mml').toABC(melody));
       ABCJS.renderAbc('bass-note', X('mml').toABC(bass));
@@ -137,3 +151,4 @@ const progressCallback = (event) => {
 };
 
 X('oneshot').setup({ resources, settings, successCallback, errorCallback, progressCallback });
+X('oneshot').edit([X('oneshot').module('compressor')]);

@@ -83,6 +83,19 @@ main a:focus {
   max-width: 900px;
 }
 
+#melody-mml,
+#bass-mml {
+  max-width: 900px;
+  max-height: 92px;
+  overflow-y: auto;
+  color: #ccc;
+}
+
+#melody-mml > span:last-child,
+#bass-mml > span:last-child {
+  color: #000;
+}
+
 #melody-note,
 #bass-note {
   overflow-x: auto !important;  /* overwrite styles by abcjs */

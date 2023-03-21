@@ -91,17 +91,17 @@ X.Flanger(context: AudioContext);
 X.Fuzz(context: AudioContext);
 X.Listener(context: AudioContext);
 X.NoiseGate(context: AudioContext);
-X.NoiseSuppressor(context: AudioContext, size: BufferSize);
+X.NoiseSuppressor(context: AudioContext);
 X.OverDrive(context: AudioContext);
 X.Panner(context: AudioContext);
 X.Phaser(context: AudioContext);
-X.PitchShifter(context: AudioContext, size: BufferSize);
+X.PitchShifter(context: AudioContext);
 X.Preamp(context: AudioContext);
 X.Reverb(context: AudioContext);
 X.Ringmodulator(context: AudioContext);
-X.Stereo(context: AudioContext, size, size: BufferSize);
+X.Stereo(context: AudioContext, size);
 X.Tremolo(context: AudioContext);
-X.VocalCanceler(context: AudioContext, size: BufferSize);
+X.VocalCanceler(context: AudioContext);
 X.Wah(context: AudioContext);
 ```
 

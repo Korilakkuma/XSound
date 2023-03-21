@@ -75,6 +75,7 @@ main a:focus {
   width: 932px;
   height: auto;
   font-family: "Source Code Pro", monospace;
+  font-size: 14px;
   color: #666;
 }
 
@@ -235,7 +236,7 @@ textarea {
   width: 100%;
   height: 10rem;
   font-family: "Source Code Pro", monospace;
-  font-size: 16px;
+  font-size: 14px;
   color: #666;
 }
 

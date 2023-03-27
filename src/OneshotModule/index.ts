@@ -124,12 +124,12 @@ export class OneshotModule extends SoundModule {
 
   /**
    * This method schedules playing audio.
-   * @param {number} startTime This argument is start time. The default value is `currentTime` in instance of `AudioContext`
+   * @param {number} startTime This argument is start time. The default value is 0.
    * @param {number} duration This argument is duration. The default value is 0.
    * @return {OneshotModule} Return value is for method chain.
    */
   public ready(startTime?: number, duration?: number): OneshotModule {
-    this.startTime = startTime ?? this.context.currentTime;
+    this.startTime = startTime ?? 0;
     this.duration  = duration ?? 0;
 
     this.envelopegenerator.clear(false);

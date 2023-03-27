@@ -115,7 +115,7 @@ describe(OneshotModule.name, () => {
       oneshotModule.ready();
 
       /* eslint-disable dot-notation */
-      expect(oneshotModule['startTime']).toBeGreaterThan(0);
+      expect(oneshotModule['startTime']).toBeCloseTo(0, 1);
       expect(oneshotModule['duration']).toBeCloseTo(0, 1);
       /* eslint-enable dot-notation */
 

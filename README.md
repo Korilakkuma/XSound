@@ -245,6 +245,20 @@ if ((type === 'sine') || (type === 'square') || (type === 'sawtooth') || (type =
 }
 ```
 
+## Migration to v3.1.x or later
+
+If use bundle tool and compress class names such as webpack and `terser-webpack-plugin`,  
+**must add the following [options](https://webpack.js.org/plugins/terser-webpack-plugin/#terseroptions)** (because of using inline `AudioWorkletProcessor`).
+
+```JavaScript
+new TerserWebpackPlugin({
+  // ... other options
+  terserOptions: {
+    keep_classnames: /^.*?Processor$/
+  }
+})
+```
+
 ## Pickups
   
 - [9 libraries to kickstart your Web Audio stuff - DEV Community](https://dev.to/areknawo/9-libraries-to-kickstart-your-web-audio-stuff-460p)

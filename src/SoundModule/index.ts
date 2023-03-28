@@ -212,8 +212,6 @@ export abstract class SoundModule implements Connectable {
       this.preamp,
       this.equalizer,
       this.filter,
-      this.noisegate,
-      this.noisesuppressor,
       this.pitchshifter,
       this.tremolo,
       this.ringmodulator,
@@ -223,9 +221,7 @@ export abstract class SoundModule implements Connectable {
       this.delay,
       this.reverb,
       this.panner,
-      this.autopanner,
-      this.vocalcanceler,
-      this.stereo
+      this.autopanner
     ];
   }
 
@@ -530,8 +526,6 @@ export abstract class SoundModule implements Connectable {
       this.preamp,
       this.equalizer,
       this.filter,
-      this.noisegate,
-      this.noisesuppressor,
       this.pitchshifter,
       this.tremolo,
       this.ringmodulator,
@@ -541,9 +535,7 @@ export abstract class SoundModule implements Connectable {
       this.delay,
       this.reverb,
       this.panner,
-      this.autopanner,
-      this.vocalcanceler,
-      this.stereo
+      this.autopanner
     ];
   }
 }

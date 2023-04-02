@@ -1,0 +1,60 @@
+{
+  "name": "xsound",
+  "version": "3.1.1",
+  "engines": {
+    "node": ">=14.17.0 <=18.15.x"
+  },
+  "description": "XSound gives Web Developers Powerful Audio Features Easily !",
+  "main": "index.html",
+  "scripts": {
+    "lint:css": "stylelint 'app.css'",
+    "lint:html": "markuplint index.html",
+    "lint": "run-p lint:css lint:html",
+    "fix:css": "stylelint --fix app.css",
+    "fix:html": "markuplint --fix index.html",
+    "fix": "run-p fix:css fix:html"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "app.css": [
+      "stylelint --fix"
+    ],
+    "index.html": [
+      "markuplint --fix"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Korilakkuma/XSound.git"
+  },
+  "keywords": [
+    "XSound",
+    "TypeScript",
+    "JavaScript",
+    "Web Audio API",
+    "Web Audio",
+    "Web Audio API Library",
+    "Web Audio Library",
+    "Web Music"
+  ],
+  "author": "Korilakkuma <rilakkuma.san.xjapan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Korilakkuma/XSound/issues"
+  },
+  "homepage": "https://xsound.jp",
+  "files": [],
+  "devDependencies": {
+    "husky": "4.3.8",
+    "lint-staged": "^13.2.0",
+    "markuplint": "^2.11.4",
+    "npm-run-all": "^4.1.5",
+    "stylelint": "^15.3.0",
+    "stylelint-config-recess-order": "^4.0.0",
+    "stylelint-config-standard": "^31.0.0"
+  }
+}

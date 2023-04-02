@@ -1,0 +1,10 @@
+{
+  "nodeRules": [
+    {
+      "selector": "html",
+      "rules": {
+        "permitted-contents": false
+      }
+    }
+  ]
+}

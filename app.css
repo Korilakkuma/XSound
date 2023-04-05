@@ -6,8 +6,8 @@
 }
 
 * {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 html, body {
@@ -18,22 +18,18 @@ html, body {
 }
 
 html {
+  min-width: 320px;
   font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
   font-size: calc(4 * ((100vw - 320px) / (1280 - 320)) + 12px);
   line-height: 1.5;
   background-color: #212121;
-  min-width: 320px;
 }
 
 header,
 .section {
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
   align-items: center;
-  -webkit-justify-content: center;
   justify-content: center;
   height: 100vh;
   height: 100dvh;
@@ -52,17 +48,17 @@ header > div {
 header > a,
 main > a,
 aside > a {
-  margin-top: 48px;
   width: 3rem;
   height: 2rem;
-  background: linear-gradient(to top right, rgba(0, 0, 0, 0) 50%, #c000c0 50.5%) no-repeat top left/50%  100%,
-              linear-gradient(to top left,  rgba(0, 0, 0, 0) 50%, #c000c0 50.5%) no-repeat top right/50% 100%;
+  margin-top: 48px;
+  overflow: hidden;
   text-decoration: none;
 
   /* off left */
   text-indent: 100%;
   white-space: nowrap;
-  overflow: hidden;
+  background: linear-gradient(to top right, rgb(0 0 0 / 0%) 50%, #c000c0 50.5%) no-repeat top left/50%  100%,
+              linear-gradient(to top left,  rgb(0 0 0 / 0%) 50%, #c000c0 50.5%) no-repeat top right/50% 100%;
 }
 
 main .link-playground {
@@ -89,11 +85,32 @@ aside > a {
   transform: rotate(180deg);
 }
 
+nav > a {
+  display: block;
+  padding: 12px;
+  font-size: 1.5rem;
+  font-size: calc(12 * ((100vw - 320px) / (1280 - 320)) + 12px);
+  text-decoration: none;
+  border: 2px solid #c000c0;
+  transition: all 0.4s ease;
+}
+
+footer a {
+  color: #c000c0;
+  text-decoration: none;
+  transition: color 0.4s ease;
+}
+
 header > a:hover,
 main > a:hover,
 aside > a:hover {
-  background: linear-gradient(to top right, rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top left/50%  100%,
-              linear-gradient(to top left,  rgba(0, 0, 0, 0) 50%, #800080 50.5%) no-repeat top right/50% 100%;
+  background: linear-gradient(to top right, rgb(0 0 0 / 0%) 50%, #800080 50.5%) no-repeat top left/50%  100%,
+              linear-gradient(to top left,  rgb(0 0 0 / 0%) 50%, #800080 50.5%) no-repeat top right/50% 100%;
+}
+
+aside > img {
+  width: 100%;
+  height: auto;
 }
 
 .section > img {
@@ -102,20 +119,24 @@ aside > a:hover {
 }
 
 .section > section {
-  margin-top: 12px;
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-direction: row;
   flex-direction: row;
-  -webkit-align-items: center;
   align-items: center;
-  -webkit-justify-content: flex-start;
   justify-content: flex-start;
+  margin-top: 12px;
 }
 
 h1 {
   font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
   font-size: calc(64 * ((100vw - 320px) / (1280 - 320)) + 64px);
+  font-weight: lighter;
+  color: #c000c0;
+  text-shadow: -1px -1px 1px #000;
+}
+
+header h2 {
+  font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
+  font-size: calc(24 * ((100vw - 320px) / (1280 - 320)) + 16px);
   font-weight: lighter;
   color: #c000c0;
   text-shadow: -1px -1px 1px #000;
@@ -129,7 +150,6 @@ h1 {
   text-shadow: -1px -1px 1px #000;
 }
 
-header h2,
 .section > section > h2 {
   font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
   font-size: calc(24 * ((100vw - 320px) / (1280 - 320)) + 16px);
@@ -138,17 +158,17 @@ header h2,
   text-shadow: -1px -1px 1px #000;
 }
 
-header h3 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: #ccc;
-}
-
 h3 {
   font-size: 2rem;
   font-weight: 300;
   color: #c000c0;
   text-shadow: -1px -1px 1px #000;
+}
+
+header h3 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #ccc;
 }
 
 h1 > span {
@@ -167,23 +187,14 @@ h1 > span:last-child {
 }
 
 nav {
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-direction: row;
   flex-direction: row;
-  -webkit-justify-content: space-between;
   justify-content: space-between;
   margin-top: 48px;
 }
 
-nav > a {
-  display: block;
-  border: 2px solid #c000c0;
-  padding: 12px;
-  font-size: 1.5rem;
-  font-size: calc(12 * ((100vw - 320px) / (1280 - 320)) + 12px);
-  text-decoration: none;
-  transition: all 0.4s ease;
+footer a:hover {
+  color: #800080;
 }
 
 nav > a:first-of-type {
@@ -194,23 +205,18 @@ nav > a:first-of-type {
 nav > a:last-of-type {
   margin-left: 12px;
   color: #c000c0;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgb(0 0 0 / 0%);
 }
 
 nav > a:first-of-type:hover {
-  border-color: #800080;
   background-color: #800080;
+  border-color: #800080;
 }
 
 nav > a:last-of-type:hover {
-  border-color: #800080;
   color: #ccc;
   background-color: #800080;
-}
-
-aside > img {
-  width: 100%;
-  height: auto;
+  border-color: #800080;
 }
 
 aside h3 {
@@ -219,24 +225,24 @@ aside h3 {
 }
 
 pre {
-  margin-left: 16px;
-  padding: 8px 16px;
   width: 480px;  /* HACK */
+  padding: 8px 16px;
+  margin-left: 16px;
+  overflow-x: auto;
   font-size: 16px;
   color: #212121;
   background-color: #eee;
-  overflow-x: auto;
 }
 
 button[type="button"] {
-  cursor: pointer;
-  margin-left: 16px;
-  border: none;
   padding: 12px 16px;
+  margin-left: 16px;
   font-size: 16px;
   color: #ccc;
-  background-color: #c000c0;
   text-transform: uppercase;
+  cursor: pointer;
+  background-color: #c000c0;
+  border: none;
   transition: background-color 0.4s ease;
 }
 
@@ -249,23 +255,13 @@ button[type="button"]:focus {
 }
 
 footer {
-  margin: 48px 0;
   padding-bottom: 48px;
+  margin: 48px 0;
   text-align: center;
 }
 
 footer > p {
   color: #ccc;
-}
-
-footer a {
-  color: #c000c0;
-  text-decoration: none;
-  transition: color 0.4s ease;
-}
-
-footer a:hover {
-  color: #800080;
 }
 
 .translate-y {
@@ -284,7 +280,7 @@ footer a:hover {
   animation: fade-in 0.6s ease 1 normal 2.2s forwards;
 }
 
-.-highlight {
+.copy-highlight {
   animation: highlight 0.2s linear 1 normal 0s backwards;
 }
 

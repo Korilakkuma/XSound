@@ -1,5 +1,5 @@
-import { BufferSize } from '../types';
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
+import { MixerModuleProcessor } from './MixerModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
@@ -28,6 +28,8 @@ import { Tremolo } from '../SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '../SoundModule/Effectors/VocalCanceler';
 import { Wah } from '../SoundModule/Effectors/Wah';
 
+export { MixerModuleProcessor };
+
 /**
  * This class is for mixing sound sources (instance of `SoundModule` subclass).
  * @constructor
@@ -39,11 +41,11 @@ export class MixerModule extends SoundModule {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  // eslint-disable-next-line no-useless-constructor
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
+
+    this.processor = new AudioWorkletNode(context, MixerModuleProcessor.name);
   }
 
   /**
@@ -85,13 +87,13 @@ export class MixerModule extends SoundModule {
 
         this.gainNodes[i].gain.value = gains ? gains[i] : 1;
 
-        // ScriptProcessorNode (each sound source) -> GainNode (each sound source volume) -> ScriptProcessorNode (Mix sound sources)
+        // AudioWorkletNode (each sound source) -> GainNode (each sound source volume) -> AudioWorkletNode (Mix sound sources)
         source.INPUT.connect(this.gainNodes[i]);
         this.gainNodes[i].connect(this.processor);
       }
     }
 
-    // (... ->) ScriptProcessorNode (Mix sound sources) -> ... -> AudioDestinationNode (Output)
+    // (... ->) AudioWorkletNode (Mix sound sources) -> ... -> AudioDestinationNode (Output)
     this.connect(this.processor);
 
     const startTime = this.context.currentTime;
@@ -103,16 +105,6 @@ export class MixerModule extends SoundModule {
       this.analyser.start('fft');
       this.runningAnalyser = true;
     }
-
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      const inputLs  = event.inputBuffer.getChannelData(0);
-      const inputRs  = event.inputBuffer.getChannelData(1);
-      const outputLs = event.outputBuffer.getChannelData(0);
-      const outputRs = event.outputBuffer.getChannelData(1);
-
-      outputLs.set(inputLs);
-      outputRs.set(inputRs);
-    };
 
     return this;
   }
@@ -281,12 +273,6 @@ export class MixerModule extends SoundModule {
   }
 
   /** @override */
-  public override resize(bufferSize: BufferSize): MixerModule {
-    super.init(this.context, bufferSize);
-    return this;
-  }
-
-  /** @override */
   public override on(startTime?: number): MixerModule {
     super.on(startTime);
     return this;
@@ -317,7 +303,7 @@ export class MixerModule extends SoundModule {
   }
 
   /** @override */
-  public override get INPUT(): ScriptProcessorNode {
+  public override get INPUT(): AudioWorkletNode {
     return this.processor;
   }
 

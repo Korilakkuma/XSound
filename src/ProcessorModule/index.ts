@@ -1,4 +1,3 @@
-import { BufferSize } from '../types';
 import { SoundModule, Module, ModuleName } from '../SoundModule';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
@@ -34,24 +33,17 @@ import { Wah } from '../SoundModule/Effectors/Wah';
  * @extends {SoundModule}
  */
 export class ProcessorModule extends SoundModule {
-  private workletNode: AudioWorkletNode | ScriptProcessorNode | null = null;
   private processorName = '';
   private options: AudioWorkletNodeOptions = {};
   private moduleURL = '';
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
 
     this.envelopegenerator.setGenerator(0);
-
-    if (!window.AudioWorkletNode) {
-      // Polyfill
-      this.workletNode = this.context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
-    }
   }
 
   /**
@@ -74,28 +66,22 @@ export class ProcessorModule extends SoundModule {
    * @return {Promise<void>} Return value is `Promise` that `addModule` returns.
    */
   public ready(moduleURL: string, options?: WorkletOptions): Promise<void> {
-    if (!window.AudioWorkletNode) {
-      return Promise.reject();
-    }
-
     this.moduleURL = moduleURL;
 
     return this.context.audioWorklet.addModule(this.moduleURL, options ?? { credentials: 'same-origin' })
       .then(() => {
-        this.workletNode = new AudioWorkletNode(this.context, this.processorName, this.options);
+        this.processor = new AudioWorkletNode(this.context, this.processorName, this.options);
       });
   }
 
   /**
    * This method starts sound by connecting to `AudioDestinationNode`.
-   * @param {function} processCallback This argument is `onaudioprocess` event handler for `ScriptProcessorNode`.
-   *     Therefore, if use AudioWorklet, this argument is unused.
    * @return {ProcessorModule} Return value is for method chain.
    */
-  public start(processCallback?: (event: AudioProcessingEvent) => void): ProcessorModule {
+  public start(): ProcessorModule {
     const generator = this.envelopegenerator.getGenerator(0);
 
-    if ((this.workletNode === null) || (generator === null)) {
+    if (generator === null) {
       return this;
     }
 
@@ -104,18 +90,14 @@ export class ProcessorModule extends SoundModule {
     if (!this.mixed) {
       // Clear previous
       this.envelopegenerator.clear(true);
-      this.workletNode.disconnect(0);
-
-      if (this.workletNode instanceof ScriptProcessorNode) {
-        this.workletNode.onaudioprocess = null;
-      }
+      this.processor.disconnect(0);
 
       // GainNode (Envelope Generator) -> ... -> AudioDestinationNode (Output)
       this.connect(generator);
     }
 
     // AudioWorkletNode (Input) -> GainNode (Envelope Generator)
-    this.envelopegenerator.ready(0, this.workletNode, null);
+    this.envelopegenerator.ready(0, this.processor, null);
 
     this.envelopegenerator.start(startTime);
 
@@ -127,10 +109,6 @@ export class ProcessorModule extends SoundModule {
 
     this.on(startTime);
 
-    if ((this.workletNode instanceof ScriptProcessorNode) && processCallback) {
-      this.workletNode.onaudioprocess = processCallback;
-    }
-
     return this;
   }
 
@@ -139,14 +117,10 @@ export class ProcessorModule extends SoundModule {
    * @return {ProcessorModule} Return value is for method chain.
    */
   public stop(): ProcessorModule {
-    if (this.workletNode === null) {
-      return this;
-    }
-
     const stopTime = this.context.currentTime;
 
     if (!this.mixed) {
-      this.workletNode.disconnect(0);
+      this.processor.disconnect(0);
     }
 
     this.envelopegenerator.stop(stopTime);
@@ -161,11 +135,7 @@ export class ProcessorModule extends SoundModule {
    * @return {ProcessorModule} Return value is for method chain.
    */
   public postMessage(data: unknown): ProcessorModule {
-    if ((this.workletNode === null) || (this.workletNode instanceof ScriptProcessorNode)) {
-      return this;
-    }
-
-    this.workletNode.port.postMessage(data);
+    this.processor.port.postMessage(data);
 
     return this;
   }
@@ -176,11 +146,7 @@ export class ProcessorModule extends SoundModule {
    * @return {ProcessorModule} Return value is for method chain.
    */
   public onMessage(callback: (event: MessageEvent) => void): ProcessorModule {
-    if ((this.workletNode === null) || (this.workletNode instanceof ScriptProcessorNode)) {
-      return this;
-    }
-
-    this.workletNode.port.onmessage = callback;
+    this.processor.port.onmessage = callback;
 
     return this;
   }
@@ -191,11 +157,7 @@ export class ProcessorModule extends SoundModule {
    * @return {ProcessorModule} Return value is for method chain.
    */
   public onMessageError(callback: (event: MessageEvent) => void): ProcessorModule {
-    if ((this.workletNode === null) || (this.workletNode instanceof ScriptProcessorNode)) {
-      return this;
-    }
-
-    this.workletNode.port.onmessageerror = callback;
+    this.processor.port.onmessageerror = callback;
 
     return this;
   }
@@ -204,20 +166,16 @@ export class ProcessorModule extends SoundModule {
    * This method gets map based on `AudioParamMap`.
    * @return {AudioParamMap|null}
    */
-  public map(): AudioParamMap | null {
-    if ((this.workletNode === null) || (this.workletNode instanceof ScriptProcessorNode)) {
-      return null;
-    }
-
-    return this.workletNode.parameters;
+  public map(): AudioParamMap {
+    return this.processor.parameters;
   }
 
   /**
-   * This method gets instance of `AudioWorkletNode` (or `ScriptProcessorNode`).
-   * @return {AudioWorkletNode|ScriptProcessorNode|null}
+   * This method gets instance of `AudioWorkletNode`.
+   * @return {AudioWorkletNode|null}
    */
-  public get(): AudioWorkletNode | ScriptProcessorNode | null {
-    return this.workletNode;
+  public get(): AudioWorkletNode {
+    return this.processor;
   }
 
   /**
@@ -314,12 +272,6 @@ export class ProcessorModule extends SoundModule {
   }
 
   /** @override */
-  public override resize(bufferSize: BufferSize): ProcessorModule {
-    super.init(this.context, bufferSize);
-    return this;
-  }
-
-  /** @override */
   public override on(startTime?: number): ProcessorModule {
     super.on(startTime);
     return this;
@@ -337,9 +289,9 @@ export class ProcessorModule extends SoundModule {
 
     const generator = this.envelopegenerator.getGenerator(0);
 
-    if (this.workletNode && generator) {
+    if (this.processor && generator) {
       generator.disconnect(0);
-      this.workletNode.connect(generator);
+      this.processor.connect(generator);
     }
 
     return this;

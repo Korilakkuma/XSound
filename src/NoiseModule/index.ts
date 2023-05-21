@@ -1,5 +1,5 @@
-import { BufferSize } from '../types';
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
+import { NoiseModuleProcessor } from './NoiseModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
@@ -34,6 +34,8 @@ export type NoiseModuleParams = SoundModuleParams & {
   type?: NoiseType
 };
 
+export { NoiseModuleProcessor };
+
 /**
  * This subclass is for generating noise.
  * @constructor
@@ -44,10 +46,12 @@ export class NoiseModule extends SoundModule {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
+
+    this.processor = new AudioWorkletNode(context, NoiseModuleProcessor.name);
+
     this.envelopegenerator.setGenerator(0);
   }
 
@@ -75,12 +79,7 @@ export class NoiseModule extends SoundModule {
     const startTime = this.context.currentTime;
 
     if (!this.mixed) {
-      // Clear previous
-      this.envelopegenerator.clear(true);
-      this.processor.disconnect(0);
-      this.processor.onaudioprocess = null;
-
-      // ScriptProcessorNode (Input) -> GainNode (Envelope Generator)
+      // AudioWorkletNode (Input) -> GainNode (Envelope Generator)
       const generator = this.envelopegenerator.getGenerator(0);
 
       if (generator) {
@@ -100,90 +99,6 @@ export class NoiseModule extends SoundModule {
 
     this.on(startTime);
 
-    const bufferSize = this.processor.bufferSize;
-
-    let b0 = 0;
-    let b1 = 0;
-    let b2 = 0;
-    let b3 = 0;
-    let b4 = 0;
-    let b5 = 0;
-    let b6 = 0;
-
-    let lastOut = 0;
-
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      const outputLs = event.outputBuffer.getChannelData(0);
-      const outputRs = event.outputBuffer.getChannelData(1);
-
-      if (this.envelopegenerator.paused()) {
-        if (!this.mixed) {
-          this.processor.disconnect(0);
-          this.processor.onaudioprocess = null;
-        }
-
-        this.analyser.stop('time');
-        this.analyser.stop('fft');
-
-        this.runningAnalyser = false;
-      } else {
-        switch (this.type) {
-          case 'whitenoise': {
-            for (let i = 0; i < bufferSize; i++) {
-              outputLs[i] = 2 * (Math.random() - 0.5);
-              outputRs[i] = 2 * (Math.random() - 0.5);
-            }
-
-            break;
-          }
-
-          case 'pinknoise': {
-            // ref: https://noisehack.com/generate-noise-web-audio-api/
-            for (let i = 0; i < bufferSize; i++) {
-              const white = (Math.random() * 2) - 1;
-
-              b0 = (0.99886 * b0) + (white * 0.0555179);
-              b1 = (0.99332 * b1) + (white * 0.0750759);
-              b2 = (0.96900 * b2) + (white * 0.1538520);
-              b3 = (0.86650 * b3) + (white * 0.3104856);
-              b4 = (0.55000 * b4) + (white * 0.5329522);
-              b5 = (-0.7616 * b5) - (white * 0.0168980);
-
-              outputLs[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + (white * 0.5362);
-              outputRs[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + (white * 0.5362);
-
-              outputLs[i] *= 0.11;
-              outputRs[i] *= 0.11;
-
-              b6 = white * 0.115926;
-            }
-
-            break;
-          }
-
-          case 'browniannoise': {
-            // ref: https://noisehack.com/generate-noise-web-audio-api/
-            for (let i = 0; i < bufferSize; i++) {
-              const white = (Math.random() * 2) - 1;
-
-              outputLs[i] = (lastOut + (0.02 * white)) / 1.02;
-              outputRs[i] = (lastOut + (0.02 * white)) / 1.02;
-
-              lastOut = (lastOut + (0.02 * white)) / 1.02;
-
-              outputLs[i] *= 3.5;
-              outputRs[i] *= 3.5;
-            }
-
-            break;
-          }
-
-          default:
-            break;
-        }
-      }
-    };
-
     return this;
   }
 
@@ -194,7 +109,9 @@ export class NoiseModule extends SoundModule {
   public stop(): NoiseModule {
     const stopTime = this.context.currentTime;
 
+    // Attack or Decay or Sustain -> Release
     this.envelopegenerator.stop(stopTime);
+
     this.off(stopTime);
 
     return this;
@@ -232,6 +149,10 @@ export class NoiseModule extends SoundModule {
         case 'type':
           if (typeof value === 'string') {
             this.type = value;
+
+            const message: NoiseModuleParams = { type: value };
+
+            this.processor.port.postMessage(message);
           }
 
           break;
@@ -337,12 +258,6 @@ export class NoiseModule extends SoundModule {
   }
 
   /** @override */
-  public override resize(bufferSize: BufferSize): NoiseModule {
-    super.init(this.context, bufferSize);
-    return this;
-  }
-
-  /** @override */
   public override on(startTime?: number): NoiseModule {
     super.on(startTime);
     return this;
@@ -357,14 +272,6 @@ export class NoiseModule extends SoundModule {
   /** @override */
   public override suspend(): NoiseModule {
     super.suspend();
-
-    const generator = this.envelopegenerator.getGenerator(0);
-
-    if (generator) {
-      generator.disconnect(0);
-      this.processor.connect(generator);
-    }
-
     return this;
   }
 

@@ -1,5 +1,5 @@
-import { BufferSize } from '../types';
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
+import { OneshotModuleProcessor } from './OneshotModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
@@ -45,6 +45,8 @@ export type OneshotModuleParams = SoundModuleParams & {
   transpose?: number
 };
 
+export { OneshotModuleProcessor };
+
 /**
  * This subclass is for playing one-shot audio
  * @constructor
@@ -63,19 +65,17 @@ export class OneshotModule extends SoundModule {
 
   private transpose = 0;
 
-  private paused = true;
-
   // If error occurs at least one, this method aborts the all of connections.
   // Therefore, this flag are shared with the all of `XMLHttpRequest` instances.
   private loadError = false;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  // eslint-disable-next-line no-useless-constructor
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
+
+    this.processor = new AudioWorkletNode(context, OneshotModuleProcessor.name);
   }
 
   /**
@@ -148,7 +148,7 @@ export class OneshotModule extends SoundModule {
     if (!this.mixed) {
       this.envelopegenerator.clear(false);
 
-      // ScriptProcessorNode (Mix one-shots) -> ... -> AudioDestinationNode (Output)
+      // AudioWorkletNode (Mix one-shots) -> ... -> AudioDestinationNode (Output)
       this.connect(this.processor);
     }
 
@@ -179,7 +179,7 @@ export class OneshotModule extends SoundModule {
 
       this.volumes[index].gain.value = volume ?? 1;
 
-      // AudioBufferSourceNode (Input) -> GainNode (Envelope Generator) -> GainNode (Volume) -> ScriptProcessorNode (Mix one-shots)
+      // AudioBufferSourceNode (Input) -> GainNode (Envelope Generator) -> GainNode (Volume) -> AudioWorkletNode (Mix one-shots)
       this.envelopegenerator.ready(index, source, this.volumes[index]);
       this.volumes[index].connect(this.processor);
 
@@ -192,11 +192,6 @@ export class OneshotModule extends SoundModule {
       this.sources[index] = source;
 
       this.states[index] = true;
-
-      // Call on stopping audio
-      source.onended = () => {
-        this.states[index] = false;
-      };
     }
 
     // Attack -> Decay -> Sustain
@@ -210,38 +205,6 @@ export class OneshotModule extends SoundModule {
       this.runningAnalyser = true;
     }
 
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      this.paused = !this.states.some((state: boolean) => state);
-
-      if (this.paused) {
-        // Stop
-
-        this.stop(indexes);
-
-        this.off(this.context.currentTime);
-
-        this.envelopegenerator.clear(false);
-
-        this.analyser.stop('time');
-        this.analyser.stop('fft');
-        this.runningAnalyser = false;
-
-        if (!this.mixed) {
-          // Stop `onaudioprocess` event
-          this.processor.disconnect(0);
-          this.processor.onaudioprocess = null;
-        }
-      } else {
-        const inputLs  = event.inputBuffer.getChannelData(0);
-        const inputRs  = event.inputBuffer.getChannelData(1);
-        const outputLs = event.outputBuffer.getChannelData(0);
-        const outputRs = event.outputBuffer.getChannelData(1);
-
-        outputLs.set(inputLs);
-        outputRs.set(inputRs);
-      }
-    };
-
     return this;
   }
 
@@ -251,28 +214,21 @@ export class OneshotModule extends SoundModule {
    * @return {OneshotModule} Return value is for method chain.
    */
   public stop(indexes: number[]): OneshotModule {
-    const canStop = indexes.every((index: number) => {
-      if ((index < 0) || (index >= this.settings.length)) {
-        return false;
+    const stopTime = this.context.currentTime + this.startTime + this.duration;
+
+    indexes.forEach((index: number) => {
+      if (this.states[index]) {
+        this.sources[index].stop(stopTime);
+
+        this.states[index] = false;
       }
-
-      const bufferIndex = this.settings[index].bufferIndex;
-
-      if (typeof bufferIndex !== 'number') {
-        return false;
-      }
-
-      return true;
     });
 
-    if (canStop) {
-      const stopTime = this.context.currentTime + this.startTime + this.duration;
+    // Attack or Decay or Sustain -> Release
+    this.envelopegenerator.stop(stopTime);
+    this.envelopegenerator.clear(false);
 
-      // Attack or Decay or Sustain -> Release
-      this.envelopegenerator.stop(stopTime);
-
-      this.filter.stop(stopTime);
-    }
+    this.off(stopTime);
 
     return this;
   }
@@ -465,12 +421,6 @@ export class OneshotModule extends SoundModule {
   }
 
   /** @override */
-  public override resize(bufferSize: BufferSize): OneshotModule {
-    super.init(this.context, bufferSize);
-    return this;
-  }
-
-  /** @override */
   public override on(startTime?: number): OneshotModule {
     super.on(startTime);
     return this;
@@ -515,7 +465,7 @@ export class OneshotModule extends SoundModule {
   }
 
   /** @override */
-  public override get INPUT(): ScriptProcessorNode {
+  public override get INPUT(): AudioWorkletNode {
     return this.processor;
   }
 

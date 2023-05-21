@@ -1,5 +1,5 @@
 import { Connectable } from '../interfaces';
-import { BufferSize } from '../types';
+import { SoundModuleProcessor } from './SoundModuleProcessor';
 import { Analyser } from './Analyser';
 import { Recorder } from './Recorder';
 import { Session } from './Session';
@@ -115,6 +115,8 @@ export type SoundModuleParams = {
   wah?: WahParams
 };
 
+export { SoundModuleProcessor };
+
 /**
  * This class is superclass that is the top in this library.
  * This class is extended as subclass (`OscillatorModule`, `OneshotModule`, `NoiseModule`, `AudioModule`, `MediaModule`, `StreamModule`, `ProcessorModule`, `MixerModule` ...etc).
@@ -130,7 +132,7 @@ export abstract class SoundModule implements Connectable {
   protected modules: Connectable[] = [];
 
   protected mastervolume: GainNode;
-  protected processor: ScriptProcessorNode;
+  protected processor: AudioWorkletNode;
 
   protected analyser: Analyser;
   protected recorder: Recorder;
@@ -166,16 +168,15 @@ export abstract class SoundModule implements Connectable {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
+  constructor(context: AudioContext) {
     this.context = context;
 
     this.mastervolume = context.createGain();
-    this.processor    = context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
+    this.processor    = new AudioWorkletNode(context, SoundModuleProcessor.name);
 
     this.analyser          = new Analyser(context);
-    this.recorder          = new Recorder(context, bufferSize, 2, 2);
+    this.recorder          = new Recorder(context, 0, 2, 2);
     this.session           = new Session(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
@@ -282,25 +283,6 @@ export abstract class SoundModule implements Connectable {
     // for session
     this.mastervolume.connect(this.session.INPUT);
     this.session.OUTPUT.connect(this.context.destination);
-  }
-
-  /**
-   * This method changes buffer size for `ScriptProcessorNode`.
-   * If resize is needed, should invoke this method on initialization.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
-   * @return {SoundModule} Return value is for method chain.
-   */
-  public resize(bufferSize: BufferSize): SoundModule {
-    this.init(this.context, bufferSize);
-    return this;
-  }
-
-  /**
-   * This method gets buffer size for `ScriptProcessorNode`.
-   * @return {BufferSize}
-   */
-  public getBufferSize(): number {
-    return this.processor.bufferSize;
   }
 
   /**
@@ -455,7 +437,7 @@ export abstract class SoundModule implements Connectable {
   /**
    * Connector for input.
    */
-  public abstract get INPUT(): GainNode | ScriptProcessorNode | null;
+  public abstract get INPUT(): GainNode | AudioWorkletNode | null;
 
   /**
    * Connector for output.
@@ -465,9 +447,8 @@ export abstract class SoundModule implements Connectable {
   /**
    * This method re-initials modules.
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  protected init(context: AudioContext, bufferSize: BufferSize): void {
+  protected init(context: AudioContext): void {
     this.mastervolume.disconnect(0);
     this.processor.disconnect(0);
     this.analyser.INPUT.disconnect(0);
@@ -486,10 +467,8 @@ export abstract class SoundModule implements Connectable {
 
     this.modules.length = 0;
 
-    this.processor = context.createScriptProcessor(bufferSize, SoundModule.NUMBER_OF_INPUTS, SoundModule.NUMBER_OF_OUTPUTS);
-
     this.analyser          = new Analyser(context);
-    this.recorder          = new Recorder(context, bufferSize, 2, 2);
+    this.recorder          = new Recorder(context, 0, 2, 2);
     this.session           = new Session(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);

@@ -1,5 +1,5 @@
-import { BufferSize } from '../types';
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
+import { OscillatorModuleProcessor } from './OscillatorModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
@@ -39,6 +39,8 @@ export type {
   OscillatorCustomType
 };
 
+export { OscillatorModuleProcessor };
+
 export type OscillatorModuleParams = SoundModuleParams & {
   oscillator?: {
     glide: GlideParams,
@@ -60,12 +62,12 @@ export class OscillatorModule extends SoundModule {
 
   /**
    * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
 
-    this.glide = new Glide(context);
+    this.processor = new AudioWorkletNode(context, OscillatorModuleProcessor.name);
+    this.glide     = new Glide(context);
   }
 
   /**
@@ -111,10 +113,8 @@ export class OscillatorModule extends SoundModule {
     if (!this.mixed) {
       // Clear previous
       this.envelopegenerator.clear(true);
-      this.processor.disconnect(0);
-      this.processor.onaudioprocess = null;
 
-      // ScriptProcessorNode (Mix oscillators) -> ... -> AudioDestinationNode (Output)
+      // AudioWorkletNode (Mix oscillators) -> ... -> AudioDestinationNode (Output)
       this.connect(this.processor);
     }
 
@@ -126,7 +126,7 @@ export class OscillatorModule extends SoundModule {
       const oscillator = this.sources[i];
       const frequency  = frequencies[i];
 
-      // GainNode (Volume) -> ScriptProcessorNode (Mix oscillators)
+      // GainNode (Volume) -> AudioWorkletNode (Mix oscillators)
       oscillator.ready(this.processor);
 
       // OscillatorNode (Input) -> GainNode (Envelope Generator) -> GainNode (Volume)
@@ -148,38 +148,6 @@ export class OscillatorModule extends SoundModule {
       this.analyser.start('fft');
       this.runningAnalyser = true;
     }
-
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      const inputLs  = event.inputBuffer.getChannelData(0);
-      const inputRs  = event.inputBuffer.getChannelData(1);
-      const outputLs = event.outputBuffer.getChannelData(0);
-      const outputRs = event.outputBuffer.getChannelData(1);
-
-      // Stop ?
-      if (this.envelopegenerator.paused()) {
-        // Stop
-        const stopTime = this.context.currentTime;
-
-        for (const source of this.sources) {
-          source.stop(stopTime);
-        }
-
-        this.off(stopTime);
-
-        this.analyser.stop('time');
-        this.analyser.stop('fft');
-        this.runningAnalyser = false;
-
-        if (!this.mixed) {
-          // Stop `onaudioprocess` event
-          this.processor.disconnect(0);
-          this.processor.onaudioprocess = null;
-        }
-      } else {
-        outputLs.set(inputLs);
-        outputRs.set(inputRs);
-      }
-    };
 
     return this;
   }
@@ -356,12 +324,6 @@ export class OscillatorModule extends SoundModule {
   }
 
   /** @override */
-  public override resize(bufferSize: BufferSize): OscillatorModule {
-    super.init(this.context, bufferSize);
-    return this;
-  }
-
-  /** @override */
   public override on(startTime?: number): OscillatorModule {
     super.on(startTime);
     return this;
@@ -411,7 +373,7 @@ export class OscillatorModule extends SoundModule {
   }
 
   /** @override */
-  public override get INPUT(): ScriptProcessorNode {
+  public override get INPUT(): AudioWorkletNode {
     return this.processor;
   }
 

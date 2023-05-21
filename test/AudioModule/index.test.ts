@@ -107,17 +107,14 @@ describe(AudioModule.name, () => {
       /* eslint-disable dot-notation */
       const originalSourceStop   = audioModule['source'].stop;
       const originalAnalyserStop = audioModule['analyser'].stop;
-      const originalProcessor    = audioModule['processor'];
       /* eslint-enable dot-notation */
 
       const sourceStopMock          = jest.fn();
       const analyserStopMock        = jest.fn();
-      const processorDisconnectMock = jest.fn();
 
       /* eslint-disable dot-notation */
-      audioModule['source'].stop          = sourceStopMock;
-      audioModule['analyser'].stop        = analyserStopMock;
-      audioModule['processor'].disconnect = processorDisconnectMock;
+      audioModule['source'].stop   = sourceStopMock;
+      audioModule['analyser'].stop = analyserStopMock;
 
       // @ts-ignore
       audioModule['buffer']  = new AudioBufferMock(new Float32Array([1, 0, 1]));
@@ -128,12 +125,10 @@ describe(AudioModule.name, () => {
 
       expect(sourceStopMock).toHaveBeenCalledTimes(1);
       expect(analyserStopMock).toHaveBeenCalledTimes(2);
-      expect(processorDisconnectMock).toHaveBeenCalledTimes(1);
 
       /* eslint-disable dot-notation */
       audioModule['source'].stop   = originalSourceStop;
       audioModule['analyser'].stop = originalAnalyserStop;
-      audioModule['processor']     = originalProcessor;
 
       // @ts-ignore
       audioModule['buffer']  = null;

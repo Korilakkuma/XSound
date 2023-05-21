@@ -1,5 +1,5 @@
-import { BufferSize } from '../types';
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
+import { StreamModuleProcessor } from './StreamModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
@@ -37,6 +37,8 @@ export type StreamModuleParams = SoundModuleParams & {
   track?: boolean
 };
 
+export { StreamModuleProcessor };
+
 /**
  * This class is for processing sound data from WebRTC.
  * @constructor
@@ -58,10 +60,11 @@ export class StreamModule extends SoundModule {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
+
+    this.processor = new AudioWorkletNode(context, StreamModuleProcessor.name);
   }
 
   /**
@@ -140,14 +143,14 @@ export class StreamModule extends SoundModule {
         // @ts-ignore (HACK: `createMediaStreamTrackSource` is not defined)
         this.sources[i] = this.context.createMediaStreamTrackSource(audioTracks[i]);
 
-        // MediaStreamTrackAudioSourceNode (Input) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
+        // MediaStreamTrackAudioSourceNode (Input) -> AudioWorkletNode -> ... -> AudioDestinationNode (Output)
         this.sources[i].connect(this.processor);
         this.connect(this.processor);
       }
     } else {
       this.sources[0] = this.context.createMediaStreamSource(this.stream);
 
-      // MediaStreamAudioSourceNode (Input) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
+      // MediaStreamAudioSourceNode (Input) -> AudioWorkletNode -> ... -> AudioDestinationNode (Output)
       this.sources[0].connect(this.processor);
       this.connect(this.processor);
     }
@@ -172,16 +175,6 @@ export class StreamModule extends SoundModule {
     this.analyser.start('time');
     this.analyser.start('fft');
 
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      const inputLs  = event.inputBuffer.getChannelData(0);
-      const inputRs  = event.inputBuffer.getChannelData(1);
-      const outputLs = event.outputBuffer.getChannelData(0);
-      const outputRs = event.outputBuffer.getChannelData(1);
-
-      outputLs.set(inputLs);
-      outputRs.set(inputRs);
-    };
-
     return this;
   }
 
@@ -196,12 +189,6 @@ export class StreamModule extends SoundModule {
 
     this.analyser.stop('time');
     this.analyser.stop('fft');
-
-    if (!this.mixed) {
-      // Stop `onaudioprocess` event
-      this.processor.disconnect(0);
-      this.processor.onaudioprocess = null;
-    }
 
     this.paused = true;
 
@@ -458,12 +445,6 @@ export class StreamModule extends SoundModule {
   }
 
   /** @override */
-  public override resize(bufferSize: BufferSize): StreamModule {
-    super.init(this.context, bufferSize);
-    return this;
-  }
-
-  /** @override */
   public override on(startTime?: number): StreamModule {
     super.on(startTime);
     return this;
@@ -511,7 +492,7 @@ export class StreamModule extends SoundModule {
   }
 
   /** @override */
-  public override get INPUT(): ScriptProcessorNode {
+  public override get INPUT(): AudioWorkletNode {
     return this.processor;
   }
 

@@ -1,10 +1,11 @@
 'use strict';
 
 import './types';
-import { SoundModule, SoundModuleParams, Module, ModuleName } from './SoundModule';
+import { SoundModule, SoundModuleParams, SoundModuleProcessor, Module, ModuleName } from './SoundModule';
 import {
   OscillatorModule,
   OscillatorModuleParams,
+  OscillatorModuleProcessor,
   Glide,
   GlideParams,
   GlideType,
@@ -12,13 +13,20 @@ import {
   OscillatorParams,
   OscillatorCustomType
 } from './OscillatorModule';
-import { OneshotModule, OneshotModuleParams, OneshotSetting, OneshotSettings, OneshotErrorText } from './OneshotModule';
-import { NoiseModule, NoiseModuleParams, NoiseType } from './NoiseModule';
-import { AudioModule, AudioModuleParams, AudioBufferSprite } from './AudioModule';
-import { MediaModule, MediaModuleParams } from './MediaModule';
-import { StreamModule, StreamModuleParams, MediaStreamTrackAudioSourceNode } from './StreamModule';
+import {
+  OneshotModule,
+  OneshotModuleParams,
+  OneshotSetting,
+  OneshotSettings,
+  OneshotErrorText,
+  OneshotModuleProcessor
+} from './OneshotModule';
+import { NoiseModule, NoiseModuleParams, NoiseType, NoiseModuleProcessor } from './NoiseModule';
+import { AudioModule, AudioModuleParams, AudioBufferSprite, AudioModuleProcessor } from './AudioModule';
+import { MediaModule, MediaModuleParams, MediaModuleProcessor } from './MediaModule';
+import { StreamModule, StreamModuleParams, StreamModuleProcessor, MediaStreamTrackAudioSourceNode } from './StreamModule';
 import { ProcessorModule } from './ProcessorModule';
-import { MixerModule } from './MixerModule';
+import { MixerModule, MixerModuleProcessor } from './MixerModule';
 import { MIDI } from './MIDI';
 import { MML, Part, Sequence, MMLSyntaxError, Tree, TokenType, TokenMap, Token } from './MML';
 import {
@@ -152,21 +160,29 @@ const sources: { [sourceName: string]: Source | null } = {
 
 Promise
   .all([
+    addAudioWorklet(audiocontext, SoundModuleProcessor),
+    addAudioWorklet(audiocontext, OscillatorModuleProcessor),
+    addAudioWorklet(audiocontext, OneshotModuleProcessor),
+    addAudioWorklet(audiocontext, NoiseModuleProcessor),
+    addAudioWorklet(audiocontext, AudioModuleProcessor),
+    addAudioWorklet(audiocontext, MediaModuleProcessor),
+    addAudioWorklet(audiocontext, StreamModuleProcessor),
+    addAudioWorklet(audiocontext, MixerModuleProcessor),
     addAudioWorklet(audiocontext, NoiseGateProcessor),
     addAudioWorklet(audiocontext, NoiseSuppressorProcessor),
     addAudioWorklet(audiocontext, PitchShifterProcessor),
     addAudioWorklet(audiocontext, StereoProcessor),
-    addAudioWorklet(audiocontext, VocalCancelerProcessor),
+    addAudioWorklet(audiocontext, VocalCancelerProcessor)
   ])
   .then(() => {
-    sources.oscillator = new OscillatorModule(audiocontext, 0);
-    sources.oneshot    = new OneshotModule(audiocontext, 0);
-    sources.noise      = new NoiseModule(audiocontext, 0);
-    sources.audio      = new AudioModule(audiocontext, 0);
-    sources.media      = new MediaModule(audiocontext, 0);
-    sources.stream     = new StreamModule(audiocontext, 0);
-    sources.processor  = new ProcessorModule(audiocontext, 0);
-    sources.mixer      = new MixerModule(audiocontext, 0);
+    sources.oscillator = new OscillatorModule(audiocontext);
+    sources.oneshot    = new OneshotModule(audiocontext);
+    sources.noise      = new NoiseModule(audiocontext);
+    sources.audio      = new AudioModule(audiocontext);
+    sources.media      = new MediaModule(audiocontext);
+    sources.stream     = new StreamModule(audiocontext);
+    sources.processor  = new ProcessorModule(audiocontext);
+    sources.mixer      = new MixerModule(audiocontext);
     sources.midi       = new MIDI();
     sources.mml        = new MML();
   })
@@ -358,14 +374,14 @@ XSound.clone = (): typeof ClonedXSound => {
     }
   };
 
-  clonedSources.oscillator = new OscillatorModule(audiocontext, 0);
-  clonedSources.oneshot    = new OneshotModule(audiocontext, 0);
-  clonedSources.noise      = new NoiseModule(audiocontext, 0);
-  clonedSources.audio      = new AudioModule(audiocontext, 0);
-  clonedSources.media      = new MediaModule(audiocontext, 0);
-  clonedSources.stream     = new StreamModule(audiocontext, 0);
-  clonedSources.processor  = new ProcessorModule(audiocontext, 0);
-  clonedSources.mixer      = new MixerModule(audiocontext, 0);
+  clonedSources.oscillator = new OscillatorModule(audiocontext);
+  clonedSources.oneshot    = new OneshotModule(audiocontext);
+  clonedSources.noise      = new NoiseModule(audiocontext);
+  clonedSources.audio      = new AudioModule(audiocontext);
+  clonedSources.media      = new MediaModule(audiocontext);
+  clonedSources.stream     = new StreamModule(audiocontext);
+  clonedSources.processor  = new ProcessorModule(audiocontext);
+  clonedSources.mixer      = new MixerModule(audiocontext);
   clonedSources.midi       = new MIDI();
   clonedSources.mml        = new MML();
 
@@ -444,6 +460,7 @@ document.addEventListener('touchstart', setup, false);
 export type {
   SoundModule,
   SoundModuleParams,
+  SoundModuleProcessor,
   Module,
   ModuleName,
   OscillatorModule,
@@ -454,24 +471,31 @@ export type {
   Oscillator,
   OscillatorParams,
   OscillatorCustomType,
+  OscillatorModuleProcessor,
   OneshotModule,
   OneshotModuleParams,
   OneshotSetting,
   OneshotSettings,
   OneshotErrorText,
+  OneshotModuleProcessor,
   NoiseModule,
   NoiseModuleParams,
   NoiseType,
+  NoiseModuleProcessor,
   AudioModule,
   AudioModuleParams,
   AudioBufferSprite,
+  AudioModuleProcessor,
   MediaModule,
   MediaModuleParams,
+  MediaModuleProcessor,
   StreamModule,
   StreamModuleParams,
+  StreamModuleProcessor,
   MediaStreamTrackAudioSourceNode,
   ProcessorModule,
   MixerModule,
+  MixerModuleProcessor,
   MIDI,
   MML,
   Part,

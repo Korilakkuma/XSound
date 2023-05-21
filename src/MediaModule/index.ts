@@ -1,5 +1,5 @@
-import { BufferSize }  from '../types';
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
+import { MediaModuleProcessor } from './MediaModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
@@ -38,6 +38,8 @@ export type MediaModuleParams = SoundModuleParams & {
   readonly duration?: number
 };
 
+export { MediaModuleProcessor };
+
 /**
  * This class processes sound data from `HTMLMediaElement`.
  * Namely, this class enables to create audio player that has higher features from `HTMLMediaElement`.
@@ -69,10 +71,11 @@ export class MediaModule extends SoundModule {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
+
+    this.processor = new AudioWorkletNode(context, MediaModuleProcessor.name);
 
     this.onSourceOpen  = this.onSourceOpen.bind(this);
     this.onSourceEnded = this.onSourceEnded.bind(this);
@@ -163,10 +166,6 @@ export class MediaModule extends SoundModule {
 
       this.analyser.stop('time');
       this.analyser.stop('fft');
-
-      // Stop `onaudioprocess` event
-      this.processor.disconnect(0);
-      this.processor.onaudioprocess = null;
     }, false);
 
     this.autoplay = autoplay ?? false;
@@ -256,7 +255,7 @@ export class MediaModule extends SoundModule {
       return this;
     }
 
-    // MediaElementAudioSourceNode (Input) -> GainNode (Envelope Generator) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
+    // MediaElementAudioSourceNode (Input) -> GainNode (Envelope Generator) -> AudioWorkletNode -> ... -> AudioDestinationNode (Output)
     this.envelopegenerator.ready(0, this.source, this.processor);
     this.connect(this.processor);
 
@@ -281,16 +280,6 @@ export class MediaModule extends SoundModule {
 
         this.analyser.start('time');
         this.analyser.start('fft');
-
-        this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-          const inputLs  = event.inputBuffer.getChannelData(0);
-          const inputRs  = event.inputBuffer.getChannelData(1);
-          const outputLs = event.outputBuffer.getChannelData(0);
-          const outputRs = event.outputBuffer.getChannelData(1);
-
-          outputLs.set(inputLs);
-          outputRs.set(inputRs);
-        };
       })
       .catch(() => {
         this.stop(() => {
@@ -334,12 +323,6 @@ export class MediaModule extends SoundModule {
 
         this.analyser.stop('time');
         this.analyser.stop('fft');
-
-        if (!this.media) {
-          // Stop `onaudioprocess` event
-          this.processor.disconnect(0);
-          this.processor.onaudioprocess = null;
-        }
 
         if (successCallback) {
           successCallback();
@@ -702,12 +685,6 @@ export class MediaModule extends SoundModule {
   }
 
   /** @override */
-  public override resize(bufferSize: BufferSize): MediaModule {
-    super.init(this.context, bufferSize);
-    return this;
-  }
-
-  /** @override */
   public override on(startTime?: number): MediaModule {
     super.on(startTime);
     return this;
@@ -759,7 +736,7 @@ export class MediaModule extends SoundModule {
   }
 
   /** @override */
-  public override get INPUT(): ScriptProcessorNode {
+  public override get INPUT(): AudioWorkletNode {
     return this.processor;
   }
 

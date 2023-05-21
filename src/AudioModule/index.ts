@@ -1,5 +1,5 @@
-import { BufferSize } from '../types';
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
+import { AudioModuleProcessor } from './AudioModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Session } from '../SoundModule/Session';
@@ -40,6 +40,8 @@ export type AudioModuleParams = SoundModuleParams & {
   readonly numberOfChannels?: number
 };
 
+export { AudioModuleProcessor };
+
 /**
  * This subclass is for playing single audio.
  * This class enables to create audio player that has higher features than `HTMLAudioElement`.
@@ -60,12 +62,15 @@ export class AudioModule extends SoundModule {
   private endedCallback?(source: AudioBufferSourceNode, currentTime: number): void;
   private errorCallback?(error: Error): void;
 
+  private updateId: number | null = null;
+
   /**
    * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize) {
-    super(context, bufferSize);
+  constructor(context: AudioContext) {
+    super(context);
+
+    this.processor = new AudioWorkletNode(context, AudioModuleProcessor.name);
 
     this.source = context.createBufferSource();
   }
@@ -173,7 +178,7 @@ export class AudioModule extends SoundModule {
     this.source.loopStart          = this.currentTime;
     this.source.loopEnd            = (end >= 0) ? end : this.buffer.duration;
 
-    // AudioBufferSourceNode (Input) -> GainNode (Envelope Generator) -> ScriptProcessorNode -> ... -> AudioDestinationNode (Output)
+    // AudioBufferSourceNode (Input) -> GainNode (Envelope Generator) -> AudioWorkletNode -> ... -> AudioDestinationNode (Output)
     this.envelopegenerator.ready(0, this.source, this.processor);
     this.connect(this.processor);
 
@@ -198,35 +203,29 @@ export class AudioModule extends SoundModule {
 
     this.on(currentTime);
 
-    const bufferSize = this.processor.bufferSize;
+    if (this.updateId) {
+      return this;
+    }
 
     const timeoverviewL = this.analyser.domain('timeoverview', 0);
     const timeoverviewR = this.analyser.domain('timeoverview', 1);
 
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      const inputLs  = event.inputBuffer.getChannelData(0);
-      const inputRs  = event.inputBuffer.getChannelData(1);
-      const outputLs = event.outputBuffer.getChannelData(0);
-      const outputRs = event.outputBuffer.getChannelData(1);
+    const interval = 0.1;
 
+    this.updateId = window.setInterval(() => {
       if (this.buffer === null) {
         this.end();
         return;
       }
 
-      if (this.currentTime < Math.trunc(this.source.loopEnd)) {
-        outputLs.set(inputLs);
-        outputRs.set(inputRs);
+      if (this.currentTime < this.source.loopEnd) {
+        const detune       = this.source.detune.value;
+        const playbackRate = this.source.playbackRate.value + (detune / 1200);
 
-        for (let i = 0; i < bufferSize; i++) {
-          const detune       = this.source.detune.value;
-          const playbackRate = this.source.playbackRate.value + (detune / 1200);
+        this.currentTime += (interval * playbackRate);
 
-          this.currentTime += (playbackRate / this.buffer.sampleRate);
-
-          if (this.updateCallback) {
-            this.updateCallback(this.source, this.currentTime);
-          }
+        if (this.updateCallback) {
+          this.updateCallback(this.source, this.currentTime);
         }
 
         timeoverviewL.update(this.currentTime);
@@ -244,7 +243,7 @@ export class AudioModule extends SoundModule {
           this.end();
         }
       }
-    };
+    }, (interval * 1000));
 
     return this;
   }
@@ -258,6 +257,11 @@ export class AudioModule extends SoundModule {
       return this;
     }
 
+    if (this.updateId) {
+      window.clearInterval(this.updateId);
+      this.updateId = null;
+    }
+
     const stopTime = this.context.currentTime;
 
     this.source.stop(stopTime);
@@ -268,13 +272,6 @@ export class AudioModule extends SoundModule {
     this.analyser.stop('fft');
 
     // Clear
-
-    if (!this.mixed) {
-      // Stop `onaudioprocess` event
-      this.processor.disconnect(0);
-      this.processor.onaudioprocess = null;
-    }
-
     this.stopped = true;
 
     return this;
@@ -657,12 +654,6 @@ export class AudioModule extends SoundModule {
   }
 
   /** @override */
-  public override resize(bufferSize: BufferSize): AudioModule {
-    super.init(this.context, bufferSize);
-    return this;
-  }
-
-  /** @override */
   public override on(startTime?: number): AudioModule {
     super.on(startTime);
     return this;
@@ -714,7 +705,7 @@ export class AudioModule extends SoundModule {
   }
 
   /** @override */
-  public override get INPUT(): ScriptProcessorNode {
+  public override get INPUT(): AudioWorkletNode {
     return this.processor;
   }
 

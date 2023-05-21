@@ -117,10 +117,8 @@ describe(StreamModule.name, () => {
           expect(processorDisconnectMock).toHaveBeenCalledTimes(1);
           expect(streamModule.streaming()).toBe(false);
 
-          /* eslint-disable dot-notation */
+          // eslint-disable-next-line dot-notation
           expect(streamModule['sources'].length).toBe(0);
-          expect(streamModule['processor'].onaudioprocess).toBe(null);
-          /* eslint-enable dot-notation */
 
           /* eslint-disable dot-notation */
           streamModule['off']           = originalOff;

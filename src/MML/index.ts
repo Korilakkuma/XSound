@@ -4,7 +4,7 @@ import { NoiseModule } from '../NoiseModule';
 import { TokenType, TokenMap, Token } from './Token';
 import { Tree, MMLSyntaxError } from './Tree';
 import { Sequence } from './Sequence';
-import { Part } from './Part';
+import { Part, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from './Part';
 
 export type {
   Part,
@@ -13,7 +13,9 @@ export type {
   Tree,
   TokenType,
   TokenMap,
-  Token
+  Token,
+  MMLScheduleWorkerMessageEventType,
+  MMLScheduleWorkerMessageEventData
 };
 
 /**

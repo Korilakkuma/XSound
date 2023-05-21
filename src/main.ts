@@ -28,7 +28,18 @@ import { StreamModule, StreamModuleParams, StreamModuleProcessor, MediaStreamTra
 import { ProcessorModule } from './ProcessorModule';
 import { MixerModule, MixerModuleProcessor } from './MixerModule';
 import { MIDI } from './MIDI';
-import { MML, Part, Sequence, MMLSyntaxError, Tree, TokenType, TokenMap, Token } from './MML';
+import {
+  MML,
+  Part,
+  Sequence,
+  MMLSyntaxError,
+  Tree,
+  TokenType,
+  TokenMap,
+  Token,
+  MMLScheduleWorkerMessageEventType,
+  MMLScheduleWorkerMessageEventData
+} from './MML';
 import {
   Analyser,
   AnalyserParams,
@@ -505,6 +516,8 @@ export type {
   TokenType,
   TokenMap,
   Token,
+  MMLScheduleWorkerMessageEventType,
+  MMLScheduleWorkerMessageEventData,
   Analyser,
   AnalyserParams,
   Domain,

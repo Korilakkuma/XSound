@@ -1,14 +1,19 @@
-import { MMLScheduleWorkerEventData } from '../types';
+export type MMLScheduleWorkerMessageEventType = 'schedule' | 'next' | 'stop';
+
+export type MMLScheduleWorkerMessageEventData = {
+  type: MMLScheduleWorkerMessageEventType,
+  duration?: number
+};
 
 export const schedule = () => {
   let timerId: number | null = null;
 
-  self.onmessage = (event: MessageEvent<MMLScheduleWorkerEventData>) => {
+  self.onmessage = (event: MessageEvent<MMLScheduleWorkerMessageEventData>) => {
     switch (event.data.type) {
       case 'schedule':
         if (typeof event.data.duration === 'number') {
           timerId = self.setTimeout(() => {
-            const message: MMLScheduleWorkerEventData =  { type: 'next' };
+            const message: MMLScheduleWorkerMessageEventData = { type: 'next' };
 
             self.postMessage(message);
           }, (event.data.duration * 1000));

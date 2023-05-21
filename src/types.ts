@@ -13,10 +13,3 @@ export type BufferSize = 0 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384;
 
 // `-1` is inactive channel
 export type ChannelNumber = -1 | 0 | 1;
-
-export type MMLScheduleWorkerEventType = 'schedule' | 'next' | 'stop';
-
-export type MMLScheduleWorkerEventData = {
-  type: MMLScheduleWorkerEventType,
-  duration?: number
-};

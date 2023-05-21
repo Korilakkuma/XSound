@@ -1,4 +1,3 @@
-import { MMLScheduleWorkerEventData } from '../types';
 import { createWorkerObjectURL } from '../worker';
 import { OscillatorModule } from '../OscillatorModule';
 import { OneshotModule } from '../OneshotModule';
@@ -8,7 +7,12 @@ import { Tokenizer } from './Tokenizer';
 import { TreeConstructor } from './TreeConstructor';
 import { Sequencer } from './Sequencer';
 import { Sequence } from './Sequence';
-import { schedule } from './ScheduleWorker';
+import { schedule, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from './ScheduleWorker';
+
+export type {
+  MMLScheduleWorkerMessageEventType,
+  MMLScheduleWorkerMessageEventData
+};
 
 /**
  * This class starts and stops each MML part.
@@ -157,14 +161,14 @@ export class Part {
     }
 
     // ref: https://web.dev/audio-scheduling/
-    const message: MMLScheduleWorkerEventData = {
+    const message: MMLScheduleWorkerMessageEventData = {
       type    : 'schedule',
       duration: sequence.duration
     };
 
     this.scheduleWorker.postMessage(message);
 
-    this.scheduleWorker.onmessage = (event: MessageEvent<MMLScheduleWorkerEventData>) => {
+    this.scheduleWorker.onmessage = (event: MessageEvent<MMLScheduleWorkerMessageEventData>) => {
       if (event.data.type !== 'next') {
         return;
       }
@@ -229,7 +233,7 @@ export class Part {
       }
     }
 
-    const message: MMLScheduleWorkerEventData = { type: 'stop' };
+    const message: MMLScheduleWorkerMessageEventData = { type: 'stop' };
 
     this.scheduleWorker.postMessage(message);
     this.scheduleWorker.terminate();

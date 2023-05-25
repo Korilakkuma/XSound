@@ -20,7 +20,7 @@ export type {
  */
 export class Part {
   private sequences: Sequence[] = [];
-  private source: OscillatorModule|OneshotModule|NoiseModule;
+  private source: OscillatorModule | OneshotModule | NoiseModule;
   private mml: string;
   private syntaxTree: string;
   private previous: Sequence | null = null;

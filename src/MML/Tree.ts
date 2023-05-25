@@ -19,8 +19,8 @@ export class Tree {
   /**
    * @param {string} id This argument is string that identifies syntax tree node.
    * @param {Token} operator This argument is instance of `Token` as syntax tree node.
-   * @param {Tree} left This argument is instance of `Tree` as left partial tree.
-   * @param {Tree} right This argument is instance of `Tree` as right partial tree.
+   * @param {Tree} left This argument is instance of `Tree` as left subtree.
+   * @param {Tree} right This argument is instance of `Tree` as right subtree.
    */
   constructor(id: string, operator: Token, left: Tree | null, right: Tree | null) {
     this._id       = id;
@@ -30,7 +30,7 @@ export class Tree {
   }
 
   /**
-   * This method concatenates partial tree as right partial tree.
+   * This method concatenates subtree as right subtree.
    * @param {Tree} operator This argument is instance of `Tree` as syntax tree node.
    */
   public concat(node: Tree): void {
@@ -45,14 +45,14 @@ export class Tree {
   }
 
   /**
-   * This method is getter for left partial tree
+   * This method is getter for left subtree.
    */
   public get left(): Tree | null {
     return this._left;
   }
 
   /**
-   * This method is getter for right partial tree
+   * This method is getter for right subtree.
    */
   public get right(): Tree | null {
     return this._right;

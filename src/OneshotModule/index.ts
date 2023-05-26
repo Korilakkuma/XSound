@@ -242,7 +242,7 @@ export class OneshotModule extends SoundModule {
    */
   public param(params: 'mastervolume'): number;
   public param(params: 'transpose'): number;
-  public param(params: OneshotModuleParams): OneshotModuleParams[keyof OneshotModuleParams];
+  public param(params: OneshotModuleParams): OneshotModule;
   public param(params: keyof OneshotModuleParams | OneshotModuleParams): OneshotModuleParams[keyof OneshotModuleParams] | OneshotModule {
     if (typeof params === 'string') {
       switch (params) {

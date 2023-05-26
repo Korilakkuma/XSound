@@ -90,7 +90,7 @@ for (let i = 0; i < 88; i++) {
 }
 
 const successCallback = () => {
-  fetch(`${BASE_URL}/assets/mmls/forever-love.json`)
+  fetch(`${BASE_URL}/assets/mmls/kirakiraboshi.json`)
     .then((response) => response.json())
     .then((data) => {
       const { title, artist, melody, bass } = data;

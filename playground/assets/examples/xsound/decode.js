@@ -1,7 +1,7 @@
 const result = document.getElementById('result-text');
 
 X.ajax({
-  url             : 'https://xsound.jp/playground.assets/audio/sample.mp3',
+  url             : 'https://xsound.jp/playground/assets/audio/sample.mp3',
   type            : 'arraybuffer',
   timeout         : 120000,
   successCallback : (event, arraybuffer) => {

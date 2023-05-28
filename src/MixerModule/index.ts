@@ -87,6 +87,9 @@ export class MixerModule extends SoundModule {
 
         this.gainNodes[i].gain.value = gains ? gains[i] : 1;
 
+        // Disconnect each connection to `AudioDestinationNode`
+        source.disconnect();
+
         // AudioWorkletNode (each sound source) -> GainNode (each sound source volume) -> AudioWorkletNode (Mix sound sources)
         source.INPUT.connect(this.gainNodes[i]);
         this.gainNodes[i].connect(this.processor);
@@ -124,7 +127,7 @@ export class MixerModule extends SoundModule {
       source.demix();
 
       if (source.INPUT) {
-        source.INPUT.disconnect(0);
+        source.disconnect();
         source.connect(source.INPUT);
       }
     }

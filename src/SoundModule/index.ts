@@ -286,6 +286,13 @@ export abstract class SoundModule implements Connectable {
   }
 
   /**
+   * This method disconnects instance of `AudioWorkletNode` as sound source.
+   */
+  public disconnect(): void {
+    this.processor.disconnect(0);
+  }
+
+  /**
    * This method installs customized effector.
    * @param {string} effectorName This argument selects effector.
    * @param {Effector} effector This argument is subclass that extends `Effector` class.
@@ -355,8 +362,6 @@ export abstract class SoundModule implements Connectable {
     this.runningAnalyser = false;
 
     this.recorder.stop();
-
-    this.processor.disconnect(0);
 
     return this;
   }

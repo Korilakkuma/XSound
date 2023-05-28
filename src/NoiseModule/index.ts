@@ -258,6 +258,15 @@ export class NoiseModule extends SoundModule {
   }
 
   /** @override */
+  public override disconnect() {
+    const generator = this.envelopegenerator.getGenerator(0);
+
+    if (generator) {
+      generator.disconnect(0);
+    }
+  }
+
+  /** @override */
   public override on(startTime?: number): NoiseModule {
     super.on(startTime);
     return this;

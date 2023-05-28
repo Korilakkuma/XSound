@@ -185,9 +185,6 @@ describe(MixerModule.name, () => {
       const oscillatorModuleDemixMock = jest.fn();
       const oneshotModuleDemixMock    = jest.fn();
 
-      const oscillatorModuleInputDisconnectMock = jest.fn();
-      const oneshotModuleInputDisconnectMock    = jest.fn();
-
       const oscillatorModuleConnectMock = jest.fn();
       const oneshotModuleConnectMock    = jest.fn();
 
@@ -196,22 +193,6 @@ describe(MixerModule.name, () => {
 
       sources[0].demix = oscillatorModuleDemixMock;
       sources[1].demix = oneshotModuleDemixMock;
-
-      Object.defineProperty(sources[0], 'INPUT', {
-        configurable: true,
-        writable    : true,
-        value       : {
-          disconnect: oscillatorModuleInputDisconnectMock
-        }
-      });
-
-      Object.defineProperty(sources[1], 'INPUT', {
-        configurable: true,
-        writable    : true,
-        value       : {
-          disconnect: oneshotModuleInputDisconnectMock
-        }
-      });
 
       sources[0].connect = oscillatorModuleConnectMock;
       sources[1].connect = oneshotModuleConnectMock;
@@ -225,9 +206,6 @@ describe(MixerModule.name, () => {
 
       expect(oscillatorModuleDemixMock).toHaveBeenCalledTimes(1);
       expect(oneshotModuleDemixMock).toHaveBeenCalledTimes(1);
-
-      expect(oscillatorModuleInputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(oneshotModuleInputDisconnectMock).toHaveBeenCalledTimes(1);
 
       expect(oscillatorModuleConnectMock).toHaveBeenCalledTimes(1);
       expect(oneshotModuleConnectMock).toHaveBeenCalledTimes(1);

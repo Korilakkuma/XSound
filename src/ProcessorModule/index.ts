@@ -119,10 +119,6 @@ export class ProcessorModule extends SoundModule {
   public stop(): ProcessorModule {
     const stopTime = this.context.currentTime;
 
-    if (!this.mixed) {
-      this.processor.disconnect(0);
-    }
-
     this.envelopegenerator.stop(stopTime);
     this.off(stopTime);
 

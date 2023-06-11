@@ -2,7 +2,8 @@ import { AudioWorkletProcessor, Inputs, Outputs } from '../../../worklet';
 import { StereoParams } from '../Stereo';
 
 /**
- * This subclass is pseudo stereo effect.
+ * This class extends `AudioWorkletProcessor`.
+ * Override `process` method for stereo effect and Update parameters on message event.
  * @constructor
  * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */

@@ -2,7 +2,8 @@ import { AudioWorkletProcessor, Inputs, Outputs } from '../../../worklet';
 import { PitchShifterParams } from '../PitchShifter';
 
 /**
- * This subclass is pitch shifter.
+ * This class extends `AudioWorkletProcessor`.
+ * Override `process` method for pitch shifter and Update parameters on message event.
  * @constructor
  * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */

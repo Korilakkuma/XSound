@@ -1,6 +1,9 @@
 import { AudioWorkletProcessor, Inputs, Outputs } from '../worklet';
 
 /**
+ * This class extends `AudioWorkletProcessor`.
+ * Overrides `process` method for sound source (bypass).
+ * However, this processor is not used.
  * @constructor
  * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */

@@ -87,11 +87,9 @@ export class NoiseSuppressor extends Effector {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
-            if (this.processor) {
-              const message: NoiseSuppressorParams = { state: value };
+            const message: NoiseSuppressorParams = { state: value };
 
-              this.processor.port.postMessage(message);
-            }
+            this.processor.port.postMessage(message);
           }
 
           break;
@@ -100,11 +98,9 @@ export class NoiseSuppressor extends Effector {
             if (value >= 0) {
               this.threshold = value;
 
-              if (this.processor) {
-                const message: NoiseSuppressorParams = { threshold: value };
+              const message: NoiseSuppressorParams = { threshold: value };
 
-                this.processor.port.postMessage(message);
-              }
+              this.processor.port.postMessage(message);
             }
           }
 

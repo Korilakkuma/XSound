@@ -87,11 +87,9 @@ export class NoiseGate extends Effector {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
-            if (this.processor) {
-              const message: NoiseGateParams = { state: value };
+            const message: NoiseGateParams = { state: value };
 
-              this.processor.port.postMessage(message);
-            }
+            this.processor.port.postMessage(message);
           }
 
           break;
@@ -99,11 +97,9 @@ export class NoiseGate extends Effector {
           if (typeof value === 'number') {
             this.level = value;
 
-            if (this.processor) {
-              const message: NoiseGateParams = { level: value };
+            const message: NoiseGateParams = { level: value };
 
-              this.processor.port.postMessage(message);
-            }
+            this.processor.port.postMessage(message);
           }
 
           break;

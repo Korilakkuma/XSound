@@ -87,11 +87,9 @@ export class VocalCanceler extends Effector {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
-            if (this.processor) {
-              const message: VocalCancelerParams = { state: value };
+            const message: VocalCancelerParams = { state: value };
 
-              this.processor.port.postMessage(message);
-            }
+            this.processor.port.postMessage(message);
           }
 
           break;
@@ -99,11 +97,9 @@ export class VocalCanceler extends Effector {
           if (typeof value === 'number') {
             this.depth.gain.value = value;
 
-            if (this.processor) {
-              const message: VocalCancelerParams = { depth: value };
+            const message: VocalCancelerParams = { depth: value };
 
-              this.processor.port.postMessage(message);
-            }
+            this.processor.port.postMessage(message);
           }
 
           break;

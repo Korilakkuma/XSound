@@ -115,11 +115,9 @@ export class Stereo extends Effector {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
-            if (this.processor) {
-              const message: StereoParams = { state: value };
+            const message: StereoParams = { state: value };
 
-              this.processor.port.postMessage(message);
-            }
+            this.processor.port.postMessage(message);
           }
 
           break;

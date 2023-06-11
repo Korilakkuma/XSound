@@ -88,11 +88,9 @@ export class PitchShifter extends Effector {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
-            if (this.processor) {
-              const message: PitchShifterParams = { state: value };
+            const message: PitchShifterParams = { state: value };
 
-              this.processor.port.postMessage(message);
-            }
+            this.processor.port.postMessage(message);
           }
 
           break;
@@ -101,11 +99,9 @@ export class PitchShifter extends Effector {
             if (value > 0) {
               this.pitch = value;
 
-              if (this.processor) {
-                const message: PitchShifterParams = { pitch: value };
+              const message: PitchShifterParams = { pitch: value };
 
-                this.processor.port.postMessage(message);
-              }
+              this.processor.port.postMessage(message);
             }
           }
 

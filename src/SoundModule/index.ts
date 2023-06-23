@@ -176,7 +176,7 @@ export abstract class SoundModule implements Connectable {
     this.processor    = new AudioWorkletNode(context, SoundModuleProcessor.name);
 
     this.analyser          = new Analyser(context);
-    this.recorder          = new Recorder(context, 0, 2, 2);
+    this.recorder          = new Recorder(context);
     this.session           = new Session(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
@@ -473,7 +473,7 @@ export abstract class SoundModule implements Connectable {
     this.modules.length = 0;
 
     this.analyser          = new Analyser(context);
-    this.recorder          = new Recorder(context, 0, 2, 2);
+    this.recorder          = new Recorder(context);
     this.session           = new Session(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);

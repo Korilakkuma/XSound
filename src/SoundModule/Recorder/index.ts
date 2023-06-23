@@ -1,7 +1,8 @@
 import { Connectable } from '../../interfaces';
-import { BufferSize, ChannelNumber } from '../../types';
+import { ChannelNumber } from '../../types';
 import { Track } from './Track';
 import { Channel } from './Channel';
+import { RecorderProcessor, RecorderProcessorMessageEventData } from './RecorderProcessor';
 
 export type RecordType      = 1 | 2;  // Monaural | Stereo
 export type QuantizationBit = 8 | 16;
@@ -9,7 +10,8 @@ export type WaveExportType  = 'base64' | 'dataURL' | 'blob' | 'objectURL';
 
 export type {
   Track,
-  Channel
+  Channel,
+  RecorderProcessorMessageEventData
 };
 
 export type RecorderParams = {
@@ -17,12 +19,14 @@ export type RecorderParams = {
   '1'?: number
 };
 
+export { RecorderProcessor };
+
 /**
  * This private class is for multi track recording.
  * @constructor
  */
 export class Recorder implements Connectable {
-  private processor: ScriptProcessorNode;
+  private processor: AudioWorkletNode;
   private sampleRate: number;
   private channels: Channel[] = [];
   private activeTrack = -1;  // There is not any active track in case of -1
@@ -30,13 +34,63 @@ export class Recorder implements Connectable {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {BufferSize} bufferSize This argument is buffer size for `ScriptProcessorNode`.
-   * @param {RecordType} numberOfInputs This argument is the number of inputs for `ScriptProcessorNode`.
-   * @param {RecordType} numberOfOutputs This argument the number of outputs for `ScriptProcessorNode`.
    */
-  constructor(context: AudioContext, bufferSize: BufferSize, numberOfInputs: RecordType, numberOfOutputs: RecordType) {
-    this.processor  = context.createScriptProcessor(bufferSize, numberOfInputs, numberOfOutputs);
+  constructor(context: AudioContext) {
+    this.processor  = new AudioWorkletNode(context, RecorderProcessor.name);
     this.sampleRate = context.sampleRate;
+
+    this.processor.port.onmessage = (event: MessageEvent<RecorderProcessorMessageEventData>) => {
+      if (this.activeTrack === -1) {
+        return;
+      }
+
+      if (event.data.inputs.length === 0) {
+        return;
+      }
+
+      const inputs = event.data.inputs[0];
+
+      if (inputs.length === 0) {
+        return;
+      }
+
+      const bufferSize = RecorderProcessor.BUFFER_SIZE;
+
+      if (inputs.length === 1) {
+        const inputLs    = inputs[0];
+        const gainL      = this.channels[0].gain();
+        const trackL     = this.channels[0].get(this.activeTrack);
+        const recordedLs = new Float32Array(bufferSize);
+
+        for (let i = 0; i < bufferSize; i++) {
+          recordedLs[i] = gainL * inputLs[i];
+        }
+
+        trackL?.append(recordedLs);
+
+        return;
+      }
+
+      const inputLs = inputs[0];
+      const inputRs = inputs[1];
+
+      const gainL = this.channels[0].gain();
+      const gainR = this.channels[1].gain();
+
+      const trackL = this.channels[0].get(this.activeTrack);
+      const trackR = this.channels[1].get(this.activeTrack);
+
+      const recordedLs = new Float32Array(bufferSize);
+      const recordedRs = new Float32Array(bufferSize);
+
+      for (let i = 0; i < bufferSize; i++) {
+        recordedLs[i] = gainL * inputLs[i];
+        recordedRs[i] = gainR * inputRs[i];
+      }
+
+      trackL?.append(recordedLs);
+      trackR?.append(recordedRs);
+    };
   }
 
   /**
@@ -85,35 +139,6 @@ export class Recorder implements Connectable {
 
     this.paused = false;
 
-    const gainL = this.channels[0].gain();
-    const gainR = this.channels[1].gain();
-
-    const trackL = this.channels[0].get(this.activeTrack);
-    const trackR = this.channels[1].get(this.activeTrack);
-
-    const bufferSize = this.processor.bufferSize;
-
-    this.processor.onaudioprocess = (event: AudioProcessingEvent) => {
-      if (this.activeTrack !== -1) {
-        const inputLs = event.inputBuffer.getChannelData(0);
-        const inputRs = event.inputBuffer.getChannelData(1);
-
-        const recordedLs = new Float32Array(bufferSize);
-        const recordedRs = new Float32Array(bufferSize);
-
-        for (let i = 0; i < bufferSize; i++) {
-          recordedLs[i] = gainL * inputLs[i];
-          recordedRs[i] = gainR * inputRs[i];
-        }
-
-        trackL?.append(recordedLs);
-        trackR?.append(recordedRs);
-      } else {
-        this.processor.disconnect(0);
-        this.processor.onaudioprocess = null;
-      }
-    };
-
     return this;
   }
 
@@ -125,9 +150,7 @@ export class Recorder implements Connectable {
     this.activeTrack = -1;  // Flag becomes inactive
     this.paused      = true;
 
-    // Stop `onaudioprocess` event handler
     this.processor.disconnect(0);
-    this.processor.onaudioprocess = null;
 
     return this;
   }
@@ -518,12 +541,12 @@ export class Recorder implements Connectable {
   }
 
   /** @override */
-  public get INPUT(): ScriptProcessorNode {
+  public get INPUT(): AudioWorkletNode {
     return this.processor;
   }
 
   /** @override */
-  public get OUTPUT(): ScriptProcessorNode {
+  public get OUTPUT(): AudioWorkletNode {
     return this.processor;
   }
 
@@ -546,7 +569,7 @@ export class Recorder implements Connectable {
     }
 
     const dataBlocks = track.get();
-    const bufferSize = this.processor.bufferSize;
+    const bufferSize = RecorderProcessor.BUFFER_SIZE;
 
     const flattenTrack = new Float32Array(dataBlocks.length * bufferSize);
 
@@ -573,7 +596,7 @@ export class Recorder implements Connectable {
 
     const channel    = this.channels[channelNumber];
     const tracks     = channel.get();
-    const bufferSize = this.processor.bufferSize;
+    const bufferSize = RecorderProcessor.BUFFER_SIZE;
 
     let sum              = 0;
     let numberOfElements = 0;

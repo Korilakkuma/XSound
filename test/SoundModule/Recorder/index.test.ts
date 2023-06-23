@@ -6,7 +6,7 @@ describe(Recorder.name, () => {
   const context = new AudioContextMock();
 
   // @ts-ignore
-  const recorder = new Recorder(context, 2048, 2, 2);
+  const recorder = new Recorder(context);
 
   const numberOfChannels = 2;
   const numberOfTracks   = 4;

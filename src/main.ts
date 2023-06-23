@@ -67,7 +67,17 @@ import {
   FFTParams,
   SpectrumScale
 } from './SoundModule/Analyser';
-import { Recorder, RecorderParams, RecordType, QuantizationBit, WaveExportType, Track, Channel } from './SoundModule/Recorder';
+import {
+  Recorder,
+  RecorderParams,
+  RecordType,
+  QuantizationBit,
+  WaveExportType,
+  Track,
+  Channel,
+  RecorderProcessor,
+  RecorderProcessorMessageEventData
+} from './SoundModule/Recorder';
 import { Session, SessionSetupParams, SessionConnectionParams, NumberOfSessionChannels, Room, RoomMap } from './SoundModule/Session';
 import { Effector } from './SoundModule/Effectors/Effector';
 import { Autopanner, AutopannerParams } from './SoundModule/Effectors/Autopanner';
@@ -172,6 +182,7 @@ const sources: { [sourceName: string]: Source | null } = {
 Promise
   .all([
     addAudioWorklet(audiocontext, SoundModuleProcessor),
+    addAudioWorklet(audiocontext, RecorderProcessor),
     addAudioWorklet(audiocontext, OscillatorModuleProcessor),
     addAudioWorklet(audiocontext, OneshotModuleProcessor),
     addAudioWorklet(audiocontext, NoiseModuleProcessor),
@@ -550,6 +561,8 @@ export type {
   WaveExportType,
   Track,
   Channel,
+  RecorderProcessor,
+  RecorderProcessorMessageEventData,
   Session,
   SessionSetupParams,
   SessionConnectionParams,

@@ -1,7 +1,6 @@
 import { AudioContextMock } from '../../mock/AudioContextMock';
 import { Analyser } from '../../src/SoundModule/Analyser';
 import { Recorder } from '../../src/SoundModule/Recorder';
-import { Session } from '../../src/SoundModule/Session';
 import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '../../src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
@@ -199,7 +198,6 @@ describe(OscillatorNode.name, () => {
     test('should return instance of `Module`', () => {
       expect(oscillatorModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(oscillatorModule.module('recorder')).toBeInstanceOf(Recorder);
-      expect(oscillatorModule.module('session')).toBeInstanceOf(Session);
       expect(oscillatorModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(oscillatorModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(oscillatorModule.module('chorus')).toBeInstanceOf(Chorus);

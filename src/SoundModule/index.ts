@@ -2,7 +2,6 @@ import { Connectable } from '../interfaces';
 import { SoundModuleProcessor } from './SoundModuleProcessor';
 import { Analyser } from './Analyser';
 import { Recorder } from './Recorder';
-import { Session } from './Session';
 import { Effector } from './Effectors/Effector';
 import { Autopanner, AutopannerParams } from './Effectors/Autopanner';
 import { BitCrusher, BitCrusherParams } from './Effectors/BitCrusher';
@@ -32,7 +31,6 @@ import { Wah, WahParams } from './Effectors/Wah';
 export type Module =
   Analyser          |
   Recorder          |
-  Session           |
   Autopanner        |
   BitCrusher        |
   Chorus            |
@@ -61,7 +59,6 @@ export type Module =
 export type ModuleName =
   'analyser'          |
   'recorder'          |
-  'session'           |
   'autopanner'        |
   'bitcrusher'        |
   'chorus'            |
@@ -136,7 +133,6 @@ export abstract class SoundModule implements Connectable {
 
   protected analyser: Analyser;
   protected recorder: Recorder;
-  protected session: Session;
 
   protected autopanner: Autopanner;
   protected bitcrusher: BitCrusher;
@@ -177,7 +173,6 @@ export abstract class SoundModule implements Connectable {
 
     this.analyser          = new Analyser(context);
     this.recorder          = new Recorder(context);
-    this.session           = new Session(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
     this.chorus            = new Chorus(context);
@@ -279,10 +274,6 @@ export abstract class SoundModule implements Connectable {
     // for recorder
     this.mastervolume.connect(this.recorder.INPUT);
     this.recorder.OUTPUT.connect(this.context.destination);
-
-    // for session
-    this.mastervolume.connect(this.session.INPUT);
-    this.session.OUTPUT.connect(this.context.destination);
   }
 
   /**
@@ -458,7 +449,6 @@ export abstract class SoundModule implements Connectable {
     this.processor.disconnect(0);
     this.analyser.INPUT.disconnect(0);
     this.recorder.INPUT.disconnect(0);
-    this.session.INPUT.disconnect(0);
 
     for (const module of this.modules) {
       if (module.INPUT) {
@@ -474,7 +464,6 @@ export abstract class SoundModule implements Connectable {
 
     this.analyser          = new Analyser(context);
     this.recorder          = new Recorder(context);
-    this.session           = new Session(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
     this.chorus            = new Chorus(context);

@@ -2,7 +2,6 @@ import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModu
 import { MixerModuleProcessor } from './MixerModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
-import { Session } from '../SoundModule/Session';
 import { Autopanner } from '../SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '../SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../SoundModule/Effectors/Chorus';
@@ -189,7 +188,6 @@ export class MixerModule extends SoundModule {
    */
   public module(moduleName: 'analyser'): Analyser;
   public module(moduleName: 'recorder'): Recorder;
-  public module(moduleName: 'session'): Session;
   public module(moduleName: 'autopanner'): Autopanner;
   public module(moduleName: 'bitcrusher'): BitCrusher;
   public module(moduleName: 'chorus'): Chorus;
@@ -220,8 +218,6 @@ export class MixerModule extends SoundModule {
         return this.analyser;
       case 'recorder':
         return this.recorder;
-      case 'session':
-        return this.session;
       case 'autopanner':
         return this.autopanner;
       case 'bitcrusher':

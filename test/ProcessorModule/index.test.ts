@@ -2,7 +2,6 @@ import { AudioContextMock } from '../../mock/AudioContextMock';
 import { AudioWorkletNodeMock, AudioParamMapMock } from '../../mock/AudioWorkletNodeMock';
 import { Analyser } from '../../src/SoundModule/Analyser';
 import { Recorder } from '../../src/SoundModule/Recorder';
-import { Session } from '../../src/SoundModule/Session';
 import { Autopanner } from '../../src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '../../src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '../../src/SoundModule/Effectors/Chorus';
@@ -163,7 +162,6 @@ describe(ProcessorModule.name, () => {
     test('should return instance of `Module`', () => {
       expect(processorModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(processorModule.module('recorder')).toBeInstanceOf(Recorder);
-      expect(processorModule.module('session')).toBeInstanceOf(Session);
       expect(processorModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(processorModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(processorModule.module('chorus')).toBeInstanceOf(Chorus);

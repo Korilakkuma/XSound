@@ -78,7 +78,6 @@ import {
   RecorderProcessor,
   RecorderProcessorMessageEventData
 } from './SoundModule/Recorder';
-import { Session, SessionSetupParams, SessionConnectionParams, NumberOfSessionChannels, Room, RoomMap } from './SoundModule/Session';
 import { Effector } from './SoundModule/Effectors/Effector';
 import { Autopanner, AutopannerParams } from './SoundModule/Effectors/Autopanner';
 import { BitCrusher, BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
@@ -285,7 +284,6 @@ XSound.toTextFile        = toTextFile;
 // Export classes
 XSound.Analyser = Analyser;
 XSound.Recorder = Recorder;
-XSound.Session  = Session;
 
 XSound.Effector        = Effector;
 XSound.Autopanner      = Autopanner;
@@ -563,12 +561,6 @@ export type {
   Channel,
   RecorderProcessor,
   RecorderProcessorMessageEventData,
-  Session,
-  SessionSetupParams,
-  SessionConnectionParams,
-  NumberOfSessionChannels,
-  Room,
-  RoomMap,
   Effector,
   Autopanner,
   AutopannerParams,

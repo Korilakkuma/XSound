@@ -1,5 +1,4 @@
 import './AudioWorkletNodeMock';
-import { BufferSize } from '../src/types';
 import { AnalyserNodeMock } from './AnalyserNodeMock';
 import { AudioBufferMock } from './AudioBufferMock';
 import { AudioBufferSourceNodeMock } from './AudioBufferSourceNodeMock';
@@ -16,7 +15,6 @@ import { MediaElementAudioSourceNodeMock } from './MediaElementAudioSourceNodeMo
 import { MediaStreamAudioSourceNodeMock } from './MediaStreamAudioSourceNodeMock';
 import { OscillatorNodeMock } from './OscillatorNodeMock';
 import { PannerNodeMock } from './PannerNodeMock';
-import { ScriptProcessorNodeMock } from './ScriptProcessorNodeMock';
 import { StereoPannerNodeMock } from './StereoPannerNodeMock';
 import { WaveShaperNodeMock } from './WaveShaperNodeMock';
 
@@ -115,10 +113,6 @@ export class AudioContextMock {
 
   createPeriodicWave() {
     return {} as PeriodicWave;
-  }
-
-  createScriptProcessor(bufferSize: BufferSize) {
-    return new ScriptProcessorNodeMock(bufferSize, 2, 2);
   }
 
   createStereoPanner() {

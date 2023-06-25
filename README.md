@@ -93,7 +93,7 @@ X.PitchShifter(context: AudioContext);
 X.Preamp(context: AudioContext);
 X.Reverb(context: AudioContext);
 X.Ringmodulator(context: AudioContext);
-X.Stereo(context: AudioContext, size);
+X.Stereo(context: AudioContext);
 X.Tremolo(context: AudioContext);
 X.VocalCanceler(context: AudioContext);
 X.Wah(context: AudioContext);

@@ -21,7 +21,6 @@ In concrete, XSound is useful to implement the following features.
 - Effectors (Compressor / Wah / Equalizer / Tremolo / Phaser / Chorus / Delay / Reverb ... etc)
 - Visualization (Overview in Time Domain / Time Domain / Spectrum)
 - Multi-Track Recording (Create WAVE file)
-- Session (by WebSocket)
 - Audio Streaming
 - Visual Audio Sprite
   
@@ -73,7 +72,6 @@ XSound enable to using the following classes (Refer to [API Documentation](https
 ```TypeScript
 X.Analyser(context: AudioContext);
 X.Recorder(context: AudioContext);
-X.Session(context: AudioContext);
 
 // Effectors
 X.Autopanner(context: AudioContext);
@@ -133,47 +131,6 @@ In case of using CDN,
 
 ```HTML
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js"></script>
-```
-
-### Connect to WebSocket Server
-
-```JavaScript
-const roomId = 'test-room-id-001';  // Any string
-
-// for `ScriptProcessorNode`
-const bufferSize             = 2048;
-const numberOfInputChannels  = 2;
-const numberOfOutputChannels = 2;
-
-const analyser = X('stream').module('analyser');
-
-// for connecting to WebSocket server
-const tls  = true;  // Use `wss:`
-const host = 'xsound-websocket-server.herokuapp.com/';
-const port = 8000;
-const path = '/app';
-
-const setupParams = {
-  roomId,
-  bufferSize,
-  numberOfInputChannels,
-  numberOfOutputChannels,
-  analyser
-};
-
-const connectionParams = {
-  roomId,
-  tls,
-  host,
-  port,
-  path
-};
-
-// For example, sound source is `StreamModule`
-X('stream')
-  .module('session')
-  .setup(setupParams)
-  .ready(connectionParams);
 ```
 
 ## Setup

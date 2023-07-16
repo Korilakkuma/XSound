@@ -58,14 +58,6 @@ export class Stereo extends Effector {
     this.merger.disconnect(0);
     this.processor.disconnect(0);
 
-    this.processor = new AudioWorkletNode(this.context, StereoProcessor.name);
-
-    const message: StereoParams = {
-      time: this.delayL.delayTime.value
-    };
-
-    this.processor.port.postMessage(message);
-
     if (this.isActive) {
       // Effect ON
 

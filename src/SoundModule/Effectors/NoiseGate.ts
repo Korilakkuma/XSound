@@ -40,14 +40,6 @@ export class NoiseGate extends Effector {
     this.input.disconnect(0);
     this.processor.disconnect(0);
 
-    this.processor = new AudioWorkletNode(this.context, NoiseGateProcessor.name);
-
-    const message: NoiseGateParams = {
-      level: this.level
-    };
-
-    this.processor.port.postMessage(message);
-
     if (this.isActive) {
       // GainNode (Input) -> AudioWorkletNode (Noise Gate) -> GainNode (Output);
       this.input.connect(this.processor);

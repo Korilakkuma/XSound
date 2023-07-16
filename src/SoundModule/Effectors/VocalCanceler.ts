@@ -40,14 +40,6 @@ export class VocalCanceler extends Effector {
     this.input.disconnect(0);
     this.processor.disconnect(0);
 
-    this.processor = new AudioWorkletNode(this.context, VocalCancelerProcessor.name);
-
-    const message: VocalCancelerParams = {
-      depth: this.depth.gain.value
-    };
-
-    this.processor.port.postMessage(message);
-
     if (this.isActive) {
       // GainNode (Input) -> AudioWorkletNode (Vocal Canceler) -> GainNode (Output);
       this.input.connect(this.processor);

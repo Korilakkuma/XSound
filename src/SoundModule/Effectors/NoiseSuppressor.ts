@@ -40,14 +40,6 @@ export class NoiseSuppressor extends Effector {
     this.input.disconnect(0);
     this.processor.disconnect(0);
 
-    this.processor = new AudioWorkletNode(this.context, NoiseSuppressorProcessor.name);
-
-    const message: NoiseSuppressorParams = {
-      threshold: this.threshold
-    };
-
-    this.processor.port.postMessage(message);
-
     if (this.isActive) {
       // GainNode (Input) -> AudioWorkletNode (Noise Suppressor) -> GainNode (Output);
       this.input.connect(this.processor);

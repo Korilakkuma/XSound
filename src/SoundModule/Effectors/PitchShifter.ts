@@ -40,14 +40,6 @@ export class PitchShifter extends Effector {
     this.input.disconnect(0);
     this.processor.disconnect(0);
 
-    this.processor = new AudioWorkletNode(this.context, PitchShifterProcessor.name);
-
-    const message: PitchShifterParams = {
-      pitch: this.pitch
-    };
-
-    this.processor.port.postMessage(message);
-
     if (this.isActive) {
       // GainNode (Input) -> AudioWorkletNode (Pitch Shifter) -> GainNode (Output);
       this.input.connect(this.processor);

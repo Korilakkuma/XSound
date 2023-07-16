@@ -44,16 +44,16 @@ describe(PitchShifter.name, () => {
       pitchshifter.connect();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
-      expect(processorConnectMock).toHaveBeenCalledTimes(0);
+      expect(processorConnectMock).toHaveBeenCalledTimes(1);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(processorDisconnectMock).toHaveBeenCalledTimes(1);
 
       pitchshifter.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(2);
-      expect(processorConnectMock).toHaveBeenCalledTimes(0);
+      expect(processorConnectMock).toHaveBeenCalledTimes(2);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(processorDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(processorDisconnectMock).toHaveBeenCalledTimes(2);
     });
   });
 

@@ -183,7 +183,7 @@ export class NoiseSuppressorProcessor extends AudioWorkletProcessor {
     const output = outputs[0];
 
     if ((input.length === 0) || (output.length === 0)) {
-      return false;
+      return true;
     }
 
     const bufferSize = input[0].length;

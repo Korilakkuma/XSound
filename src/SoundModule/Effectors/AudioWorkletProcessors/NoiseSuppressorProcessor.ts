@@ -207,22 +207,22 @@ export class NoiseSuppressorProcessor extends AudioWorkletProcessor {
       return;
     }
 
-    const xreals = new Float32Array(inputs);
-    const ximags = new Float32Array(fftSize);
+    const inputReals = new Float32Array(inputs);
+    const inputImags = new Float32Array(fftSize);
 
-    const yreals = new Float32Array(fftSize);
-    const yimags = new Float32Array(fftSize);
+    const outputReals = new Float32Array(fftSize);
+    const outputImags = new Float32Array(fftSize);
 
     const amplitudes = new Float32Array(fftSize);
     const phases     = new Float32Array(fftSize);
 
-    NoiseSuppressorProcessor.FFT(xreals, ximags, fftSize);
+    NoiseSuppressorProcessor.FFT(inputReals, inputImags, fftSize);
 
     for (let k = 0; k < fftSize; k++) {
-      amplitudes[k] = Math.sqrt((xreals[k] ** 2) + (ximags[k] ** 2));
+      amplitudes[k] = Math.sqrt((inputReals[k] ** 2) + (inputImags[k] ** 2));
 
-      if ((xreals[k] !== 0) && (ximags[k] !== 0)) {
-        phases[k] = Math.atan2(ximags[k], xreals[k]);
+      if ((inputReals[k] !== 0) && (inputImags[k] !== 0)) {
+        phases[k] = Math.atan2(inputImags[k], inputReals[k]);
       }
     }
 
@@ -235,12 +235,12 @@ export class NoiseSuppressorProcessor extends AudioWorkletProcessor {
     }
 
     for (let k = 0; k < fftSize; k++) {
-      yreals[k] = amplitudes[k] * Math.cos(phases[k]);
-      yimags[k] = amplitudes[k] * Math.sin(phases[k]);
+      outputReals[k] = amplitudes[k] * Math.cos(phases[k]);
+      outputImags[k] = amplitudes[k] * Math.sin(phases[k]);
     }
 
-    NoiseSuppressorProcessor.IFFT(yreals, yimags, fftSize);
+    NoiseSuppressorProcessor.IFFT(outputReals, outputImags, fftSize);
 
-    outputs.set(yreals);
+    outputs.set(outputReals);
   }
 }

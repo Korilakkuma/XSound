@@ -208,37 +208,37 @@ export class PitchShifterProcessor extends AudioWorkletProcessor {
    * @param {Float32Array} outputs This argument is instance of `Float32Array` as output.
    * @param {number} size This argument is FFT size (power of two).
    */
-  private shift(inputs: Float32Array, outputs: Float32Array, size: number): void {
+  private shift(inputs: Float32Array, outputs: Float32Array, fftSize: number): void {
     if (this.pitch === 1) {
       outputs.set(inputs);
       return;
     }
 
-    const reals = new Float32Array(inputs);
-    const imags = new Float32Array(size);
+    const inputReals = new Float32Array(inputs);
+    const inputImags = new Float32Array(fftSize);
 
-    PitchShifterProcessor.FFT(reals, imags, size);
+    PitchShifterProcessor.FFT(inputReals, inputImags, fftSize);
 
-    const areals = new Float32Array(size);
-    const aimags = new Float32Array(size);
+    const outputReals = new Float32Array(fftSize);
+    const outputImags = new Float32Array(fftSize);
 
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < fftSize; i++) {
       const offset = Math.trunc(this.pitch * i);
 
       let eq = 1;
 
-      if (i > (size / 2)) {
+      if (i > (fftSize / 2)) {
         eq = 0;
       }
 
-      if ((offset >= 0) && (offset < size)) {
-        areals[offset] += PitchShifterProcessor.GAIN_CORRECTION * eq * reals[i];
-        aimags[offset] += PitchShifterProcessor.GAIN_CORRECTION * eq * imags[i];
+      if ((offset >= 0) && (offset < fftSize)) {
+        outputReals[offset] += PitchShifterProcessor.GAIN_CORRECTION * eq * inputReals[i];
+        outputImags[offset] += PitchShifterProcessor.GAIN_CORRECTION * eq * inputImags[i];
       }
     }
 
-    PitchShifterProcessor.IFFT(areals, aimags, size);
+    PitchShifterProcessor.IFFT(outputReals, outputImags, fftSize);
 
-    outputs.set(areals);
+    outputs.set(outputReals);
   }
 }

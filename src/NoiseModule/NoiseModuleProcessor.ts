@@ -4,7 +4,6 @@ import { NoiseType, NoiseModuleParams } from './';
 /**
  * This class extends `AudioWorkletProcessor`.
  * Overrides `process` method for generating noise.
- * @constructor
  * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class NoiseModuleProcessor extends AudioWorkletProcessor {

@@ -4,7 +4,6 @@ import { NoiseSuppressorParams } from '../NoiseSuppressor';
 /**
  * This class extends `AudioWorkletProcessor`.
  * Override `process` method for noise suppressor and Update parameters on message event.
- * @constructor
  * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class NoiseSuppressorProcessor extends AudioWorkletProcessor {

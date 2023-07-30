@@ -246,7 +246,7 @@ export class PostEqualizer extends Effector {
     this.highpass = context.createBiquadFilter();
 
     this.lowpass.type            = 'lowpass';
-    this.lowpass.frequency.value = 24000;
+    this.lowpass.frequency.value = 20000;
     this.lowpass.Q.value         = Math.SQRT1_2;
     this.lowpass.gain.value      = 0;  // Not used
 

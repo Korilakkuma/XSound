@@ -38,5 +38,10 @@
     "@typescript-eslint/no-empty-function": 0,
     "@typescript-eslint/no-unused-vars": [2, { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/no-use-before-define": 2
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
   }
 }

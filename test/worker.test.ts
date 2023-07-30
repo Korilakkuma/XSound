@@ -1,4 +1,4 @@
-import { extractWorkerString, createWorkerBlob, createWorkerObjectURL } from '../src/worker';
+import { extractWorkerString, createWorkerBlob, createWorkerObjectURL } from '/src/worker';
 
 const workerString = `
   let timerId: number | null = null;

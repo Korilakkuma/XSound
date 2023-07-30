@@ -1,5 +1,5 @@
-import { Effector } from './Effector';
-import { PitchShifterProcessor } from './AudioWorkletProcessors/PitchShifterProcessor';
+import { Effector } from '/src/SoundModule/Effectors/Effector';
+import { PitchShifterProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/PitchShifterProcessor';
 
 export type PitchShifterParams = {
   state?: boolean,

@@ -1,9 +1,9 @@
-import { Connectable } from '../../interfaces';
-import { ChannelNumber } from '../../types';
-import { Visualizer, VisualizerParams, Color, GraphicsApi, Gradient, Gradients, Shape, Font, GraphicsStyles } from './Visualizer';
-import { TimeOverview, TimeOverviewParams, CurrentTimeStyles, MouseEventTypes, DragMode, DragCallbackFunction } from './TimeOverview';
-import { Time, TimeParams } from './Time';
-import { FFT, FFTParams, SpectrumScale } from './FFT';
+import { Connectable } from '/src/interfaces';
+import { ChannelNumber } from '/src/types';
+import { Visualizer, VisualizerParams, Color, GraphicsApi, Gradient, Gradients, Shape, Font, GraphicsStyles } from '/src/SoundModule/Analyser/Visualizer';
+import { TimeOverview, TimeOverviewParams, CurrentTimeStyles, MouseEventTypes, DragMode, DragCallbackFunction } from '/src/SoundModule/Analyser/TimeOverview';
+import { Time, TimeParams } from '/src/SoundModule/Analyser/Time';
+import { FFT, FFTParams, SpectrumScale } from '/src/SoundModule/Analyser/FFT';
 
 export type Domain   = 'timeoverview' | 'time' | 'fft';
 export type DataType = 'uint' | 'float';  // unsigned int 8 bit (`Uint8Array`) or float 32 bit (`Float32Array`)

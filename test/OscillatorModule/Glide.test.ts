@@ -1,6 +1,6 @@
-import { AudioContextMock } from '../../mock/AudioContextMock';
-import { OscillatorNodeMock } from '../../mock/OscillatorNodeMock';
-import { Glide, GlideParams } from '../../src/OscillatorModule/Glide';
+import { AudioContextMock } from '/mock/AudioContextMock';
+import { OscillatorNodeMock } from '/mock/OscillatorNodeMock';
+import { Glide, GlideParams } from '/src/OscillatorModule/Glide';
 
 describe(Glide.name, () => {
   const context = new AudioContextMock();

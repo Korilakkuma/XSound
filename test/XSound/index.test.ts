@@ -1,4 +1,4 @@
-import { AudioContextMock } from '../../mock/AudioContextMock';
+import { AudioContextMock } from '/mock/AudioContextMock';
 import {
   isPitchChar,
   computeIndex,
@@ -16,7 +16,7 @@ import {
   file,
   toFrequencies,
   toTextFile
-} from '../../src/XSound';
+} from '/src/XSound';
 
 describe(isPitchChar.name, () => {
   test('should return `true`', () => {

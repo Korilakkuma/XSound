@@ -1,5 +1,5 @@
-import { AudioNodeMock } from './AudioNodeMock';
-import { AudioParamMock } from './AudioParamMock';
+import { AudioNodeMock } from '/mock/AudioNodeMock';
+import { AudioParamMock } from '/mock/AudioParamMock';
 
 // HACK: Error occurs if Jest uses `Map` or `MessagePort`
 

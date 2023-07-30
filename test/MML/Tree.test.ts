@@ -1,5 +1,5 @@
-import { Token } from '../../src/MML/Token';
-import { Tree } from '../../src/MML/Tree';
+import { Token } from '/src/MML/Token';
+import { Tree } from '/src/MML/Tree';
 
 describe(Tree.name, () => {
   const left  = new Tree('2', new Token('2', 'NUMBER', '60'), null, null);

@@ -1,5 +1,5 @@
-import { Effector } from './Effector';
-import { NoiseSuppressorProcessor } from './AudioWorkletProcessors/NoiseSuppressorProcessor';
+import { Effector } from '/src/SoundModule/Effectors/Effector';
+import { NoiseSuppressorProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/NoiseSuppressorProcessor';
 
 export type NoiseSuppressorParams = {
   state?: boolean,

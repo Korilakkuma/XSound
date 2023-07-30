@@ -1,5 +1,5 @@
-import { canvasMock } from '../../../mock/CanvasMock';
-import { Time, TimeParams } from '../../../src/SoundModule/Analyser/Time';
+import { canvasMock } from '/mock/CanvasMock';
+import { Time, TimeParams } from '/src/SoundModule/Analyser/Time';
 
 describe(Time.name, () => {
   const sampleRate = 44100;

@@ -1,4 +1,4 @@
-import { Track } from '../../../src/SoundModule/Recorder/Track';
+import { Track } from '/src/SoundModule/Recorder/Track';
 
 describe(Track.name, () => {
   const track = new Track('track-1');

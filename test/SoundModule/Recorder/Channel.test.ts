@@ -1,5 +1,5 @@
-import { Channel } from '../../../src/SoundModule/Recorder/Channel';
-import { Track } from '../../../src/SoundModule/Recorder/Track';
+import { Channel } from '/src/SoundModule/Recorder/Channel';
+import { Track } from '/src/SoundModule/Recorder/Track';
 
 describe(Channel.name, () => {
   const channel = new Channel('channel-1');

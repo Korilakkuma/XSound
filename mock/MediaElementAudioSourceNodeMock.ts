@@ -1,4 +1,4 @@
-import { AudioNodeMock } from './AudioNodeMock';
+import { AudioNodeMock } from '/mock/AudioNodeMock';
 
 export class MediaElementAudioSourceNodeMock extends AudioNodeMock {
   media: HTMLAudioElement | HTMLVideoElement;

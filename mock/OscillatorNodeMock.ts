@@ -1,5 +1,5 @@
-import { AudioNodeMock } from './AudioNodeMock';
-import { AudioParamMock } from './AudioParamMock';
+import { AudioNodeMock } from '/mock/AudioNodeMock';
+import { AudioParamMock } from '/mock/AudioParamMock';
 
 export class OscillatorNodeMock extends AudioNodeMock {
   type: 'sine' | 'square' | 'sawtooth' | 'triangle' | 'custom';

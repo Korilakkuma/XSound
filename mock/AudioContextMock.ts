@@ -1,22 +1,22 @@
-import './AudioWorkletNodeMock';
-import { AnalyserNodeMock } from './AnalyserNodeMock';
-import { AudioBufferMock } from './AudioBufferMock';
-import { AudioBufferSourceNodeMock } from './AudioBufferSourceNodeMock';
-import { AudioListenerMock } from './AudioListenerMock';
-import { BiquadFilterNodeMock } from './BiquadFilterNodeMock';
-import { ChannelMergerNodeMock } from './ChannelMergerNodeMock';
-import { ChannelSplitterNodeMock } from './ChannelSplitterNodeMock';
-import { ConstantSourceNodeMock } from './ConstantSourceNodeMock';
-import { ConvolverNodeMock } from './ConvolverNodeMock';
-import { DelayNodeMock } from './DelayNodeMock';
-import { DynamicsCompressorNodeMock } from './DynamicsCompressorNodeMock';
-import { GainNodeMock } from './GainNodeMock';
-import { MediaElementAudioSourceNodeMock } from './MediaElementAudioSourceNodeMock';
-import { MediaStreamAudioSourceNodeMock } from './MediaStreamAudioSourceNodeMock';
-import { OscillatorNodeMock } from './OscillatorNodeMock';
-import { PannerNodeMock } from './PannerNodeMock';
-import { StereoPannerNodeMock } from './StereoPannerNodeMock';
-import { WaveShaperNodeMock } from './WaveShaperNodeMock';
+import '/mock/AudioWorkletNodeMock';
+import { AnalyserNodeMock } from '/mock/AnalyserNodeMock';
+import { AudioBufferMock } from '/mock/AudioBufferMock';
+import { AudioBufferSourceNodeMock } from '/mock/AudioBufferSourceNodeMock';
+import { AudioListenerMock } from '/mock/AudioListenerMock';
+import { BiquadFilterNodeMock } from '/mock/BiquadFilterNodeMock';
+import { ChannelMergerNodeMock } from '/mock/ChannelMergerNodeMock';
+import { ChannelSplitterNodeMock } from '/mock/ChannelSplitterNodeMock';
+import { ConstantSourceNodeMock } from '/mock/ConstantSourceNodeMock';
+import { ConvolverNodeMock } from '/mock/ConvolverNodeMock';
+import { DelayNodeMock } from '/mock/DelayNodeMock';
+import { DynamicsCompressorNodeMock } from '/mock/DynamicsCompressorNodeMock';
+import { GainNodeMock } from '/mock/GainNodeMock';
+import { MediaElementAudioSourceNodeMock } from '/mock/MediaElementAudioSourceNodeMock';
+import { MediaStreamAudioSourceNodeMock } from '/mock/MediaStreamAudioSourceNodeMock';
+import { OscillatorNodeMock } from '/mock/OscillatorNodeMock';
+import { PannerNodeMock } from '/mock/PannerNodeMock';
+import { StereoPannerNodeMock } from '/mock/StereoPannerNodeMock';
+import { WaveShaperNodeMock } from '/mock/WaveShaperNodeMock';
 
 export class AudioContextMock {
   audioWorklet = {

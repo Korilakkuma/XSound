@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../../mock/AudioContextMock';
-import { Wah, WahParams } from '../../../src/SoundModule/Effectors/Wah';
+import { AudioContextMock } from '/mock/AudioContextMock';
+import { Wah, WahParams } from '/src/SoundModule/Effectors/Wah';
 
 describe(Wah.name, () => {
   const context = new AudioContextMock();

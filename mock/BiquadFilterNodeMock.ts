@@ -1,5 +1,5 @@
-import { AudioNodeMock } from './AudioNodeMock';
-import { AudioParamMock } from './AudioParamMock';
+import { AudioNodeMock } from '/mock/AudioNodeMock';
+import { AudioParamMock } from '/mock/AudioParamMock';
 
 export class BiquadFilterNodeMock extends AudioNodeMock {
   type: 'lowpass' | 'highpass' | 'bandpass' | 'lowshelf' | 'highshelf' | 'peaking' | 'notch' | 'allpass';

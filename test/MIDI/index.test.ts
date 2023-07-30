@@ -1,4 +1,4 @@
-import { MIDI } from '../../src/MIDI';
+import { MIDI } from '/src/MIDI';
 
 describe(MIDI.name, () => {
   const midi = new MIDI();

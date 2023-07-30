@@ -1,4 +1,4 @@
-import { Statable } from '../../interfaces';
+import { Statable } from '/src/interfaces';
 
 export type EnvelopeGeneratorParams = {
   state?: boolean,

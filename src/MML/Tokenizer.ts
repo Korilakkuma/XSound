@@ -1,4 +1,4 @@
-import { TokenMap, Token } from './Token';
+import { TokenMap, Token } from '/src/MML/Token';
 
 /**
  * This class is for MML Tokenization.

@@ -1,4 +1,4 @@
-import { Effector } from './Effector';
+import { Effector } from '/src/SoundModule/Effectors/Effector';
 
 export type PhaserNumberOfStages = 0 | 2 | 4 | 8 | 12 | 24;
 

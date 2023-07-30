@@ -1,8 +1,8 @@
-import { AudioContextMock } from '../../mock/AudioContextMock';
-import { WorkerMock } from '../../mock/WorkerMock';
-import { OscillatorModule } from '../../src/OscillatorModule';
-import { Sequence } from '../../src/MML/Sequence';
-import { Part } from '../../src/MML/Part';
+import { AudioContextMock } from '/mock/AudioContextMock';
+import { WorkerMock } from '/mock/WorkerMock';
+import { OscillatorModule } from '/src/OscillatorModule';
+import { Sequence } from '/src/MML/Sequence';
+import { Part } from '/src/MML/Part';
 
 describe(Part.name, () => {
   const originalWebWorker       = window.Worker;

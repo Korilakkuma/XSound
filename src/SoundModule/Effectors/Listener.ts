@@ -1,5 +1,5 @@
-import { Position3D } from './Panner';
-import { Effector } from './Effector';
+import { Position3D } from '/src/SoundModule/Effectors/Panner';
+import { Effector } from '/src/SoundModule/Effectors/Effector';
 
 export type ListenerParams = {
   x?: number,

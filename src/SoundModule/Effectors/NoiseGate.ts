@@ -1,5 +1,5 @@
-import { Effector } from './Effector';
-import { NoiseGateProcessor } from './AudioWorkletProcessors/NoiseGateProcessor';
+import { Effector } from '/src/SoundModule/Effectors/Effector';
+import { NoiseGateProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/NoiseGateProcessor';
 
 export type NoiseGateParams = {
   state?: boolean,

@@ -1,9 +1,9 @@
-import { AudioContextMock } from '../../mock/AudioContextMock';
-import { WorkerMock } from '../../mock/WorkerMock';
-import { OscillatorModule } from '../../src/OscillatorModule';
-import { Sequence } from '../../src/MML/Sequence';
-import { Part } from '../../src/MML/Part';
-import { MML } from '../../src/MML/index';
+import { AudioContextMock } from '/mock/AudioContextMock';
+import { WorkerMock } from '/mock/WorkerMock';
+import { OscillatorModule } from '/src/OscillatorModule';
+import { Sequence } from '/src/MML/Sequence';
+import { Part } from '/src/MML/Part';
+import { MML } from '/src/MML/index';
 
 describe(MML.name, () => {
   const mml = new MML();

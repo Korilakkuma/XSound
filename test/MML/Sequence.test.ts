@@ -1,4 +1,4 @@
-import { Sequence } from '../../src/MML/Sequence';
+import { Sequence } from '/src/MML/Sequence';
 
 describe(Sequence.name, () => {
   const sequence = new Sequence({

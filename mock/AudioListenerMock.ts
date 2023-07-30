@@ -1,4 +1,4 @@
-import { AudioParamMock } from './AudioParamMock';
+import { AudioParamMock } from '/mock/AudioParamMock';
 
 export class AudioListenerMock {
   positionX: AudioParamMock;

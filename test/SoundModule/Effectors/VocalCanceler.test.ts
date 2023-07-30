@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../../mock/AudioContextMock';
-import { VocalCanceler, VocalCancelerParams } from '../../../src/SoundModule/Effectors/VocalCanceler';
+import { AudioContextMock } from '/mock/AudioContextMock';
+import { VocalCanceler, VocalCancelerParams } from '/src/SoundModule/Effectors/VocalCanceler';
 
 describe(VocalCanceler.name, () => {
   const context = new AudioContextMock();

@@ -1,6 +1,6 @@
-import { AudioNodeMock } from './AudioNodeMock';
-import { AudioParamMock } from './AudioParamMock';
-import { AudioBufferMock } from './AudioBufferMock';
+import { AudioNodeMock } from '/mock/AudioNodeMock';
+import { AudioParamMock } from '/mock/AudioParamMock';
+import { AudioBufferMock } from '/mock/AudioBufferMock';
 
 export class AudioBufferSourceNodeMock extends AudioNodeMock {
   buffer: AudioBufferMock;

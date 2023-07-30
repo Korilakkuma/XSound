@@ -1,13 +1,13 @@
-import { createWorkerObjectURL } from '../worker';
-import { OscillatorModule } from '../OscillatorModule';
-import { OneshotModule } from '../OneshotModule';
-import { NoiseModule } from '../NoiseModule';
-import { MMLSyntaxError } from './Tree';
-import { Tokenizer } from './Tokenizer';
-import { TreeConstructor } from './TreeConstructor';
-import { Sequencer } from './Sequencer';
-import { Sequence } from './Sequence';
-import { schedule, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from './ScheduleWorker';
+import { createWorkerObjectURL } from '/src/worker';
+import { OscillatorModule } from '/src/OscillatorModule';
+import { OneshotModule } from '/src/OneshotModule';
+import { NoiseModule } from '/src/NoiseModule';
+import { MMLSyntaxError } from '/src/MML/Tree';
+import { Tokenizer } from '/src/MML/Tokenizer';
+import { TreeConstructor } from '/src/MML/TreeConstructor';
+import { Sequencer } from '/src/MML/Sequencer';
+import { Sequence } from '/src/MML/Sequence';
+import { schedule, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from '/src/MML/ScheduleWorker';
 
 export type {
   MMLScheduleWorkerMessageEventType,

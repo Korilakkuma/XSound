@@ -1,5 +1,5 @@
-import { Effector } from './Effector';
-import { VocalCancelerProcessor } from './AudioWorkletProcessors/VocalCancelerProcessor';
+import { Effector } from '/src/SoundModule/Effectors/Effector';
+import { VocalCancelerProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/VocalCancelerProcessor';
 
 export type VocalCancelerParams = {
   state?: boolean,

@@ -1,7 +1,7 @@
 'use strict';
 
-import './types';
-import { SoundModule, SoundModuleParams, SoundModuleProcessor, Module, ModuleName } from './SoundModule';
+import '/src/types';
+import { SoundModule, SoundModuleParams, SoundModuleProcessor, Module, ModuleName } from '/src/SoundModule';
 import {
   OscillatorModule,
   OscillatorModuleParams,
@@ -12,7 +12,7 @@ import {
   Oscillator,
   OscillatorParams,
   OscillatorCustomType
-} from './OscillatorModule';
+} from '/src/OscillatorModule';
 import {
   OneshotModule,
   OneshotModuleParams,
@@ -20,14 +20,14 @@ import {
   OneshotSettings,
   OneshotErrorText,
   OneshotModuleProcessor
-} from './OneshotModule';
-import { NoiseModule, NoiseModuleParams, NoiseType, NoiseModuleProcessor } from './NoiseModule';
-import { AudioModule, AudioModuleParams, AudioBufferSprite, AudioModuleProcessor } from './AudioModule';
-import { MediaModule, MediaModuleParams, MediaModuleProcessor } from './MediaModule';
-import { StreamModule, StreamModuleParams, StreamModuleProcessor, MediaStreamTrackAudioSourceNode } from './StreamModule';
-import { ProcessorModule } from './ProcessorModule';
-import { MixerModule, MixerModuleProcessor } from './MixerModule';
-import { MIDI } from './MIDI';
+} from '/src/OneshotModule';
+import { NoiseModule, NoiseModuleParams, NoiseType, NoiseModuleProcessor } from '/src/NoiseModule';
+import { AudioModule, AudioModuleParams, AudioBufferSprite, AudioModuleProcessor } from '/src/AudioModule';
+import { MediaModule, MediaModuleParams, MediaModuleProcessor } from '/src/MediaModule';
+import { StreamModule, StreamModuleParams, StreamModuleProcessor, MediaStreamTrackAudioSourceNode } from '/src/StreamModule';
+import { ProcessorModule } from '/src/ProcessorModule';
+import { MixerModule, MixerModuleProcessor } from '/src/MixerModule';
+import { MIDI } from '/src/MIDI';
 import {
   MML,
   Part,
@@ -39,7 +39,7 @@ import {
   Token,
   MMLScheduleWorkerMessageEventType,
   MMLScheduleWorkerMessageEventData
-} from './MML';
+} from '/src/MML';
 import {
   Analyser,
   AnalyserParams,
@@ -66,7 +66,7 @@ import {
   FFT,
   FFTParams,
   SpectrumScale
-} from './SoundModule/Analyser';
+} from '/src/SoundModule/Analyser';
 import {
   Recorder,
   RecorderParams,
@@ -77,25 +77,25 @@ import {
   Channel,
   RecorderProcessor,
   RecorderProcessorMessageEventData
-} from './SoundModule/Recorder';
-import { Effector } from './SoundModule/Effectors/Effector';
-import { Autopanner, AutopannerParams } from './SoundModule/Effectors/Autopanner';
-import { BitCrusher, BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
-import { Chorus, ChorusParams } from './SoundModule/Effectors/Chorus';
-import { Compressor, CompressorParams } from './SoundModule/Effectors/Compressor';
-import { Delay, DelayParams } from './SoundModule/Effectors/Delay';
-import { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effectors/EnvelopeGenerator';
-import { Equalizer, EqualizerParams } from './SoundModule/Effectors/Equalizer';
-import { Filter, FilterParams } from './SoundModule/Effectors/Filter';
-import { Flanger, FlangerParams } from './SoundModule/Effectors/Flanger';
-import { Fuzz, FuzzParams } from './SoundModule/Effectors/Fuzz';
-import { Listener, ListenerParams } from './SoundModule/Effectors/Listener';
-import { NoiseGate, NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
-import { NoiseSuppressor, NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
-import { OverDrive, OverDriveParams } from './SoundModule/Effectors/OverDrive';
-import { Panner, PannerParams, Position3D } from './SoundModule/Effectors/Panner';
-import { Phaser, PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
-import { PitchShifter, PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
+} from '/src/SoundModule/Recorder';
+import { Effector } from '/src/SoundModule/Effectors/Effector';
+import { Autopanner, AutopannerParams } from '/src/SoundModule/Effectors/Autopanner';
+import { BitCrusher, BitCrusherParams } from '/src/SoundModule/Effectors/BitCrusher';
+import { Chorus, ChorusParams } from '/src/SoundModule/Effectors/Chorus';
+import { Compressor, CompressorParams } from '/src/SoundModule/Effectors/Compressor';
+import { Delay, DelayParams } from '/src/SoundModule/Effectors/Delay';
+import { EnvelopeGenerator, EnvelopeGeneratorParams } from '/src/SoundModule/Effectors/EnvelopeGenerator';
+import { Equalizer, EqualizerParams } from '/src/SoundModule/Effectors/Equalizer';
+import { Filter, FilterParams } from '/src/SoundModule/Effectors/Filter';
+import { Flanger, FlangerParams } from '/src/SoundModule/Effectors/Flanger';
+import { Fuzz, FuzzParams } from '/src/SoundModule/Effectors/Fuzz';
+import { Listener, ListenerParams } from '/src/SoundModule/Effectors/Listener';
+import { NoiseGate, NoiseGateParams } from '/src/SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor, NoiseSuppressorParams } from '/src/SoundModule/Effectors/NoiseSuppressor';
+import { OverDrive, OverDriveParams } from '/src/SoundModule/Effectors/OverDrive';
+import { Panner, PannerParams, Position3D } from '/src/SoundModule/Effectors/Panner';
+import { Phaser, PhaserParams, PhaserNumberOfStages } from '/src/SoundModule/Effectors/Phaser';
+import { PitchShifter, PitchShifterParams } from '/src/SoundModule/Effectors/PitchShifter';
 import {
   Preamp,
   PreampParams,
@@ -106,18 +106,18 @@ import {
   PostEqualizerParams,
   Cabinet,
   CabinetParams
-} from './SoundModule/Effectors/Preamp';
-import { Reverb, ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
-import { Ringmodulator, RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
-import { Stereo, StereoParams } from './SoundModule/Effectors/Stereo';
-import { Tremolo, TremoloParams } from './SoundModule/Effectors/Tremolo';
-import { VocalCanceler, VocalCancelerParams } from './SoundModule/Effectors/VocalCanceler';
-import { Wah, WahParams } from './SoundModule/Effectors/Wah';
-import { NoiseGateProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/NoiseGateProcessor';
-import { NoiseSuppressorProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/NoiseSuppressorProcessor';
-import { PitchShifterProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/PitchShifterProcessor';
-import { StereoProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/StereoProcessor';
-import { VocalCancelerProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/VocalCancelerProcessor';
+} from '/src/SoundModule/Effectors/Preamp';
+import { Reverb, ReverbParams, ReverbErrorText } from '/src/SoundModule/Effectors/Reverb';
+import { Ringmodulator, RingmodulatorParams } from '/src/SoundModule/Effectors/Ringmodulator';
+import { Stereo, StereoParams } from '/src/SoundModule/Effectors/Stereo';
+import { Tremolo, TremoloParams } from '/src/SoundModule/Effectors/Tremolo';
+import { VocalCanceler, VocalCancelerParams } from '/src/SoundModule/Effectors/VocalCanceler';
+import { Wah, WahParams } from '/src/SoundModule/Effectors/Wah';
+import { NoiseGateProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/NoiseGateProcessor';
+import { NoiseSuppressorProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/NoiseSuppressorProcessor';
+import { PitchShifterProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/PitchShifterProcessor';
+import { StereoProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/StereoProcessor';
+import { VocalCancelerProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/VocalCancelerProcessor';
 import {
   EQUAL_TEMPERAMENT,
   FREQUENCY_RATIO,
@@ -146,14 +146,14 @@ import {
   FileEvent,
   FileReaderType,
   FileReaderErrorText
-} from './XSound';
+} from '/src/XSound';
 import {
   addAudioWorklet,
   FrozenArray,
   Inputs,
   Outputs,
   Parameters
-} from './worklet';
+} from '/src/worklet';
 
 export type Source     = OscillatorModule | OneshotModule | NoiseModule | AudioModule | MediaModule | StreamModule | ProcessorModule | MixerModule | MIDI | MML;
 export type SourceName = 'oscillator' | 'oneshot' | 'noise' | 'audio' | 'media' | 'stream' | 'processor' | 'mixer' | 'midi' | 'mml';

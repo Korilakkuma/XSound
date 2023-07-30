@@ -1,5 +1,5 @@
-import { Statable } from '../../interfaces';
-import { ChannelNumber } from '../../types';
+import { Statable } from '/src/interfaces';
+import { ChannelNumber } from '/src/types';
 
 export type Color = string;
 

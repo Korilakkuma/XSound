@@ -1,5 +1,5 @@
-import { canvasMock } from '../../../mock/CanvasMock';
-import { TimeOverview, TimeOverviewParams } from '../../../src/SoundModule/Analyser/TimeOverview';
+import { canvasMock } from '/mock/CanvasMock';
+import { TimeOverview, TimeOverviewParams } from '/src/SoundModule/Analyser/TimeOverview';
 
 describe(TimeOverview.name, () => {
   const sampleRate = 44100;

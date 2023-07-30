@@ -1,7 +1,7 @@
-import { Token } from '../../src/MML/Token';
-import { Tokenizer } from '../../src/MML/Tokenizer';
-import { Tree, MMLSyntaxError } from '../../src/MML/Tree';
-import { TreeConstructor } from '../../src/MML/TreeConstructor';
+import { Token } from '/src/MML/Token';
+import { Tokenizer } from '/src/MML/Tokenizer';
+import { Tree, MMLSyntaxError } from '/src/MML/Tree';
+import { TreeConstructor } from '/src/MML/TreeConstructor';
 
 describe(TreeConstructor.name, () => {
   // FIXME: `Tokenizer` should be mocked

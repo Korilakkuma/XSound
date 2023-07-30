@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../../mock/AudioContextMock';
-import { Delay, DelayParams } from '../../../src/SoundModule/Effectors/Delay';
+import { AudioContextMock } from '/mock/AudioContextMock';
+import { Delay, DelayParams } from '/src/SoundModule/Effectors/Delay';
 
 describe(Delay.name, () => {
   const context = new AudioContextMock();

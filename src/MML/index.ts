@@ -1,10 +1,10 @@
-import { OscillatorModule } from '../OscillatorModule';
-import { OneshotModule } from '../OneshotModule';
-import { NoiseModule } from '../NoiseModule';
-import { TokenType, TokenMap, Token } from './Token';
-import { Tree, MMLSyntaxError } from './Tree';
-import { Sequence } from './Sequence';
-import { Part, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from './Part';
+import { OscillatorModule } from '/src/OscillatorModule';
+import { OneshotModule } from '/src/OneshotModule';
+import { NoiseModule } from '/src/NoiseModule';
+import { TokenType, TokenMap, Token } from '/src/MML/Token';
+import { Tree, MMLSyntaxError } from '/src/MML/Tree';
+import { Sequence } from '/src/MML/Sequence';
+import { Part, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from '/src/MML/Part';
 
 export type {
   Part,

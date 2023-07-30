@@ -1,5 +1,5 @@
-import { AudioContextMock } from '../../../mock/AudioContextMock';
-import { Stereo, StereoParams } from '../../../src/SoundModule/Effectors/Stereo';
+import { AudioContextMock } from '/mock/AudioContextMock';
+import { Stereo, StereoParams } from '/src/SoundModule/Effectors/Stereo';
 
 describe(Stereo.name, () => {
   const context = new AudioContextMock();

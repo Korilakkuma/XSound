@@ -1,5 +1,5 @@
-import { Token } from '../../src/MML/Token';
-import { Tokenizer } from '../../src/MML/Tokenizer';
+import { Token } from '/src/MML/Token';
+import { Tokenizer } from '/src/MML/Tokenizer';
 
 describe(Tokenizer.name, () => {
   describe('get', () => {

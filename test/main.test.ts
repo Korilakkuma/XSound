@@ -1,15 +1,15 @@
-import '../mock/AudioContextMock';
-import { OscillatorModule } from '../src/OscillatorModule';
-import { OneshotModule } from '../src/OneshotModule';
-import { NoiseModule } from '../src/NoiseModule';
-import { AudioModule } from '../src/AudioModule';
-import { MediaModule } from '../src/MediaModule';
-import { StreamModule } from '../src/StreamModule';
-import { MixerModule } from '../src/MixerModule';
-import { ProcessorModule } from '../src/ProcessorModule';
-import { MIDI } from '../src/MIDI';
-import { MML } from '../src/MML';
-import { XSound } from '../src/main';
+import '/mock/AudioContextMock';
+import { OscillatorModule } from '/src/OscillatorModule';
+import { OneshotModule } from '/src/OneshotModule';
+import { NoiseModule } from '/src/NoiseModule';
+import { AudioModule } from '/src/AudioModule';
+import { MediaModule } from '/src/MediaModule';
+import { StreamModule } from '/src/StreamModule';
+import { MixerModule } from '/src/MixerModule';
+import { ProcessorModule } from '/src/ProcessorModule';
+import { MIDI } from '/src/MIDI';
+import { MML } from '/src/MML';
+import { XSound } from '/src/main';
 
 describe(XSound.name, () => {
   test('should return instance of `Source`', () => {

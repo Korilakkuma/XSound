@@ -1,5 +1,5 @@
-import { canvasMock } from '../../../mock/CanvasMock';
-import { FFT, FFTParams } from '../../../src/SoundModule/Analyser/FFT';
+import { canvasMock } from '/mock/CanvasMock';
+import { FFT, FFTParams } from '/src/SoundModule/Analyser/FFT';
 
 describe(FFT.name, () => {
   const sampleRate = 44100;

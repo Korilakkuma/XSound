@@ -1,9 +1,9 @@
-import { Token } from '../../src/MML/Token';
-import { MMLSyntaxError } from '../../src/MML/Tree';
-import { Tokenizer } from '../../src/MML/Tokenizer';
-import { TreeConstructor } from '../../src/MML/TreeConstructor';
-import { Sequence } from '../../src/MML/Sequence';
-import { Sequencer } from '../../src/MML/Sequencer';
+import { Token } from '/src/MML/Token';
+import { MMLSyntaxError } from '/src/MML/Tree';
+import { Tokenizer } from '/src/MML/Tokenizer';
+import { TreeConstructor } from '/src/MML/TreeConstructor';
+import { Sequence } from '/src/MML/Sequence';
+import { Sequencer } from '/src/MML/Sequencer';
 
 describe(Sequencer.name, () => {
   // FIXME: `TreeConstructor` should be mocked

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "lib": [
@@ -15,6 +16,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "outDir": "./build/",
+    "paths": {
+      "/src/*": ["./src/*"],
+      "/mock/*": ["./mock/*"]
+    },
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,

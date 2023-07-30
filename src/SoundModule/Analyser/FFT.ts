@@ -38,7 +38,6 @@ export class FFT extends Visualizer {
    * @param {number} sampleRate This argument is sample rate.
    * @param {ChannelNumber} channel This argument is channel number (Left: 0, Right: 1 ...).
    */
-  // eslint-disable-next-line no-useless-constructor
   constructor(sampleRate: number, channel: ChannelNumber) {
     super(sampleRate, channel);
   }

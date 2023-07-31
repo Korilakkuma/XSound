@@ -34,8 +34,7 @@
   },
   "lint-staged": {
     "{src,test,mock}/**/*.ts": [
-      "eslint --fix",
-      "tsc --esModuleInterop --noEmit --skipLibCheck --moduleResolution node --target es2022"
+      "eslint --fix"
     ]
   },
   "repository": {

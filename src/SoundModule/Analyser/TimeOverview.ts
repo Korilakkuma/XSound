@@ -249,6 +249,12 @@ export class TimeOverview extends Visualizer {
           const x          = ((time * this.sampleRate) / this.currentDataSize) * innerWidth;
 
           if (this.mode === 'update') {
+            const spriteRect = this.svg.querySelector(`.${SVG_SPRITE_CLASS_NAME}`);
+
+            if (spriteRect) {
+              spriteRect.parentNode?.removeChild(spriteRect);
+            }
+
             rect.setAttribute('x', left.toString(10));
             rect.setAttribute('width', x.toString(10));
             // rect.setAttribute('transform', `translate(${x} 0)`);

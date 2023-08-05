@@ -222,6 +222,10 @@ export class FFT extends Visualizer {
             break;
           case 'logarithmic':
             for (let i = 0; i < data.length; i++) {
+              if (i === 0) {
+                continue;
+              }
+
               const f = i * frequencyResolution;
               const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
               const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
@@ -230,7 +234,7 @@ export class FFT extends Visualizer {
                 continue;
               }
 
-              if (i === 0) {
+              if (i === 1) {
                 context.moveTo((left + (lineWidth / 2)), y);
               } else {
                 context.lineTo(x, y);
@@ -474,6 +478,10 @@ export class FFT extends Visualizer {
             break;
           case 'logarithmic':
             for (let i = 0; i < data.length; i++) {
+              if (i == 0) {
+                continue;
+              }
+
               const f = i * frequencyResolution;
               const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
               const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
@@ -488,7 +496,7 @@ export class FFT extends Visualizer {
               }
 
               if (d === '') {
-                d += `M${left + (lineWidth / 2)} ${top}`;
+                d += `M${x} ${y}`;
               } else {
                 d += ` L${x} ${y}`;
               }

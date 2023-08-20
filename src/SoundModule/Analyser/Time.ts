@@ -213,7 +213,7 @@ export class Time extends Visualizer {
       for (let i = 0, len = data.length; i < len; i++) {
         if ((i % numberOfTexts) === 0) {
           const x = Math.trunc((i / len) * innerWidth) + left;
-          const t = `${Math.trunc((i / this.sampleRate) * 1000)} ms`;
+          const t = `${Math.ceil((i / this.sampleRate) * 1000)} ms`;
 
           // Visualize grid
           if (gridColor !== 'none') {
@@ -384,7 +384,7 @@ export class Time extends Visualizer {
       for (let i = 0, len = data.length; i < len; i++) {
         if ((i % numberOfTexts) === 0) {
           const x = Math.trunc((i / len) * innerWidth) + left;
-          const t = `${Math.trunc((i / this.sampleRate) * 1000)} ms`;
+          const t = `${Math.ceil((i / this.sampleRate) * 1000)} ms`;
 
           // Visualize grid
           if (gridColor !== 'none') {

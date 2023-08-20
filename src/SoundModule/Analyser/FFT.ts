@@ -464,7 +464,7 @@ export class FFT extends Visualizer {
               const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
               // HACK: Because of infinity sometimes
-              if (!isFinite(x) || !isFinite(y)) {
+              if (!Number.isFinite(x) || !Number.isFinite(y)) {
                 continue;
               }
 
@@ -487,7 +487,7 @@ export class FFT extends Visualizer {
               const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
               // HACK: Because of infinity sometimes
-              if (!isFinite(x) || !isFinite(y)) {
+              if (!Number.isFinite(x) || !Number.isFinite(y)) {
                 continue;
               }
 

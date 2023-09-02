@@ -129,96 +129,138 @@ export class Filter extends Effector {
   public param(params: keyof FilterParams | FilterParams): FilterParams[keyof FilterParams] | Filter {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'type':
+        }
+
+        case 'type': {
           return this.filter.type;
-        case 'frequency':
+        }
+
+        case 'frequency': {
           return this.filter.frequency.value;
-        case 'Q':
+        }
+
+        case 'Q': {
           return this.filter.Q.value;
-        case 'gain':
+        }
+
+        case 'gain': {
           return this.filter.gain.value;
-        case 'range':
+        }
+
+        case 'range': {
           return this.range;
-        case 'attack':
+        }
+
+        case 'attack': {
           return this.attack;
-        case 'decay':
+        }
+
+        case 'decay': {
           return this.decay;
-        case 'sustain':
+        }
+
+        case 'sustain': {
           return this.sustain;
-        case 'release':
+        }
+
+        case 'release': {
           return this.release;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'type':
+        }
+
+        case 'type': {
           if (typeof value === 'string') {
             this.filter.type = value;
           }
 
           break;
-        case 'frequency':
+        }
+
+        case 'frequency': {
           if (typeof value === 'number') {
             this.filter.frequency.value = value;
             this.maxFrequency           = value;
           }
 
           break;
-        case 'Q':
+        }
+
+        case 'Q': {
           if (typeof value === 'number') {
             this.filter.Q.value = value;
           }
 
           break;
-        case 'gain':
+        }
+
+        case 'gain': {
           if (typeof value === 'number') {
             this.filter.gain.value = value;
           }
 
           break;
-        case 'range':
+        }
+
+        case 'range': {
           if (typeof value === 'number') {
             this.range = value;
           }
 
           break;
-        case 'attack':
+        }
+
+        case 'attack': {
           if (typeof value === 'number') {
             this.attack = value;
           }
 
           break;
-        case 'decay':
+        }
+
+        case 'decay': {
           if (typeof value === 'number') {
             this.decay = value;
           }
 
           break;
-        case 'sustain':
+        }
+
+        case 'sustain': {
           if (typeof value === 'number') {
             this.sustain = value;
           }
 
           break;
-        case 'release':
+        }
+
+        case 'release': {
           if (typeof value === 'number') {
             this.release = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

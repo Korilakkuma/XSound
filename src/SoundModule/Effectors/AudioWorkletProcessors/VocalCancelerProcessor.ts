@@ -16,20 +16,25 @@ export class VocalCancelerProcessor extends AudioWorkletProcessor {
     this.port.onmessage = (event: MessageEvent<VocalCancelerParams>) => {
       for (const [key, value] of Object.entries(event.data)) {
         switch (key) {
-          case 'state':
+          case 'state': {
             if (typeof value === 'boolean') {
               this.isActive = value;
             }
 
             break;
-          case 'depth':
+          }
+
+          case 'depth': {
             if (typeof value === 'number') {
               this.depth = value;
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
       }
     };

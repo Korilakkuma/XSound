@@ -65,18 +65,23 @@ export class PitchShifter extends Effector {
   public param(params: keyof PitchShifterParams | PitchShifterParams): PitchShifterParams[keyof PitchShifterParams] | PitchShifter {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'pitch':
+        }
+
+        case 'pitch': {
           return this.pitch;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
@@ -86,7 +91,9 @@ export class PitchShifter extends Effector {
           }
 
           break;
-        case 'pitch':
+        }
+
+        case 'pitch': {
           if (typeof value === 'number') {
             if (value > 0) {
               this.pitch = value;
@@ -98,8 +105,11 @@ export class PitchShifter extends Effector {
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

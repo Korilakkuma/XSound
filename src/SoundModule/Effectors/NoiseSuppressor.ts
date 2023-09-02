@@ -64,18 +64,23 @@ export class NoiseSuppressor extends Effector {
   public param(params: keyof NoiseSuppressorParams | NoiseSuppressorParams): NoiseSuppressorParams[keyof NoiseSuppressorParams] | NoiseSuppressor {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'threshold':
+        }
+
+        case 'threshold': {
           return this.threshold;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
@@ -85,7 +90,9 @@ export class NoiseSuppressor extends Effector {
           }
 
           break;
-        case 'threshold':
+        }
+
+        case 'threshold': {
           if (typeof value === 'number') {
             if (value >= 0) {
               this.threshold = value;
@@ -97,8 +104,11 @@ export class NoiseSuppressor extends Effector {
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

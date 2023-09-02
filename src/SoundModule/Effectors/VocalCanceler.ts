@@ -64,18 +64,23 @@ export class VocalCanceler extends Effector {
   public param(params: keyof VocalCancelerParams | VocalCancelerParams): VocalCancelerParams[keyof VocalCancelerParams] | VocalCanceler {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'depth':
+        }
+
+        case 'depth': {
           return this.depth.gain.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
@@ -85,7 +90,9 @@ export class VocalCanceler extends Effector {
           }
 
           break;
-        case 'depth':
+        }
+
+        case 'depth': {
           if (typeof value === 'number') {
             this.depth.gain.value = value;
 
@@ -95,8 +102,11 @@ export class VocalCanceler extends Effector {
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

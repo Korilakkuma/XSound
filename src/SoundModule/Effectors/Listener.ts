@@ -82,96 +82,134 @@ export class Listener extends Effector {
   public param(params: keyof ListenerParams | ListenerParams): ListenerParams[keyof ListenerParams] | Listener {
     if (typeof params === 'string') {
       switch (params) {
-        case 'x':
+        case 'x': {
           return this.positions.x;
-        case 'y':
+        }
+
+        case 'y': {
           return this.positions.y;
-        case 'z':
+        }
+
+        case 'z': {
           return this.positions.z;
-        case 'fx':
+        }
+
+        case 'fx': {
           return this.forwards.x;
-        case 'fy':
+        }
+
+        case 'fy': {
           return this.forwards.y;
-        case 'fz':
+        }
+
+        case 'fz': {
           return this.forwards.z;
-        case 'ux':
+        }
+
+        case 'ux': {
           return this.ups.x;
-        case 'uy':
+        }
+
+        case 'uy': {
           return this.ups.y;
-        case 'uz':
+        }
+
+        case 'uz': {
           return this.ups.z;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'x':
+        case 'x': {
           if (typeof value === 'number') {
             this.positions.x = value;
             this.listener.setPosition(this.positions.x, this.positions.y, this.positions.z);
           }
 
           break;
-        case 'y':
+        }
+
+        case 'y': {
           if (typeof value === 'number') {
             this.positions.y = value;
             this.listener.setPosition(this.positions.x, this.positions.y, this.positions.z);
           }
 
           break;
-        case 'z':
+        }
+
+        case 'z': {
           if (typeof value === 'number') {
             this.positions.z = value;
             this.listener.setPosition(this.positions.x, this.positions.y, this.positions.z);
           }
 
           break;
-        case 'fx':
+        }
+
+        case 'fx': {
           if (typeof value === 'number') {
             this.forwards.x = value;
             this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
           }
 
           break;
-        case 'fy':
+        }
+
+        case 'fy': {
           if (typeof value === 'number') {
             this.forwards.y = value;
             this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
           }
 
           break;
-        case 'fz':
+        }
+
+        case 'fz': {
           if (typeof value === 'number') {
             this.forwards.z = value;
             this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
           }
 
           break;
-        case 'ux':
+        }
+
+        case 'ux': {
           if (typeof value === 'number') {
             this.ups.x = value;
             this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
           }
 
           break;
-        case 'uy':
+        }
+
+        case 'uy': {
           if (typeof value === 'number') {
             this.ups.y = value;
             this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
           }
 
           break;
-        case 'uz':
+        }
+
+        case 'uz': {
           if (typeof value === 'number') {
             this.ups.z = value;
             this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

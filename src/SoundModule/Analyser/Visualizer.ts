@@ -134,14 +134,19 @@ export abstract class Visualizer implements Statable {
    */
   public start(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): Visualizer {
     switch (this.graphics) {
-      case 'canvas':
+      case 'canvas': {
         this.visualizeOnCanvas(data, minDecibels, maxDecibels);
         break;
-      case 'svg':
+      }
+
+      case 'svg': {
         this.visualizeBySVG(data, minDecibels, maxDecibels);
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
 
     return this;
@@ -159,31 +164,41 @@ export abstract class Visualizer implements Statable {
   public param(params: keyof VisualizerParams | VisualizerParams): VisualizerParams[keyof VisualizerParams] | void {
     if (typeof params === 'string') {
       switch (params) {
-        case 'interval':
+        case 'interval': {
           return this.interval;
-        case 'styles':
+        }
+
+        case 'styles': {
           return this.styles;
-        default:
+        }
+
+        default: {
           return;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'interval':
+        case 'interval': {
           if (typeof value === 'number') {
             this.interval = value;
           }
 
           break;
-        case 'styles':
+        }
+
+        case 'styles': {
           if (typeof value === 'object') {
             this.styles = { ...this.styles, ...value };
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
   }
@@ -194,12 +209,17 @@ export abstract class Visualizer implements Statable {
    */
   public get(): HTMLCanvasElement | SVGSVGElement | null {
     switch (this.graphics) {
-      case 'canvas':
+      case 'canvas': {
         return this.canvas;
-      case 'svg':
+      }
+
+      case 'svg': {
         return this.svg;
-      default:
+      }
+
+      default: {
         return null;
+      }
     }
   }
 
@@ -209,20 +229,25 @@ export abstract class Visualizer implements Statable {
    */
   public clear(): Visualizer {
     switch (this.graphics) {
-      case 'canvas':
+      case 'canvas': {
         if (this.canvas && this.context) {
           this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
 
         break;
-      case 'svg':
+      }
+
+      case 'svg': {
         if (this.svg) {
           this.svg.innerHTML = '';
         }
 
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
 
     return this;
@@ -234,20 +259,25 @@ export abstract class Visualizer implements Statable {
    */
   public create(): string {
     switch (this.graphics) {
-      case 'canvas':
+      case 'canvas': {
         if (this.canvas === null) {
           return '';
         }
 
         return this.canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-      case 'svg':
+      }
+
+      case 'svg': {
         if (this.svg === null) {
           return '';
         }
 
         return this.svg.outerHTML;
-      default:
+      }
+
+      default: {
         return '';
+      }
     }
   }
 
@@ -298,7 +328,7 @@ export abstract class Visualizer implements Statable {
 
     // Begin visualization
     switch (this.styles.shape) {
-      case 'line':
+      case 'line': {
         // Set style
         context.strokeStyle = waveColor;
         context.lineWidth   = lineWidth;
@@ -324,7 +354,9 @@ export abstract class Visualizer implements Statable {
         context.stroke();
 
         break;
-      case 'rect':
+      }
+
+      case 'rect': {
         // Visualize wave
         for (let i = 0, len = data.length; i < len; i++) {
           if (!numberOfPlots || ((i % numberOfPlots) === 0)) {
@@ -350,8 +382,11 @@ export abstract class Visualizer implements Statable {
         }
 
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
   }
 
@@ -446,8 +481,9 @@ export abstract class Visualizer implements Statable {
         return g;
       }
 
-      default:
+      default: {
         return null;
+      }
     }
   }
 

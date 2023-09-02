@@ -48,22 +48,31 @@ export class Time extends Visualizer {
   public override param(params: keyof TimeParams | TimeParams): TimeParams[keyof TimeParams] | Time {
     if (typeof params === 'string') {
       switch (params) {
-        case 'type':
+        case 'type': {
           return this.type;
-        case 'textInterval':
+        }
+
+        case 'textInterval': {
           return this.textInterval;
-        case 'interval':
+        }
+
+        case 'interval': {
           return super.param(params);
-        case 'styles':
+        }
+
+        case 'styles': {
           return super.param(params);
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'type':
+        case 'type': {
           if (typeof value === 'string') {
             if ((value === 'uint') || (value === 'float')) {
               this.type = value;
@@ -71,14 +80,19 @@ export class Time extends Visualizer {
           }
 
           break;
-        case 'textInterval':
+        }
+
+        case 'textInterval': {
           if (typeof value === 'number') {
             this.textInterval = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -144,16 +158,18 @@ export class Time extends Visualizer {
 
     // Begin visualization
     switch (this.type) {
-      case 'float':
+      case 'float': {
         if (data instanceof Float32Array) {
           this.visualizeTimeDomainFloat32ArrayOnCanvas(context, data, innerWidth, innerHeight, middle);
         }
 
         break;
+      }
+
       case 'uint':
-      default    :
+      default    : {
         switch (this.styles.shape) {
-          case 'line':
+          case 'line': {
             // Set style
             context.strokeStyle = waveColor;
             context.lineWidth   = lineWidth;
@@ -177,7 +193,9 @@ export class Time extends Visualizer {
             context.stroke();
 
             break;
-          case 'rect':
+          }
+
+          case 'rect': {
             // Visualize wave
             for (let i = 0, len = data.length; i < len; i++) {
               const x = ((i / len) * innerWidth) + left;
@@ -201,11 +219,15 @@ export class Time extends Visualizer {
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
 
         break;
+      }
     }
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {
@@ -290,7 +312,7 @@ export class Time extends Visualizer {
 
     // Begin visualization
     switch (this.type) {
-      case 'float':
+      case 'float': {
         if (data instanceof Float32Array) {
           const element = this.visualizeTimeDomainFloat32ArrayBySVG(data, innerWidth, innerHeight, middle, 0, Time.SVG_LINEAR_GRADIENT_ID_TIME);
 
@@ -299,8 +321,10 @@ export class Time extends Visualizer {
           }
         }
         break;
+      }
+
       case 'uint':
-      default    :
+      default    : {
         switch (this.styles.shape) {
           case 'line': {
             // Visualize wave
@@ -372,11 +396,13 @@ export class Time extends Visualizer {
             break;
           }
 
-          default:
+          default: {
             break;
+          }
         }
 
         break;
+      }
     }
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {

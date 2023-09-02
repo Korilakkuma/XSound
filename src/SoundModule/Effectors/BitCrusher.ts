@@ -157,32 +157,42 @@ export class BitCrusher extends Effector {
   public param(params: keyof BitCrusherParams | BitCrusherParams): BitCrusherParams[keyof BitCrusherParams] | BitCrusher {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'bits':
+        }
+
+        case 'bits': {
           return this.bits;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'bits':
+        }
+
+        case 'bits': {
           if (typeof value === 'number') {
             this.bits = value;
             this.bitsInput.offset.value = this.bits;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

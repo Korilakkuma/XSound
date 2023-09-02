@@ -167,39 +167,49 @@ export class Recorder implements Connectable {
   public param(params: keyof RecorderParams | RecorderParams): RecorderParams[keyof RecorderParams] | Recorder {
     if (typeof params === 'string') {
       switch (params) {
-        case '0':
+        case '0': {
           if (this.channels[0]) {
             return this.channels[0].gain();
           }
 
           break;
-        case '1':
+        }
+
+        case '1': {
           if (this.channels[1]) {
             return this.channels[1].gain();
           }
 
           break;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case '0':
+        case '0': {
           if (this.channels[0] && (typeof value === 'number')) {
             this.channels[0].gain(value);
           }
 
           break;
-        case '1':
+        }
+
+        case '1': {
           if (this.channels[1] && (typeof value === 'number')) {
             this.channels[1].gain(value);
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -314,7 +324,7 @@ export class Recorder implements Connectable {
     let sounds: Uint8Array | Int16Array | null = null;
 
     switch (QBITS) {
-      case 8:
+      case 8: {
         sounds = new Uint8Array(SAMPLES);
 
         for (let i = 0; i < SAMPLES; i++) {
@@ -335,7 +345,9 @@ export class Recorder implements Connectable {
         }
 
         break;
-      case 16:
+      }
+
+      case 16: {
         sounds = new Int16Array(SAMPLES);
 
         for (let i = 0; i < SAMPLES; i++) {
@@ -356,8 +368,11 @@ export class Recorder implements Connectable {
         }
 
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
 
     if (sounds === null) {
@@ -455,15 +470,20 @@ export class Recorder implements Connectable {
       const offset = SIZE - DATA_SIZE;
 
       switch (QBITS) {
-        case  8:
+        case  8: {
           wave[offset + i] = sounds[i];
           break;
-        case 16:
+        }
+
+        case 16: {
           wave[offset + (2 * i) + 0] = ((sounds[i] >> 0) & 0x00FF);
           wave[offset + (2 * i) + 1] = ((sounds[i] >> 8) & 0x00FF);
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -491,8 +511,9 @@ export class Recorder implements Connectable {
         return window.URL.createObjectURL(blob);
       }
 
-      default:
+      default: {
         return '';
+      }
     }
   }
 

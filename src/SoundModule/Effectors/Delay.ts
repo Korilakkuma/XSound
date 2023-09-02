@@ -103,63 +103,89 @@ export class Delay extends Effector {
   public param(params: keyof DelayParams | DelayParams): DelayParams[keyof DelayParams] | Delay {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'time':
+        }
+
+        case 'time': {
           return this.delay.delayTime.value;
-        case 'dry':
+        }
+
+        case 'dry': {
           return this.dry.gain.value;
-        case 'wet':
+        }
+
+        case 'wet': {
           return this.wet.gain.value;
-        case 'tone':
+        }
+
+        case 'tone': {
           return this.tone.frequency.value;
-        case 'feedback':
+        }
+
+        case 'feedback': {
           return this.feedback.gain.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'time':
+        }
+
+        case 'time': {
           if (typeof value === 'number') {
             this.delay.delayTime.value = value;
           }
 
           break;
-        case 'dry':
+        }
+
+        case 'dry': {
           if (typeof value === 'number') {
             this.dry.gain.value = value;
           }
 
           break;
-        case 'wet':
+        }
+
+        case 'wet': {
           if (typeof value === 'number') {
             this.wet.gain.value = value;
           }
 
           break;
-        case 'tone':
+        }
+
+        case 'tone': {
           if (typeof value === 'number') {
             this.tone.frequency.value = value;
           }
 
           break;
-        case 'feedback':
+        }
+
+        case 'feedback': {
           if (typeof value === 'number') {
             this.feedback.gain.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

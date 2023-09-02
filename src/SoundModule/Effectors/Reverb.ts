@@ -97,30 +97,43 @@ export class Reverb extends Effector {
   public param(params: keyof ReverbParams | ReverbParams): ReverbParams[keyof ReverbParams] | Reverb {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'buffer':
+        }
+
+        case 'buffer': {
           return this.convolver.buffer;
-        case 'dry':
+        }
+
+        case 'dry': {
           return this.dry.gain.value;
-        case 'wet':
+        }
+
+        case 'wet': {
           return this.wet.gain.value;
-        case 'tone':
+        }
+
+        case 'tone': {
           return this.tone.frequency.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'buffer':
+        }
+
+        case 'buffer': {
           if (typeof value === 'number') {
             if ((value >= 0) && (value < this.rirs.length)) {
               this.convolver.buffer = this.rirs[value];
@@ -139,26 +152,35 @@ export class Reverb extends Effector {
           }
 
           break;
-        case 'dry':
+        }
+
+        case 'dry': {
           if (typeof value === 'number') {
             this.dry.gain.value = value;
           }
 
           break;
-        case 'wet':
+        }
+
+        case 'wet': {
           if (typeof value === 'number') {
             this.wet.gain.value = value;
           }
 
           break;
-        case 'tone':
+        }
+
+        case 'tone': {
           if (typeof value === 'number') {
             this.tone.frequency.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

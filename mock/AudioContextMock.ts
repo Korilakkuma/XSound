@@ -45,11 +45,17 @@ export class AudioContextMock {
     const data = new Float32Array([1, 0, 1]);
 
     switch (numberOfChannels) {
-      case 1:
+      case 1: {
         return new AudioBufferMock(data);
-      case 2 :
-      default:
+      }
+
+      case 2:  {
         return new AudioBufferMock(data, data);
+      }
+
+      default: {
+        return new AudioBufferMock(data, data);
+      }
     }
   }
 

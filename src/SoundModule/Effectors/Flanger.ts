@@ -112,73 +112,103 @@ export class Flanger extends Effector {
   public param(params: keyof FlangerParams | FlangerParams): FlangerParams[keyof FlangerParams] | Flanger {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'time':
+        }
+
+        case 'time': {
           return this.delay.delayTime.value;
-        case 'depth':
+        }
+
+        case 'depth': {
           return this.depthRate;
-        case 'rate':
+        }
+
+        case 'rate': {
           return this.rate.value;
-        case 'mix':
+        }
+
+        case 'mix': {
           return this.mix.gain.value;
-        case 'tone':
+        }
+
+        case 'tone': {
           return this.tone.frequency.value;
-        case 'feedback':
+        }
+
+        case 'feedback': {
           return this.feedback.gain.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'time':
+        }
+
+        case 'time': {
           if (typeof value === 'number') {
             this.delay.delayTime.value = value;
             this.depth.gain.value      = this.delay.delayTime.value * this.depthRate;
           }
 
           break;
-        case 'depth':
+        }
+
+        case 'depth': {
           if (typeof value === 'number') {
             this.depthRate        = value;
             this.depth.gain.value = this.delay.delayTime.value * value;
           }
 
           break;
-        case 'rate':
+        }
+
+        case 'rate': {
           if (typeof value === 'number') {
             this.rate.value = value;
           }
 
           break;
-        case 'mix':
+        }
+
+        case 'mix': {
           if (typeof value === 'number') {
             this.mix.gain.value = value;
           }
 
           break;
-        case 'tone':
+        }
+
+        case 'tone': {
           if (typeof value === 'number') {
             this.tone.frequency.value = value;
           }
 
           break;
-        case 'feedback':
+        }
+
+        case 'feedback': {
           if (typeof value === 'number') {
             this.feedback.gain.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

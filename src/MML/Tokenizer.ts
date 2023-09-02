@@ -50,19 +50,23 @@ export class Tokenizer {
     this.numbers.length = 0;
 
     switch (tokenType) {
-      case 'TEMPO':
+      case 'TEMPO': {
         if (token) {
           return new Token(Tokenizer.id.toString(10), 'TEMPO', token);
         }
 
         break;
-      case 'OCTAVE':
+      }
+
+      case 'OCTAVE': {
         if (token) {
           return new Token(Tokenizer.id.toString(10), 'OCTAVE', token);
         }
 
         break;
-      case 'NOTE':
+      }
+
+      case 'NOTE': {
         if (token) {
           this.notes.push(token);
 
@@ -102,13 +106,17 @@ export class Tokenizer {
         }
 
         break;
-      case 'REST':
+      }
+
+      case 'REST': {
         if (token) {
           return new Token(Tokenizer.id.toString(10), 'REST', token);
         }
 
         break;
-      case 'NUMBER':
+      }
+
+      case 'NUMBER': {
         if (token) {
           this.numbers.push(token);
 
@@ -148,18 +156,23 @@ export class Tokenizer {
         }
 
         break;
-      case 'TIE':
+      }
+
+      case 'TIE': {
         if (token) {
           return new Token(Tokenizer.id.toString(10), 'TIE', token);
         }
 
         break;
-      default:
+      }
+
+      default: {
         if (token) {
           return new Token(Tokenizer.id.toString(10), 'UNKNOWN', token);
         }
 
         break;
+      }
     }
 
     return null;

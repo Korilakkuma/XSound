@@ -245,31 +245,41 @@ export class OneshotModule extends SoundModule {
   public param(params: keyof OneshotModuleParams | OneshotModuleParams): OneshotModuleParams[keyof OneshotModuleParams] | OneshotModule {
     if (typeof params === 'string') {
       switch (params) {
-        case 'mastervolume':
+        case 'mastervolume': {
           return this.mastervolume.gain.value;
-        case 'transpose':
+        }
+
+        case 'transpose': {
           return this.transpose;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'mastervolume':
+        case 'mastervolume': {
           if (typeof value === 'number') {
             this.mastervolume.gain.value = value;
           }
 
           break;
-        case 'transpose':
+        }
+
+        case 'transpose': {
           if (typeof value === 'number') {
             this.transpose = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -306,20 +316,25 @@ export class OneshotModule extends SoundModule {
         case 'playbackRate':
         case 'loopStart'   :
         case 'loopEnd'     :
-        case 'volume'      :
+        case 'volume'      : {
           if (typeof param === 'number') {
             this.settings[index][paramName] = param;
           }
 
           break;
-        case 'loop':
+        }
+
+        case 'loop': {
           if (typeof param === 'boolean') {
             this.settings[index][paramName] = param;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -359,60 +374,113 @@ export class OneshotModule extends SoundModule {
   public module(moduleName: 'wah'): Wah;
   public module(moduleName: ModuleName): Module | null {
     switch (moduleName) {
-      case 'analyser':
+      case 'analyser': {
         return this.analyser;
-      case 'recorder':
+      }
+
+      case 'recorder': {
         return this.recorder;
-      case 'autopanner':
+      }
+
+      case 'autopanner': {
         return this.autopanner;
-      case 'bitcrusher':
+      }
+
+      case 'bitcrusher': {
         return this.bitcrusher;
-      case 'chorus':
+      }
+
+      case 'chorus': {
         return this.chorus;
-      case 'compressor':
+      }
+
+      case 'compressor': {
         return this.compressor;
-      case 'delay':
+      }
+
+      case 'delay': {
         return this.delay;
-      case 'envelopegenerator':
+      }
+
+      case 'envelopegenerator': {
         return this.envelopegenerator;
-      case 'equalizer':
+      }
+
+      case 'equalizer': {
         return this.equalizer;
-      case 'filter':
+      }
+
+      case 'filter': {
         return this.filter;
-      case 'flanger':
+      }
+
+      case 'flanger': {
         return this.flanger;
-      case 'fuzz':
+      }
+
+      case 'fuzz': {
         return this.fuzz;
-      case 'listener':
+      }
+
+      case 'listener': {
         return this.listener;
-      case 'noisegate':
+      }
+
+      case 'noisegate': {
         return this.noisegate;
-      case 'noisesuppressor':
+      }
+
+      case 'noisesuppressor': {
         return this.noisesuppressor;
-      case 'overdrive':
+      }
+
+      case 'overdrive': {
         return this.overdrive;
-      case 'panner':
+      }
+
+      case 'panner': {
         return this.panner;
-      case 'phaser':
+      }
+
+      case 'phaser': {
         return this.phaser;
-      case 'pitchshifter':
+      }
+
+      case 'pitchshifter': {
         return this.pitchshifter;
-      case 'preamp':
+      }
+
+      case 'preamp': {
         return this.preamp;
-      case 'reverb':
+      }
+
+      case 'reverb': {
         return this.reverb;
-      case 'ringmodulator':
+      }
+
+      case 'ringmodulator': {
         return this.ringmodulator;
-      case 'stereo':
+      }
+
+      case 'stereo': {
         return this.stereo;
-      case 'tremolo':
+      }
+
+      case 'tremolo': {
         return this.tremolo;
-      case 'vocalcanceler':
+      }
+
+      case 'vocalcanceler': {
         return this.vocalcanceler;
-      case 'wah':
+      }
+
+      case 'wah': {
         return this.wah;
-      default:
+      }
+
+      default: {
         return null;
+      }
     }
   }
 

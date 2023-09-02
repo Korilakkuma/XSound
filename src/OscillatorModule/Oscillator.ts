@@ -137,30 +137,43 @@ export class Oscillator implements Connectable, Statable {
   public param(params: keyof OscillatorParams | OscillatorParams): OscillatorParams[keyof OscillatorParams] | Oscillator {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'type':
+        }
+
+        case 'type': {
           return this.source.type;
-        case 'octave':
+        }
+
+        case 'octave': {
           return this.octave;
-        case 'fine':
+        }
+
+        case 'fine': {
           return this.fine;
-        case 'volume':
+        }
+
+        case 'volume': {
           return this.volume.gain.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'type':
+        }
+
+        case 'type': {
           if (typeof value === 'string') {
             this.source.type = value;
           } else if (typeof value === 'object') {
@@ -184,28 +197,37 @@ export class Oscillator implements Connectable, Statable {
           }
 
           break;
-        case 'octave':
+        }
+
+        case 'octave': {
           if (typeof value === 'number') {
             this.octave = value;
             this.source.detune.value = this.fine + (value * Oscillator.OCTAVE);
           }
 
           break;
-        case 'fine':
+        }
+
+        case 'fine': {
           if (typeof value === 'number') {
             this.fine = value;
             this.source.detune.value = value + (this.octave * Oscillator.OCTAVE);
           }
 
           break;
-        case 'volume':
+        }
+
+        case 'volume': {
           if (typeof value === 'number') {
             this.volume.gain.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

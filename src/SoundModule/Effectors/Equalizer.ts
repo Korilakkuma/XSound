@@ -104,55 +104,77 @@ export class Equalizer extends Effector {
   public param(params: keyof EqualizerParams | EqualizerParams): EqualizerParams[keyof EqualizerParams] | Equalizer {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'bass':
+        }
+
+        case 'bass': {
           return this.bass.gain.value;
-        case 'middle':
+        }
+
+        case 'middle': {
           return this.middle.gain.value;
-        case 'treble':
+        }
+
+        case 'treble': {
           return this.treble.gain.value;
-        case 'presence':
+        }
+
+        case 'presence': {
           return this.presence.gain.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'bass':
+        }
+
+        case 'bass': {
           if (typeof value === 'number') {
             this.bass.gain.value = value;
           }
 
           break;
-        case 'middle':
+        }
+
+        case 'middle': {
           if (typeof value === 'number') {
             this.middle.gain.value = value;
           }
 
           break;
-        case 'treble':
+        }
+
+        case 'treble': {
           if (typeof value === 'number') {
             this.treble.gain.value = value;
           }
 
           break;
-        case 'presence':
+        }
+
+        case 'presence': {
           if (typeof value === 'number') {
             this.presence.gain.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

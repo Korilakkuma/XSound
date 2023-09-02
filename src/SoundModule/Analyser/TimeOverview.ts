@@ -96,52 +96,75 @@ export class TimeOverview extends Visualizer {
   public override param(params: keyof TimeOverviewParams | TimeOverviewParams): TimeOverviewParams[keyof TimeOverviewParams] | TimeOverview {
     if (typeof params === 'string') {
       switch (params) {
-        case 'currentTime':
+        case 'currentTime': {
           return this.currentTime;
-        case 'sprite':
+        }
+
+        case 'sprite': {
           return this.sprite;
-        case 'plotInterval':
+        }
+
+        case 'plotInterval': {
           return this.plotInterval;
-        case 'textInterval':
+        }
+
+        case 'textInterval': {
           return this.textInterval;
-        case 'mode':
+        }
+
+        case 'mode': {
           return this.mode;
-        case 'interval':
+        }
+
+        case 'interval': {
           return super.param(params);
-        case 'styles':
+        }
+
+        case 'styles': {
           return super.param(params);
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'currentTime':
+        case 'currentTime': {
           if (typeof value === 'object') {
             this.currentTime = { ...this.currentTime, ...value };
           }
 
           break;
-        case 'sprite':
+        }
+
+        case 'sprite': {
           if (typeof value === 'string') {
             this.sprite = value;
           }
 
           break;
-        case 'plotInterval':
+        }
+
+        case 'plotInterval': {
           if (typeof value === 'number') {
             this.plotInterval = value;
           }
 
           break;
-        case 'textInterval':
+        }
+
+        case 'textInterval': {
           if (typeof value === 'number') {
             this.textInterval = value;
           }
 
           break;
-        case 'mode':
+        }
+
+        case 'mode': {
           if (typeof value === 'string') {
             if ((value === 'update') || (value === 'sprite')) {
               this.mode = value;
@@ -149,8 +172,11 @@ export class TimeOverview extends Visualizer {
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -321,22 +347,27 @@ export class TimeOverview extends Visualizer {
     let visualizationNode: HTMLCanvasElement | Element | null = null;
 
     switch (this.graphics) {
-      case 'canvas':
+      case 'canvas': {
         if (this.canvas === null) {
           return this;
         }
 
         visualizationNode = this.canvas;
         break;
-      case 'svg':
+      }
+
+      case 'svg': {
         if (this.svg === null) {
           return this;
         }
 
         visualizationNode = this.svg;
         break;
-      default:
+      }
+
+      default: {
         return this;
+      }
     }
 
     if (visualizationNode === null) {
@@ -628,7 +659,7 @@ export class TimeOverview extends Visualizer {
     let width      = 0;
 
     switch (this.graphics) {
-      case 'canvas':
+      case 'canvas': {
         if (this.canvas === null) {
           return;
         }
@@ -636,7 +667,9 @@ export class TimeOverview extends Visualizer {
         offsetLeft = this.canvas.offsetLeft;
         width      = this.canvas.width;
         break;
-      case 'svg':
+      }
+
+      case 'svg': {
         if (this.svg === null) {
           return;
         }
@@ -644,8 +677,11 @@ export class TimeOverview extends Visualizer {
         offsetLeft = this.svg.parentElement?.offsetLeft ?? 0;
         width      = Number((this.svg.getAttribute('width') ?? '0'));
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
 
     let x = offsetX - (offsetLeft + (this.styles.left ?? 30));

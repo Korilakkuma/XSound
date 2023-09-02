@@ -159,20 +159,25 @@ export class PitchShifterProcessor extends AudioWorkletProcessor {
     this.port.onmessage = (event: MessageEvent<PitchShifterParams>) => {
       for (const [key, value] of Object.entries(event.data)) {
         switch (key) {
-          case 'state':
+          case 'state': {
             if (typeof value === 'boolean') {
               this.isActive = value;
             }
 
             break;
-          case 'pitch':
+          }
+
+          case 'pitch': {
             if (typeof value === 'number') {
               this.pitch = value;
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
       }
     };

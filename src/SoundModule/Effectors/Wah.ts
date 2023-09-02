@@ -125,39 +125,56 @@ export class Wah extends Effector {
   public param(params: keyof WahParams | WahParams): WahParams[keyof WahParams] | Wah {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'auto':
+        }
+
+        case 'auto': {
           return this.auto;
-        case 'cutoff':
+        }
+
+        case 'cutoff': {
           return this.auto ? this.sensitivity.frequency.value : this.lowpass.frequency.value;
-        case 'depth':
+        }
+
+        case 'depth': {
           return this.depthRate;
-        case 'rate':
+        }
+
+        case 'rate': {
           return this.rate.value;
-        case 'resonance':
+        }
+
+        case 'resonance': {
           return this.auto ? this.sensitivity.Q.value : this.lowpass.Q.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'auto':
+        }
+
+        case 'auto': {
           if (typeof value === 'boolean') {
             this.auto = value;
             this.connect();
           }
 
           break;
-        case 'cutoff':
+        }
+
+        case 'cutoff': {
           if (typeof value === 'number') {
             if (this.auto) {
               this.sensitivity.frequency.value = value;
@@ -168,20 +185,26 @@ export class Wah extends Effector {
           }
 
           break;
-        case 'depth':
+        }
+
+        case 'depth': {
           if (typeof value === 'number') {
             this.depthRate        = value;
             this.depth.gain.value = this.auto ? 10000 * value : this.lowpass.frequency.value * value;
           }
 
           break;
-        case 'rate':
+        }
+
+        case 'rate': {
           if (typeof value === 'number') {
             this.rate.value = value;
           }
 
           break;
-        case 'resonance':
+        }
+
+        case 'resonance': {
           if (typeof value === 'number') {
             if (this.auto) {
               this.sensitivity.Q.value = value;
@@ -192,8 +215,11 @@ export class Wah extends Effector {
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

@@ -15,14 +15,17 @@ export class StereoProcessor extends AudioWorkletProcessor {
     this.port.onmessage = (event: MessageEvent<StereoParams>) => {
       for (const [key, value] of Object.entries(event.data)) {
         switch (key) {
-          case 'state':
+          case 'state': {
             if (typeof value === 'boolean') {
               this.isActive = value;
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
       }
     };

@@ -133,22 +133,31 @@ export class PreEqualizer extends Effector {
   public param(params: keyof PreEqualizerParams | PreEqualizerParams): PreEqualizerParams[keyof PreEqualizerParams] | void {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'curve':
+        }
+
+        case 'curve': {
           return this.shaper.curve;
-        case 'gain':
+        }
+
+        case 'gain': {
           return this.gain.gain.value;
-        case 'lead':
+        }
+
+        case 'lead': {
           return this.leadGain.gain.value;
-        default:
+        }
+
+        default: {
           return;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             if (value) {
               this.activate();
@@ -158,7 +167,9 @@ export class PreEqualizer extends Effector {
           }
 
           break;
-        case 'curve':
+        }
+
+        case 'curve': {
           if ((typeof value !== 'number') && (typeof value !== 'boolean')) {
             if ((value instanceof Float32Array) || (value === null)) {
               this.shaper.curve = value;
@@ -166,20 +177,27 @@ export class PreEqualizer extends Effector {
           }
 
           break;
-        case 'gain':
+        }
+
+        case 'gain': {
           if (typeof value === 'number') {
             this.gain.gain.value = value;
           }
 
           break;
-        case 'lead':
+        }
+
+        case 'lead': {
           if (typeof value === 'number') {
             this.leadGain.gain.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
   }
@@ -300,26 +318,39 @@ export class PostEqualizer extends Effector {
   public param(params: keyof PostEqualizerParams | PostEqualizerParams): PostEqualizerParams[keyof PostEqualizerParams] | void {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'curve':
+        }
+
+        case 'curve': {
           return this.shaper.curve;
-        case 'bass':
+        }
+
+        case 'bass': {
           return this.bass.gain.value;
-        case 'middle':
+        }
+
+        case 'middle': {
           return this.middle.gain.value;
-        case 'treble':
+        }
+
+        case 'treble': {
           return this.treble.gain.value;
-        case 'frequency':
+        }
+
+        case 'frequency': {
           return this.middle.frequency.value;
-        default:
+        }
+
+        default: {
           return;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             if (value) {
               this.activate();
@@ -329,7 +360,9 @@ export class PostEqualizer extends Effector {
           }
 
           break;
-        case 'curve':
+        }
+
+        case 'curve': {
           if ((typeof value !== 'number') && (typeof value !== 'boolean')) {
             if ((value instanceof Float32Array) || (value === null)) {
               this.shaper.curve = value;
@@ -337,32 +370,43 @@ export class PostEqualizer extends Effector {
           }
 
           break;
-        case 'bass':
+        }
+
+        case 'bass': {
           if (typeof value === 'number') {
             this.bass.gain.value = value;
           }
 
           break;
-        case 'middle':
+        }
+
+        case 'middle': {
           if (typeof value === 'number') {
             this.middle.gain.value = value;
           }
 
           break;
-        case 'treble':
+        }
+
+        case 'treble': {
           if (typeof value === 'number') {
             this.treble.gain.value = value;
           }
 
           break;
-        case 'frequency':
+        }
+
+        case 'frequency': {
           if (typeof value === 'number') {
             this.middle.frequency.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
   }
@@ -446,16 +490,19 @@ export class Cabinet extends Effector {
   public param(params: keyof CabinetParams | CabinetParams): CabinetParams[keyof CabinetParams] | void {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        default:
+        }
+
+        default: {
           return;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             if (value) {
               this.activate();
@@ -465,8 +512,11 @@ export class Cabinet extends Effector {
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
   }
@@ -579,32 +629,47 @@ export class Preamp extends Effector {
   public param(params: keyof PreampParams | PreampParams): PreampParams[keyof PreampParams] | Preamp {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'level':
+        }
+
+        case 'level': {
           return this.level;
-        case 'samples':
+        }
+
+        case 'samples': {
           return this.numberOfSamples;
-        case 'pre':
+        }
+
+        case 'pre': {
           return this.preEQ.params();
-        case 'post':
+        }
+
+        case 'post': {
           return this.postEQ.params();
-        case 'cabinet':
+        }
+
+        case 'cabinet': {
           return this.cabinet.params();
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'level':
+        }
+
+        case 'level': {
           if (typeof value === 'number') {
             this.level = value;
 
@@ -615,32 +680,43 @@ export class Preamp extends Effector {
           }
 
           break;
-        case 'samples':
+        }
+
+        case 'samples': {
           if (typeof value === 'number') {
             this.numberOfSamples = value;
           }
 
           break;
-        case 'pre':
+        }
+
+        case 'pre': {
           if (typeof value === 'object') {
             this.preEQ.param(value);
           }
 
           break;
-        case 'post':
+        }
+
+        case 'post': {
           if (typeof value === 'object') {
             this.postEQ.param(value);
           }
 
           break;
-        case 'cabinet':
+        }
+
+        case 'cabinet': {
           if (typeof value === 'object') {
             this.cabinet.param(value);
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

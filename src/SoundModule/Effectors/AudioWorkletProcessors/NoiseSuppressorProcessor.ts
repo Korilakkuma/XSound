@@ -157,20 +157,25 @@ export class NoiseSuppressorProcessor extends AudioWorkletProcessor {
     this.port.onmessage = (event: MessageEvent<NoiseSuppressorParams>) => {
       for (const [key, value] of Object.entries(event.data)) {
         switch (key) {
-          case 'state':
+          case 'state': {
             if (typeof value === 'boolean') {
               this.isActive = value;
             }
 
             break;
-          case 'threshold':
+          }
+
+          case 'threshold': {
             if (typeof value === 'number') {
               this.threshold = value;
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
       }
     };

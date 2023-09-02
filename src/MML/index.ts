@@ -319,76 +319,115 @@ export class MML {
           let d = 0;
 
           switch (duration) {
-            case 1:
+            case 1: {
               n = splittedNote.replace('1', '256');
               break;
-            case 2:
+            }
+
+            case 2: {
               n = splittedNote.replace('2', '128');
               break;
-            case 4:
+            }
+
+            case 4: {
               n = splittedNote.replace('4', '64');
               break;
-            case 8:
+            }
+
+            case 8: {
               n = splittedNote.replace('8', '32');
               break;
-            case 16:
+            }
+
+            case 16: {
               n = splittedNote.replace('16', '16');
               break;
-            case 32:
+            }
+
+            case 32: {
               n = splittedNote.replace('32', '8');
               break;
-            case 64:
+            }
+
+            case 64: {
               n = splittedNote.replace('64', '4');
               break;
-            case 128:
+            }
+
+            case 128: {
               n = splittedNote.replace('128', '2');
               break;
-            case 256:
+            }
+
+            case 256: {
               n = splittedNote.replace('256', '1');
               break;
-              // Tuplet
-            case 6:
+            }
+
+            // Tuplet
+            case 6: {
               n = `(3${splittedNote.replace('6', '128')}`;
               d = 128 / 3;
               break;
-            case 12:
+            }
+
+            case 12: {
               n = `(3${splittedNote.replace('12', '64')}`;
               d = 64 / 3;
               break;
-            case 18:
+            }
+
+            case 18: {
               n = `(9${splittedNote.replace('18', '128')}`;
               d = 128 / 9;
               break;
-            case 24:
+            }
+
+            case 24: {
               n = `(3${splittedNote.replace('24', '32')}`;
               d = 32 / 3;
               break;
-            case 36:
+            }
+
+            case 36: {
               n = `(9${splittedNote.replace('36', '64')}`;
               d = 64 / 9;
               break;
-            case 48:
+            }
+
+            case 48: {
               n = `(3${splittedNote.replace('48', '16')}`;
               d = 16 / 3;
               break;
-            case 72:
+            }
+
+            case 72: {
               n = `(9${splittedNote.replace('72', '32')}`;
               d = 32 / 9;
               break;
-            case 96:
+            }
+
+            case 96: {
               n = `(3${splittedNote.replace('96', '8')}`;
               d = 8 / 3;
               break;
-            case 144:
+            }
+
+            case 144: {
               n = `(9${splittedNote.replace('144', '16')}`;
               d = 16 / 9;
               break;
-            case 192:
+            }
+
+            case 192: {
               n = `(3${splittedNote.replace('192', '4')}`;
               d = 4 / 3;
               break;
-            default:
+            }
+
+            default: {
               return abc;
+            }
           }
 
           if (n.includes('.')) {
@@ -414,30 +453,45 @@ export class MML {
           let o = '';
 
           switch (octave) {
-            case 0:
+            case 0: {
               o = ',,,,';
               break;
-            case 1:
+            }
+
+            case 1: {
               o = ',,,';
               break;
-            case 2:
+            }
+
+            case 2: {
               o = ',,';
               break;
-            case 3:
+            }
+
+            case 3: {
               o = ',';
               break;
-            case 5:
+            }
+
+            case 5: {
               o = '\'';
               break;
-            case 6:
+            }
+
+            case 6: {
               o = '\'\'';
               break;
-            case 7:
+            }
+
+            case 7: {
               o = '\'\'\'';
               break;
+            }
+
             case 4 :
-            default:
+            default: {
               break;
+            }
           }
 
           const matches = n.match(/^(\(\d+)?((?:[CDEFGAB][#+-]?)+)(.*)$/i);

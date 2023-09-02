@@ -356,37 +356,56 @@ export class MediaModule extends SoundModule {
   public param(params: keyof MediaModuleParams | MediaModuleParams): MediaModuleParams[keyof MediaModuleParams] | MediaModule {
     if (typeof params === 'string') {
       switch (params) {
-        case 'mastervolume':
+        case 'mastervolume': {
           return this.mastervolume.gain.value;
-        case 'autoplay':
+        }
+
+        case 'autoplay': {
           return this.autoplay;
-        case 'playbackRate':
+        }
+
+        case 'playbackRate': {
           return this.media?.playbackRate ?? 1;
-        case 'currentTime':
+        }
+
+        case 'currentTime': {
           return this.media?.currentTime ?? 0;
-        case 'controls':
+        }
+
+        case 'controls': {
           return this.media?.controls ?? false;
-        case 'loop':
+        }
+
+        case 'loop': {
           return this.media?.loop ?? false;
-        case 'muted':
+        }
+
+        case 'muted': {
           return this.media?.muted ?? false;
-        case 'duration':
+        }
+
+        case 'duration': {
           // `duration` is infinite in case of audio streaming
           return Number.isNaN(this.media?.duration) ? 0 : (this.media?.duration ?? 0);  // Getter only
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'mastervolume':
+        case 'mastervolume': {
           if (typeof value === 'number') {
             this.mastervolume.gain.value = value;
           }
 
           break;
-        case 'playbackRate':
+        }
+
+        case 'playbackRate': {
           if (this.media && (typeof value === 'number')) {
             if (value > 0) {
               this.media.playbackRate = value;
@@ -405,7 +424,9 @@ export class MediaModule extends SoundModule {
           }
 
           break;
-        case 'currentTime':
+        }
+
+        case 'currentTime': {
           if (this.media && (typeof value === 'number')) {
             this.media.currentTime = value;
 
@@ -422,26 +443,35 @@ export class MediaModule extends SoundModule {
           }
 
           break;
-        case 'controls':
+        }
+
+        case 'controls': {
           if (this.media && (typeof value === 'boolean')) {
             this.media.controls = value;
           }
 
           break;
-        case 'loop':
+        }
+
+        case 'loop': {
           if (this.media && (typeof value === 'boolean')) {
             this.media.loop = value;
           }
 
           break;
-        case 'muted':
+        }
+
+        case 'muted': {
           if (this.media && (typeof value === 'boolean')) {
             this.media.muted = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -623,60 +653,113 @@ export class MediaModule extends SoundModule {
   public module(moduleName: 'wah'): Wah;
   public module(moduleName: ModuleName): Module | null {
     switch (moduleName) {
-      case 'analyser':
+      case 'analyser': {
         return this.analyser;
-      case 'recorder':
+      }
+
+      case 'recorder': {
         return this.recorder;
-      case 'autopanner':
+      }
+
+      case 'autopanner': {
         return this.autopanner;
-      case 'bitcrusher':
+      }
+
+      case 'bitcrusher': {
         return this.bitcrusher;
-      case 'chorus':
+      }
+
+      case 'chorus': {
         return this.chorus;
-      case 'compressor':
+      }
+
+      case 'compressor': {
         return this.compressor;
-      case 'delay':
+      }
+
+      case 'delay': {
         return this.delay;
-      case 'envelopegenerator':
+      }
+
+      case 'envelopegenerator': {
         return this.envelopegenerator;
-      case 'equalizer':
+      }
+
+      case 'equalizer': {
         return this.equalizer;
-      case 'filter':
+      }
+
+      case 'filter': {
         return this.filter;
-      case 'flanger':
+      }
+
+      case 'flanger': {
         return this.flanger;
-      case 'fuzz':
+      }
+
+      case 'fuzz': {
         return this.fuzz;
-      case 'listener':
+      }
+
+      case 'listener': {
         return this.listener;
-      case 'noisegate':
+      }
+
+      case 'noisegate': {
         return this.noisegate;
-      case 'noisesuppressor':
+      }
+
+      case 'noisesuppressor': {
         return this.noisesuppressor;
-      case 'overdrive':
+      }
+
+      case 'overdrive': {
         return this.overdrive;
-      case 'panner':
+      }
+
+      case 'panner': {
         return this.panner;
-      case 'phaser':
+      }
+
+      case 'phaser': {
         return this.phaser;
-      case 'pitchshifter':
+      }
+
+      case 'pitchshifter': {
         return this.pitchshifter;
-      case 'preamp':
+      }
+
+      case 'preamp': {
         return this.preamp;
-      case 'reverb':
+      }
+
+      case 'reverb': {
         return this.reverb;
-      case 'ringmodulator':
+      }
+
+      case 'ringmodulator': {
         return this.ringmodulator;
-      case 'stereo':
+      }
+
+      case 'stereo': {
         return this.stereo;
-      case 'tremolo':
+      }
+
+      case 'tremolo': {
         return this.tremolo;
-      case 'vocalcanceler':
+      }
+
+      case 'vocalcanceler': {
         return this.vocalcanceler;
-      case 'wah':
+      }
+
+      case 'wah': {
         return this.wah;
-      default:
+      }
+
+      default: {
         return null;
+      }
     }
   }
 

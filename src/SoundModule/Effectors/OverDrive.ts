@@ -160,40 +160,54 @@ export class OverDrive extends Effector {
   public param(params: keyof OverDriveParams | OverDriveParams): OverDriveParams[keyof OverDriveParams] | OverDrive {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'drive':
+        }
+
+        case 'drive': {
           return this.drive;
-        case 'level':
+        }
+
+        case 'level': {
           return this.level.gain.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'drive':
+        }
+
+        case 'drive': {
           if (typeof value === 'number') {
             this.drive = value;
             this.driveInput.offset.value = this.drive;
           }
 
           break;
-        case 'level':
+        }
+
+        case 'level': {
           if (typeof value === 'number') {
             this.level.gain.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

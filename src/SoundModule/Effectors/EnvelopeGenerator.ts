@@ -139,55 +139,77 @@ export class EnvelopeGenerator implements Statable {
   public param(params: keyof EnvelopeGeneratorParams | EnvelopeGeneratorParams): EnvelopeGeneratorParams[keyof EnvelopeGeneratorParams] | EnvelopeGenerator {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'attack':
+        }
+
+        case 'attack': {
           return this.attack;
-        case 'decay':
+        }
+
+        case 'decay': {
           return this.decay;
-        case 'sustain':
+        }
+
+        case 'sustain': {
           return this.sustain;
-        case 'release':
+        }
+
+        case 'release': {
           return this.release;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'attack':
+        }
+
+        case 'attack': {
           if (typeof value === 'number') {
             this.attack = value;
           }
 
           break;
-        case 'decay':
+        }
+
+        case 'decay': {
           if (typeof value === 'number') {
             this.decay = value;
           }
 
           break;
-        case 'sustain':
+        }
+
+        case 'sustain': {
           if (typeof value === 'number') {
             this.sustain = value;
           }
 
           break;
-        case 'release':
+        }
+
+        case 'release': {
           if (typeof value === 'number') {
             this.release = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

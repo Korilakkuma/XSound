@@ -92,18 +92,23 @@ export class Stereo extends Effector {
   public param(params: keyof StereoParams | StereoParams): StereoParams[keyof StereoParams] | Stereo {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'time':
+        }
+
+        case 'time': {
           return this.delayL.delayTime.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
@@ -113,15 +118,20 @@ export class Stereo extends Effector {
           }
 
           break;
-        case 'time':
+        }
+
+        case 'time': {
           if (typeof value === 'number') {
             this.delayL.delayTime.value = value;
             this.delayR.delayTime.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

@@ -128,50 +128,70 @@ export class Phaser extends Effector {
   public param(params: keyof PhaserParams | PhaserParams): PhaserParams[keyof PhaserParams] | Phaser {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'stage':
+        }
+
+        case 'stage': {
           return this.numberOfStages;
-        case 'frequency':
+        }
+
+        case 'frequency': {
           return this.filters[0].frequency.value;
-        case 'resonance':
+        }
+
+        case 'resonance': {
           return this.filters[0].Q.value;
-        case 'depth':
+        }
+
+        case 'depth': {
           return this.depthRate;
-        case 'rate':
+        }
+
+        case 'rate': {
           return this.rate.value;
-        case 'mix':
+        }
+
+        case 'mix': {
           return this.mix.gain.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'stage':
+        }
+
+        case 'stage': {
           switch (value) {
             case  0:
             case  2:
             case  4:
             case  8:
             case 12:
-            case 24:
+            case 24: {
               this.numberOfStages = value;
 
               // Update connection
               this.connect();
               break;
+            }
           }
 
           break;
-        case 'frequency':
+        }
+
+        case 'frequency': {
           if (typeof value === 'number') {
             for (const filter of this.filters) {
               filter.frequency.value = value;
@@ -181,7 +201,9 @@ export class Phaser extends Effector {
           }
 
           break;
-        case 'resonance':
+        }
+
+        case 'resonance': {
           if (typeof value === 'number') {
             for (const filter of this.filters) {
               filter.Q.value = value;
@@ -189,27 +211,36 @@ export class Phaser extends Effector {
           }
 
           break;
-        case 'depth':
+        }
+
+        case 'depth': {
           if (typeof value === 'number') {
             this.depthRate        = value;
             this.depth.gain.value = this.filters[0].frequency.value * value;
           }
 
           break;
-        case 'rate':
+        }
+
+        case 'rate': {
           if (typeof value === 'number') {
             this.rate.value = value;
           }
 
           break;
-        case 'mix':
+        }
+
+        case 'mix': {
           if (typeof value === 'number') {
             this.mix.gain.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

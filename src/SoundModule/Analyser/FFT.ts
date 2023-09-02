@@ -68,30 +68,47 @@ export class FFT extends Visualizer {
   public override param(params: keyof FFTParams | FFTParams): FFTParams[keyof FFTParams] | FFT {
     if (typeof params === 'string') {
       switch (params) {
-        case 'type':
+        case 'type': {
           return this.type;
-        case 'size':
+        }
+
+        case 'size': {
           return this.size;
-        case 'textInterval':
+        }
+
+        case 'textInterval': {
           return this.textInterval;
-        case 'scale':
+        }
+
+        case 'scale': {
           return this.scale;
-        case 'minFrequency':
+        }
+
+        case 'minFrequency': {
           return FFT.MIN_FREQUENCY;
-        case 'maxFrequency':
+        }
+
+        case 'maxFrequency': {
           return FFT.MAX_FREQUENCY;
-        case 'interval':
+        }
+
+        case 'interval': {
           return super.param(params);
-        case 'styles':
+        }
+
+        case 'styles': {
           return super.param(params);
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'type':
+        case 'type': {
           if (typeof value === 'string') {
             if ((value === 'uint') || (value === 'float')) {
               this.type = value;
@@ -99,19 +116,25 @@ export class FFT extends Visualizer {
           }
 
           break;
-        case 'size':
+        }
+
+        case 'size': {
           if (typeof value === 'number') {
             this.size = value;
           }
 
           break;
-        case 'textInterval':
+        }
+
+        case 'textInterval': {
           if (typeof value === 'number') {
             this.textInterval = value;
           }
 
           break;
-        case 'scale':
+        }
+
+        case 'scale': {
           if (typeof value === 'string') {
             if ((value === 'linear') || (value === 'logarithmic')) {
               this.scale = value;
@@ -119,8 +142,11 @@ export class FFT extends Visualizer {
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -207,7 +233,7 @@ export class FFT extends Visualizer {
         context.beginPath();
 
         switch (this.scale) {
-          case 'linear':
+          case 'linear': {
             for (let i = 0; i < actualSize; i++) {
               const x = ((i / actualSize) * innerWidth) + left;
               const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
@@ -220,7 +246,9 @@ export class FFT extends Visualizer {
             }
 
             break;
-          case 'logarithmic':
+          }
+
+          case 'logarithmic': {
             for (let i = 0; i < data.length; i++) {
               if (i === 0) {
                 continue;
@@ -242,8 +270,11 @@ export class FFT extends Visualizer {
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
 
         context.stroke();
@@ -254,7 +285,7 @@ export class FFT extends Visualizer {
       case 'uint':
       default    : {
         switch (this.styles.shape) {
-          case 'line':
+          case 'line': {
             // Set style
             context.strokeStyle = waveColor;
             context.lineWidth   = lineWidth;
@@ -278,7 +309,9 @@ export class FFT extends Visualizer {
             context.stroke();
 
             break;
-          case 'rect':
+          }
+
+          case 'rect': {
             // Visualize wave
             for (let i = 0; i < actualSize; i++) {
               const x = ((i / actualSize) * innerWidth) + left;
@@ -302,8 +335,11 @@ export class FFT extends Visualizer {
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
 
         break;
@@ -356,7 +392,7 @@ export class FFT extends Visualizer {
 
       // Visualize grid and text (Y axis)
       switch (this.type) {
-        case 'float':
+        case 'float': {
           for (let i = mindB; i <= maxdB; i += 10) {
             const t = `${i} dB`;
             const x = Math.trunc(left - context.measureText(t).width);
@@ -377,8 +413,10 @@ export class FFT extends Visualizer {
           }
 
           break;
+        }
+
         case 'uint':
-        default    :
+        default    : {
           for (const t of ['0.00', '0.25', '0.50', '0.75', '1.00']) {
             const x = Math.trunc(left - context.measureText(t).width);
             const y = ((1 - Number(t)) * innerHeight) + top;
@@ -398,6 +436,7 @@ export class FFT extends Visualizer {
           }
 
           break;
+        }
       }
     }
   }
@@ -458,7 +497,7 @@ export class FFT extends Visualizer {
         let d = '';
 
         switch (this.scale) {
-          case 'linear':
+          case 'linear': {
             for (let i = 0; i < actualSize; i++) {
               const x = Math.trunc((i / actualSize) * innerWidth) + left;
               const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
@@ -476,7 +515,9 @@ export class FFT extends Visualizer {
             }
 
             break;
-          case 'logarithmic':
+          }
+
+          case 'logarithmic': {
             for (let i = 0; i < data.length; i++) {
               if (i == 0) {
                 continue;
@@ -503,8 +544,11 @@ export class FFT extends Visualizer {
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
 
         path.setAttribute('d', d);

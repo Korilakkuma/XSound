@@ -116,135 +116,197 @@ export class Panner extends Effector {
   public param(params: keyof PannerParams | PannerParams): PannerParams[keyof PannerParams] | Panner {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'x':
+        }
+
+        case 'x': {
           return this.panner.positionX.value;
-        case 'y':
+        }
+
+        case 'y': {
           return this.panner.positionY.value;
-        case 'z':
+        }
+
+        case 'z': {
           return this.panner.positionZ.value;
-        case 'ox':
+        }
+
+        case 'ox': {
           return this.panner.orientationX.value;
-        case 'oy':
+        }
+
+        case 'oy': {
           return this.panner.orientationY.value;
-        case 'oz':
+        }
+
+        case 'oz': {
           return this.panner.orientationZ.value;
-        case 'refDistance':
+        }
+
+        case 'refDistance': {
           return this.panner.refDistance;
-        case 'maxDistance':
+        }
+
+        case 'maxDistance': {
           return this.panner.maxDistance;
-        case 'rolloffFactor':
+        }
+
+        case 'rolloffFactor': {
           return this.panner.rolloffFactor;
-        case 'coneInnerAngle':
+        }
+
+        case 'coneInnerAngle': {
           return this.panner.coneInnerAngle;
-        case 'coneOuterAngle':
+        }
+
+        case 'coneOuterAngle': {
           return this.panner.coneOuterAngle;
-        case 'coneOuterGain':
+        }
+
+        case 'coneOuterGain': {
           return this.panner.coneOuterGain;
-        case 'panningModel':
+        }
+
+        case 'panningModel': {
           return this.panner.panningModel;
-        case 'distanceModel':
+        }
+
+        case 'distanceModel': {
           return this.panner.distanceModel;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'x':
+        }
+
+        case 'x': {
           if (typeof value === 'number') {
             this.panner.positionX.value = value;
           }
 
           break;
-        case 'y':
+        }
+
+        case 'y': {
           if (typeof value === 'number') {
             this.panner.positionY.value = value;
           }
 
           break;
-        case 'z':
+        }
+
+        case 'z': {
           if (typeof value === 'number') {
             this.panner.positionZ.value = value;
           }
 
           break;
-        case 'ox':
+        }
+
+        case 'ox': {
           if (typeof value === 'number') {
             this.panner.orientationX.value = value;
           }
 
           break;
-        case 'oy':
+        }
+
+        case 'oy': {
           if (typeof value === 'number') {
             this.panner.orientationY.value = value;
           }
 
           break;
-        case 'oz':
+        }
+
+        case 'oz': {
           if (typeof value === 'number') {
             this.panner.orientationZ.value = value;
           }
 
           break;
-        case 'refDistance':
+        }
+
+        case 'refDistance': {
           if (typeof value === 'number') {
             this.panner.refDistance = value;
           }
 
           break;
-        case 'maxDistance':
+        }
+
+        case 'maxDistance': {
           if (typeof value === 'number') {
             this.panner.maxDistance = value;
           }
 
           break;
-        case 'rolloffFactor':
+        }
+
+        case 'rolloffFactor': {
           if (typeof value === 'number') {
             this.panner.rolloffFactor = value;
           }
 
           break;
-        case 'coneInnerAngle':
+        }
+
+        case 'coneInnerAngle': {
           if (typeof value === 'number') {
             this.panner.coneInnerAngle = value;
           }
 
           break;
-        case 'coneOuterAngle':
+        }
+
+        case 'coneOuterAngle': {
           if (typeof value === 'number') {
             this.panner.coneOuterAngle = value;
           }
 
           break;
-        case 'coneOuterGain':
+        }
+
+        case 'coneOuterGain': {
           if (typeof value === 'number') {
             this.panner.coneOuterGain = value;
           }
 
           break;
-        case 'panningModel':
+        }
+
+        case 'panningModel': {
           if ((value === 'HRTF') || (value === 'equalpower')) {
             this.panner.panningModel = value;
           }
 
           break;
-        case 'distanceModel':
+        }
+
+        case 'distanceModel': {
           if ((value === 'linear') || (value === 'inverse') || (value === 'exponential')) {
             this.panner.distanceModel = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

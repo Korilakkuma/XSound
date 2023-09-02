@@ -88,39 +88,53 @@ export class Glide implements Statable {
   public param(params: keyof GlideParams | GlideParams): GlideParams[keyof GlideParams] | Glide {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'type':
+        }
+
+        case 'type': {
           return this.type;
-        case 'time':
+        }
+
+        case 'time': {
           return this.time;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'type':
+        }
+
+        case 'type': {
           if (typeof value === 'string') {
             this.type = value;
           }
 
           break;
-        case 'time':
+        }
+
+        case 'time': {
           if (typeof value === 'number') {
             this.time = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

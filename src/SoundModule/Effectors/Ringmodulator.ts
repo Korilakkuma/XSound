@@ -83,39 +83,53 @@ export class Ringmodulator extends Effector {
   public param(params: keyof RingmodulatorParams | RingmodulatorParams): RingmodulatorParams[keyof RingmodulatorParams] | Ringmodulator {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'depth':
+        }
+
+        case 'depth': {
           return this.depth.gain.value;
-        case 'rate':
+        }
+
+        case 'rate': {
           return this.rate.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'depth':
+        }
+
+        case 'depth': {
           if (typeof value === 'number') {
             this.depth.gain.value = value;
           }
 
           break;
-        case 'rate':
+        }
+
+        case 'rate': {
           if (typeof value === 'number') {
             this.rate.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

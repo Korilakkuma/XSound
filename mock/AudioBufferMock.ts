@@ -38,20 +38,25 @@ export class AudioBufferMock {
 
   getChannelData(channel: 0 | 1): Float32Array {
     switch (channel) {
-      case 0:
+      case 0: {
         if (this.dataL) {
           return this.dataL;
         }
 
         break;
-      case 1:
+      }
+
+      case 1: {
         if (this.dataR) {
           return this.dataR;
         }
 
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
 
     return new Float32Array([]);
@@ -59,14 +64,19 @@ export class AudioBufferMock {
 
   copyToChannel(source: Float32Array, channel: 0 | 1): void {
     switch (channel) {
-      case 0:
+      case 0: {
         this.dataL = new Float32Array(source);
         break;
-      case 1:
+      }
+
+      case 1: {
         this.dataR = new Float32Array(source);
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
   }
 }

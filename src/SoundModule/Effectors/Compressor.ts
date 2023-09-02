@@ -73,63 +73,89 @@ export class Compressor extends Effector {
   public param(params: keyof CompressorParams | CompressorParams): CompressorParams[keyof CompressorParams] | Compressor {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'threshold':
+        }
+
+        case 'threshold': {
           return this.compressor.threshold.value;
-        case 'knee':
+        }
+
+        case 'knee': {
           return this.compressor.knee.value;
-        case 'ratio':
+        }
+
+        case 'ratio': {
           return this.compressor.ratio.value;
-        case 'attack':
+        }
+
+        case 'attack': {
           return this.compressor.attack.value;
-        case 'release':
+        }
+
+        case 'release': {
           return this.compressor.release.value;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
           }
 
           break;
-        case 'threshold':
+        }
+
+        case 'threshold': {
           if (typeof value === 'number') {
             this.compressor.threshold.value = value;
           }
 
           break;
-        case 'knee':
+        }
+
+        case 'knee': {
           if (typeof value === 'number') {
             this.compressor.knee.value = value;
           }
 
           break;
-        case 'ratio':
+        }
+
+        case 'ratio': {
           if (typeof value === 'number') {
             this.compressor.ratio.value = value;
           }
 
           break;
-        case 'attack':
+        }
+
+        case 'attack': {
           if (typeof value === 'number') {
             this.compressor.attack.value = value;
           }
 
           break;
-        case 'release':
+        }
+
+        case 'release': {
           if (typeof value === 'number') {
             this.compressor.release.value = value;
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

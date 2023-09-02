@@ -229,28 +229,49 @@ function XSound(sourceName: 'midi'): MIDI;
 function XSound(sourceName: 'mml'): MML;
 function XSound(sourecName: string): Source | null {
   switch (sourecName) {
-    case 'oscillator':
+    case 'oscillator': {
       return sources.oscillator;
-    case 'oneshot':
+    }
+
+    case 'oneshot': {
       return sources.oneshot;
-    case 'noise':
+    }
+
+    case 'noise': {
       return sources.noise;
-    case 'audio':
+    }
+
+    case 'audio': {
       return sources.audio;
-    case 'media':
+    }
+
+    case 'media': {
       return sources.media;
-    case 'stream':
+    }
+
+    case 'stream': {
       return sources.stream;
-    case 'processor':
+    }
+
+    case 'processor': {
       return sources.processor;
-    case 'mixer':
+    }
+
+    case 'mixer': {
       return sources.mixer;
-    case 'midi':
+    }
+
+    case 'midi': {
       return sources.midi;
-    case 'mml':
+    }
+
+    case 'mml': {
       return sources.mml;
-    default:
+    }
+
+    default: {
       return null;
+    }
   }
 }
 
@@ -354,28 +375,49 @@ XSound.clone = (): typeof ClonedXSound => {
   function ClonedXSound(sourceName: 'mml'): MML;
   function ClonedXSound(sourecName: string): Source | null {
     switch (sourecName) {
-      case 'oscillator':
+      case 'oscillator': {
         return clonedSources.oscillator;
-      case 'oneshot':
+      }
+
+      case 'oneshot': {
         return clonedSources.oneshot;
-      case 'noise':
+      }
+
+      case 'noise': {
         return clonedSources.noise;
-      case 'audio':
+      }
+
+      case 'audio': {
         return clonedSources.audio;
-      case 'media':
+      }
+
+      case 'media': {
         return clonedSources.media;
-      case 'stream':
+      }
+
+      case 'stream': {
         return clonedSources.stream;
-      case 'processor':
+      }
+
+      case 'processor': {
         return clonedSources.processor;
-      case 'mixer':
+      }
+
+      case 'mixer': {
         return clonedSources.mixer;
-      case 'midi':
+      }
+
+      case 'midi': {
         return clonedSources.midi;
-      case 'mml':
+      }
+
+      case 'mml': {
         return clonedSources.mml;
-      default:
+      }
+
+      default: {
         return null;
+      }
     }
   }
 

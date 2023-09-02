@@ -64,18 +64,23 @@ export class NoiseGate extends Effector {
   public param(params: keyof NoiseGateParams | NoiseGateParams): NoiseGateParams[keyof NoiseGateParams] | NoiseGate {
     if (typeof params === 'string') {
       switch (params) {
-        case 'state':
+        case 'state': {
           return this.isActive;
-        case 'level':
+        }
+
+        case 'level': {
           return this.level;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'state':
+        case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
 
@@ -85,7 +90,9 @@ export class NoiseGate extends Effector {
           }
 
           break;
-        case 'level':
+        }
+
+        case 'level': {
           if (typeof value === 'number') {
             this.level = value;
 
@@ -95,8 +102,11 @@ export class NoiseGate extends Effector {
           }
 
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 

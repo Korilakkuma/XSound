@@ -36,10 +36,13 @@ export function isPitchChar(pitchChar: string): pitchChar is PitchChar {
     case 'G':
     case 'A':
     case 'B':
-    case 'R':
+    case 'R': {
       return true;
-    default:
+    }
+
+    default: {
       return false;
+    }
   }
 }
 
@@ -53,33 +56,50 @@ export function computeIndex(octave: number, pitchChar: PitchChar): number {
   let index = 0;
 
   switch (pitchChar) {
-    case 'C':
+    case 'C': {
       index = 3;
       break;
-    case 'D':
+    }
+
+    case 'D': {
       index = 5;
       break;
-    case 'E':
+    }
+
+    case 'E': {
       index = 7;
       break;
-    case 'F':
+    }
+
+    case 'F': {
       index = 8;
       break;
-    case 'G':
+    }
+
+    case 'G': {
       index = 10;
       break;
-    case 'A':
+    }
+
+    case 'A': {
       index = 12;
       break;
-    case 'B':
+    }
+
+    case 'B': {
       index = 14;
       break;
-    case 'R':
+    }
+
+    case 'R': {
       return -1;
-    default:
+    }
+
+    default: {
       // eslint-disable-next-line no-console
       console.assert();
       break;
+    }
   }
 
   const computedIndex = (EQUAL_TEMPERAMENT * (octave - 1)) + index;
@@ -402,21 +422,30 @@ export function read(params: {
     let error: FileReaderErrorText;
 
     switch (reader.error?.code) {
-      case reader.error?.NOT_FOUND_ERR:
+      case reader.error?.NOT_FOUND_ERR: {
         error = 'NOT_FOUND_ERR';
         break;
-      case reader.error?.SECURITY_ERR:
+      }
+
+      case reader.error?.SECURITY_ERR: {
         error = 'SECURITY_ERR';
         break;
-      case reader.error?.ABORT_ERR:
+      }
+
+      case reader.error?.ABORT_ERR: {
         error = 'ABORT_ERR';
         break;
-      case reader.error?.NOT_SUPPORTED_ERR:
+      }
+
+      case reader.error?.NOT_SUPPORTED_ERR: {
         error = 'NOT_READABLE_ERR';
         break;
-      default:
+      }
+
+      default: {
         error = 'ERR';
         break;
+      }
     }
 
     errorCallback(event, error);
@@ -431,38 +460,50 @@ export function read(params: {
 
     // Escape `<script>` if `FileReaderType` is either `text` or `json`
     switch (type) {
-      case 'text':
+      case 'text': {
         if (typeof result === 'string') {
           result = result.replace(/<(\/?script.*?)>/gi, '&lt;$1&gt;');
         }
 
         break;
-      case 'json':
+      }
+
+      case 'json': {
         if (typeof result === 'string') {
           result = JSON.parse(result.replace(/<(\/?script.*?)>/gi, '&lt;$1&gt;'));
         }
 
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
 
     successCallback(event, result);
   };
 
   switch (type) {
-    case 'arraybuffer':
+    case 'arraybuffer': {
       reader.readAsArrayBuffer(file);
       break;
-    case 'dataURL':
+    }
+
+    case 'dataURL': {
       reader.readAsDataURL(file);
       break;
+    }
+
     case 'text':
-    case 'json':
+    case 'json': {
       reader.readAsText(file, 'UTF-8');
       break;
-    default:
+    }
+
+    default: {
       break;
+    }
   }
 }
 

@@ -10,7 +10,7 @@ export const schedule = () => {
 
   self.onmessage = (event: MessageEvent<MMLScheduleWorkerMessageEventData>) => {
     switch (event.data.type) {
-      case 'schedule':
+      case 'schedule': {
         if (typeof event.data.duration === 'number') {
           timerId = self.setTimeout(() => {
             const message: MMLScheduleWorkerMessageEventData = { type: 'next' };
@@ -20,9 +20,13 @@ export const schedule = () => {
         }
 
         break;
-      case 'next':
+      }
+
+      case 'next': {
         break;
-      case 'stop':
+      }
+
+      case 'stop': {
         if (timerId !== null) {
           self.clearTimeout(timerId);
           self.close();
@@ -30,8 +34,11 @@ export const schedule = () => {
         }
 
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
   };
 };

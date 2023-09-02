@@ -16,20 +16,25 @@ export class NoiseGateProcessor extends AudioWorkletProcessor {
     this.port.onmessage = (event: MessageEvent<NoiseGateParams>) => {
       for (const [key, value] of Object.entries(event.data)) {
         switch (key) {
-          case 'state':
+          case 'state': {
             if (typeof value === 'boolean') {
               this.isActive = value;
             }
 
             break;
-          case 'level':
+          }
+
+          case 'level': {
             if (typeof value === 'number') {
               this.level = value;
             }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
       }
     };

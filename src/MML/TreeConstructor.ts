@@ -36,7 +36,7 @@ export class TreeConstructor {
       TreeConstructor.id += 2;
 
       switch (token.type) {
-        case 'TEMPO':
+        case 'TEMPO': {
           if (nextToken.type === 'NUMBER') {
             const left = new Tree((TreeConstructor.id - 0).toString(10), nextToken, null, null);  // Leaf
             const tree = new Tree((TreeConstructor.id - 1).toString(10), token, left, null);
@@ -48,7 +48,9 @@ export class TreeConstructor {
           }
 
           return new MMLSyntaxError(token);
-        case 'OCTAVE':
+        }
+
+        case 'OCTAVE': {
           if ((this.syntaxTree.length > 0) && (nextToken.type === 'NUMBER')) {
             const left = new Tree((TreeConstructor.id - 0).toString(10), nextToken, null, null);  // Leaf
             const tree = new Tree((TreeConstructor.id - 1).toString(10), token, left, null);
@@ -64,7 +66,9 @@ export class TreeConstructor {
           }
 
           return new MMLSyntaxError(token);
-        case 'NOTE':
+        }
+
+        case 'NOTE': {
           if ((this.syntaxTree.length > 0) && (nextToken.type === 'NUMBER')) {
             const left = new Tree((TreeConstructor.id - 0).toString(10), nextToken, null, null);  // Leaf
             const tree = new Tree((TreeConstructor.id - 1).toString(10), token, left, null);
@@ -80,7 +84,9 @@ export class TreeConstructor {
           }
 
           return new MMLSyntaxError(token);
-        case 'REST':
+        }
+
+        case 'REST': {
           if ((this.syntaxTree.length > 0) && (nextToken.type === 'NUMBER')) {
             const left = new Tree((TreeConstructor.id - 0).toString(10), nextToken, null, null);  // Leaf
             const tree = new Tree((TreeConstructor.id - 1).toString(10), token, left, null);
@@ -96,10 +102,14 @@ export class TreeConstructor {
           }
 
           return new MMLSyntaxError(token);
-        case 'NUMBER':
+        }
+
+        case 'NUMBER': {
           TreeConstructor.id -= 2;
           break;
-        case 'TIE':
+        }
+
+        case 'TIE': {
           if (this.syntaxTree.length > 0) {
             TreeConstructor.id--;
 
@@ -116,7 +126,9 @@ export class TreeConstructor {
           }
 
           return new MMLSyntaxError(token);
-        case 'EOS':
+        }
+
+        case 'EOS': {
           if (this.syntaxTree.length > 0) {
             const tree = new Tree((TreeConstructor.id - 1).toString(10), token, null, null);
 
@@ -132,8 +144,11 @@ export class TreeConstructor {
           }
 
           return this.syntaxTree;
-        default:
+        }
+
+        default: {
           return new MMLSyntaxError(token);
+        }
       }
 
       token     = nextToken;

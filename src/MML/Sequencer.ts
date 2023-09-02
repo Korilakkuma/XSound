@@ -90,7 +90,7 @@ export class Sequencer {
       const value = left !== null ? left.operator.value : -1;
 
       switch (type) {
-        case 'TEMPO':
+        case 'TEMPO': {
           if (value <= 0) {
             this.errorCallback(new MMLSyntaxError(operator));
             return;
@@ -100,7 +100,9 @@ export class Sequencer {
 
           tree = tree.right;
           break;
-        case 'OCTAVE':
+        }
+
+        case 'OCTAVE': {
           if (value < 0) {
             this.errorCallback(new MMLSyntaxError(operator));
             return;
@@ -110,6 +112,8 @@ export class Sequencer {
 
           tree = tree.right;
           break;
+        }
+
         case 'NOTE':
         case 'REST':
         case 'TIE' : {
@@ -131,12 +135,15 @@ export class Sequencer {
           break;
         }
 
-        case 'EOS':
+        case 'EOS': {
           tree = tree.right;
           break;
-        default:
+        }
+
+        default: {
           this.errorCallback(new MMLSyntaxError(tree.operator));
           return;
+        }
       }
     }
 
@@ -208,17 +215,22 @@ export class Sequencer {
       // Sharp or Flat (Half up or Half down) ?
       switch (token.charAt(i + 1)) {
         case HALF_UP:
-        case SHARP  :
+        case SHARP  : {
           index++;
           i++;
           break;
-        case HALF_DOWN:
+        }
+
+        case HALF_DOWN: {
           index--;
           i++;
           break;
-        default:
+        }
+
+        default: {
           // Normal (Natural)
           break;
+        }
       }
 
       // in case of chord
@@ -259,7 +271,7 @@ export class Sequencer {
       case  32:
       case  64:
       case 128:
-      case 256:
+      case 256: {
         if (digits) {
           const numberOf4note = QUARTER_NOTE / value;
 
@@ -272,49 +284,72 @@ export class Sequencer {
         }
 
         break;
-      case   6:
+      }
+
+      case 6: {
         // Triplet of half note
         duration += (2 * this.timeOf4note) / 3;
         break;
-      case  12:
+      }
+
+      case 12: {
         // Triplet of quarter note
         duration += this.timeOf4note / 3;
         break;
-      case  18:
+      }
+
+      case 18: {
         // Nonuplet of half note
         duration += (2 * this.timeOf4note) / 9;
         break;
-      case  24:
+      }
+
+      case 24: {
         // Triplet of 8th note
         duration += (0.5 * this.timeOf4note) / 3;
         break;
-      case  36:
+      }
+
+      case 36: {
         // Nonuplet of quarter note
         duration += this.timeOf4note / 9;
         break;
-      case  48:
+      }
+
+      case 48: {
         // Triplet of 16th note
         duration += (0.25 * this.timeOf4note) / 3;
         break;
-      case  72:
+      }
+
+      case 72: {
         // Nonuplet of 8th note
         duration += (0.5 * this.timeOf4note) / 9;
         break;
-      case  96:
+      }
+
+      case 96: {
         // Triplet of 32th note
         duration += (0.125 * this.timeOf4note) / 3;
         break;
-      case 144:
+      }
+
+      case 144: {
         // Nonuplet of 16th note
         duration += (0.25 * this.timeOf4note) / 9;
         break;
-      case 192:
+      }
+
+      case 192: {
         // Triplet of 64th note
         duration += (0.0625 * this.timeOf4note) / 3;
         break;
-      default:
+      }
+
+      default: {
         this.errorCallback(new MMLSyntaxError(leftToken));
         return;
+      }
     }
 
     const id    = (this.sequences.length + 1).toString(10);

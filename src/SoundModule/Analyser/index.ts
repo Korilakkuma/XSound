@@ -90,10 +90,10 @@ export class Analyser implements Connectable {
    */
   public start(domain: Domain, channel?: ChannelNumber, buffer?: AudioBuffer): Analyser {
     switch (domain) {
-      case 'timeoverview':
+      case 'timeoverview': {
         if (((channel === 0) || (channel === 1)) && buffer) {
           switch (channel) {
-            case 0:
+            case 0: {
               if (buffer.numberOfChannels > channel) {
                 const data = new Float32Array(buffer.length);
 
@@ -102,7 +102,9 @@ export class Analyser implements Connectable {
               }
 
               break;
-            case 1:
+            }
+
+            case 1: {
               if (buffer.numberOfChannels > channel) {
                 const data = new Float32Array(buffer.length);
 
@@ -111,12 +113,17 @@ export class Analyser implements Connectable {
               }
 
               break;
-            default:
+            }
+
+            default: {
               break;
+            }
           }
         }
 
         break;
+      }
+
       case 'time': {
         const interval = this.time.param('interval');
 
@@ -137,8 +144,9 @@ export class Analyser implements Connectable {
           }
 
             break;
-          default:
+          default: {
             break;
+          }
         }
 
         if (typeof interval === 'number') {
@@ -167,19 +175,22 @@ export class Analyser implements Connectable {
 
             this.analyser.getByteFrequencyData(data);
             this.fft.start(data);
-          }
 
             break;
+          }
+
           case 'float': {
             const data = new Float32Array(this.analyser.frequencyBinCount);
 
             this.analyser.getFloatFrequencyData(data);
             this.fft.start(data, this.analyser.minDecibels, this.analyser.maxDecibels);
-          }
 
             break;
-          default:
+          }
+
+          default: {
             break;
+          }
         }
 
         if (typeof interval === 'number') {
@@ -249,8 +260,9 @@ export class Analyser implements Connectable {
         break;
       }
 
-      default:
+      default: {
         break;
+      }
     }
 
     return this;
@@ -272,37 +284,57 @@ export class Analyser implements Connectable {
   public param(params: keyof AnalyserParams | AnalyserParams): AnalyserParams[keyof AnalyserParams] | Analyser {
     if (typeof params === 'string') {
       switch (params) {
-        case 'fftSize':
+        case 'fftSize': {
           return this.analyser.fftSize;
-        case 'frequencyBinCount':
+        }
+
+        case 'frequencyBinCount': {
           return this.analyser.frequencyBinCount;
-        case 'minDecibels':
+        }
+
+        case 'minDecibels': {
           return this.analyser.minDecibels;
-        case 'maxDecibels':
+        }
+
+        case 'maxDecibels': {
           return this.analyser.maxDecibels;
-        case 'smoothingTimeConstant':
+        }
+
+        case 'smoothingTimeConstant': {
           return this.analyser.smoothingTimeConstant;
-        default:
+        }
+
+        default: {
           return this;
+        }
       }
     }
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
-        case 'fftSize':
+        case 'fftSize': {
           this.analyser.fftSize = value;
           break;
-        case 'minDecibels':
+        }
+
+        case 'minDecibels': {
           this.analyser.minDecibels = value;
           break;
-        case 'maxDecibels':
+        }
+
+        case 'maxDecibels': {
           this.analyser.maxDecibels = value;
           break;
-        case 'smoothingTimeConstant':
+        }
+
+        case 'smoothingTimeConstant': {
           this.analyser.smoothingTimeConstant = value;
           break;
-        default:
+        }
+
+        default: {
           break;
+        }
       }
     }
 
@@ -321,21 +353,33 @@ export class Analyser implements Connectable {
   public domain(domain: 'fft', channel?: ChannelNumber): FFT;
   public domain(domain: Domain, channel?: ChannelNumber): TimeOverview | Time | FFT | Analyser {
     switch (domain) {
-      case 'timeoverview':
+      case 'timeoverview': {
         switch (channel) {
-          case 0:
+          case 0: {
             return this.timeOverviewL;
-          case 1:
+          }
+
+          case 1: {
             return this.timeOverviewR;
-          default:
+          }
+
+          default: {
             return this.timeOverviewL;
+          }
         }
-      case 'time':
+      }
+
+      case 'time': {
         return this.time;
-      case 'fft' :
+      }
+
+      case 'fft' : {
         return this.fft;
-      default:
+      }
+
+      default: {
         return this;
+      }
     }
 
     return this;

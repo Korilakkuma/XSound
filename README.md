@@ -121,10 +121,18 @@ $ yarn add xsound
 
 ## Usage
 
-In case of using ES Modules (for SSR ... etc),
+In case of using ES Modules,
 
 ```JavaScript
 import { XSound, X } from 'xsound';
+```
+
+If SSR (Server-Side Rendering), use [dynamic imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import),
+
+```JavaScript
+async () => {
+  const { XSound, X } = await import('xsound');
+};
 ```
 
 In case of using CDN,

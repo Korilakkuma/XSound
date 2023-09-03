@@ -226,6 +226,8 @@ new TerserWebpackPlugin({
   - <blockquote>XSound is a batteries-included library for everything audio. From basic management and loading through streaming, effects, ending with visualizations and recording, this libraries provides almost everything! It also has nice, semi-chainable API with solid documentation.</blockquote>
 - [20 Useful Web Audio Javascript Libraries – Bashooka](https://bashooka.com/coding/web-audio-javascript-libraries/)
 - [Extending X3D Realism with Audio Graphs, Acoustic  Properties and 3D Spatial Sound](https://dl.acm.org/doi/10.1145/3424616.3424709)
+- [DeView: Confining Progressive Web Applications by Debloating Web APIs](https://www.microsoft.com/en-us/research/uploads/prod/2022/09/deview-acsac22.pdf)
+  - <blockquote>In this section, we discuss the effectiveness of DeView’s Web API profiling in terms of code coverage. We choose three popular PWAs: Starbucks, Telegram [112], and XSound [57] from eCommerce, social media, and productivity categories, respectively.</blockquote>
   
 ## License
   

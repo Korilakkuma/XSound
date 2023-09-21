@@ -1,4 +1,4 @@
-import { Statable } from '/src/interfaces';
+import { Statable } from '../interfaces';
 
 export type GlideType = 'linear' | 'exponential';
 

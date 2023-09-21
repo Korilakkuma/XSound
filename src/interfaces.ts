@@ -1,8 +1,8 @@
-import { Visualizer } from '/src/SoundModule/Analyser/Visualizer';
-import { Effector } from '/src/SoundModule/Effectors/Effector';
-import { EnvelopeGenerator } from '/src/SoundModule/Effectors/EnvelopeGenerator';
-import { Oscillator } from '/src/OscillatorModule/Oscillator';
-import { Glide } from '/src/OscillatorModule/Glide';
+import { Visualizer } from './SoundModule/Analyser/Visualizer';
+import { Effector } from './SoundModule/Effectors/Effector';
+import { EnvelopeGenerator } from './SoundModule/Effectors/EnvelopeGenerator';
+import { Oscillator } from './OscillatorModule/Oscillator';
+import { Glide } from './OscillatorModule/Glide';
 
 /**
  * This interface is implemented by class that abstracts `AudioNode` connections (such as `Effector` class).

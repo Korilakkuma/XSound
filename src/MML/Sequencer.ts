@@ -8,11 +8,11 @@ import {
   isPitchChar,
   computeIndex,
   computeFrequency
-} from '/src/XSound';
-import { Token } from '/src/MML/Token';
-import { Tree, MMLSyntaxError } from '/src/MML/Tree';
-import { TreeConstructor } from '/src/MML/TreeConstructor';
-import { Sequence } from '/src/MML/Sequence';
+} from '../XSound';
+import { Token } from './Token';
+import { Tree, MMLSyntaxError } from './Tree';
+import { TreeConstructor } from './TreeConstructor';
+import { Sequence } from './Sequence';
 
 /**
  * This class converts syntax tree to array that contains musical note.

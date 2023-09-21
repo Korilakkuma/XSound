@@ -1,5 +1,5 @@
-import { AudioWorkletProcessor, Inputs, Outputs } from '/src/worklet';
-import { PitchShifterParams } from '/src/SoundModule/Effectors/PitchShifter';
+import { AudioWorkletProcessor, Inputs, Outputs } from '../../../worklet';
+import { PitchShifterParams } from '../PitchShifter';
 
 /**
  * This class extends `AudioWorkletProcessor`.

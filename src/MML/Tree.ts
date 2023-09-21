@@ -1,4 +1,4 @@
-import { Token } from '/src/MML/Token';
+import { Token } from '../../src/MML/Token';
 
 /**
  * This class is entity for MML syntax tree.

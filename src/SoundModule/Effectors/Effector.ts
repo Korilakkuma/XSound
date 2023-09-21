@@ -1,4 +1,4 @@
-import { Connectable, Statable } from '/src/interfaces';
+import { Connectable, Statable } from '../../interfaces';
 
 /**
  * This class is superclass for effector classes.

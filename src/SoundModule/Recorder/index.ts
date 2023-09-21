@@ -1,8 +1,8 @@
-import { Connectable } from '/src/interfaces';
-import { ChannelNumber } from '/src/types';
-import { Track } from '/src/SoundModule/Recorder/Track';
-import { Channel } from '/src/SoundModule/Recorder/Channel';
-import { RecorderProcessor, RecorderProcessorMessageEventData } from '/src/SoundModule/Recorder/RecorderProcessor';
+import { Connectable } from '../../interfaces';
+import { ChannelNumber } from '../../types';
+import { Track } from './Track';
+import { Channel } from './Channel';
+import { RecorderProcessor, RecorderProcessorMessageEventData } from './RecorderProcessor';
 
 export type RecordType      = 1 | 2;  // Monaural | Stereo
 export type QuantizationBit = 8 | 16;

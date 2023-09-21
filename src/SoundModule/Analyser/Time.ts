@@ -1,6 +1,6 @@
-import { ChannelNumber } from '/src/types';
-import { DataType } from '/src/SoundModule/Analyser';
-import { Visualizer, VisualizerParams, GraphicsStyles } from '/src/SoundModule/Analyser/Visualizer';
+import { ChannelNumber } from '../../types';
+import { DataType } from '../Analyser';
+import { Visualizer, VisualizerParams, GraphicsStyles } from './Visualizer';
 
 export type TimeParams = VisualizerParams & {
   type?: DataType,

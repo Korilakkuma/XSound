@@ -1,5 +1,5 @@
-import { Tokenizer } from '/src/MML/Tokenizer';
-import { Tree, MMLSyntaxError } from '/src/MML/Tree';
+import { Tokenizer } from './Tokenizer';
+import { Tree, MMLSyntaxError } from './Tree';
 
 /**
  * This class is Tree Construction (syntax tree) for MML (Music Macro Language).

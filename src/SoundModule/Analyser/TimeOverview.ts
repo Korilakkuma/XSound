@@ -1,5 +1,5 @@
-import { ChannelNumber } from '/src/types';
-import { Visualizer, VisualizerParams, Color, GraphicsStyles } from '/src/SoundModule/Analyser/Visualizer';
+import { ChannelNumber } from '../../types';
+import { Visualizer, VisualizerParams, Color, GraphicsStyles } from './Visualizer';
 
 export type MouseEventTypes = 'mousedown' | 'mousemove' | 'mouseup' | 'touchstart' | 'touchmove' | 'touchend';
 

@@ -1,4 +1,4 @@
-import { Track } from '/src/SoundModule/Recorder/Track';
+import { Track } from './Track';
 
 /**
  * This class is entity for recording channel.

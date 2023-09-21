@@ -1,4 +1,4 @@
-import { Effector } from '/src/SoundModule/Effectors/Effector';
+import { Effector } from './Effector';
 
 export type TremoloParams = {
   state?: boolean,

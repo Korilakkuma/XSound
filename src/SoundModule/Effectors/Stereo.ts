@@ -1,5 +1,5 @@
-import { Effector } from '/src/SoundModule/Effectors/Effector';
-import { StereoProcessor } from '/src/SoundModule/Effectors/AudioWorkletProcessors/StereoProcessor';
+import { Effector } from './Effector';
+import { StereoProcessor } from './AudioWorkletProcessors/StereoProcessor';
 
 export type StereoParams = {
   state?: boolean,

@@ -1,5 +1,5 @@
-import { AudioWorkletProcessor, Inputs, Outputs } from '/src/worklet';
-import { NoiseSuppressorParams } from '/src/SoundModule/Effectors/NoiseSuppressor';
+import { AudioWorkletProcessor, Inputs, Outputs } from '../../../worklet';
+import { NoiseSuppressorParams } from '../NoiseSuppressor';
 
 /**
  * This class extends `AudioWorkletProcessor`.

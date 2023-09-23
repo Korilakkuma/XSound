@@ -52,6 +52,7 @@ aside > a {
   height: 2rem;
   margin-top: 48px;
   overflow: hidden;
+  color: #e0e;
   text-decoration: none;
 
   /* off left */
@@ -239,7 +240,7 @@ button[type="button"] {
   padding: 12px 16px;
   margin-left: 16px;
   font-size: 16px;
-  color: #ccc;
+  color: #eee;
   text-transform: uppercase;
   cursor: pointer;
   background-color: #c000c0;

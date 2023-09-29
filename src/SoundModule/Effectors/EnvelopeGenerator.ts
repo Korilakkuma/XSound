@@ -158,10 +158,6 @@ export class EnvelopeGenerator implements Statable {
         case 'release': {
           return this.release;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -204,10 +200,6 @@ export class EnvelopeGenerator implements Statable {
             this.release = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

@@ -31,10 +31,6 @@ export class VocalCancelerProcessor extends AudioWorkletProcessor {
 
             break;
           }
-
-          default: {
-            break;
-          }
         }
       }
     };

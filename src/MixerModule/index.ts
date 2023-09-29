@@ -153,10 +153,6 @@ export class MixerModule extends SoundModule {
         case 'mastervolume': {
           return this.mastervolume.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -167,10 +163,6 @@ export class MixerModule extends SoundModule {
             this.mastervolume.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -218,7 +210,7 @@ export class MixerModule extends SoundModule {
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
   public module(moduleName: 'wah'): Wah;
-  public module(moduleName: ModuleName): Module | null {
+  public module(moduleName: ModuleName): Module {
     switch (moduleName) {
       case 'analyser': {
         return this.analyser;
@@ -322,10 +314,6 @@ export class MixerModule extends SoundModule {
 
       case 'wah': {
         return this.wah;
-      }
-
-      default: {
-        return null;
       }
     }
   }

@@ -171,10 +171,6 @@ export abstract class Visualizer implements Statable {
         case 'styles': {
           return this.styles;
         }
-
-        default: {
-          return;
-        }
       }
     }
 
@@ -193,10 +189,6 @@ export abstract class Visualizer implements Statable {
             this.styles = { ...this.styles, ...value };
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -381,10 +373,6 @@ export abstract class Visualizer implements Statable {
           }
         }
 
-        break;
-      }
-
-      default: {
         break;
       }
     }

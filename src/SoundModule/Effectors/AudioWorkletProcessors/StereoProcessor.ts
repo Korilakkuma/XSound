@@ -22,10 +22,6 @@ export class StereoProcessor extends AudioWorkletProcessor {
 
             break;
           }
-
-          default: {
-            break;
-          }
         }
       }
     };

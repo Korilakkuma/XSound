@@ -135,10 +135,6 @@ export class NoiseModule extends SoundModule {
         case 'type': {
           return this.type;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -154,17 +150,15 @@ export class NoiseModule extends SoundModule {
 
         case 'type': {
           if (typeof value === 'string') {
-            this.type = value;
+            if ((value === 'whitenoise') || (value === 'pinknoise') || (value === 'browniannoise')) {
+              this.type = value;
 
-            const message: NoiseModuleParams = { type: value };
+              const message: NoiseModuleParams = { type: value };
 
-            this.processor.port.postMessage(message);
+              this.processor.port.postMessage(message);
+            }
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -204,7 +198,7 @@ export class NoiseModule extends SoundModule {
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
   public module(moduleName: 'wah'): Wah;
-  public module(moduleName: ModuleName): Module | null {
+  public module(moduleName: ModuleName): Module {
     switch (moduleName) {
       case 'analyser': {
         return this.analyser;
@@ -308,10 +302,6 @@ export class NoiseModule extends SoundModule {
 
       case 'wah': {
         return this.wah;
-      }
-
-      default: {
-        return null;
       }
     }
   }

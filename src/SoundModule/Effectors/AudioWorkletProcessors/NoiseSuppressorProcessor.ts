@@ -172,10 +172,6 @@ export class NoiseSuppressorProcessor extends AudioWorkletProcessor {
 
             break;
           }
-
-          default: {
-            break;
-          }
         }
       }
     };

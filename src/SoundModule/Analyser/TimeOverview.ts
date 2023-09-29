@@ -123,10 +123,6 @@ export class TimeOverview extends Visualizer {
         case 'styles': {
           return super.param(params);
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -171,10 +167,6 @@ export class TimeOverview extends Visualizer {
             }
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -247,9 +239,6 @@ export class TimeOverview extends Visualizer {
 
             break;
           }
-
-          default:
-            break;
         }
 
         break;
@@ -330,9 +319,6 @@ export class TimeOverview extends Visualizer {
 
         break;
       }
-
-      default:
-        break;
     }
 
     return this;
@@ -363,10 +349,6 @@ export class TimeOverview extends Visualizer {
 
         visualizationNode = this.svg;
         break;
-      }
-
-      default: {
-        return this;
       }
     }
 
@@ -676,10 +658,6 @@ export class TimeOverview extends Visualizer {
 
         offsetLeft = this.svg.parentElement?.offsetLeft ?? 0;
         width      = Number((this.svg.getAttribute('width') ?? '0'));
-        break;
-      }
-
-      default: {
         break;
       }
     }

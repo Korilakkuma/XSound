@@ -175,10 +175,6 @@ export class Panner extends Effector {
         case 'distanceModel': {
           return this.panner.distanceModel;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -301,10 +297,6 @@ export class Panner extends Effector {
             this.panner.distanceModel = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

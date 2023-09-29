@@ -63,10 +63,6 @@ export class Time extends Visualizer {
         case 'styles': {
           return super.param(params);
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -87,10 +83,6 @@ export class Time extends Visualizer {
             this.textInterval = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -166,8 +158,7 @@ export class Time extends Visualizer {
         break;
       }
 
-      case 'uint':
-      default    : {
+      case 'uint': {
         switch (this.styles.shape) {
           case 'line': {
             // Set style
@@ -218,10 +209,6 @@ export class Time extends Visualizer {
               context.fillRect(x, middle, 1, y);
             }
 
-            break;
-          }
-
-          default: {
             break;
           }
         }
@@ -323,8 +310,7 @@ export class Time extends Visualizer {
         break;
       }
 
-      case 'uint':
-      default    : {
+      case 'uint': {
         switch (this.styles.shape) {
           case 'line': {
             // Visualize wave
@@ -393,10 +379,6 @@ export class Time extends Visualizer {
 
             svg.appendChild(g);
 
-            break;
-          }
-
-          default: {
             break;
           }
         }

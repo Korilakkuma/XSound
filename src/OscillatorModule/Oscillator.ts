@@ -156,10 +156,6 @@ export class Oscillator implements Connectable, Statable {
         case 'volume': {
           return this.volume.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -222,10 +218,6 @@ export class Oscillator implements Connectable, Statable {
             this.volume.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

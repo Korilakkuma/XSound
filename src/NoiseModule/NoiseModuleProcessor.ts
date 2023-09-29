@@ -63,9 +63,6 @@ export class NoiseModuleProcessor extends AudioWorkletProcessor {
           this.generateBrownianNoise(output[channelNumber], bufferSize);
           break;
         }
-
-        default:
-          break;
       }
     }
 

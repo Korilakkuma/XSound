@@ -31,10 +31,6 @@ export class NoiseGateProcessor extends AudioWorkletProcessor {
 
             break;
           }
-
-          default: {
-            break;
-          }
         }
       }
     };

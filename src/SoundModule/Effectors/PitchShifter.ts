@@ -72,10 +72,6 @@ export class PitchShifter extends Effector {
         case 'pitch': {
           return this.pitch;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -104,10 +100,6 @@ export class PitchShifter extends Effector {
             }
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

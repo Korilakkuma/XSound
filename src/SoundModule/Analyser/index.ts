@@ -114,10 +114,6 @@ export class Analyser implements Connectable {
 
               break;
             }
-
-            default: {
-              break;
-            }
           }
         }
 
@@ -133,18 +129,16 @@ export class Analyser implements Connectable {
 
             this.analyser.getByteTimeDomainData(data);
             this.time.start(data);
-          }
 
             break;
+          }
+
           case 'float': {
             const data = new Float32Array(this.analyser.fftSize);
 
             this.analyser.getFloatTimeDomainData(data);
             this.time.start(data);
-          }
 
-            break;
-          default: {
             break;
           }
         }
@@ -187,10 +181,6 @@ export class Analyser implements Connectable {
 
             break;
           }
-
-          default: {
-            break;
-          }
         }
 
         if (typeof interval === 'number') {
@@ -209,9 +199,6 @@ export class Analyser implements Connectable {
 
         break;
       }
-
-      default:
-        break;
     }
 
     return this;
@@ -259,10 +246,6 @@ export class Analyser implements Connectable {
 
         break;
       }
-
-      default: {
-        break;
-      }
     }
 
     return this;
@@ -303,10 +286,6 @@ export class Analyser implements Connectable {
         case 'smoothingTimeConstant': {
           return this.analyser.smoothingTimeConstant;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -329,10 +308,6 @@ export class Analyser implements Connectable {
 
         case 'smoothingTimeConstant': {
           this.analyser.smoothingTimeConstant = value;
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -362,11 +337,9 @@ export class Analyser implements Connectable {
           case 1: {
             return this.timeOverviewR;
           }
-
-          default: {
-            return this.timeOverviewL;
-          }
         }
+
+        return this;
       }
 
       case 'time': {
@@ -375,10 +348,6 @@ export class Analyser implements Connectable {
 
       case 'fft' : {
         return this.fft;
-      }
-
-      default: {
-        return this;
       }
     }
 

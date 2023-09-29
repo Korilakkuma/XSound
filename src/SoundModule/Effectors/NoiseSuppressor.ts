@@ -71,10 +71,6 @@ export class NoiseSuppressor extends Effector {
         case 'threshold': {
           return this.threshold;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -103,10 +99,6 @@ export class NoiseSuppressor extends Effector {
             }
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

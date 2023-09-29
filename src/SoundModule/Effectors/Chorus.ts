@@ -139,10 +139,6 @@ export class Chorus extends Effector {
         case 'feedback': {
           return this.feedback.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -203,10 +199,6 @@ export class Chorus extends Effector {
             this.feedback.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

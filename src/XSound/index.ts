@@ -94,12 +94,6 @@ export function computeIndex(octave: number, pitchChar: PitchChar): number {
     case 'R': {
       return -1;
     }
-
-    default: {
-      // eslint-disable-next-line no-console
-      console.assert();
-      break;
-    }
   }
 
   const computedIndex = (EQUAL_TEMPERAMENT * (octave - 1)) + index;
@@ -475,10 +469,6 @@ export function read(params: {
 
         break;
       }
-
-      default: {
-        break;
-      }
     }
 
     successCallback(event, result);
@@ -498,10 +488,6 @@ export function read(params: {
     case 'text':
     case 'json': {
       reader.readAsText(file, 'UTF-8');
-      break;
-    }
-
-    default: {
       break;
     }
   }

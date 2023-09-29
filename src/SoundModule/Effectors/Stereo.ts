@@ -99,10 +99,6 @@ export class Stereo extends Effector {
         case 'time': {
           return this.delayL.delayTime.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -126,10 +122,6 @@ export class Stereo extends Effector {
             this.delayR.delayTime.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

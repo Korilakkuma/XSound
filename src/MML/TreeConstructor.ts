@@ -145,10 +145,6 @@ export class TreeConstructor {
 
           return this.syntaxTree;
         }
-
-        default: {
-          return new MMLSyntaxError(token);
-        }
       }
 
       token     = nextToken;

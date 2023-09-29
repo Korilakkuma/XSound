@@ -164,10 +164,6 @@ export class BitCrusher extends Effector {
         case 'bits': {
           return this.bits;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -187,10 +183,6 @@ export class BitCrusher extends Effector {
             this.bitsInput.offset.value = this.bits;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

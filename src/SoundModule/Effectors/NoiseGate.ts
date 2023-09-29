@@ -71,10 +71,6 @@ export class NoiseGate extends Effector {
         case 'level': {
           return this.level;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -101,10 +97,6 @@ export class NoiseGate extends Effector {
             this.processor.port.postMessage(message);
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

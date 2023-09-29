@@ -94,10 +94,6 @@ export class Autopanner extends Effector {
         case 'rate': {
           return this.rate.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -124,10 +120,6 @@ export class Autopanner extends Effector {
             this.rate.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

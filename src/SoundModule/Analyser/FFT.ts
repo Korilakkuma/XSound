@@ -99,10 +99,6 @@ export class FFT extends Visualizer {
         case 'styles': {
           return super.param(params);
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -141,10 +137,6 @@ export class FFT extends Visualizer {
             }
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -271,10 +263,6 @@ export class FFT extends Visualizer {
 
             break;
           }
-
-          default: {
-            break;
-          }
         }
 
         context.stroke();
@@ -282,8 +270,7 @@ export class FFT extends Visualizer {
         break;
       }
 
-      case 'uint':
-      default    : {
+      case 'uint': {
         switch (this.styles.shape) {
           case 'line': {
             // Set style
@@ -334,10 +321,6 @@ export class FFT extends Visualizer {
               context.fillRect(x, (innerHeight + top), lineWidth, y);
             }
 
-            break;
-          }
-
-          default: {
             break;
           }
         }
@@ -415,8 +398,7 @@ export class FFT extends Visualizer {
           break;
         }
 
-        case 'uint':
-        default    : {
+        case 'uint': {
           for (const t of ['0.00', '0.25', '0.50', '0.75', '1.00']) {
             const x = Math.trunc(left - context.measureText(t).width);
             const y = ((1 - Number(t)) * innerHeight) + top;
@@ -545,10 +527,6 @@ export class FFT extends Visualizer {
 
             break;
           }
-
-          default: {
-            break;
-          }
         }
 
         path.setAttribute('d', d);
@@ -564,8 +542,7 @@ export class FFT extends Visualizer {
         break;
       }
 
-      case 'uint':
-      default    : {
+      case 'uint': {
         switch (this.styles.shape) {
           case 'line': {
             // Visualize wave
@@ -637,9 +614,6 @@ export class FFT extends Visualizer {
 
             break;
           }
-
-          default:
-            break;
         }
 
         break;
@@ -779,8 +753,7 @@ export class FFT extends Visualizer {
           break;
         }
 
-        case 'uint':
-        default    : {
+        case 'uint': {
           for (const t of ['0.00', '0.25', '0.50', '0.75', '1.00']) {
             const x = left;
             const y = ((1 - Number(t)) * innerHeight) + top;

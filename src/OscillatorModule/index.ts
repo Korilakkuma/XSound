@@ -182,10 +182,6 @@ export class OscillatorModule extends SoundModule {
         case 'mastervolume': {
           return this.mastervolume.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -196,10 +192,6 @@ export class OscillatorModule extends SoundModule {
             this.mastervolume.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -372,10 +364,6 @@ export class OscillatorModule extends SoundModule {
 
       case 'glide': {
         return this.glide;
-      }
-
-      default: {
-        return null;
       }
     }
   }

@@ -53,10 +53,6 @@ export class AudioBufferMock {
 
         break;
       }
-
-      default: {
-        break;
-      }
     }
 
     return new Float32Array([]);
@@ -71,10 +67,6 @@ export class AudioBufferMock {
 
       case 1: {
         this.dataR = new Float32Array(source);
-        break;
-      }
-
-      default: {
         break;
       }
     }

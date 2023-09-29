@@ -165,14 +165,6 @@ export class Tokenizer {
 
         break;
       }
-
-      default: {
-        if (token) {
-          return new Token(Tokenizer.id.toString(10), 'UNKNOWN', token);
-        }
-
-        break;
-      }
     }
 
     return null;

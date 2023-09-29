@@ -96,10 +96,6 @@ export class Compressor extends Effector {
         case 'release': {
           return this.compressor.release.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -150,10 +146,6 @@ export class Compressor extends Effector {
             this.compressor.release.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

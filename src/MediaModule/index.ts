@@ -388,10 +388,6 @@ export class MediaModule extends SoundModule {
           // `duration` is infinite in case of audio streaming
           return Number.isNaN(this.media?.duration) ? 0 : (this.media?.duration ?? 0);  // Getter only
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -466,10 +462,6 @@ export class MediaModule extends SoundModule {
             this.media.muted = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -651,7 +643,7 @@ export class MediaModule extends SoundModule {
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
   public module(moduleName: 'wah'): Wah;
-  public module(moduleName: ModuleName): Module | null {
+  public module(moduleName: ModuleName): Module {
     switch (moduleName) {
       case 'analyser': {
         return this.analyser;
@@ -755,10 +747,6 @@ export class MediaModule extends SoundModule {
 
       case 'wah': {
         return this.wah;
-      }
-
-      default: {
-        return null;
       }
     }
   }

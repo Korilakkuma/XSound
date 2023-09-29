@@ -71,10 +71,6 @@ export class VocalCanceler extends Effector {
         case 'depth': {
           return this.depth.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -101,10 +97,6 @@ export class VocalCanceler extends Effector {
             this.processor.port.postMessage(message);
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

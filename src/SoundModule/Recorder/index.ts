@@ -182,10 +182,6 @@ export class Recorder implements Connectable {
 
           break;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -204,10 +200,6 @@ export class Recorder implements Connectable {
             this.channels[1].gain(value);
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -369,10 +361,6 @@ export class Recorder implements Connectable {
 
         break;
       }
-
-      default: {
-        break;
-      }
     }
 
     if (sounds === null) {
@@ -480,10 +468,6 @@ export class Recorder implements Connectable {
           wave[offset + (2 * i) + 1] = ((sounds[i] >> 8) & 0x00FF);
           break;
         }
-
-        default: {
-          break;
-        }
       }
     }
 
@@ -509,10 +493,6 @@ export class Recorder implements Connectable {
         }
 
         return window.URL.createObjectURL(blob);
-      }
-
-      default: {
-        return '';
       }
     }
   }

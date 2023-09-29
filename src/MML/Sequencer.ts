@@ -139,11 +139,6 @@ export class Sequencer {
           tree = tree.right;
           break;
         }
-
-        default: {
-          this.errorCallback(new MMLSyntaxError(tree.operator));
-          return;
-        }
       }
     }
 

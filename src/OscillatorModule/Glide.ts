@@ -99,10 +99,6 @@ export class Glide implements Statable {
         case 'time': {
           return this.time;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -129,10 +125,6 @@ export class Glide implements Statable {
             this.time = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

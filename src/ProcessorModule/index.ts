@@ -204,7 +204,7 @@ export class ProcessorModule extends SoundModule {
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
   public module(moduleName: 'wah'): Wah;
-  public module(moduleName: ModuleName): Module | null {
+  public module(moduleName: ModuleName): Module {
     switch (moduleName) {
       case 'analyser': {
         return this.analyser;
@@ -308,10 +308,6 @@ export class ProcessorModule extends SoundModule {
 
       case 'wah': {
         return this.wah;
-      }
-
-      default: {
-        return null;
       }
     }
   }

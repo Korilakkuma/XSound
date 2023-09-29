@@ -215,10 +215,6 @@ export class StreamModule extends SoundModule {
         case 'track': {
           return this.track;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -245,10 +241,6 @@ export class StreamModule extends SoundModule {
             this.track = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -391,7 +383,7 @@ export class StreamModule extends SoundModule {
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
   public module(moduleName: 'wah'): Wah;
-  public module(moduleName: ModuleName): Module | null {
+  public module(moduleName: ModuleName): Module {
     switch (moduleName) {
       case 'analyser': {
         return this.analyser;
@@ -495,10 +487,6 @@ export class StreamModule extends SoundModule {
 
       case 'wah': {
         return this.wah;
-      }
-
-      default: {
-        return null;
       }
     }
   }

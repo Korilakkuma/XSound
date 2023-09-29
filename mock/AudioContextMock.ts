@@ -52,10 +52,6 @@ export class AudioContextMock {
       case 2:  {
         return new AudioBufferMock(data, data);
       }
-
-      default: {
-        return new AudioBufferMock(data, data);
-      }
     }
   }
 

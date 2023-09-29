@@ -148,10 +148,6 @@ export class Wah extends Effector {
         case 'resonance': {
           return this.auto ? this.sensitivity.Q.value : this.lowpass.Q.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -214,10 +210,6 @@ export class Wah extends Effector {
             }
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

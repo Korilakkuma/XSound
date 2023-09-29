@@ -327,10 +327,6 @@ export class AudioModule extends SoundModule {
         case 'numberOfChannels': {
           return this.source.buffer?.numberOfChannels ?? 0;  // Getter only
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -397,10 +393,6 @@ export class AudioModule extends SoundModule {
             }
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -558,10 +550,9 @@ export class AudioModule extends SoundModule {
 
         return buffer;
       }
-
-      default:
-        return null;
     }
+
+    return null;
   }
 
   /**
@@ -618,7 +609,7 @@ export class AudioModule extends SoundModule {
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
   public module(moduleName: 'wah'): Wah;
-  public module(moduleName: ModuleName): Module | null {
+  public module(moduleName: ModuleName): Module {
     switch (moduleName) {
       case 'analyser': {
         return this.analyser;
@@ -722,10 +713,6 @@ export class AudioModule extends SoundModule {
 
       case 'wah': {
         return this.wah;
-      }
-
-      default: {
-        return null;
       }
     }
   }

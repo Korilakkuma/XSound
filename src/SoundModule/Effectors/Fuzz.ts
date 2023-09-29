@@ -177,10 +177,6 @@ export class Fuzz extends Effector {
         case 'level': {
           return this.level.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -208,10 +204,6 @@ export class Fuzz extends Effector {
             this.level.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

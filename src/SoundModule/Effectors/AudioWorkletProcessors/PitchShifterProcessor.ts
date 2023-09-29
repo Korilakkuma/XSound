@@ -174,10 +174,6 @@ export class PitchShifterProcessor extends AudioWorkletProcessor {
 
             break;
           }
-
-          default: {
-            break;
-          }
         }
       }
     };

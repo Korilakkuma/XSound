@@ -148,10 +148,6 @@ export class PreEqualizer extends Effector {
         case 'lead': {
           return this.leadGain.gain.value;
         }
-
-        default: {
-          return;
-        }
       }
     }
 
@@ -192,10 +188,6 @@ export class PreEqualizer extends Effector {
             this.leadGain.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -341,10 +333,6 @@ export class PostEqualizer extends Effector {
         case 'frequency': {
           return this.middle.frequency.value;
         }
-
-        default: {
-          return;
-        }
       }
     }
 
@@ -401,10 +389,6 @@ export class PostEqualizer extends Effector {
             this.middle.frequency.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -493,10 +477,6 @@ export class Cabinet extends Effector {
         case 'state': {
           return this.isActive;
         }
-
-        default: {
-          return;
-        }
       }
     }
 
@@ -511,10 +491,6 @@ export class Cabinet extends Effector {
             }
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }
@@ -652,10 +628,6 @@ export class Preamp extends Effector {
         case 'cabinet': {
           return this.cabinet.params();
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -711,10 +683,6 @@ export class Preamp extends Effector {
             this.cabinet.param(value);
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

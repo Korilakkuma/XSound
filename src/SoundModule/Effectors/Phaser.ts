@@ -155,10 +155,6 @@ export class Phaser extends Effector {
         case 'mix': {
           return this.mix.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -235,10 +231,6 @@ export class Phaser extends Effector {
             this.mix.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

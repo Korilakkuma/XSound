@@ -171,10 +171,6 @@ export class OverDrive extends Effector {
         case 'level': {
           return this.level.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -202,10 +198,6 @@ export class OverDrive extends Effector {
             this.level.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

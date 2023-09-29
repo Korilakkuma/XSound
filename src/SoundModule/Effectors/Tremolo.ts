@@ -100,10 +100,6 @@ export class Tremolo extends Effector {
         case 'rate': {
           return this.rate.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -138,10 +134,6 @@ export class Tremolo extends Effector {
             this.rate.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

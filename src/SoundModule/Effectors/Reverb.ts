@@ -116,10 +116,6 @@ export class Reverb extends Effector {
         case 'tone': {
           return this.tone.frequency.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -175,10 +171,6 @@ export class Reverb extends Effector {
             this.tone.frequency.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

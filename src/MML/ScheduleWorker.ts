@@ -35,10 +35,6 @@ export const schedule = () => {
 
         break;
       }
-
-      default: {
-        break;
-      }
     }
   };
 };

@@ -117,10 +117,6 @@ export class Listener extends Effector {
         case 'uz': {
           return this.ups.z;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -204,10 +200,6 @@ export class Listener extends Effector {
             this.listener.setOrientation(this.forwards.x, this.forwards.y, this.forwards.z, this.ups.x, this.ups.y, this.ups.z);
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

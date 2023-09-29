@@ -123,10 +123,6 @@ export class Equalizer extends Effector {
         case 'presence': {
           return this.presence.gain.value;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -169,10 +165,6 @@ export class Equalizer extends Effector {
             this.presence.gain.value = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

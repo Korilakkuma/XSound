@@ -168,10 +168,6 @@ export class Filter extends Effector {
         case 'release': {
           return this.release;
         }
-
-        default: {
-          return this;
-        }
       }
     }
 
@@ -255,10 +251,6 @@ export class Filter extends Effector {
             this.release = value;
           }
 
-          break;
-        }
-
-        default: {
           break;
         }
       }

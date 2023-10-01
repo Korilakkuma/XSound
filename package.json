@@ -1,6 +1,6 @@
 {
   "name": "xsound",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "engines": {
     "node": ">=16.0.0 <=18.18.x"
   },

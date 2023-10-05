@@ -178,7 +178,7 @@ const sources: { [sourceName: string]: Source | null } = {
   mml       : null
 };
 
-Promise
+const promise = Promise
   .all([
     addAudioWorklet(audiocontext, SoundModuleProcessor),
     addAudioWorklet(audiocontext, RecorderProcessor),
@@ -206,9 +206,11 @@ Promise
     sources.mixer      = new MixerModule(audiocontext);
     sources.midi       = new MIDI();
     sources.mml        = new MML();
+
+    return sources;
   })
   .catch((error: Error) => {
-    throw error;
+    return error;
   });
 
 /**
@@ -343,6 +345,14 @@ XSound.setup = (): Promise<void> => {
   }
 
   return Promise.resolve();
+};
+
+/**
+ * This class (static) method returns `Promise` that waits instantiating `AudioWorkletProcessor`s.
+ * @return {Promise<Source|null|Error>} Return value is `Promise`.
+ */
+XSound.promise = (): Promise<typeof sources | Error> => {
+  return promise;
 };
 
 /**

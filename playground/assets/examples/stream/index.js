@@ -1,5 +1,15 @@
 const result = document.getElementById('result-text');
 
+const styles = {
+  font  : {
+    size: '48px'
+  },
+  width : 4,
+  top   : 64,
+  bottom: 64,
+  left  : 124
+};
+
 X('stream').setup({
   audio: true,
   video: false
@@ -9,6 +19,7 @@ X('stream')
   .module('analyser')
   .domain('time', 0)
   .setup(document.querySelector('canvas'))
+  .param({ styles })
   .activate();
 
 X('stream')

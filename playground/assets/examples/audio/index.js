@@ -22,10 +22,21 @@ X('audio').setup({
   }
 });
 
+const styles = {
+  font  : {
+    size: '48px'
+  },
+  width : 4,
+  top   : 64,
+  bottom: 64,
+  left  : 124
+};
+
 X('audio')
   .module('analyser')
   .domain('timeoverview', 0)
   .setup(document.querySelector('canvas'))
+  .param({ styles })
   .drag((event, startTime, endTime, mode, direction) => {
     X('audio').param({ currentTime: endTime });
   })

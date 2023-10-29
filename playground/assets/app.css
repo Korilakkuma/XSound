@@ -244,6 +244,11 @@ textarea {
   margin: 4px 0 0;
 }
 
+canvas {
+  width: 1200px;
+  height: 150px;
+}
+
 canvas,
 svg {
   background-color: #000;

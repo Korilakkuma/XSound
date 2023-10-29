@@ -24,11 +24,21 @@ X('audio').setup({
   }
 });
 
+const styles = {
+  font  : {
+    size: '48px'
+  },
+  width : 4,
+  top   : 64,
+  bottom: 64,
+  left  : 124
+};
+
 X('mixer')
   .module('analyser')
   .domain('time', 0)
   .setup(document.querySelector('canvas'))
-  .param({ interval: -1 })
+  .param({ interval: -1, styles })
   .activate();
 
 document.getElementById('button-start').onclick = () => {

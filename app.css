@@ -36,6 +36,14 @@ header,
   overflow: hidden;
 }
 
+aside > section {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  grid-template-columns: repeat(3, auto);
+  gap: 12px;
+  margin-top: 12px;
+}
+
 header,
 aside {
   background-color: #000;
@@ -120,14 +128,6 @@ aside > img {
   transform: scale(0.5);
 }
 
-.section > section {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 12px;
-}
-
 h1 {
   font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
   font-size: calc(64 * ((100vw - 320px) / (1280 - 320)) + 64px);
@@ -189,9 +189,9 @@ h1 > span:last-child {
 }
 
 nav {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 12px;
   margin-top: 48px;
 }
 
@@ -205,7 +205,6 @@ nav > a:first-of-type {
 }
 
 nav > a:last-of-type {
-  margin-left: 12px;
   color: #c000c0;
   background-color: rgb(0 0 0 / 0%);
 }
@@ -222,14 +221,12 @@ nav > a:last-of-type:hover {
 }
 
 aside h3 {
-  min-width: 90px;
   text-transform: uppercase;
 }
 
 pre {
-  width: 480px;  /* HACK */
+  max-width: 480px;  /* HACK */
   padding: 8px 16px;
-  margin-left: 16px;
   overflow-x: auto;
   font-size: 16px;
   color: #212121;
@@ -238,7 +235,6 @@ pre {
 
 button[type="button"] {
   padding: 12px 16px;
-  margin-left: 16px;
   font-size: 16px;
   color: #eee;
   text-transform: uppercase;

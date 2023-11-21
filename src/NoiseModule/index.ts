@@ -1,5 +1,5 @@
 import { SoundModule, SoundModuleParams, Module, ModuleName } from '../SoundModule';
-import { NoiseModuleProcessor } from './NoiseModuleProcessor';
+import { NoiseModuleProcessor, NoiseProcessingMessageEventData } from './NoiseModuleProcessor';
 import { Analyser } from '../SoundModule/Analyser';
 import { Recorder } from '../SoundModule/Recorder';
 import { Autopanner } from '../SoundModule/Effectors/Autopanner';
@@ -98,6 +98,10 @@ export class NoiseModule extends SoundModule {
 
     this.on(startTime);
 
+    const message: NoiseProcessingMessageEventData = { processing: true };
+
+    this.processor.port.postMessage(message);
+
     return this;
   }
 
@@ -112,6 +116,10 @@ export class NoiseModule extends SoundModule {
     this.envelopegenerator.stop(stopTime);
 
     this.off(stopTime);
+
+    const message: NoiseProcessingMessageEventData = { processing: false };
+
+    this.processor.port.postMessage(message);
 
     return this;
   }

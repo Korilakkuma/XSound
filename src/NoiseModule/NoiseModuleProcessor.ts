@@ -1,12 +1,18 @@
 import { AudioWorkletProcessor, Inputs, Outputs } from '../worklet';
 import { NoiseType, NoiseModuleParams } from './';
 
+export type NoiseProcessingMessageEventData = {
+  processing?: boolean;
+};
+
 /**
  * This class extends `AudioWorkletProcessor`.
  * Overrides `process` method for generating noise.
  * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class NoiseModuleProcessor extends AudioWorkletProcessor {
+  private processing = false;
+
   private type: NoiseType = 'whitenoise';
 
   private b0 = 0;
@@ -22,7 +28,11 @@ export class NoiseModuleProcessor extends AudioWorkletProcessor {
   constructor() {
     super();
 
-    this.port.onmessage = (event: MessageEvent<NoiseModuleParams>) => {
+    this.port.onmessage = (event: MessageEvent<NoiseModuleParams & NoiseProcessingMessageEventData>) => {
+      if (typeof event.data.processing === 'boolean') {
+        this.processing = event.data.processing;
+      }
+
       if (event.data.type) {
         this.type = event.data.type;
       }
@@ -31,6 +41,11 @@ export class NoiseModuleProcessor extends AudioWorkletProcessor {
 
   /** @override */
   protected override process(_inputs: Inputs, outputs: Outputs): boolean {
+    if (!this.processing) {
+      // Prevent from calling private method for noise processor if not active
+      return true;
+    }
+
     const output = outputs[0];
 
     for (let channelNumber = 0, numberOfChannels = output.length; channelNumber < numberOfChannels; channelNumber++) {

@@ -44,22 +44,12 @@ export class NoiseModuleProcessor extends AudioWorkletProcessor {
 
         case 'pinknoise': {
           // ref: https://noisehack.com/generate-noise-web-audio-api/#pink-noise
-          this.b0 = 0;
-          this.b1 = 0;
-          this.b2 = 0;
-          this.b3 = 0;
-          this.b4 = 0;
-          this.b5 = 0;
-          this.b6 = 0;
-
           this.generatePinkNoise(output[channelNumber], bufferSize);
           break;
         }
 
         case 'browniannoise': {
           // ref: https://noisehack.com/generate-noise-web-audio-api/#brownian-noise
-          this.lastOut = 0;
-
           this.generateBrownianNoise(output[channelNumber], bufferSize);
           break;
         }

@@ -41,16 +41,11 @@ header a img {
 }
 
 main {
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  -webkit-justify-content: flex-start;
-  justify-content: flex-start;
-
+  align-items: flex-start;
+  gap: 24px;
   margin: 48px auto;
   max-width: 1280px;
-  width: 90%;
 }
 
 main a {
@@ -63,6 +58,12 @@ main a {
   transition: background-color 0.4s ease;
 }
 
+footer a {
+  color: #c0c;
+  text-decoration: none;
+  transition: color ease 0.6s;
+}
+
 main a:hover {
   background-color: #800080;
 }
@@ -71,8 +72,14 @@ main a:focus {
   outline: 1px dotted #800080;
 }
 
+.buttons {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
 .CodeMirror {
-  width: 932px;
+  width: 885px;
   height: auto;
   font-family: "Source Code Pro", monospace;
   font-size: 14px;
@@ -102,12 +109,6 @@ main a:focus {
   overflow-x: auto !important;  /* overwrite styles by abcjs */
 }
 
-#melody-note > svg,
-#bass-note > svg {
-  color: #333;
-  background-color: #fff;
-}
-
 h2 {
   font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
   font-size: 24px;
@@ -116,32 +117,37 @@ h2 {
 }
 
 fieldset {
-  margin-left: 24px;
+  display: grid;
+  grid-template-rows: repeat(7, auto);
+  grid-template-columns: repeat(3, auto);
+  gap: 12px;
   border: none;
 }
 
 legend {
+  grid-area: 1 / 1 / 2 / 4;
   font-size: 24px;
   text-transform: uppercase;
 }
 
-fieldset > div {
-  margin-top: 12px;
+#button-start {
+  grid-area: 1 / 1 / 2 / 2;
 }
 
-fieldset > div:last-child {
-  overflow-x: scroll;
-  width: 368px;
+#button-stop {
+  grid-area: 1 / 2 / 2 / 3;
 }
 
-.buttons {
-  display: flex;
-  align-items: stretch;
+#button-uploader {
+  grid-area: 1 / 3 / 2 / 4;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 button {
   cursor: pointer;
-  margin-right: 12px;
   border: none;
   min-height: 48px;
   padding: 0 32px;
@@ -149,14 +155,6 @@ button {
   background-color: #c0c;
   text-transform: uppercase;
   transition: background-color 0.4s ease;
-}
-
-#button-uploader {
-  margin-right: 0;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 button:hover {
@@ -167,22 +165,13 @@ button:focus {
   outline: 1px dotted #800080;
 }
 
-#module-parameters-controller {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: flex-end;
-  align-items: flex-end;
-}
-
-#module-parameters-controller > label {
+fieldset label {
   display: block;
   width: 100%;
 }
 
 select {
-  -webkit-appearance: none;
+  grid-area: 3 / 1 / 4 / 4;
   cursor: pointer;
   border: 2px solid #eee;
   padding: 12px 16px;
@@ -200,7 +189,6 @@ select:focus {
 }
 
 #select-code {
-  margin-right: 12px;
   padding: 12px 72px;
   width: auto;
   color: #666;
@@ -223,16 +211,10 @@ textarea {
   transition: background-color 0.4s ease;
 }
 
-input[type="text"]:focus,
-textarea:focus {
-  outline: 1px dotted #999;
-  background-color: #eee;
-}
-
 textarea {
+  grid-area: 4 / 1 / 5 / 4;
   display: block;
   box-sizing: border-box;
-  margin-top: 4px;
   width: 100%;
   height: 10rem;
   font-family: "Source Code Pro", monospace;
@@ -240,17 +222,36 @@ textarea {
   color: #666;
 }
 
+input[type="text"]:focus,
+textarea:focus {
+  outline: 1px dotted #999;
+  background-color: #eee;
+}
+
 #button-set-parameters {
-  margin: 4px 0 0;
+  grid-area: 5 / 1 / 6 / 4;
+}
+
+.visualizer-container {
+  max-width: 375px;
+  overflow-x: auto;
+}
+
+.visualizer-container:nth-of-type(1) {
+  grid-area: 6 / 1 / 7 / 4;
+}
+
+.visualizer-container:nth-of-type(2) {
+  grid-area: 7 / 1 / 8 / 4;
 }
 
 canvas {
   width: 1200px;
   height: 150px;
+  background-color: #000;
 }
 
-canvas,
-svg {
+.visualizer-container > svg {
   background-color: #000;
 }
 
@@ -263,12 +264,6 @@ footer {
 footer > p {
   margin: 16px 0;
   color: #fafafa;
-}
-
-footer a {
-  color: #c0c;
-  text-decoration: none;
-  transition: color ease 0.6s;
 }
 
 footer a:hover {

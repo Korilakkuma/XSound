@@ -87,56 +87,52 @@ document.getElementById(&apos;button-stop&apos;).onclick = () =&gt; {
       </div>
       <fieldset id="ui" hidden>
         <legend>Input Forms</legend>
-        <div class="buttons">
-          <button type="button" id="button-start">Start</button>
-          <button type="button" id="button-stop">Stop</button>
-          <button type="button" id="button-uploader">Upload</button>
-          <input type="file" accept="audio/*" hidden />
-        </div>
-        <div id="module-parameters-controller">
-          <label>
-            <select id="select-module">
-              <option value="default">Select Module</option>
-              <option value="analyser">Analyser</option>
-              <optgroup label="Visualizer">
-                <option value="timeoverview">Time Overview</option>
-                <option value="time">Time</option>
-                <option value="fft">FFT</option>
-              </optgroup>
-              <option value="autopanner">Autopanner</option>
-              <option value="bitcrusher">BitCrusher</option>
-              <option value="chorus">Chorus</option>
-              <option value="compressor">Compressor</option>
-              <option value="delay">Delay</option>
-              <option value="envelopegenerator">Envelope Generator</option>
-              <option value="equalizer">Equalizer</option>
-              <option value="filter">Filter</option>
-              <option value="flanger">Flanger</option>
-              <option value="fuzz">Fuzz</option>
-              <option value="listener">Listener</option>
-              <option value="noisegate">Noise Gate</option>
-              <option value="noisesuppressor">Noise Suppressor</option>
-              <option value="overdrive">OverDrive</option>
-              <option value="panner">Panner</option>
-              <option value="phaser">Phaser</option>
-              <option value="pitchshifter">Pitch Shifter</option>
-              <option value="preamp">Preamp</option>
-              <option value="reverb">Reverb</option>
-              <option value="ringmodulator">Ring Modulator</option>
-              <option value="stereo">Stereo</option>
-              <option value="tremolo">Tremolo</option>
-              <option value="vocalcanceler">Vocal Canceler</option>
-              <option value="wah">Wah</option>
-              <option value="glide">Glide</option>
-            </select>
-          </label>
-          <textarea id="textarea-param-json">{
+        <button type="button" id="button-start">Start</button>
+        <button type="button" id="button-stop">Stop</button>
+        <button type="button" id="button-uploader">Upload</button>
+        <input type="file" accept="audio/*" hidden />
+        <select id="select-module">
+          <option value="default">Select Module</option>
+          <option value="analyser">Analyser</option>
+          <optgroup label="Visualizer">
+            <option value="timeoverview">Time Overview</option>
+            <option value="time">Time</option>
+            <option value="fft">FFT</option>
+          </optgroup>
+          <option value="autopanner">Autopanner</option>
+          <option value="bitcrusher">BitCrusher</option>
+          <option value="chorus">Chorus</option>
+          <option value="compressor">Compressor</option>
+          <option value="delay">Delay</option>
+          <option value="envelopegenerator">Envelope Generator</option>
+          <option value="equalizer">Equalizer</option>
+          <option value="filter">Filter</option>
+          <option value="flanger">Flanger</option>
+          <option value="fuzz">Fuzz</option>
+          <option value="listener">Listener</option>
+          <option value="noisegate">Noise Gate</option>
+          <option value="noisesuppressor">Noise Suppressor</option>
+          <option value="overdrive">OverDrive</option>
+          <option value="panner">Panner</option>
+          <option value="phaser">Phaser</option>
+          <option value="pitchshifter">Pitch Shifter</option>
+          <option value="preamp">Preamp</option>
+          <option value="reverb">Reverb</option>
+          <option value="ringmodulator">Ring Modulator</option>
+          <option value="stereo">Stereo</option>
+          <option value="tremolo">Tremolo</option>
+          <option value="vocalcanceler">Vocal Canceler</option>
+          <option value="wah">Wah</option>
+          <option value="glide">Glide</option>
+        </select>
+        <textarea id="textarea-param-json">{
   &quot;mastervolume&quot;: 1
 }</textarea>
-          <button id="button-set-parameters">Set</button>
-        </div>
-        <div>
+        <button id="button-set-parameters">Set</button>
+        <div class="visualizer-container">
           <canvas width="4800" height="600"></canvas>
+        </div>
+        <div class="visualizer-container">
           <svg width="1200" height="150"></svg>
         </div>
       </fieldset>

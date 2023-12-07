@@ -225,6 +225,8 @@ aside h3 {
 }
 
 pre {
+  display: flex;
+  align-items: center;
   max-width: 480px;  /* HACK */
   padding: 8px 16px;
   overflow-x: auto;

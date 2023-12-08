@@ -18,6 +18,10 @@ export class RecorderProcessor extends AudioWorkletProcessor {
 
   /** @override */
   protected override process(inputs: Inputs): boolean {
+    if ((inputs.length === 0) || (inputs[0].length === 0)) {
+      return true;
+    }
+
     const message: RecorderProcessorMessageEventData = { inputs };
 
     this.port.postMessage(message);

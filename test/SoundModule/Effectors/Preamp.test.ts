@@ -79,19 +79,21 @@ describe(Preamp.name, () => {
 
   describe(preamp.param.name, () => {
     const defaultPreEQParams: PreEqualizerParams = {
-      state: false,
-      curve: null,
-      gain : 0.5,
-      lead : 0.5
+      state     : false,
+      curve     : null,
+      oversample: '4x',
+      gain      : 0.5,
+      lead      : 0.5
     };
 
     const defaultPostEQParams: PostEqualizerParams = {
-      state    : false,
-      curve    : null,
-      bass     : 0,
-      middle   : 0,
-      treble   : 0,
-      frequency: 500
+      state     : false,
+      curve     : null,
+      oversample: '4x',
+      bass      : 0,
+      middle    : 0,
+      treble    : 0,
+      frequency : 500
     };
 
     const defaultCabinetParams: CabinetParams = {
@@ -107,19 +109,21 @@ describe(Preamp.name, () => {
     };
 
     const preEQParams: PreEqualizerParams = {
-      state: true,
-      curve: new Float32Array([0, 0, 0, 0]),
-      gain : 0.75,
-      lead : 0.5
+      state     : true,
+      curve     : new Float32Array([0, 0, 0, 0]),
+      oversample: 'none',
+      gain      : 0.75,
+      lead      : 0.5
     };
 
     const postEQParams: PostEqualizerParams = {
-      state    : true,
-      curve    : new Float32Array([0, 0, 0, 0]),
-      bass     : 10,
-      middle   : -10,
-      treble   : 10,
-      frequency: 1000
+      state     : true,
+      curve     : new Float32Array([0, 0, 0, 0]),
+      oversample: 'none',
+      bass      : 10,
+      middle    : -10,
+      treble    : 10,
+      frequency : 1000
     };
 
     const cabinetParams: CabinetParams = {

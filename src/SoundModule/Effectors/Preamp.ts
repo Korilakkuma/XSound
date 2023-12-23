@@ -5,6 +5,7 @@ export type PreampCurve = Float32Array | null;
 export type PreEqualizerParams = {
   state?: boolean,
   curve?: PreampCurve,
+  oversample?: OverSampleType,
   gain?: number,
   lead?: number
 };
@@ -12,6 +13,7 @@ export type PreEqualizerParams = {
 export type PostEqualizerParams = {
   state?: boolean,
   curve?: PreampCurve,
+  oversample?: OverSampleType,
   bass?: number,
   middle?: number,
   treble?: number,
@@ -28,7 +30,7 @@ export type PreampParams = {
   samples?: number,
   pre?: PreEqualizerParams,
   post?: PostEqualizerParams,
-  cabinet?: CabinetParams
+  cabinet?: CabinetParams,
 };
 
 /**
@@ -62,6 +64,8 @@ export class PreEqualizer extends Effector {
     this.highpass3 = context.createBiquadFilter();
 
     // Initialize parameters
+    this.shaper.oversample = '4x';
+
     this.gain.gain.value     = 0.5;
     this.leadGain.gain.value = 0.5;
 
@@ -127,6 +131,7 @@ export class PreEqualizer extends Effector {
    */
   public param(params: 'state'): boolean;
   public param(params: 'curve'): Float32Array | null;
+  public param(params: 'oversample'): OverSampleType;
   public param(params: 'gain'): number;
   public param(params: 'lead'): number;
   public param(params: PreEqualizerParams): void;
@@ -138,6 +143,10 @@ export class PreEqualizer extends Effector {
         }
 
         case 'curve': {
+          return this.shaper.curve;
+        }
+
+        case 'oversample': {
           return this.shaper.curve;
         }
 
@@ -175,6 +184,16 @@ export class PreEqualizer extends Effector {
           break;
         }
 
+        case 'oversample': {
+          if (typeof value === 'string') {
+            if ((value === 'none') || (value === '2x') || (value === '4x')) {
+              this.shaper.oversample = value;
+            }
+          }
+
+          break;
+        }
+
         case 'gain': {
           if (typeof value === 'number') {
             this.gain.gain.value = value;
@@ -197,10 +216,11 @@ export class PreEqualizer extends Effector {
   /** @override */
   public override params(): Required<PreEqualizerParams> {
     return {
-      state: this.isActive,
-      curve: this.shaper.curve,
-      gain : this.gain.gain.value,
-      lead : this.leadGain.gain.value
+      state     : this.isActive,
+      curve     : this.shaper.curve,
+      gain      : this.gain.gain.value,
+      lead      : this.leadGain.gain.value,
+      oversample: this.shaper.oversample
     };
   }
 }
@@ -233,6 +253,8 @@ export class PostEqualizer extends Effector {
     this.treble = context.createBiquadFilter();
 
     // Initialize parameters
+    this.shaper.oversample = '4x';
+
     this.bass.type   = 'lowshelf';
     this.middle.type = 'peaking';
     this.treble.type = 'highshelf';
@@ -302,6 +324,7 @@ export class PostEqualizer extends Effector {
    */
   public param(params: 'state'): boolean;
   public param(params: 'curve'): Float32Array | null;
+  public param(params: 'oversample'): OverSampleType;
   public param(params: 'bass'): number;
   public param(params: 'middle'): number;
   public param(params: 'treble'): number;
@@ -316,6 +339,10 @@ export class PostEqualizer extends Effector {
 
         case 'curve': {
           return this.shaper.curve;
+        }
+
+        case 'oversample': {
+          return this.shaper.oversample;
         }
 
         case 'bass': {
@@ -360,6 +387,16 @@ export class PostEqualizer extends Effector {
           break;
         }
 
+        case 'oversample': {
+          if (typeof value === 'string') {
+            if ((value === 'none') || (value === '2x') || (value === '4x')) {
+              this.shaper.oversample = value;
+            }
+          }
+
+          break;
+        }
+
         case 'bass': {
           if (typeof value === 'number') {
             this.bass.gain.value = value;
@@ -398,12 +435,13 @@ export class PostEqualizer extends Effector {
   /** @override */
   public override params(): Required<PostEqualizerParams> {
     return {
-      state    : this.isActive,
-      curve    : this.shaper.curve,
-      bass     : this.bass.gain.value,
-      middle   : this.middle.gain.value,
-      treble   : this.treble.gain.value,
-      frequency: this.middle.frequency.value
+      state     : this.isActive,
+      curve     : this.shaper.curve,
+      oversample: this.shaper.oversample,
+      bass      : this.bass.gain.value,
+      middle    : this.middle.gain.value,
+      treble    : this.treble.gain.value,
+      frequency : this.middle.frequency.value
     };
   }
 }

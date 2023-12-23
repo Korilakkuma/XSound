@@ -3,7 +3,8 @@ import { Effector } from './Effector';
 export type OverDriveParams = {
   state?: boolean,
   drive?: number,
-  level?: number
+  level?: number,
+  oversample?: OverSampleType
 };
 
 /**
@@ -62,6 +63,7 @@ export class OverDrive extends Effector {
     const outputCurve = new Float32Array([2, 2, 2, 2, 2, 0.9, 0.5, 0.35, 0.3]);
 
     this.shaper.curve       = curve;
+    this.shaper.oversample  = '4x';
     this.inputShaper.curve  = inputCurve;
     this.outputShaper.curve = outputCurve;
 
@@ -156,6 +158,7 @@ export class OverDrive extends Effector {
   public param(params: 'state'): boolean;
   public param(params: 'drive'): number;
   public param(params: 'level'): number;
+  public param(params: 'oversample'): OverSampleType;
   public param(params: OverDriveParams): OverDrive;
   public param(params: keyof OverDriveParams | OverDriveParams): OverDriveParams[keyof OverDriveParams] | OverDrive {
     if (typeof params === 'string') {
@@ -170,6 +173,10 @@ export class OverDrive extends Effector {
 
         case 'level': {
           return this.level.gain.value;
+        }
+
+        case 'oversample': {
+          return this.shaper.oversample;
         }
       }
     }
@@ -200,6 +207,16 @@ export class OverDrive extends Effector {
 
           break;
         }
+
+        case 'oversample': {
+          if (typeof value === 'string') {
+            if ((value === 'none') || (value === '2x') || (value === '4x')) {
+              this.shaper.oversample = value;
+            }
+          }
+
+          break;
+        }
       }
     }
 
@@ -209,9 +226,10 @@ export class OverDrive extends Effector {
   /** @override */
   public override params(): Required<OverDriveParams> {
     return {
-      state: this.isActive,
-      drive: this.drive,
-      level: this.level.gain.value
+      state     : this.isActive,
+      drive     : this.drive,
+      level     : this.level.gain.value,
+      oversample: this.shaper.oversample
     };
   }
 

@@ -165,13 +165,15 @@ describe(OverDrive.name, () => {
 
   describe(overdrive.param.name, () => {
     const defaultParams: OverDriveParams = {
-      drive: 0,
-      level: 1
+      drive     : 0,
+      level     : 1,
+      oversample: '4x',
     };
 
     const params: OverDriveParams = {
-      drive: 0.5,
-      level: 0.5
+      drive     : 0.5,
+      level     : 0.5,
+      oversample: 'none'
     };
 
     afterAll(() => {
@@ -191,14 +193,19 @@ describe(OverDrive.name, () => {
     test('should return `level`', () => {
       expect(overdrive.param('level')).toBeCloseTo(0.5, 1);
     });
+
+    test('should return `oversample`', () => {
+      expect(overdrive.param('oversample')).toBe('none');
+    });
   });
 
   describe(overdrive.params.name, () => {
     test('should return parameters for overdrive effector as associative array', () => {
       expect(overdrive.params()).toStrictEqual({
-        state: false,
-        drive: 0,
-        level: 1
+        state     : false,
+        drive     : 0,
+        level     : 1,
+        oversample: '4x'
       });
     });
   });

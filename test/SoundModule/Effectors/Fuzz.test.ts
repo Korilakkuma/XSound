@@ -185,13 +185,15 @@ describe(Fuzz.name, () => {
 
   describe(fuzz.param.name, () => {
     const defaultParams: FuzzParams = {
-      drive: 0,
-      level: 1
+      drive     : 0,
+      level     : 1,
+      oversample: '4x'
     };
 
     const params: FuzzParams = {
-      drive: 0.5,
-      level: 0.5
+      drive     : 0.5,
+      level     : 0.5,
+      oversample: 'none'
     };
 
     afterAll(() => {
@@ -211,14 +213,19 @@ describe(Fuzz.name, () => {
     test('should return `level`', () => {
       expect(fuzz.param('level')).toBeCloseTo(0.5, 1);
     });
+
+    test('should return `oversample`', () => {
+      expect(fuzz.param('oversample')).toBe('none');
+    });
   });
 
   describe(fuzz.params.name, () => {
     test('should return parameters for fuzz effector as associative array', () => {
       expect(fuzz.params()).toStrictEqual({
-        state: false,
-        drive: 0,
-        level: 1
+        state     : false,
+        drive     : 0,
+        level     : 1,
+        oversample: '4x'
       });
     });
   });

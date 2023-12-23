@@ -3,7 +3,8 @@ import { Effector } from './Effector';
 export type FuzzParams = {
   state?: boolean,
   drive?: number,
-  level?: number
+  level?: number,
+  oversample?: OverSampleType
 };
 
 /**
@@ -56,6 +57,9 @@ export class Fuzz extends Effector {
 
     this.positiveShaper.curve = curve;
     this.negativeShaper.curve = curve;
+
+    this.positiveShaper.oversample = '4x';
+    this.negativeShaper.oversample = '4x';
 
     this.positiveInputGain.gain.value =  1;
     this.negativeInputGain.gain.value = -1;
@@ -162,6 +166,7 @@ export class Fuzz extends Effector {
   public param(params: 'state'): boolean;
   public param(params: 'drive'): number;
   public param(params: 'level'): number;
+  public param(params: 'oversample'): OverSampleType;
   public param(params: FuzzParams): Fuzz;
   public param(params: keyof FuzzParams | FuzzParams): FuzzParams[keyof FuzzParams] | Fuzz {
     if (typeof params === 'string') {
@@ -176,6 +181,10 @@ export class Fuzz extends Effector {
 
         case 'level': {
           return this.level.gain.value;
+        }
+
+        case 'oversample': {
+          return this.positiveShaper.oversample;
         }
       }
     }
@@ -206,6 +215,17 @@ export class Fuzz extends Effector {
 
           break;
         }
+
+        case 'oversample': {
+          if (typeof value === 'string') {
+            if ((value === 'none') || (value === '2x') || (value === '4x')) {
+              this.positiveShaper.oversample = value;
+              this.negativeShaper.oversample = value;
+            }
+          }
+
+          break;
+        }
       }
     }
 
@@ -215,9 +235,10 @@ export class Fuzz extends Effector {
   /** @override */
   public override params(): Required<FuzzParams> {
     return {
-      state: this.isActive,
-      drive: this.drive,
-      level: this.level.gain.value
+      state     : this.isActive,
+      drive     : this.drive,
+      level     : this.level.gain.value,
+      oversample: this.positiveShaper.oversample
     };
   }
 

@@ -24,7 +24,7 @@ export class Ringmodulator extends Effector {
 
     // Initialize parameter
     this.amplitude.gain.value = 0;  // 0 +- depth
-    this.depth.gain.value     = 1;
+    this.depth.gain.value     = 0;
     this.rate.value           = 0;
 
     // `Ringmodulator` is not connected by default

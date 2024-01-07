@@ -31,7 +31,7 @@ export class Tree {
 
   /**
    * This method concatenates subtree as right subtree.
-   * @param {Tree} operator This argument is instance of `Tree` as syntax tree node.
+   * @param {Tree} node This argument is instance of `Tree` as syntax tree node.
    */
   public concat(node: Tree): void {
     this._right = node;  // Side Effect (Because of pointers that before and after trees have)

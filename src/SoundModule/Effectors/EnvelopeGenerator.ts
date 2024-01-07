@@ -259,7 +259,7 @@ export class EnvelopeGenerator implements Statable {
 
   /**
    * This method clears variables for managing instance of `GainNode`.
-   * @param {boolean} isDisconnect This argument is in order to determine whether disconnect `AudioNode`.
+   * @param {boolean} disconnected This argument is in order to determine whether disconnect `AudioNode`.
    * @return {EnvelopeGenerator} This is returned for method chain.
    */
   public clear(disconnected: boolean): void {

@@ -206,7 +206,7 @@ export class PitchShifterProcessor extends AudioWorkletProcessor {
    * This method shifts pitch.
    * @param {Float32Array} inputs This argument is instance of `Float32Array` as input.
    * @param {Float32Array} outputs This argument is instance of `Float32Array` as output.
-   * @param {number} size This argument is FFT size (power of two).
+   * @param {number} fftSize This argument is FFT size (power of two).
    */
   private shift(inputs: Float32Array, outputs: Float32Array, fftSize: number): void {
     if (this.pitch === 1) {

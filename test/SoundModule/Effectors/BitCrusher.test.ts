@@ -165,11 +165,13 @@ describe(BitCrusher.name, () => {
 
   describe(bitcrusher.param.name, () => {
     const defaultParams: BitCrusherParams = {
-      bits: 0
+      bits      : 0,
+      oversample: '4x',
     };
 
     const params: BitCrusherParams = {
-      bits: 256
+      bits      : 256,
+      oversample: 'none'
     };
 
     afterAll(() => {
@@ -185,13 +187,18 @@ describe(BitCrusher.name, () => {
     test('should return `bits`', () => {
       expect(bitcrusher.param('bits')).toBeCloseTo(256, 0);
     });
+
+    test('should return `oversample`', () => {
+      expect(bitcrusher.param('oversample')).toBe('none');
+    });
   });
 
   describe(bitcrusher.params.name, () => {
     test('should return parameters for bit crusher effector as associative array', () => {
       expect(bitcrusher.params()).toStrictEqual({
-        state: false,
-        bits : 0
+        state     : false,
+        bits      : 0,
+        oversample: '4x'
       });
     });
   });

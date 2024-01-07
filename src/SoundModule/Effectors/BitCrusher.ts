@@ -2,7 +2,8 @@ import { Effector } from './Effector';
 
 export type BitCrusherParams = {
   state?: boolean,
-  bits?: number
+  bits?: number,
+  oversample?: OverSampleType
 };
 
 /**
@@ -59,6 +60,7 @@ export class BitCrusher extends Effector {
     }
 
     this.shaper.curve       = curve;
+    this.shaper.oversample  = '4x';
     this.inputShaper.curve  = inputCurve;
     this.outputShaper.curve = outputCurve;
 
@@ -153,6 +155,7 @@ export class BitCrusher extends Effector {
    */
   public param(params: 'state'): boolean;
   public param(params: 'bits'): number;
+  public param(params: 'oversample'): OverSampleType;
   public param(params: BitCrusherParams): BitCrusher;
   public param(params: keyof BitCrusherParams | BitCrusherParams): BitCrusherParams[keyof BitCrusherParams] | BitCrusher {
     if (typeof params === 'string') {
@@ -163,6 +166,10 @@ export class BitCrusher extends Effector {
 
         case 'bits': {
           return this.bits;
+        }
+
+        case 'oversample': {
+          return this.shaper.oversample;
         }
       }
     }
@@ -185,6 +192,16 @@ export class BitCrusher extends Effector {
 
           break;
         }
+
+        case 'oversample': {
+          if (typeof value === 'string') {
+            if ((value === 'none') || (value === '2x') || (value === '4x')) {
+              this.shaper.oversample = value;
+            }
+          }
+
+          break;
+        }
       }
     }
 
@@ -194,8 +211,9 @@ export class BitCrusher extends Effector {
   /** @override */
   public override params(): Required<BitCrusherParams> {
     return {
-      state: this.isActive,
-      bits : this.bits
+      state     : this.isActive,
+      bits      : this.bits,
+      oversample: this.shaper.oversample
     };
   }
 

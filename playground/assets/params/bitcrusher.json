@@ -1,4 +1,5 @@
 {
   "state": false,
-  "bits": 0
+  "bits": 0,
+  "oversample": "4x"
 }

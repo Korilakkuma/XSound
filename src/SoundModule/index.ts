@@ -285,16 +285,15 @@ export abstract class SoundModule implements Connectable {
 
   /**
    * This method installs customized effector.
-   * @param {string} effectorName This argument selects effector.
    * @param {Effector} effector This argument is subclass that extends `Effector` class.
-   * @return {Effector} Return value is instance of customized effector.
+   * @return {Effector} Return value is instance of customized effector (that extends `Effector` class).
    */
-  public install(effectorName: string, effector: Effector): Effector {
-    if (this.modules.every((module: Connectable) => module !== effector)) {
-      this.modules.push(effector);
-    }
+  public install<ExtendedEffector extends Effector>(effector: new (context: AudioContext) => ExtendedEffector): ExtendedEffector {
+    const extendedEffector = new effector(this.context);
 
-    return effector;
+    this.modules.push(extendedEffector);
+
+    return extendedEffector;
   }
 
   /**

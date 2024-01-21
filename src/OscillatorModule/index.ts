@@ -256,7 +256,7 @@ export class OscillatorModule extends SoundModule {
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
   public module(moduleName: 'wah'): Wah;
   public module(moduleName: 'glide'): Glide;
-  public module(moduleName: ModuleName | 'glide'): Module | Glide | null {
+  public module(moduleName: ModuleName | 'glide'): Module | Glide {
     switch (moduleName) {
       case 'analyser': {
         return this.analyser;

@@ -1,8 +1,5 @@
 {
   "name": "xsound",
-  "engines": {
-    "node": ">=18.0.0 <=20.10.x"
-  },
   "description": "XSound gives Web Developers Powerful Audio Features Easily !",
   "main": "index.html",
   "scripts": {

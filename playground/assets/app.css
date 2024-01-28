@@ -89,6 +89,7 @@ main a:focus {
 #result-text {
   margin: 12px 16px;
   max-width: 900px;
+  white-space: pre-line;
 }
 
 #melody-mml,

@@ -2,14 +2,7 @@ const result = document.getElementById('result-text');
 
 X('audio').setup({
   decodeCallback: (audiobuffer) => {
-    result.innerHTML = `
-      <ul>
-        <li>${audiobuffer.sampleRate} Hz</li>
-        <li>${audiobuffer.length}</li>
-        <li>${audiobuffer.duration} sec</li>
-        <li>${audiobuffer.numberOfChannels}</li>
-      </u>
-    `;
+    result.textContent = `sampling rate ${audiobuffer.sampleRate} Hz\n${audiobuffer.length} samples\n${audiobuffer.duration} sec\n${audiobuffer.numberOfChannels} channels\n`;
   },
   updateCallback: (source, currentTime) => {
     // do something ...
@@ -83,13 +76,7 @@ uploader.onchange = (event) => {
     successCallback : (event, arraybuffer) => {
       X('audio').ready(arraybuffer);
 
-      result.innerHTML = `
-        <ul>
-          <li>${file.name}</li>
-          <li>${file.type}</li>
-          <li>${file.size}</li>
-        </ul>
-      `;
+      result.textContent = `filename ${file.name}\nMIME ${file.type}\n${file.size} bytes\n`;
     },
     errorCalllback  : (event, textStatus) => {
       result.textContent = textStatus;

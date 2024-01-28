@@ -15,6 +15,14 @@ export class AudioModuleProcessor extends AudioWorkletProcessor {
     const input  = inputs[0];
     const output = outputs[0];
 
+    if ((input.length > 0) && (input[0].length > 0)) {
+      // @ts-ignore
+      if ((currentFrame % 16384) === 0) {
+        // Fire `onmessage` event (that main thread has) every `16384` samples
+        this.port.postMessage({});
+      }
+    }
+
     for (let channelNumber = 0, numberOfChannels = input.length; channelNumber < numberOfChannels; channelNumber++) {
       output[channelNumber].set(input[channelNumber]);
     }

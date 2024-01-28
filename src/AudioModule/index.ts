@@ -61,8 +61,6 @@ export class AudioModule extends SoundModule {
   private endedCallback?(source: AudioBufferSourceNode, currentTime: number): void;
   private errorCallback?(error: Error): void;
 
-  private updateId: number | null = null;
-
   /**
    * @param {AudioContext} context This argument is in order to use the interfaces of Web Audio API.
    */
@@ -202,16 +200,11 @@ export class AudioModule extends SoundModule {
 
     this.on(currentTime);
 
-    if (this.updateId) {
-      return this;
-    }
-
     const timeoverviewL = this.analyser.domain('timeoverview', 0);
     const timeoverviewR = this.analyser.domain('timeoverview', 1);
 
-    const interval = 0.1;
-
-    this.updateId = window.setInterval(() => {
+    // Invoke `onmessage` event handler every `16384` samples and update UI
+    this.processor.port.onmessage = () => {
       if (this.buffer === null) {
         this.end();
         return;
@@ -221,7 +214,7 @@ export class AudioModule extends SoundModule {
         const detune       = this.source.detune.value;
         const playbackRate = this.source.playbackRate.value + (detune / 1200);
 
-        this.currentTime += (interval * playbackRate);
+        this.currentTime += ((16384 / this.buffer.sampleRate) * playbackRate);
 
         if (this.updateCallback) {
           this.updateCallback(this.source, this.currentTime);
@@ -242,7 +235,7 @@ export class AudioModule extends SoundModule {
           this.end();
         }
       }
-    }, (interval * 1000));
+    };
 
     return this;
   }
@@ -254,11 +247,6 @@ export class AudioModule extends SoundModule {
   public stop(): AudioModule {
     if ((this.buffer === null) || this.stopped) {
       return this;
-    }
-
-    if (this.updateId) {
-      window.clearInterval(this.updateId);
-      this.updateId = null;
     }
 
     const stopTime = this.context.currentTime;

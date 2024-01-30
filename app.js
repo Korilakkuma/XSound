@@ -49,3 +49,7 @@ document.getElementById('button-cdn').addEventListener('mousedown', () => {
     })
     .catch(console.error);
 }, false);
+
+const date = new Date();
+
+document.getElementById('current-year').textContent = date.getFullYear().toString(10);

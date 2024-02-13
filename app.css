@@ -146,7 +146,7 @@ header h2 {
 
 .section > h2 {
   font-family: "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
-  font-size: calc(28 * ((100vw - 320px) / (1280 - 320)) + 28px);
+  font-size: 36px;
   font-weight: lighter;
   color: #c000c0;
   text-shadow: -1px -1px 1px #000;

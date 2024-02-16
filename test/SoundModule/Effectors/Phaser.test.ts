@@ -4,7 +4,7 @@ import { Phaser, PhaserParams } from '/src/SoundModule/Effectors/Phaser';
 describe(Phaser.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const phaser = new Phaser(context);
 
   describe(phaser.stop.name, () => {

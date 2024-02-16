@@ -4,7 +4,7 @@ import { Flanger, FlangerParams } from '/src/SoundModule/Effectors/Flanger';
 describe(Flanger.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const flanger = new Flanger(context);
 
   describe(flanger.stop.name, () => {

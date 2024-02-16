@@ -4,7 +4,7 @@ import { Fuzz, FuzzParams } from '/src/SoundModule/Effectors/Fuzz';
 describe(Fuzz.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const fuzz = new Fuzz(context);
 
   describe(fuzz.start.name, () => {

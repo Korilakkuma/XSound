@@ -10,7 +10,7 @@ jest.useFakeTimers();
 describe(Analyser.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const analyser = new Analyser(context);
 
   const channelL = 0;
@@ -30,7 +30,7 @@ describe(Analyser.name, () => {
 
       const buffer = context.createBuffer(1);
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       analyser.start('timeoverview', channelL, buffer);
 
       expect(startMock).toHaveBeenCalledTimes(1);
@@ -48,10 +48,10 @@ describe(Analyser.name, () => {
 
       const buffer = context.createBuffer(2);
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       analyser.start('timeoverview', channelL, buffer);
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       analyser.start('timeoverview', channelR, buffer);
 
       expect(startMock).toHaveBeenCalledTimes(2);

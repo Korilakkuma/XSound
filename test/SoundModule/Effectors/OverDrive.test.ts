@@ -4,7 +4,7 @@ import { OverDrive, OverDriveParams } from '/src/SoundModule/Effectors/OverDrive
 describe(OverDrive.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const overdrive = new OverDrive(context);
 
   describe(overdrive.start.name, () => {

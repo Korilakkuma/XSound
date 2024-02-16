@@ -164,7 +164,7 @@ describe(decode.name, () => {
     const successCallbackMock = jest.fn();
     const errorCallbackMock   = jest.fn();
 
-    // @ts-ignore
+    // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
     decode(mock, new ArrayBuffer(1024), successCallbackMock, errorCallbackMock);
 
     expect(successCallbackMock).toHaveBeenCalledTimes(1);

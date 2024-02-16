@@ -4,7 +4,7 @@ import { NoiseGate, NoiseGateParams } from '/src/SoundModule/Effectors/NoiseGate
 describe(NoiseGate.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const noisegate = new NoiseGate(context);
 
   describe(noisegate.param.name, () => {

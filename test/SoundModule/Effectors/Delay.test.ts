@@ -4,7 +4,7 @@ import { Delay, DelayParams } from '/src/SoundModule/Effectors/Delay';
 describe(Delay.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const delay = new Delay(context);
 
   describe(delay.connect.name, () => {

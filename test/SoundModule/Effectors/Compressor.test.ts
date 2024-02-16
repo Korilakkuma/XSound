@@ -4,7 +4,7 @@ import { Compressor, CompressorParams } from '/src/SoundModule/Effectors/Compres
 describe(Compressor.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const compressor = new Compressor(context);
 
   describe(compressor.connect.name, () => {

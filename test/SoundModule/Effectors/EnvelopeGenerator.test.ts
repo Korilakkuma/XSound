@@ -5,7 +5,7 @@ import { EnvelopeGenerator, EnvelopeGeneratorParams } from '/src/SoundModule/Eff
 describe(EnvelopeGenerator.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const envelopegenerator = new EnvelopeGenerator(context);
 
   describe(envelopegenerator.ready.name, () => {
@@ -27,7 +27,7 @@ describe(EnvelopeGenerator.name, () => {
       input.connect     = inputConnectMock;
       generator.connect = generatorConnectMock;
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       envelopegenerator.ready(0, input, output);
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
@@ -47,7 +47,7 @@ describe(EnvelopeGenerator.name, () => {
 
       input.connect = inputConnectMock;
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       envelopegenerator.ready(0, input, null);
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
@@ -68,7 +68,7 @@ describe(EnvelopeGenerator.name, () => {
 
       generator.connect = generatorConnectMock;
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       envelopegenerator.ready(0, null, output);
 
       expect(generatorConnectMock).toHaveBeenCalledTimes(1);
@@ -86,7 +86,7 @@ describe(EnvelopeGenerator.name, () => {
     // eslint-disable-next-line dot-notation
     const generator = envelopegenerator['generators'][0];
 
-    // @ts-ignore
+    // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
     envelopegenerator.ready(0, input, output);
 
     const cancelScheduledValuesMock   = jest.fn();

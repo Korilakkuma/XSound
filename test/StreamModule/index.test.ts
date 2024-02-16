@@ -33,7 +33,7 @@ type Params = Partial<Pick<StreamModuleParams, 'mastervolume' | 'output' | 'trac
 describe(StreamModule.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const streamModule = new StreamModule(context, 2048);
 
   streamModule.setup({

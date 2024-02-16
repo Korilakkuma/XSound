@@ -139,7 +139,7 @@ export class StreamModule extends SoundModule {
       const audioTracks = this.stream.getAudioTracks();
 
       for (let i = 0, len = audioTracks.length; i < len; i++) {
-        // @ts-ignore (HACK: `createMediaStreamTrackSource` is not defined)
+        // @ts-expect-error `createMediaStreamTrackSource` is not defined
         this.sources[i] = this.context.createMediaStreamTrackSource(audioTracks[i]);
 
         // MediaStreamTrackAudioSourceNode (Input) -> AudioWorkletNode -> ... -> AudioDestinationNode (Output)

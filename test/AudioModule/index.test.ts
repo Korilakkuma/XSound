@@ -33,7 +33,7 @@ type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 
 describe(AudioModule.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const audioModule = new AudioModule(context, 2048);
 
   describe(audioModule.setup.name, () => {
@@ -80,7 +80,7 @@ describe(AudioModule.name, () => {
       audioModule['connect']        = connectMock;
       audioModule['analyser'].start = analyserStartMock;
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       audioModule['buffer']  = new AudioBufferMock(new Float32Array([1, 0, 1]));
       audioModule['stopped'] = true;
       /* eslint-enable dot-notation */
@@ -94,7 +94,6 @@ describe(AudioModule.name, () => {
       audioModule['connect']        = originalConnect;
       audioModule['analyser'].start = originalAnalyserStart;
 
-      // @ts-ignore
       audioModule['buffer']  = null;
       audioModule['stopped'] = true;
       /* eslint-enable dot-notation */
@@ -115,7 +114,7 @@ describe(AudioModule.name, () => {
       audioModule['source'].stop   = sourceStopMock;
       audioModule['analyser'].stop = analyserStopMock;
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       audioModule['buffer']  = new AudioBufferMock(new Float32Array([1, 0, 1]));
       audioModule['stopped'] = false;
       /* eslint-enable dot-notation */
@@ -129,7 +128,6 @@ describe(AudioModule.name, () => {
       audioModule['source'].stop   = originalSourceStop;
       audioModule['analyser'].stop = originalAnalyserStop;
 
-      // @ts-ignore
       audioModule['buffer']  = null;
       audioModule['stopped'] = true;
       /* eslint-enable dot-notation */
@@ -213,7 +211,7 @@ describe(AudioModule.name, () => {
     test('should return `true` if `AudioBuffer` exists', () => {
       expect(audioModule.has()).toBe(false);
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       // eslint-disable-next-line dot-notation
       audioModule['buffer'] = new AudioBufferMock();
 
@@ -288,7 +286,7 @@ describe(AudioModule.name, () => {
 
   describe(audioModule.slice.name, () => {
     test('should return sliced `AudioBuffer`', () => {
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       // eslint-disable-next-line dot-notation
       audioModule['buffer'] = new AudioBufferMock();
 
@@ -302,7 +300,7 @@ describe(AudioModule.name, () => {
 
   describe(audioModule.sprite.name, () => {
     test('should return `AudioBufferSprite`', () => {
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       // eslint-disable-next-line dot-notation
       audioModule['buffer'] = new AudioBufferMock();
 

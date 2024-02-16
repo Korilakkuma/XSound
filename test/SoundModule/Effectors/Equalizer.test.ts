@@ -2,7 +2,9 @@ import { AudioContextMock } from '/mock/AudioContextMock';
 import { Equalizer, EqualizerParams } from '/src/SoundModule/Effectors/Equalizer';
 
 describe(Equalizer.name, () => {
-  const context = new AudioContextMock(); // @ts-ignore
+  const context = new AudioContextMock();
+
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const equalizer = new Equalizer(context);
 
   describe(equalizer.connect.name, () => {

@@ -33,7 +33,7 @@ type Params = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;
 describe(OneshotModule.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const oneshotModule = new OneshotModule(context, 2048);
 
   const resources = ['./piano.wav', './guitar.wav', './strings.wav'];
@@ -52,11 +52,11 @@ describe(OneshotModule.name, () => {
   beforeAll(() => {
     // eslint-disable-next-line dot-notation
     oneshotModule['buffers'] = [
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       new AudioBufferMock(new Float32Array([1, 0, 1]), new Float32Array([-1, 0, -1])),
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       new AudioBufferMock(new Float32Array([1, 0, 1]), new Float32Array([-1, 0, -1])),
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       new AudioBufferMock(new Float32Array([1, 0, 1]), new Float32Array([-1, 0, 1]))
     ];
   });

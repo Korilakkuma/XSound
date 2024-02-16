@@ -5,7 +5,7 @@ import { Reverb, ReverbParams } from '/src/SoundModule/Effectors/Reverb';
 describe(Reverb.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const reverb = new Reverb(context);
 
   describe(reverb.connect.name, () => {
@@ -93,7 +93,7 @@ describe(Reverb.name, () => {
     };
 
     const params: ReverbParams = {
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       buffer: audiobuffer,
       dry   : 0.5,
       wet   : 1,
@@ -133,7 +133,7 @@ describe(Reverb.name, () => {
 
   describe(reverb.add.name, () => {
     test('use `AudioBuffer`', () => {
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       reverb.add(new AudioBufferMock(new Float32Array([1, 0, -1, 0])));
 
       // eslint-disable-next-line dot-notation
@@ -174,7 +174,7 @@ describe(Reverb.name, () => {
       const buffer2 = new AudioBufferMock(new Float32Array([1, 0, -1, 0]));
       const buffer3 = new AudioBufferMock(new Float32Array([1, 0, -1, 0]));
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       reverb.preset({ rirs: [buffer1, buffer2, buffer3] });
 
       // eslint-disable-next-line dot-notation

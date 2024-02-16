@@ -4,7 +4,7 @@ import { Wah, WahParams } from '/src/SoundModule/Effectors/Wah';
 describe(Wah.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const wah = new Wah(context);
 
   describe(wah.stop.name, () => {

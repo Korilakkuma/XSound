@@ -4,7 +4,7 @@ import { BitCrusher, BitCrusherParams } from '/src/SoundModule/Effectors/BitCrus
 describe(BitCrusher.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const bitcrusher = new BitCrusher(context);
 
   describe(bitcrusher.start.name, () => {

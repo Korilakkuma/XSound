@@ -31,7 +31,7 @@ import { ProcessorModule } from '/src/ProcessorModule';
 describe(ProcessorModule.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const processorModule = new ProcessorModule(context, 2048);
 
   processorModule.setup('test-processor');

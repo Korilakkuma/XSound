@@ -4,7 +4,7 @@ import { Chorus, ChorusParams } from '/src/SoundModule/Effectors/Chorus';
 describe(Chorus.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const chorus = new Chorus(context);
 
   describe(chorus.stop.name, () => {

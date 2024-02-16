@@ -5,7 +5,7 @@ import { Glide, GlideParams } from '/src/OscillatorModule/Glide';
 describe(Glide.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const glide = new Glide(context);
 
   describe(glide.ready.name, () => {
@@ -45,7 +45,7 @@ describe(Glide.name, () => {
       oscillator.frequency.linearRampToValueAtTime      = linearRampToValueAtTimeMock;
       oscillator.frequency.exponentialRampToValueAtTime = exponentialRampToValueAtTimeMock;
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       glide.start(oscillator, 5);
 
       expect(cancelScheduledValuesMock).toHaveBeenCalledTimes(1);
@@ -55,7 +55,7 @@ describe(Glide.name, () => {
 
       glide.param({ type: 'exponential' });
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       glide.start(oscillator, 5);
 
       expect(cancelScheduledValuesMock).toHaveBeenCalledTimes(2);

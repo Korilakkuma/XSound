@@ -35,13 +35,13 @@ type Params = Partial<Pick<SoundModuleParams, 'mastervolume'>>;
 describe(MixerModule.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const mixerModule = new MixerModule(context, 2048);
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const oscillatorModule = new OscillatorModule(context, 2048);
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const oneshotModule = new OneshotModule(context, 2048);
 
   const sources = [

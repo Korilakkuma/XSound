@@ -46,7 +46,7 @@ describe(MML.name, () => {
     test('should call `stop` and `clear` method. And, should set instance of `Part`', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -80,7 +80,7 @@ describe(MML.name, () => {
     test('should call `start` method each `Part`', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -109,7 +109,7 @@ describe(MML.name, () => {
     test('should call `stop` method each `Part`', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -140,7 +140,7 @@ describe(MML.name, () => {
     test('should return MML string', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -159,7 +159,7 @@ describe(MML.name, () => {
     test('should return array that contains MML string', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -177,7 +177,7 @@ describe(MML.name, () => {
     test('should return array that contains instance of `Sequence`', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -205,7 +205,7 @@ describe(MML.name, () => {
     test('should return array that contains instance of `Sequence` from the all of MML parts', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -234,7 +234,7 @@ describe(MML.name, () => {
     test('should return string that represents MML syntax tree', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -257,7 +257,7 @@ describe(MML.name, () => {
     test('should return `true`', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -279,7 +279,7 @@ describe(MML.name, () => {
     test('should return `false`', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -305,7 +305,7 @@ describe(MML.name, () => {
     test('should set index each `Part`', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [
@@ -337,7 +337,7 @@ describe(MML.name, () => {
     test('should call `stop` method each `Part`. And `Part` should be none', () => {
       const context = new AudioContextMock();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       const source = new OscillatorModule(context, 2048);
 
       const mmls = [

@@ -4,7 +4,7 @@ import { PitchShifter, PitchShifterParams } from '/src/SoundModule/Effectors/Pit
 describe(PitchShifter.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const pitchshifter = new PitchShifter(context);
 
   describe(pitchshifter.connect.name, () => {

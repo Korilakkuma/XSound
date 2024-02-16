@@ -5,7 +5,7 @@ import { Oscillator, OscillatorParams, OscillatorCustomType } from '/src/Oscilla
 describe(Oscillator.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const oscillator = new Oscillator(context, false);
 
   describe(oscillator.ready.name, () => {
@@ -21,7 +21,7 @@ describe(Oscillator.name, () => {
 
       oscillator.activate();
 
-      // @ts-ignore
+      // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
       oscillator.ready(new OscillatorNodeMock());
 
       expect(connectMock).toHaveBeenCalledTimes(1);

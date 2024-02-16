@@ -4,7 +4,7 @@ import { Listener, ListenerParams } from '/src/SoundModule/Effectors/Listener';
 describe(Listener.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const listener = new Listener(context);
 
   describe(listener.param.name, () => {

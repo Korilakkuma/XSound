@@ -32,7 +32,7 @@ type Params = Partial<Pick<NoiseModuleParams, 'mastervolume' | 'type'>>;
 describe(NoiseModule.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const noiseModule = new NoiseModule(context, 2048);
 
   describe(noiseModule.start.name, () => {

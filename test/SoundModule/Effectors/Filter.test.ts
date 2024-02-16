@@ -4,7 +4,7 @@ import { Filter, FilterParams } from '/src/SoundModule/Effectors/Filter';
 describe(Filter.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const filter = new Filter(context);
 
   describe(filter.start.name, () => {

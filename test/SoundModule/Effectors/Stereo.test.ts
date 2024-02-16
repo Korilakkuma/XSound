@@ -4,7 +4,7 @@ import { Stereo, StereoParams } from '/src/SoundModule/Effectors/Stereo';
 describe(Stereo.name, () => {
   const context = new AudioContextMock();
 
-  // @ts-ignore
+  // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const stereo = new Stereo(context);
 
   describe(stereo.connect.name, () => {

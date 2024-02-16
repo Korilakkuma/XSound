@@ -33,7 +33,7 @@ describe(NoiseModule.name, () => {
   const context = new AudioContextMock();
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const noiseModule = new NoiseModule(context, 2048);
+  const noiseModule = new NoiseModule(context);
 
   describe(noiseModule.start.name, () => {
     test('should call methods for starting noise', () => {

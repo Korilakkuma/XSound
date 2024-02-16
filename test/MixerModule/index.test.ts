@@ -36,13 +36,13 @@ describe(MixerModule.name, () => {
   const context = new AudioContextMock();
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const mixerModule = new MixerModule(context, 2048);
+  const mixerModule = new MixerModule(context);
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const oscillatorModule = new OscillatorModule(context, 2048);
+  const oscillatorModule = new OscillatorModule(context);
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const oneshotModule = new OneshotModule(context, 2048);
+  const oneshotModule = new OneshotModule(context);
 
   const sources = [
     oscillatorModule,

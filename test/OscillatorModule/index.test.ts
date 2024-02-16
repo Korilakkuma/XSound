@@ -35,7 +35,7 @@ describe(OscillatorNode.name, () => {
   const context = new AudioContextMock();
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const oscillatorModule = new OscillatorModule(context, 2048);
+  const oscillatorModule = new OscillatorModule(context);
 
   oscillatorModule.setup([true, true, false, false]);
 

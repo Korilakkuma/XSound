@@ -34,7 +34,7 @@ describe(OneshotModule.name, () => {
   const context = new AudioContextMock();
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const oneshotModule = new OneshotModule(context, 2048);
+  const oneshotModule = new OneshotModule(context);
 
   const resources = ['./piano.wav', './guitar.wav', './strings.wav'];
   const settings: OneshotSettings = [

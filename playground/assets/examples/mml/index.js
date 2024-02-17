@@ -89,6 +89,10 @@ for (let i = 0; i < 88; i++) {
   settings[i] = setting;
 }
 
+const escapeTagString = (html) => {
+  return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+};
+
 const successCallback = () => {
   fetch(`${BASE_URL}/assets/mmls/sample.json`)
     .then((response) => response.json())
@@ -96,7 +100,7 @@ const successCallback = () => {
       const { title, artist, melody, bass } = data;
 
       result.innerHTML = `
-        <h2>${title} | ${artist}</h2>
+        <h2>${escapeTagString(title)} | ${escapeTagString(artist)}</h2>
         <dl>
           <dt>Melody</dt>
           <dd id="melody-mml">${melody}</dd>

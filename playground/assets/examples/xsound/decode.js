@@ -6,14 +6,7 @@ X.ajax({
   timeout         : 120000,
   successCallback : (event, arraybuffer) => {
     X.decode(X.get(), arraybuffer, (buffer) => {
-      result.innerHTML = `
-        <ul>
-          <li>sampleRate: ${buffer.sampleRate} Hz</li>
-          <li>length: ${buffer.length}</li>
-          <li>duration: ${buffer.duration} sec</li>
-          <li>number of channles: ${buffer.numberOfChannels}</li>
-        </ul>
-      `;
+      result.textContent = `sampling rate ${buffer.sampleRate} Hz\n${buffer.length} samples\n${buffer.duration} sec\n${buffer.numberOfChannels} channels\n`;
     }, (error) => {
       result.textContent = error.message;
     });

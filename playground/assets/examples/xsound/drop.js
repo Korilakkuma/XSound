@@ -23,13 +23,7 @@ dropArea.ondrop = (event) => {
     event           : event,
     type            : 'arraybuffer',
     successCallback : (event, arraybuffer) => {
-      result.innerHTML = `
-        <ul>
-          <li>${file.name}</li>
-          <li>${file.type}</li>
-          <li>${file.size}</li>
-        </ul>
-      `;
+      result.textContent = `filename ${file.name}\nMIME ${file.type}\n${file.size} bytes\n`;
     },
     errorCallback   : (event, textStatus) => {
       result.textContent = textStatus;

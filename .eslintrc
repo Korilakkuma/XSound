@@ -35,6 +35,7 @@
     "space-before-function-paren": 0,
     "template-curly-spacing": 0,
     "@typescript-eslint/ban-ts-comment": 1,
+    "@typescript-eslint/consistent-type-imports": 2,
     "@typescript-eslint/no-empty-function": 0,
     "@typescript-eslint/no-unused-vars": [2, { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/no-use-before-define": 2

@@ -1,5 +1,6 @@
+import type { AudioBufferMock } from '/mock/AudioBufferMock';
+
 import { AudioNodeMock } from '/mock/AudioNodeMock';
-import { AudioBufferMock } from '/mock/AudioBufferMock';
 
 export class ConvolverNodeMock extends AudioNodeMock {
   buffer: AudioBufferMock | null;

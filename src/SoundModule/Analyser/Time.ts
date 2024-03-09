@@ -1,6 +1,8 @@
-import { ChannelNumber } from '../../types';
-import { DataType } from '../Analyser';
-import { Visualizer, VisualizerParams, GraphicsStyles } from './Visualizer';
+import type { ChannelNumber } from '../../types';
+import type { DataType } from '../Analyser';
+import type { VisualizerParams, GraphicsStyles } from './Visualizer';
+
+import { Visualizer } from './Visualizer';
 
 export type TimeParams = VisualizerParams & {
   type?: DataType,

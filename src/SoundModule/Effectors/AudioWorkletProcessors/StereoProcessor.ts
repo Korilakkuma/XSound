@@ -1,5 +1,7 @@
-import { AudioWorkletProcessor, Inputs, Outputs } from '../../../worklet';
-import { StereoParams } from '../Stereo';
+import type { Inputs, Outputs } from '../../../worklet';
+import type { StereoParams } from '../Stereo';
+
+import { AudioWorkletProcessor } from '../../../worklet';
 
 /**
  * This class extends `AudioWorkletProcessor`.

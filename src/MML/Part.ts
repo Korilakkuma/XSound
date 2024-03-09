@@ -1,13 +1,15 @@
+import type { MMLSyntaxError } from './Tree';
+import type { Sequence } from './Sequence';
+import type { MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from './ScheduleWorker';
+
 import { createWorkerObjectURL } from '../worker';
 import { OscillatorModule } from '../OscillatorModule';
 import { OneshotModule } from '../OneshotModule';
 import { NoiseModule } from '../NoiseModule';
-import { MMLSyntaxError } from './Tree';
 import { Tokenizer } from './Tokenizer';
 import { TreeConstructor } from './TreeConstructor';
 import { Sequencer } from './Sequencer';
-import { Sequence } from './Sequence';
-import { schedule, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from './ScheduleWorker';
+import { schedule } from './ScheduleWorker';
 
 export type {
   MMLScheduleWorkerMessageEventType,

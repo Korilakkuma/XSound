@@ -1,4 +1,4 @@
-import { XSound } from './main';
+import type { XSound } from './main';
 
 declare global {
   interface Window {

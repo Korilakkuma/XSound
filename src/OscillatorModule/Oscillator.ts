@@ -1,4 +1,4 @@
-import { Connectable, Statable } from '../interfaces';
+import type { Connectable, Statable } from '../interfaces';
 
 export type OscillatorCustomType = {
   real: Float32Array,

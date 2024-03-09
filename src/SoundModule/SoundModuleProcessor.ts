@@ -1,4 +1,6 @@
-import { AudioWorkletProcessor, Inputs, Outputs } from '../worklet';
+import type { Inputs, Outputs } from '../worklet';
+
+import { AudioWorkletProcessor } from '../worklet';
 
 /**
  * This class extends `AudioWorkletProcessor`.

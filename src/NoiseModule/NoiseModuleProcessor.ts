@@ -1,5 +1,7 @@
-import { AudioWorkletProcessor, Inputs, Outputs } from '../worklet';
-import { NoiseType, NoiseModuleParams } from './';
+import type { Inputs, Outputs } from '../worklet';
+import type { NoiseType, NoiseModuleParams } from './';
+
+import { AudioWorkletProcessor } from '../worklet';
 
 export type NoiseProcessingMessageEventData = {
   processing?: boolean;

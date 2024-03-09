@@ -1,5 +1,7 @@
-import { AudioWorkletProcessor, Inputs, Outputs } from '../../../worklet';
-import { NoiseGateParams } from '../NoiseGate';
+import type { Inputs, Outputs } from '../../../worklet';
+import type { NoiseGateParams } from '../NoiseGate';
+
+import { AudioWorkletProcessor } from '../../../worklet';
 
 /**
  * This class extends `AudioWorkletProcessor`.

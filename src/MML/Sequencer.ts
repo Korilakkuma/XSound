@@ -1,3 +1,5 @@
+import type { Tree } from './Tree';
+
 import {
   EQUAL_TEMPERAMENT,
   QUARTER_NOTE,
@@ -10,7 +12,7 @@ import {
   computeFrequency
 } from '../XSound';
 import { Token } from './Token';
-import { Tree, MMLSyntaxError } from './Tree';
+import { MMLSyntaxError } from './Tree';
 import { TreeConstructor } from './TreeConstructor';
 import { Sequence } from './Sequence';
 

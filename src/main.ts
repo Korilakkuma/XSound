@@ -1,47 +1,14 @@
 'use strict';
 
-import './types';
-import { SoundModule, SoundModuleParams, SoundModuleProcessor, Module, ModuleName } from './SoundModule';
-import {
-  OscillatorModule,
-  OscillatorModuleParams,
-  OscillatorModuleProcessor,
-  Glide,
-  GlideParams,
-  GlideType,
-  Oscillator,
-  OscillatorParams,
-  OscillatorCustomType
-} from './OscillatorModule';
-import {
-  OneshotModule,
-  OneshotModuleParams,
-  OneshotSetting,
-  OneshotSettings,
-  OneshotErrorText,
-  OneshotModuleProcessor
-} from './OneshotModule';
-import { NoiseModule, NoiseModuleParams, NoiseType, NoiseModuleProcessor } from './NoiseModule';
-import { AudioModule, AudioModuleParams, AudioBufferSprite, AudioModuleProcessor } from './AudioModule';
-import { MediaModule, MediaModuleParams, MediaModuleProcessor } from './MediaModule';
-import { StreamModule, StreamModuleParams, StreamModuleProcessor, MediaStreamTrackAudioSourceNode } from './StreamModule';
-import { ProcessorModule } from './ProcessorModule';
-import { MixerModule, MixerModuleProcessor } from './MixerModule';
-import { MIDI } from './MIDI';
-import {
-  MML,
-  Part,
-  Sequence,
-  MMLSyntaxError,
-  Tree,
-  TokenType,
-  TokenMap,
-  Token,
-  MMLScheduleWorkerMessageEventType,
-  MMLScheduleWorkerMessageEventData
-} from './MML';
-import {
-  Analyser,
+import type { SoundModule, SoundModuleParams, Module, ModuleName } from './SoundModule';
+import type { OscillatorModuleParams, Glide, GlideParams, GlideType, Oscillator, OscillatorParams, OscillatorCustomType } from './OscillatorModule';
+import type { OneshotModuleParams, OneshotSetting, OneshotSettings, OneshotErrorText } from './OneshotModule';
+import type { NoiseModuleParams, NoiseType} from './NoiseModule';
+import type { AudioModuleParams, AudioBufferSprite} from './AudioModule';
+import type { MediaModuleParams} from './MediaModule';
+import type { StreamModuleParams, MediaStreamTrackAudioSourceNode } from './StreamModule';
+import type { Part, Sequence, MMLSyntaxError, Tree, TokenType, TokenMap, Token, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from './MML';
+import type {
   AnalyserParams,
   Domain,
   DataType,
@@ -67,52 +34,72 @@ import {
   FFTParams,
   SpectrumScale
 } from './SoundModule/Analyser';
-import {
-  Recorder,
-  RecorderParams,
-  RecordType,
-  QuantizationBit,
-  WaveExportType,
-  Track,
-  Channel,
-  RecorderProcessor,
-  RecorderProcessorMessageEventData
-} from './SoundModule/Recorder';
+import type { RecorderParams, RecordType, QuantizationBit, WaveExportType, Track, Channel, RecorderProcessorMessageEventData } from './SoundModule/Recorder';
+import type { AutopannerParams } from './SoundModule/Effectors/Autopanner';
+import type { BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
+import type { ChorusParams } from './SoundModule/Effectors/Chorus';
+import type { CompressorParams } from './SoundModule/Effectors/Compressor';
+import type { DelayParams } from './SoundModule/Effectors/Delay';
+import type { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effectors/EnvelopeGenerator';
+import type { EqualizerParams } from './SoundModule/Effectors/Equalizer';
+import type { FilterParams } from './SoundModule/Effectors/Filter';
+import type { FlangerParams } from './SoundModule/Effectors/Flanger';
+import type { FuzzParams } from './SoundModule/Effectors/Fuzz';
+import type { ListenerParams } from './SoundModule/Effectors/Listener';
+import type { NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
+import type { NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
+import type { OverDriveParams } from './SoundModule/Effectors/OverDrive';
+import type { PannerParams, Position3D } from './SoundModule/Effectors/Panner';
+import type { PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
+import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
+import type { PreampParams, PreampCurve, PreEqualizer, PreEqualizerParams, PostEqualizer, PostEqualizerParams, Cabinet, CabinetParams } from './SoundModule/Effectors/Preamp';
+import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
+import type { RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
+import type { StereoParams } from './SoundModule/Effectors/Stereo';
+import type { TremoloParams } from './SoundModule/Effectors/Tremolo';
+import type { VocalCancelerParams } from './SoundModule/Effectors/VocalCanceler';
+import type { WahParams } from './SoundModule/Effectors/Wah';
+import type { PitchChar, ConvertedTime, FileEvent, FileReaderType, FileReaderErrorText } from './XSound';
+import type { FrozenArray, Inputs, Outputs, Parameters } from './worklet';
+
+import './types';
+import { SoundModuleProcessor } from './SoundModule';
+import { OscillatorModule, OscillatorModuleProcessor } from './OscillatorModule';
+import { OneshotModule, OneshotModuleProcessor } from './OneshotModule';
+import { NoiseModule, NoiseModuleProcessor } from './NoiseModule';
+import { AudioModule, AudioModuleProcessor } from './AudioModule';
+import { MediaModule, MediaModuleProcessor } from './MediaModule';
+import { StreamModule, StreamModuleProcessor } from './StreamModule';
+import { ProcessorModule } from './ProcessorModule';
+import { MixerModule, MixerModuleProcessor } from './MixerModule';
+import { MIDI } from './MIDI';
+import { MML } from './MML';
+import { Analyser } from './SoundModule/Analyser';
+import { Recorder, RecorderProcessor } from './SoundModule/Recorder';
 import { Effector } from './SoundModule/Effectors/Effector';
-import { Autopanner, AutopannerParams } from './SoundModule/Effectors/Autopanner';
-import { BitCrusher, BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
-import { Chorus, ChorusParams } from './SoundModule/Effectors/Chorus';
-import { Compressor, CompressorParams } from './SoundModule/Effectors/Compressor';
-import { Delay, DelayParams } from './SoundModule/Effectors/Delay';
-import { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effectors/EnvelopeGenerator';
-import { Equalizer, EqualizerParams } from './SoundModule/Effectors/Equalizer';
-import { Filter, FilterParams } from './SoundModule/Effectors/Filter';
-import { Flanger, FlangerParams } from './SoundModule/Effectors/Flanger';
-import { Fuzz, FuzzParams } from './SoundModule/Effectors/Fuzz';
-import { Listener, ListenerParams } from './SoundModule/Effectors/Listener';
-import { NoiseGate, NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
-import { NoiseSuppressor, NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
-import { OverDrive, OverDriveParams } from './SoundModule/Effectors/OverDrive';
-import { Panner, PannerParams, Position3D } from './SoundModule/Effectors/Panner';
-import { Phaser, PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
-import { PitchShifter, PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
-import {
-  Preamp,
-  PreampParams,
-  PreampCurve,
-  PreEqualizer,
-  PreEqualizerParams,
-  PostEqualizer,
-  PostEqualizerParams,
-  Cabinet,
-  CabinetParams
-} from './SoundModule/Effectors/Preamp';
-import { Reverb, ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
-import { Ringmodulator, RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
-import { Stereo, StereoParams } from './SoundModule/Effectors/Stereo';
-import { Tremolo, TremoloParams } from './SoundModule/Effectors/Tremolo';
-import { VocalCanceler, VocalCancelerParams } from './SoundModule/Effectors/VocalCanceler';
-import { Wah, WahParams } from './SoundModule/Effectors/Wah';
+import { Autopanner } from './SoundModule/Effectors/Autopanner';
+import { BitCrusher } from './SoundModule/Effectors/BitCrusher';
+import { Chorus } from './SoundModule/Effectors/Chorus';
+import { Compressor } from './SoundModule/Effectors/Compressor';
+import { Delay } from './SoundModule/Effectors/Delay';
+import { Equalizer } from './SoundModule/Effectors/Equalizer';
+import { Filter } from './SoundModule/Effectors/Filter';
+import { Flanger } from './SoundModule/Effectors/Flanger';
+import { Fuzz } from './SoundModule/Effectors/Fuzz';
+import { Listener } from './SoundModule/Effectors/Listener';
+import { NoiseGate } from './SoundModule/Effectors/NoiseGate';
+import { NoiseSuppressor } from './SoundModule/Effectors/NoiseSuppressor';
+import { OverDrive } from './SoundModule/Effectors/OverDrive';
+import { Panner } from './SoundModule/Effectors/Panner';
+import { Phaser } from './SoundModule/Effectors/Phaser';
+import { PitchShifter } from './SoundModule/Effectors/PitchShifter';
+import { Preamp } from './SoundModule/Effectors/Preamp';
+import { Reverb } from './SoundModule/Effectors/Reverb';
+import { Ringmodulator } from './SoundModule/Effectors/Ringmodulator';
+import { Stereo } from './SoundModule/Effectors/Stereo';
+import { Tremolo } from './SoundModule/Effectors/Tremolo';
+import { VocalCanceler } from './SoundModule/Effectors/VocalCanceler';
+import { Wah } from './SoundModule/Effectors/Wah';
 import { NoiseGateProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/NoiseGateProcessor';
 import { NoiseSuppressorProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/NoiseSuppressorProcessor';
 import { PitchShifterProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/PitchShifterProcessor';
@@ -126,8 +113,6 @@ import {
   HALF_UP,
   HALF_DOWN,
   DOT,
-  PitchChar,
-  ConvertedTime,
   isPitchChar,
   computeIndex,
   computeFrequency,
@@ -142,18 +127,9 @@ import {
   drop,
   file,
   toFrequencies,
-  toTextFile,
-  FileEvent,
-  FileReaderType,
-  FileReaderErrorText
+  toTextFile
 } from './XSound';
-import {
-  addAudioWorklet,
-  FrozenArray,
-  Inputs,
-  Outputs,
-  Parameters
-} from './worklet';
+import { addAudioWorklet } from './worklet';
 
 export type Source     = OscillatorModule | OneshotModule | NoiseModule | AudioModule | MediaModule | StreamModule | ProcessorModule | MixerModule | MIDI | MML;
 export type SourceName = 'oscillator' | 'oneshot' | 'noise' | 'audio' | 'media' | 'stream' | 'processor' | 'mixer' | 'midi' | 'mml';

@@ -1,5 +1,7 @@
-import { ChannelNumber } from '../../types';
-import { Visualizer, VisualizerParams, Color, GraphicsStyles } from './Visualizer';
+import type { ChannelNumber } from '../../types';
+import type { VisualizerParams, Color, GraphicsStyles } from './Visualizer';
+
+import { Visualizer } from './Visualizer';
 
 export type MouseEventTypes = 'mousedown' | 'mousemove' | 'mouseup' | 'touchstart' | 'touchmove' | 'touchend';
 

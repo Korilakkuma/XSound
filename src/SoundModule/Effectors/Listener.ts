@@ -1,4 +1,5 @@
-import { Position3D } from './Panner';
+import type { Position3D } from './Panner';
+
 import { Effector } from './Effector';
 
 export type ListenerParams = {

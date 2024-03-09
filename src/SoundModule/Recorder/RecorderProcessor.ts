@@ -1,4 +1,6 @@
-import { AudioWorkletProcessor, Inputs } from '../../worklet';
+import type { Inputs } from '../../worklet';
+
+import { AudioWorkletProcessor } from '../../worklet';
 
 export type RecorderProcessorMessageEventData = {
   inputs: Inputs

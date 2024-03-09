@@ -1,5 +1,7 @@
-import { AudioWorkletProcessor, Inputs, Outputs } from '../../../worklet';
-import { VocalCancelerParams } from '../VocalCanceler';
+import type { Inputs, Outputs } from '../../../worklet';
+import type { VocalCancelerParams } from '../VocalCanceler';
+
+import { AudioWorkletProcessor } from '../../../worklet';
 
 /**
  * This class extends `AudioWorkletProcessor`.

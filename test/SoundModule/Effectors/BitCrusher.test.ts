@@ -1,5 +1,7 @@
+import type { BitCrusherParams } from '/src/SoundModule/Effectors/BitCrusher';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { BitCrusher, BitCrusherParams } from '/src/SoundModule/Effectors/BitCrusher';
+import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 
 describe(BitCrusher.name, () => {
   const context = new AudioContextMock();

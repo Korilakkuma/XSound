@@ -1,5 +1,7 @@
+import type { PhaserParams } from '/src/SoundModule/Effectors/Phaser';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Phaser, PhaserParams } from '/src/SoundModule/Effectors/Phaser';
+import { Phaser } from '/src/SoundModule/Effectors/Phaser';
 
 describe(Phaser.name, () => {
   const context = new AudioContextMock();

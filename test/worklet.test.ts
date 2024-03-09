@@ -1,5 +1,7 @@
+import type { Inputs, Outputs, Parameters } from '/src/worklet';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { createModule, addAudioWorklet, Inputs, Outputs, Parameters } from '/src/worklet';
+import { createModule, addAudioWorklet } from '/src/worklet';
 
 // Cannot keep class name
 class AudioWorkletProcessor {}

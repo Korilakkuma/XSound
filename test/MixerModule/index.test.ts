@@ -1,5 +1,6 @@
+import type { SoundModuleParams } from '/src/SoundModule';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { SoundModuleParams } from '/src/SoundModule';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';

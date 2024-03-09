@@ -1,5 +1,7 @@
+import type { NoiseGateParams } from '/src/SoundModule/Effectors/NoiseGate';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { NoiseGate, NoiseGateParams } from '/src/SoundModule/Effectors/NoiseGate';
+import { NoiseGate } from '/src/SoundModule/Effectors/NoiseGate';
 
 describe(NoiseGate.name, () => {
   const context = new AudioContextMock();

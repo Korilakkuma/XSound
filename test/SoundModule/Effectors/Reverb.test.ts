@@ -1,6 +1,8 @@
+import type { ReverbParams } from '/src/SoundModule/Effectors/Reverb';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { AudioBufferMock } from '/mock/AudioBufferMock';
-import { Reverb, ReverbParams } from '/src/SoundModule/Effectors/Reverb';
+import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 
 describe(Reverb.name, () => {
   const context = new AudioContextMock();

@@ -1,6 +1,8 @@
+import type { AnalyserParams } from '/src/SoundModule/Analyser';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { AnalyserNodeMock } from '/mock/AnalyserNodeMock';
-import { Analyser, AnalyserParams } from '/src/SoundModule/Analyser';
+import { Analyser } from '/src/SoundModule/Analyser';
 import { TimeOverview } from '/src/SoundModule/Analyser/TimeOverview';
 import { Time } from '/src/SoundModule/Analyser/Time';
 import { FFT } from '/src/SoundModule/Analyser/FFT';

@@ -1,5 +1,7 @@
+import type { FlangerParams } from '/src/SoundModule/Effectors/Flanger';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Flanger, FlangerParams } from '/src/SoundModule/Effectors/Flanger';
+import { Flanger } from '/src/SoundModule/Effectors/Flanger';
 
 describe(Flanger.name, () => {
   const context = new AudioContextMock();

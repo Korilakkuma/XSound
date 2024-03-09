@@ -1,9 +1,10 @@
+import type { FileEvent } from '/src/XSound';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import {
   isPitchChar,
   computeIndex,
   computeFrequency,
-  FileEvent,
   fft,
   ifft,
   ajax,

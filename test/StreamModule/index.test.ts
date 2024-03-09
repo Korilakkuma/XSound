@@ -1,3 +1,5 @@
+import type { StreamModuleParams } from '/src/StreamModule';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
@@ -25,7 +27,7 @@ import { Stereo } from '/src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '/src/SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '/src/SoundModule/Effectors/Wah';
-import { StreamModule, StreamModuleParams } from '/src/StreamModule';
+import { StreamModule } from '/src/StreamModule';
 
 type Params = Partial<Pick<StreamModuleParams, 'mastervolume' | 'output' | 'track'>>;
 

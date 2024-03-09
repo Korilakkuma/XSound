@@ -1,5 +1,7 @@
+import type { TremoloParams } from '/src/SoundModule/Effectors/Tremolo';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Tremolo, TremoloParams } from '/src/SoundModule/Effectors/Tremolo';
+import { Tremolo } from '/src/SoundModule/Effectors/Tremolo';
 
 describe(Tremolo.name, () => {
   const context = new AudioContextMock();

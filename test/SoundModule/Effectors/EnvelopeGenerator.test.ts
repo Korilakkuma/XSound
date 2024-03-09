@@ -1,6 +1,8 @@
+import type { EnvelopeGeneratorParams } from '/src/SoundModule/Effectors/EnvelopeGenerator';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { GainNodeMock } from '/mock/GainNodeMock';
-import { EnvelopeGenerator, EnvelopeGeneratorParams } from '/src/SoundModule/Effectors/EnvelopeGenerator';
+import { EnvelopeGenerator } from '/src/SoundModule/Effectors/EnvelopeGenerator';
 
 describe(EnvelopeGenerator.name, () => {
   const context = new AudioContextMock();

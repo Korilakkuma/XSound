@@ -1,5 +1,7 @@
+import type { FilterParams } from '/src/SoundModule/Effectors/Filter';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Filter, FilterParams } from '/src/SoundModule/Effectors/Filter';
+import { Filter } from '/src/SoundModule/Effectors/Filter';
 
 describe(Filter.name, () => {
   const context = new AudioContextMock();

@@ -1,5 +1,7 @@
+import type { ChorusParams } from '/src/SoundModule/Effectors/Chorus';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Chorus, ChorusParams } from '/src/SoundModule/Effectors/Chorus';
+import { Chorus } from '/src/SoundModule/Effectors/Chorus';
 
 describe(Chorus.name, () => {
   const context = new AudioContextMock();

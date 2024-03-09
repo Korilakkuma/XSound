@@ -1,3 +1,5 @@
+import type { OneshotModuleParams, OneshotSettings } from '/src/OneshotModule';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { AudioBufferMock } from '/mock/AudioBufferMock';
 import { Analyser } from '/src/SoundModule/Analyser';
@@ -26,7 +28,7 @@ import { Stereo } from '/src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '/src/SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '/src/SoundModule/Effectors/Wah';
-import { OneshotModule, OneshotModuleParams, OneshotSettings } from '/src/OneshotModule';
+import { OneshotModule } from '/src/OneshotModule';
 
 type Params = Partial<Pick<OneshotModuleParams, 'mastervolume' | 'transpose'>>;
 

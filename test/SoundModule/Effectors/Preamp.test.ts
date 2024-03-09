@@ -1,11 +1,7 @@
+import type { PreampParams, PreEqualizerParams, PostEqualizerParams, CabinetParams } from '/src/SoundModule/Effectors/Preamp';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import {
-  Preamp,
-  PreampParams,
-  PreEqualizerParams,
-  PostEqualizerParams,
-  CabinetParams
-} from '/src/SoundModule/Effectors/Preamp';
+import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 
 describe(Preamp.name, () => {
   const context = new AudioContextMock();

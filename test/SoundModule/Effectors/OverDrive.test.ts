@@ -1,5 +1,7 @@
+import type { OverDriveParams } from '/src/SoundModule/Effectors/OverDrive';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { OverDrive, OverDriveParams } from '/src/SoundModule/Effectors/OverDrive';
+import { OverDrive } from '/src/SoundModule/Effectors/OverDrive';
 
 describe(OverDrive.name, () => {
   const context = new AudioContextMock();

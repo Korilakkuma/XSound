@@ -1,4 +1,6 @@
-import { Token, TokenMap, TokenType } from '/src/MML/Token';
+import type { TokenType } from '/src/MML/Token';
+
+import { Token, TokenMap } from '/src/MML/Token';
 
 describe('TokenMap', () => {
   test('should correspond to `TokenType`', () => {

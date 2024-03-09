@@ -1,6 +1,8 @@
+import type { RecorderParams } from '/src/SoundModule/Recorder';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Track } from '/src/SoundModule/Recorder/Track';
-import { Recorder, RecorderParams } from '/src/SoundModule/Recorder';
+import { Recorder } from '/src/SoundModule/Recorder';
 
 describe(Recorder.name, () => {
   const context = new AudioContextMock();

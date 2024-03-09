@@ -1,3 +1,5 @@
+import type { OscillatorModuleParams } from '/src/OscillatorModule';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
@@ -27,7 +29,7 @@ import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '/src/SoundModule/Effectors/Wah';
 import { Glide } from '/src/OscillatorModule/Glide';
 import { Oscillator } from '/src/OscillatorModule/Oscillator';
-import { OscillatorModule, OscillatorModuleParams } from '/src/OscillatorModule';
+import { OscillatorModule } from '/src/OscillatorModule';
 
 type Params = Partial<Pick<OscillatorModuleParams, 'mastervolume'>>;
 

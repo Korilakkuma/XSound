@@ -1,3 +1,5 @@
+import type { MediaModuleParams } from '/src/MediaModule';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
@@ -25,7 +27,7 @@ import { Stereo } from '/src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '/src/SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '/src/SoundModule/Effectors/Wah';
-import { MediaModule, MediaModuleParams } from '/src/MediaModule';
+import { MediaModule } from '/src/MediaModule';
 
 type Params = Partial<Pick<MediaModuleParams, 'mastervolume' | 'autoplay' | 'playbackRate' | 'currentTime' | 'controls' | 'loop' | 'muted' | 'duration'>>;
 

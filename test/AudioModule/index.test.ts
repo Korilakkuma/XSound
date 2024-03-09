@@ -1,3 +1,5 @@
+import type { AudioModuleParams } from '/src/AudioModule';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { AudioBufferMock } from '/mock/AudioBufferMock';
 import { Analyser } from '/src/SoundModule/Analyser';
@@ -26,7 +28,7 @@ import { Stereo } from '/src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '/src/SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '/src/SoundModule/Effectors/Wah';
-import { AudioModule, AudioModuleParams } from '/src/AudioModule';
+import { AudioModule } from '/src/AudioModule';
 
 type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
 

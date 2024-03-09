@@ -1,5 +1,7 @@
+import type { ListenerParams } from '/src/SoundModule/Effectors/Listener';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Listener, ListenerParams } from '/src/SoundModule/Effectors/Listener';
+import { Listener } from '/src/SoundModule/Effectors/Listener';
 
 describe(Listener.name, () => {
   const context = new AudioContextMock();

@@ -1,6 +1,8 @@
+import type { OscillatorParams, OscillatorCustomType } from '/src/OscillatorModule/Oscillator';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { OscillatorNodeMock } from '/mock/OscillatorNodeMock';
-import { Oscillator, OscillatorParams, OscillatorCustomType } from '/src/OscillatorModule/Oscillator';
+import { Oscillator } from '/src/OscillatorModule/Oscillator';
 
 describe(Oscillator.name, () => {
   const context = new AudioContextMock();

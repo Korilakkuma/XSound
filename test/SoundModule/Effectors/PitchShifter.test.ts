@@ -1,5 +1,7 @@
+import type { PitchShifterParams } from '/src/SoundModule/Effectors/PitchShifter';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { PitchShifter, PitchShifterParams } from '/src/SoundModule/Effectors/PitchShifter';
+import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
 
 describe(PitchShifter.name, () => {
   const context = new AudioContextMock();

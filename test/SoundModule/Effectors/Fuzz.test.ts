@@ -1,5 +1,7 @@
+import type { FuzzParams } from '/src/SoundModule/Effectors/Fuzz';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Fuzz, FuzzParams } from '/src/SoundModule/Effectors/Fuzz';
+import { Fuzz } from '/src/SoundModule/Effectors/Fuzz';
 
 describe(Fuzz.name, () => {
   const context = new AudioContextMock();

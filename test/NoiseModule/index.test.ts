@@ -1,3 +1,5 @@
+import type { NoiseModuleParams } from '/src/NoiseModule';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
@@ -25,7 +27,7 @@ import { Stereo } from '/src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '/src/SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '/src/SoundModule/Effectors/Wah';
-import { NoiseModule, NoiseModuleParams } from '/src/NoiseModule';
+import { NoiseModule } from '/src/NoiseModule';
 
 type Params = Partial<Pick<NoiseModuleParams, 'mastervolume' | 'type'>>;
 

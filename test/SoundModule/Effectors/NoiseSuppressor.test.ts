@@ -1,5 +1,7 @@
+import type { NoiseSuppressorParams } from '/src/SoundModule/Effectors/NoiseSuppressor';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { NoiseSuppressor, NoiseSuppressorParams } from '/src/SoundModule/Effectors/NoiseSuppressor';
+import { NoiseSuppressor } from '/src/SoundModule/Effectors/NoiseSuppressor';
 
 describe(NoiseSuppressor.name, () => {
   const context = new AudioContextMock();

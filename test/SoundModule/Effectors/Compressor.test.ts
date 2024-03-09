@@ -1,5 +1,7 @@
+import type { CompressorParams } from '/src/SoundModule/Effectors/Compressor';
+
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Compressor, CompressorParams } from '/src/SoundModule/Effectors/Compressor';
+import { Compressor } from '/src/SoundModule/Effectors/Compressor';
 
 describe(Compressor.name, () => {
   const context = new AudioContextMock();

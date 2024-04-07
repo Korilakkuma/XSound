@@ -8,7 +8,7 @@
       "es2022",
       "webworker"
     ],
-    "module": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,

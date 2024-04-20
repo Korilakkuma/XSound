@@ -348,13 +348,14 @@ export function convertTime(time: number): ConvertedTime {
  * @param {ArrayBuffer} arraybuffer This argument is decoded to instance of `AudioBuffer`.
  * @param {function} successCallback This argument is invoked on success.
  * @param {function} errorCallback This argument is invoked on failure.
+ * @return {Promise<AudioBuffer>} Return value is instance of `Promise` that has instance of `AudioBuffer`.
  */
 export function decode(
   context: AudioContext,
   arraybuffer: ArrayBuffer,
   successCallback?: (buffer: AudioBuffer) => void,
   errorCallback?: (error: Error) => void
-): void {
+): Promise<AudioBuffer> {
   if (!successCallback) {
     successCallback = () => {};
   }
@@ -363,7 +364,7 @@ export function decode(
     errorCallback = () => {};
   }
 
-  context.decodeAudioData(arraybuffer, successCallback, errorCallback);
+  return context.decodeAudioData(arraybuffer, successCallback, errorCallback);
 }
 
 /**

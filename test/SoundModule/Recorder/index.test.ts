@@ -1,7 +1,7 @@
 import type { RecorderParams } from '/src/SoundModule/Recorder';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Track } from '/src/SoundModule/Recorder/Track';
+import { Frame } from '/src/SoundModule/Recorder/Frame';
 import { Recorder } from '/src/SoundModule/Recorder';
 
 describe(Recorder.name, () => {
@@ -68,10 +68,10 @@ describe(Recorder.name, () => {
 
   describe(recorder.clear.name, () => {
     test('should call `clear` method', () => {
-      const originalClear = Track.prototype.clear;
+      const originalClear = Frame.prototype.clear;
       const clearMock     = jest.fn();
 
-      Track.prototype.clear = clearMock;
+      Frame.prototype.clear = clearMock;
 
       recorder.clear(3);
 
@@ -81,7 +81,7 @@ describe(Recorder.name, () => {
 
       expect(clearMock).toHaveBeenCalledTimes(10);
 
-      Track.prototype.clear = originalClear;
+      Frame.prototype.clear = originalClear;
     });
   });
 
@@ -145,29 +145,29 @@ describe(Recorder.name, () => {
 
   describe(recorder.has.name, () => {
     test('should return `true`', () => {
-      const originalHas = Track.prototype.has;
+      const originalHas = Frame.prototype.has;
       const hasMock     = jest.fn(() => true);
 
-      Track.prototype.has = hasMock;
+      Frame.prototype.has = hasMock;
 
       expect(recorder.has(-1, -1)).toBe(true);
       expect(recorder.has(1, -1)).toBe(true);
       expect(recorder.has(1, 1)).toBe(true);
 
-      Track.prototype.has = originalHas;
+      Frame.prototype.has = originalHas;
     });
 
     test('should return `false`', () => {
-      const originalHas = Track.prototype.has;
+      const originalHas = Frame.prototype.has;
       const hasMock     = jest.fn(() => false);
 
-      Track.prototype.has = hasMock;
+      Frame.prototype.has = hasMock;
 
       expect(recorder.has(-1, -1)).toBe(false);
       expect(recorder.has(1, -1)).toBe(false);
       expect(recorder.has(1, 1)).toBe(false);
 
-      Track.prototype.has = originalHas;
+      Frame.prototype.has = originalHas;
     });
   });
 

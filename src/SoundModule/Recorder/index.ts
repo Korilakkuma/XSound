@@ -2,7 +2,7 @@ import type { Connectable } from '../../interfaces';
 import type { ChannelNumber } from '../../types';
 import type { RecorderProcessorMessageEventData } from './RecorderProcessor';
 
-import { Track } from './Track';
+import { Frame } from './Frame';
 import { Channel } from './Channel';
 import { RecorderProcessor } from './RecorderProcessor';
 
@@ -11,7 +11,7 @@ export type QuantizationBit = 8 | 16;
 export type WaveExportType  = 'base64' | 'dataURL' | 'blob' | 'objectURL';
 
 export type {
-  Track,
+  Frame,
   Channel,
   RecorderProcessorMessageEventData
 };
@@ -61,14 +61,14 @@ export class Recorder implements Connectable {
       if (inputs.length === 1) {
         const inputLs    = inputs[0];
         const gainL      = this.channels[0].gain();
-        const trackL     = this.channels[0].get(this.activeTrack);
+        const frameL     = this.channels[0].get(this.activeTrack);
         const recordedLs = new Float32Array(bufferSize);
 
         for (let i = 0; i < bufferSize; i++) {
           recordedLs[i] = gainL * inputLs[i];
         }
 
-        trackL?.append(recordedLs);
+        frameL?.append(recordedLs);
 
         return;
       }
@@ -79,8 +79,8 @@ export class Recorder implements Connectable {
       const gainL = this.channels[0].gain();
       const gainR = this.channels[1].gain();
 
-      const trackL = this.channels[0].get(this.activeTrack);
-      const trackR = this.channels[1].get(this.activeTrack);
+      const frameL = this.channels[0].get(this.activeTrack);
+      const frameR = this.channels[1].get(this.activeTrack);
 
       const recordedLs = new Float32Array(bufferSize);
       const recordedRs = new Float32Array(bufferSize);
@@ -90,13 +90,13 @@ export class Recorder implements Connectable {
         recordedRs[i] = gainR * inputRs[i];
       }
 
-      trackL?.append(recordedLs);
-      trackR?.append(recordedRs);
+      frameL?.append(recordedLs);
+      frameR?.append(recordedRs);
     };
   }
 
   /**
-   * This method sets the max number of tracks.
+   * This method sets the max number of track.
    * @param {RecordType} numberOfChannels This argument is the number of channels (not used currently).
    * @param {number} numberOfTracks This argument is the max number of tracks.
    * @return {Recorder} Return value is for method chain.
@@ -107,7 +107,7 @@ export class Recorder implements Connectable {
 
     for (const channel of this.channels) {
       for (let i = 0; i < numberOfTracks; i++) {
-        channel.append(new Track(i.toString(10)));
+        channel.append(new Frame(i.toString(10)));
       }
     }
 
@@ -231,18 +231,18 @@ export class Recorder implements Connectable {
 
     if (trackNumber === -1) {
       for (const channel of this.channels) {
-        const tracks = channel.get();
+        const frames = channel.get();
 
-        for (const track of tracks) {
-          track.clear();
+        for (const frame of frames) {
+          frame.clear();
         }
       }
     } else {
       if (this.hasTrack(trackNumber)) {
         for (const channel of this.channels) {
-          const track = channel.get(trackNumber);
+          const frame = channel.get(trackNumber);
 
-          track?.clear();
+          frame?.clear();
         }
       }
     }
@@ -508,21 +508,21 @@ export class Recorder implements Connectable {
   public has(channelNumber: ChannelNumber, trackNumber: number): boolean {
     if (!this.hasChannel(channelNumber)) {
       return this.channels.some((channel: Channel) => {
-        const tracks = channel.get();
+        const frames = channel.get();
 
-        return tracks.some((track: Track) => track.has());
+        return frames.some((frame: Frame) => frame.has());
       });
     }
 
-    const tracks = this.channels[channelNumber].get();
+    const frames = this.channels[channelNumber].get();
 
     if (!this.hasTrack(trackNumber)) {
-      return tracks.some((track: Track) => track.has());
+      return frames.some((frame: Frame) => frame.has());
     }
 
-    const track = this.channels[channelNumber].get(trackNumber);
+    const frame = this.channels[channelNumber].get(trackNumber);
 
-    return track?.has() ?? false;
+    return frame?.has() ?? false;
   }
 
   /**
@@ -565,13 +565,13 @@ export class Recorder implements Connectable {
     }
 
     const channel = this.channels[channelNumber];
-    const track   = channel.get(trackNumber);
+    const frame   = channel.get(trackNumber);
 
-    if (track === null) {
+    if (frame === null) {
       return null;
     }
 
-    const dataBlocks = track.get();
+    const dataBlocks = frame.get();
     const bufferSize = RecorderProcessor.BUFFER_SIZE;
 
     const flattenTrack = new Float32Array(dataBlocks.length * bufferSize);
@@ -598,7 +598,7 @@ export class Recorder implements Connectable {
     }
 
     const channel    = this.channels[channelNumber];
-    const tracks     = channel.get();
+    const frames     = channel.get();
     const bufferSize = RecorderProcessor.BUFFER_SIZE;
 
     let sum              = 0;
@@ -609,9 +609,9 @@ export class Recorder implements Connectable {
     // Calculate sound data size
     let numberOfMaxBlocks = 0;
 
-    // Search the max number of `Float32Array`'s each track
-    for (const track of tracks) {
-      const dataBlocks = track.get();
+    // Search the max number of `Float32Array`'s each frame
+    for (const frame of frames) {
+      const dataBlocks = frame.get();
 
       if (numberOfMaxBlocks < dataBlocks.length) {
         numberOfMaxBlocks = dataBlocks.length;
@@ -621,9 +621,9 @@ export class Recorder implements Connectable {
     const mixedValues = new Float32Array(numberOfMaxBlocks * bufferSize);
 
     while (true) {
-      for (let currentTrack = 0, len = tracks.length; currentTrack < len; currentTrack++) {
-        const track      = tracks[currentTrack];
-        const dataBlocks = track.get();
+      for (let currentFrame = 0, len = frames.length; currentFrame < len; currentFrame++) {
+        const frame      = frames[currentFrame];
+        const dataBlocks = frame.get();
         const dataBlock  = dataBlocks[currentBlock];
 
         if (dataBlock && ((index >= 0) && (index <= dataBlock.length))) {

@@ -1,14 +1,14 @@
 /**
- * This class is entity for recording track.
+ * This class is entity for recording frame.
  * Namely, this class has recorded sound data.
  * @constructor
  */
-export class Track {
+export class Frame {
   private id: string;
   private dataBlocks: Float32Array[] = [];
 
   /**
-   * @param {id} id This argument is track ID.
+   * @param {id} id This argument is frame ID.
    */
   constructor(id: string) {
     this.id = id;
@@ -25,9 +25,9 @@ export class Track {
   /**
    * This method appends recorded sound data as `Float32Array`.
    * @param {Float32Array} dataBlock This argument is instance of `Float32Array` that has recorded sound data.
-   * @return {Track} Return value is for method chain.
+   * @return {Frame} Return value is for method chain.
    */
-  public append(dataBlock: Float32Array): Track {
+  public append(dataBlock: Float32Array): Frame {
     this.dataBlocks.push(dataBlock);
     return this;
   }
@@ -41,7 +41,7 @@ export class Track {
 
   /**
    * This method determines whether contains recorded sound data.
-   * @return {boolean} If track has recorded data, this value is `true`. Otherwise, this value is `false`.
+   * @return {boolean} If frame has recorded data, this value is `true`. Otherwise, this value is `false`.
    */
   public has(): boolean {
     return this.dataBlocks.length > 0;

@@ -1,4 +1,4 @@
-import type { Track } from './Track';
+import type { Frame } from './Frame';
 
 /**
  * This class is entity for recording channel.
@@ -6,7 +6,7 @@ import type { Track } from './Track';
  */
 export class Channel {
   private id: string;
-  private tracks: Track[] = [];
+  private frames: Frame[] = [];
   private channelGain = 1;
 
   /**
@@ -17,29 +17,29 @@ export class Channel {
   }
 
   /**
-   * This method appends instance of `Track`.
-   * @param {Track} track This argument is instance of `Track` as recording track.
+   * This method appends instance of `Frame`.
+   * @param {Frame} frame This argument is instance of `Frame` as recording frame.
    * @return {Channel} Return value is for method chain.
    */
-  public append(track: Track): Channel {
-    this.tracks.push(track);
+  public append(frame: Frame): Channel {
+    this.frames.push(frame);
     return this;
   }
 
   /**
-   * This method gets designated track or array that contains the all of tracks.
+   * This method gets designated frame or array that contains the all of frames.
    * This method is overloaded for type interface and type check.
-   * @param {number} trackNumber This argument is target track number.
-   * @return {Track|Array<Track>}
+   * @param {number} frameNumber This argument is target frame number.
+   * @return {Frame|Array<Frame>}
    */
-  public get(trackNumber: number): Track;
-  public get(): Track[];
-  public get(trackNumber?: number): Track | Track[] {
-    if ((typeof trackNumber === 'number') && (trackNumber >= 0) && (trackNumber < this.tracks.length)) {
-      return this.tracks[trackNumber];
+  public get(frameNumber: number): Frame;
+  public get(): Frame[];
+  public get(frameNumber?: number): Frame | Frame[] {
+    if ((typeof frameNumber === 'number') && (frameNumber >= 0) && (frameNumber < this.frames.length)) {
+      return this.frames[frameNumber];
     }
 
-    return this.tracks;
+    return this.frames;
   }
 
   /**
@@ -60,11 +60,11 @@ export class Channel {
   }
 
   /**
-   * This method gets the number of tracks.
+   * This method gets the number of frames.
    * @return {number}
    */
   public length(): number {
-    return this.tracks.length;
+    return this.frames.length;
   }
 
   /** @override */

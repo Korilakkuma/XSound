@@ -34,7 +34,7 @@ import type {
   FFTParams,
   SpectrumScale
 } from './SoundModule/Analyser';
-import type { RecorderParams, RecordType, QuantizationBit, WaveExportType, Track, Channel, RecorderProcessorMessageEventData } from './SoundModule/Recorder';
+import type { RecorderParams, RecordType, QuantizationBit, WaveExportType, Frame, Channel, RecorderProcessorMessageEventData } from './SoundModule/Recorder';
 import type { AutopannerParams } from './SoundModule/Effectors/Autopanner';
 import type { BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
 import type { ChorusParams } from './SoundModule/Effectors/Chorus';
@@ -585,7 +585,7 @@ export type {
   RecordType,
   QuantizationBit,
   WaveExportType,
-  Track,
+  Frame,
   Channel,
   RecorderProcessor,
   RecorderProcessorMessageEventData,

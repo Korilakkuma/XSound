@@ -150,8 +150,8 @@ export class MediaModule extends SoundModule {
         return;
       }
 
-      // To create instance of `MediaElementAudioSourceNode` again causes error to occur
-      if (this.source === null) {
+      // If the same `HTMLMediaElement`, recreate instance of `MediaElementAudioSourceNode` causes error
+      if ((this.source === null) || (this.media !== media)) {
         this.source = this.context.createMediaElementSource(this.media);
       }
     }, false);

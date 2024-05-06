@@ -65,35 +65,29 @@ describe(Filter.name, () => {
       // eslint-disable-next-line dot-notation
       const frequency = filter['filter'].frequency;
 
-      const originalCancelScheduledValuesMock = frequency.cancelScheduledValues;
-      const originalSetValueAtTimeMock        = frequency.setValueAtTime;
-      const originalSetTargetAtTimeMock       = frequency.setTargetAtTime;
+      const originalCancelAndHoldAtTimeMock = frequency.cancelAndHoldAtTime;
+      const originalSetTargetAtTimeMock     = frequency.setTargetAtTime;
 
-      const cancelScheduledValuesMock = jest.fn();
-      const setValueAtTimeMock        = jest.fn();
-      const setTargetAtTimeMock       = jest.fn();
+      const cancelAndHoldAtTimeMock = jest.fn();
+      const setTargetAtTimeMock     = jest.fn();
 
-      frequency.cancelScheduledValues   = cancelScheduledValuesMock;
-      frequency.setValueAtTime          = setValueAtTimeMock;
-      frequency.setTargetAtTime         = setTargetAtTimeMock;
+      frequency.cancelAndHoldAtTime = cancelAndHoldAtTimeMock;
+      frequency.setTargetAtTime     = setTargetAtTimeMock;
 
       filter.stop();
 
-      expect(cancelScheduledValuesMock).toHaveBeenCalledTimes(0);
-      expect(setValueAtTimeMock).toHaveBeenCalledTimes(0);
+      expect(cancelAndHoldAtTimeMock).toHaveBeenCalledTimes(0);
       expect(setTargetAtTimeMock).toHaveBeenCalledTimes(0);
 
       filter.activate();
 
       filter.stop();
 
-      expect(cancelScheduledValuesMock).toHaveBeenCalledTimes(1);
-      expect(setValueAtTimeMock).toHaveBeenCalledTimes(1);
+      expect(cancelAndHoldAtTimeMock).toHaveBeenCalledTimes(1);
       expect(setTargetAtTimeMock).toHaveBeenCalledTimes(1);
 
-      frequency.cancelScheduledValues   = originalCancelScheduledValuesMock;
-      frequency.setValueAtTime          = originalSetValueAtTimeMock;
-      frequency.setTargetAtTime         = originalSetTargetAtTimeMock;
+      frequency.cancelAndHoldAtTime = originalCancelAndHoldAtTimeMock;
+      frequency.setTargetAtTime     = originalSetTargetAtTimeMock;
     });
   });
 

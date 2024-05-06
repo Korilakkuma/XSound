@@ -81,8 +81,15 @@ export class Filter extends Effector {
     const minFrequnecy = this.maxFrequency * this.range;
 
     // Envelope Generator for filter
-    this.filter.frequency.cancelScheduledValues(t3);
-    this.filter.frequency.setValueAtTime(this.filter.frequency.value, t3);
+    if (typeof this.filter.frequency.cancelAndHoldAtTime === 'function') {
+      this.filter.frequency.cancelAndHoldAtTime(t3);
+    } else {
+      const value = this.filter.frequency.value;
+
+      this.filter.frequency.cancelScheduledValues(t3);
+      this.filter.frequency.setValueAtTime(value, t3);
+    }
+
     this.filter.frequency.setTargetAtTime(minFrequnecy, t3, t4);  // Sustain -> Release
   }
 

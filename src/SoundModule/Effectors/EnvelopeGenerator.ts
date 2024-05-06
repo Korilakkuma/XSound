@@ -111,7 +111,14 @@ export class EnvelopeGenerator implements Statable {
       }
 
       // in case of mouseup on the way of Decay
-      this.generators[activeIndex].gain.cancelScheduledValues(t3);
+      if (typeof this.generators[activeIndex].gain.cancelAndHoldAtTime === 'function') {
+        this.generators[activeIndex].gain.cancelAndHoldAtTime(t3);
+      } else {
+        const value = this.generators[activeIndex].gain.value;
+
+        this.generators[activeIndex].gain.cancelScheduledValues(t3);
+        this.generators[activeIndex].gain.setValueAtTime(value, t3);
+      }
 
       // Release : `gain.value` gradually decreases to 0 during of Release time (t4) from assigned time (t3)
       // NOTE: https://www.w3.org/TR/webaudio/#dom-audioparam-settargetattime

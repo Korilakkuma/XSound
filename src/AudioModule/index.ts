@@ -212,7 +212,7 @@ export class AudioModule extends SoundModule {
         return;
       }
 
-      if (this.currentTime < this.source.loopEnd) {
+      if (Math.abs(this.source.loopEnd - this.currentTime) > 0.5) {
         const detune       = this.source.detune.value;
         const playbackRate = this.source.playbackRate.value + (detune / 1200);
 

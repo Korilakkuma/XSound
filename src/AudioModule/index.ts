@@ -181,6 +181,8 @@ export class AudioModule extends SoundModule {
     this.envelopegenerator.ready(0, this.source, this.processor);
     this.connect(this.processor);
 
+    const computedPlaybackRate = this.computePlaybackRate();
+
     if (end >= 0) {
       this.source.start(currentTime, this.currentTime, (end - start));
     } else {
@@ -195,9 +197,9 @@ export class AudioModule extends SoundModule {
     this.envelopegenerator.start(currentTime);
 
     if (end >= 0) {
-      this.envelopegenerator.stop((currentTime + ((end - start) / this.source.playbackRate.value)), true);
+      this.envelopegenerator.stop((currentTime + ((end - start) / computedPlaybackRate)), true);
     } else {
-      this.envelopegenerator.stop((currentTime + ((this.buffer.duration - start) / this.source.playbackRate.value)), true);
+      this.envelopegenerator.stop((currentTime + ((this.buffer.duration - start) / computedPlaybackRate)), true);
     }
 
     this.on(currentTime);
@@ -213,8 +215,7 @@ export class AudioModule extends SoundModule {
       }
 
       if (Math.abs(this.source.loopEnd - this.currentTime) > 0.5) {
-        const detune       = this.source.detune.value;
-        const playbackRate = this.source.playbackRate.value + (detune / 1200);
+        const playbackRate = this.computePlaybackRate();
 
         this.currentTime += ((16384 / this.buffer.sampleRate) * playbackRate);
 
@@ -335,8 +336,7 @@ export class AudioModule extends SoundModule {
             if (value > 0) {
               this.source.playbackRate.value = value;
 
-              const detune       = this.source.detune.value;
-              const playbackRate = value + (detune / 1200);
+              const playbackRate = this.computePlaybackRate();
               const startTime    = this.context.currentTime;
               const currentTime  = this.currentTime;
               const duration     = this.source.buffer?.duration ?? 0;
@@ -353,7 +353,7 @@ export class AudioModule extends SoundModule {
           if (typeof value === 'number') {
             this.source.detune.value = value;
 
-            const playbackRate = this.source.playbackRate.value + (value / 1200);
+            const playbackRate = this.computePlaybackRate();
             const startTime    = this.context.currentTime;
             const currentTime  = this.currentTime;
             const duration     = this.source.buffer?.duration ?? 0;
@@ -445,8 +445,7 @@ export class AudioModule extends SoundModule {
     const startTime    = this.context.currentTime;
     const currentTime  = this.currentTime;
     const duration     = this.source.buffer?.duration ?? 0;
-    const detune       = this.source.detune.value;
-    const playbackRate = this.source.playbackRate.value + (detune / 1200);
+    const playbackRate = this.computePlaybackRate();
 
     this.envelopegenerator.start(startTime);
     this.envelopegenerator.stop((startTime + ((duration - currentTime) / playbackRate)), true);
@@ -469,8 +468,7 @@ export class AudioModule extends SoundModule {
     const startTime    = this.context.currentTime;
     const currentTime  = this.currentTime;
     const duration     = this.source.buffer?.duration ?? 0;
-    const detune       = this.source.detune.value;
-    const playbackRate = this.source.playbackRate.value + (detune / 1200);
+    const playbackRate = this.computePlaybackRate();
 
     this.envelopegenerator.start(startTime);
     this.envelopegenerator.stop((startTime + ((duration - currentTime) / playbackRate)), true);
@@ -766,5 +764,13 @@ export class AudioModule extends SoundModule {
   /** @override */
   public override get OUTPUT(): GainNode {
     return this.mastervolume;
+  }
+
+  /**
+   * This method returns computed playback rate from `playbackRate` and `detune` that `AudioBufferSourceNode` has (@see https://www.w3.org/TR/webaudio/#computedplaybackrate)
+   * @return {number} Return value is computed playback rate.
+   */
+  private computePlaybackRate(): number {
+    return this.source.playbackRate.value * (2 ** (this.source.detune.value / 1200));
   }
 }

@@ -112,6 +112,20 @@ export function computeFrequency(index: number): number {
 }
 
 /**
+ * This class (static) method computes frequency from `frequency` property and `detune` property (@see https://www.w3.org/TR/webaudio/#computedoscfrequency or https://www.w3.org/TR/webaudio/#computedfrequency).
+ * @param {number} frequency This argument is `frequency` property as instance of `AudioParam`.
+ * @param {number} detune This argument is `detune` property as instance of `AudioParam`.
+ * @return {number} Return value is computed frequency (Hz).
+ */
+export function computeHz(frequency: number, detune: number): number {
+  if (frequency <= 0) {
+    return 0;
+  }
+
+  return frequency * (2 ** (detune/ 1200));
+}
+
+/**
  * This class (static) method computes playback rate from `playbackRate` property and `detune` property (@see https://www.w3.org/TR/webaudio/#computedplaybackrate).
  * @param {number} playbackRate This argument is `playbackRate` property as instance of `AudioParam`.
  * @param {number} detune This argument is `detune` property as instance of `AudioParam`.

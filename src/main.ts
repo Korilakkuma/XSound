@@ -116,6 +116,7 @@ import {
   isPitchChar,
   computeIndex,
   computeFrequency,
+  computeHz,
   computePlaybackRate,
   fft,
   ifft,
@@ -267,6 +268,7 @@ XSound.HALF_DOWN           = HALF_DOWN;
 XSound.DOT                 = DOT;
 XSound.isPitchChar         = isPitchChar;
 XSound.computeIndex        = computeIndex;
+XSound.computeHz           = computeHz;
 XSound.computeFrequency    = computeFrequency;
 XSound.computePlaybackRate = computePlaybackRate;
 XSound.fft                 = fft;

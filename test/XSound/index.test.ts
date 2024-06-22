@@ -5,6 +5,7 @@ import {
   isPitchChar,
   computeIndex,
   computeFrequency,
+  computeHz,
   computePlaybackRate,
   fft,
   ifft,
@@ -54,6 +55,20 @@ describe(computeFrequency.name, () => {
     expect(computeFrequency(48)).toBeCloseTo(440, 3);
     expect(computeFrequency(50)).toBeCloseTo(493.8833012561252, 3);
     expect(computeFrequency(-1)).toBeCloseTo(0, 0);
+  });
+});
+
+describe(computeHz.name, () => {
+  test('should return computed frequency', () => {
+    expect(computeHz(440, 0)).toBeCloseTo(440, 0);
+    expect(computeHz(440, 1200)).toBeCloseTo(880, 0);
+    expect(computeHz(440, -1200)).toBeCloseTo(220, 0);
+    expect(computeHz(27.5, 600)).toBeCloseTo(38.8908, 3);
+  });
+
+  test('should return `0` (fallback frequency)', () => {
+    expect(computeHz(0, 0)).toBeCloseTo(0, 0);
+    expect(computeHz(-0.0025, 0)).toBeCloseTo(0, 0);
   });
 });
 

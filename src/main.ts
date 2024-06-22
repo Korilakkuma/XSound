@@ -116,6 +116,7 @@ import {
   isPitchChar,
   computeIndex,
   computeFrequency,
+  computePlaybackRate,
   fft,
   ifft,
   ajax,
@@ -256,29 +257,30 @@ function XSound(sourecName: string): Source | null {
 /**
  * Class (Static) properties
  */
-XSound.SAMPLE_RATE       = audiocontext.sampleRate;
-XSound.EQUAL_TEMPERAMENT = EQUAL_TEMPERAMENT;
-XSound.FREQUENCY_RATIO   = FREQUENCY_RATIO;
-XSound.MIN_A             = MIN_A;
-XSound.QUARTER_NOT       = QUARTER_NOTE;
-XSound.HALF_UP           = HALF_UP;
-XSound.HALF_DOWN         = HALF_DOWN;
-XSound.DOT               = DOT;
-XSound.isPitchChar       = isPitchChar;
-XSound.computeIndex      = computeIndex;
-XSound.computeFrequency  = computeFrequency;
-XSound.fft               = fft;
-XSound.ifft              = ifft;
-XSound.ajax              = ajax;
-XSound.convertTime       = convertTime;
-XSound.decode            = decode;
-XSound.requestFullscreen = requestFullscreen;
-XSound.exitFullscreen    = exitFullscreen;
-XSound.read              = read;
-XSound.drop              = drop;
-XSound.file              = file;
-XSound.toFrequencies     = toFrequencies;
-XSound.toTextFile        = toTextFile;
+XSound.SAMPLE_RATE         = audiocontext.sampleRate;
+XSound.EQUAL_TEMPERAMENT   = EQUAL_TEMPERAMENT;
+XSound.FREQUENCY_RATIO     = FREQUENCY_RATIO;
+XSound.MIN_A               = MIN_A;
+XSound.QUARTER_NOT         = QUARTER_NOTE;
+XSound.HALF_UP             = HALF_UP;
+XSound.HALF_DOWN           = HALF_DOWN;
+XSound.DOT                 = DOT;
+XSound.isPitchChar         = isPitchChar;
+XSound.computeIndex        = computeIndex;
+XSound.computeFrequency    = computeFrequency;
+XSound.computePlaybackRate = computePlaybackRate;
+XSound.fft                 = fft;
+XSound.ifft                = ifft;
+XSound.ajax                = ajax;
+XSound.convertTime         = convertTime;
+XSound.decode              = decode;
+XSound.requestFullscreen   = requestFullscreen;
+XSound.exitFullscreen      = exitFullscreen;
+XSound.read                = read;
+XSound.drop                = drop;
+XSound.file                = file;
+XSound.toFrequencies       = toFrequencies;
+XSound.toTextFile          = toTextFile;
 
 // Export classes
 XSound.Analyser = Analyser;

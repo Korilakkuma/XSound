@@ -5,6 +5,7 @@ import {
   isPitchChar,
   computeIndex,
   computeFrequency,
+  computePlaybackRate,
   fft,
   ifft,
   ajax,
@@ -53,6 +54,22 @@ describe(computeFrequency.name, () => {
     expect(computeFrequency(48)).toBeCloseTo(440, 3);
     expect(computeFrequency(50)).toBeCloseTo(493.8833012561252, 3);
     expect(computeFrequency(-1)).toBeCloseTo(0, 0);
+  });
+});
+
+describe(computePlaybackRate.name, () => {
+  test('should return computed playback rate', () => {
+    expect(computePlaybackRate(1, 0)).toBeCloseTo(1, 0);
+    expect(computePlaybackRate(2, 0)).toBeCloseTo(2, 0);
+    expect(computePlaybackRate(0.5, 0)).toBeCloseTo(0.5, 1);
+    expect(computePlaybackRate(1, 1200)).toBeCloseTo(2, 0);
+    expect(computePlaybackRate(1, -1200)).toBeCloseTo(0.5, 1);
+    expect(computePlaybackRate(2.5, 600)).toBeCloseTo(3.5355, 3);
+  });
+
+  test('should return `1` (fallback playback rate)', () => {
+    expect(computePlaybackRate(0, 0)).toBeCloseTo(1, 0);
+    expect(computePlaybackRate(-0.0025, 0)).toBeCloseTo(1, 0);
   });
 });
 

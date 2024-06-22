@@ -111,6 +111,20 @@ export function computeFrequency(index: number): number {
   return (index >= 0) ? (MIN_A * (FREQUENCY_RATIO ** index)) : 0;
 }
 
+/**
+ * This class (static) method computes playback rate from `playbackRate` property and `detune` property (@see https://www.w3.org/TR/webaudio/#computedplaybackrate).
+ * @param {number} playbackRate This argument is `playbackRate` property as instance of `AudioParam`.
+ * @param {number} detune This argument is `detune` property as instance of `AudioParam`.
+ * @return {number} Return value is computed playback rate.
+ */
+export function computePlaybackRate(playbackRate: number, detune: number): number {
+  if (playbackRate <= 0) {
+    return 1;
+  }
+
+  return playbackRate * (2 ** (detune / 1200));
+}
+
 export interface FileEvent extends Event {
   target: HTMLInputElement & EventTarget;
 }

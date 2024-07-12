@@ -1,19 +1,19 @@
 // @ts-check
 
-const eslint   = require('@eslint/js');
-const tseslint = require('typescript-eslint');
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
-module.exports = tseslint.config(
+export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
     files: ['src/**/*.ts', 'test/**/*.ts', 'mock/**/*.ts'],
-    plugins: {
-      '@typescript-lint': tseslint.plugin
-    },
     languageOptions: {
       'parser': tseslint.parser
     },
+    extends: [
+      ...tseslint.configs.recommended
+    ],
     rules: {
       'default-param-last': 'off',
       'indent': ['error', 2, {

@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const webpack      = require('webpack');
-const packageJson  = require('./package.json');
-const TerserPlugin = require('terser-webpack-plugin');
-const path         = require('path');
-/* eslint-enable @typescript-eslint/no-var-requires */
+import webpack from 'webpack';
+import TerserPlugin from 'terser-webpack-plugin';
+import path from 'path';
+import packageJson from './package.json' assert { type: 'json' };
 
 const {
   name,
@@ -51,13 +49,16 @@ const baseConfig = {
   resolve: {
     extensions: ['.ts', '.js']
   },
+  // eslint-disable-next-line no-undef
   plugins: process.env.NODE_ENV === 'production' ? plugins : [],
   optimization: {
+    // eslint-disable-next-line no-undef
     minimize: process.env.NODE_ENV === 'production',
     minimizer: [
       new TerserPlugin({
         terserOptions: {
           compress: {
+            // eslint-disable-next-line no-undef
             drop_console: process.env.NODE_ENV === 'production'
           },
           keep_classnames: /^.*?Processor$/
@@ -84,4 +85,4 @@ const windowConfig = {
   }
 };
 
-module.exports = [baseConfig, windowConfig];
+export default [baseConfig, windowConfig];

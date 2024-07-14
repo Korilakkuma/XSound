@@ -9,8 +9,8 @@
   "types": "build/types/main.d.ts",
   "scripts": {
     "clean": "rm -rf build",
-    "lint": "eslint 'src/**/*.ts' 'test/**/*.ts' 'mock/**/*.ts'",
-    "fix": "eslint --fix 'src/**/*.ts' 'test/**/*.ts' 'mock/**/*.ts'",
+    "lint": "eslint 'src/**/*.ts' 'test/**/*.ts' 'mock/**/*.ts' jest.config.mjs webpack.config.mjs",
+    "fix": "eslint --fix 'src/**/*.ts' 'test/**/*.ts' 'mock/**/*.ts' jest.config.mjs webpack.config.mjs",
     "type": "tsc --noEmit",
     "build:types": "tsc --project tsconfig.types.json",
     "build:js": "cross-env NODE_ENV=production webpack --progress --mode production",

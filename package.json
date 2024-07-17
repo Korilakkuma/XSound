@@ -16,7 +16,7 @@
     "build:js": "cross-env NODE_ENV=production webpack --progress --mode production",
     "build": "npm run clean && npm run build:types && npm run build:js",
     "watch": "npm run clean && webpack --progress --watch",
-    "dev": "webpack-dev-server --progress --mode production",
+    "dev": "webpack-dev-server --progress",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",

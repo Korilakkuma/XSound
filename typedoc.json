@@ -2,8 +2,10 @@
   "$schema": "https://typedoc.org/schema.json",
   "customCss": "./typedoc.css",
   "entryPoints": [
-    "src/interfaces.ts",
     "src/main.ts",
+    "src/worker.ts",
+    "src/worklet.ts",
+    "src/interfaces.ts",
     "src/types.ts"
   ],
   "excludeExternals": true,

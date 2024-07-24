@@ -10,7 +10,6 @@ export type NoiseProcessingMessageEventData = {
 /**
  * This class extends `AudioWorkletProcessor`.
  * Overrides `process` method for generating noise.
- * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class NoiseModuleProcessor extends AudioWorkletProcessor {
   private processing = false;

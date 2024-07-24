@@ -9,8 +9,6 @@ export type TremoloParams = {
 
 /**
  * Effector's subclass for Tremolo.
- * @constructor
- * @extends {Effector}
  */
 export class Tremolo extends Effector {
   private amplitude: GainNode;

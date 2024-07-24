@@ -12,8 +12,6 @@ export type ChorusParams = {
 
 /**
  * Effector's subclass for Chorus.
- * @constructor
- * @extends {Effector}
  */
 export class Chorus extends Effector {
   private delay: DelayNode;

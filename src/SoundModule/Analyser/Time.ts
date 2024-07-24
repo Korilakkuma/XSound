@@ -11,8 +11,6 @@ export type TimeParams = VisualizerParams & {
 
 /**
  * This private class visualizes sound wave in time domain.
- * @constructor
- * @extends {Visualizer}
  */
 export class Time extends Visualizer {
   private type: DataType = 'uint';

@@ -8,8 +8,6 @@ export type BitCrusherParams = {
 
 /**
  * Effector's subclass for BitCrusher.
- * @constructor
- * @extends {Effector}
  */
 export class BitCrusher extends Effector {
   private shaper: WaveShaperNode;

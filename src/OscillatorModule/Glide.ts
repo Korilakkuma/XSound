@@ -10,8 +10,6 @@ export type GlideParams = {
 
 /**
  * This private class is for oscillator glide.
- * @constructor
- * @implements {Statable}
  */
 export class Glide implements Statable {
   private context: AudioContext;

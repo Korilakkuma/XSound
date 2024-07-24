@@ -8,8 +8,6 @@ export type PitchShifterParams = {
 
 /**
  * Effector's subclass for Pitch Shifter.
- * @constructor
- * @extends {Effector}
  */
 export class PitchShifter extends Effector {
   private processor: AudioWorkletNode;

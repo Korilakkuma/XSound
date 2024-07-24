@@ -6,7 +6,6 @@ import { AudioWorkletProcessor } from '../../../worklet';
 /**
  * This class extends `AudioWorkletProcessor`.
  * Override `process` method for stereo effect and Update parameters on message event.
- * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class StereoProcessor extends AudioWorkletProcessor {
   private isActive = false;

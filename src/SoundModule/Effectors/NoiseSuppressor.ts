@@ -8,8 +8,6 @@ export type NoiseSuppressorParams = {
 
 /**
  * This private class is for Noise Suppressor.
- * @constructor
- * @extends {Effector}
  */
 export class NoiseSuppressor extends Effector {
   private processor: AudioWorkletNode;

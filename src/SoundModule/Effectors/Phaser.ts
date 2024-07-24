@@ -14,8 +14,6 @@ export type PhaserParams = {
 
 /**
  * Effector's subclass for Phaser.
- * @constructor
- * @extends {Effector}
  */
 export class Phaser extends Effector {
   public static MAX_STAGES = 24;  // The max number of All-pass Filters

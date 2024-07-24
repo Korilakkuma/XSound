@@ -3,7 +3,6 @@ import { Tree, MMLSyntaxError } from './Tree';
 
 /**
  * This class is Tree Construction (syntax tree) for MML (Music Macro Language).
- * @constructor
  */
 export class TreeConstructor {
   public static id = 0;

@@ -1,7 +1,6 @@
 /**
  * This class is entity for recording frame.
  * Namely, this class has recorded sound data.
- * @constructor
  */
 export class Frame {
   private id: string;

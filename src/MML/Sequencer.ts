@@ -18,7 +18,6 @@ import { Sequence } from './Sequence';
 
 /**
  * This class converts syntax tree to array that contains musical note.
- * @constructor
  */
 export class Sequencer {
   private sequences: Sequence[] = [];

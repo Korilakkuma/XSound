@@ -26,8 +26,6 @@ export type PannerParams = {
 
 /**
  * Effector's subclass for Panner.
- * @constructor
- * @extends {Effector}
  */
 export class Panner extends Effector {
   private panner: PannerNode;

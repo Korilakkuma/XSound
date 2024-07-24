@@ -50,8 +50,6 @@ export { OneshotModuleProcessor };
 
 /**
  * This subclass is for playing one-shot audio
- * @constructor
- * @extends {SoundModule}
  */
 export class OneshotModule extends SoundModule {
   private sources: AudioBufferSourceNode[] = [];

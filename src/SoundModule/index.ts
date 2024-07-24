@@ -142,8 +142,6 @@ export { SoundModuleProcessor };
 /**
  * This class is superclass that is the top in this library.
  * This class is extended as subclass (`OscillatorModule`, `OneshotModule`, `NoiseModule`, `AudioModule`, `MediaModule`, `StreamModule`, `ProcessorModule`, `MixerModule` ...etc).
- * @constructor
- * @abstract
  */
 export abstract class SoundModule implements Connectable {
   public static readonly NUMBER_OF_INPUTS  = 2;

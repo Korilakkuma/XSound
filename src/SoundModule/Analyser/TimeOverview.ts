@@ -27,8 +27,6 @@ const SVG_SPRITE_CLASS_NAME       = 'xsound-svg-sprite';
 
 /**
  * This private class visualizes audio wave overview in time domain.
- * @constructor
- * @extends {Visualizer}
  */
 export class TimeOverview extends Visualizer {
   private callback: DragCallbackFunction = () => {};

@@ -5,7 +5,6 @@ import { AudioWorkletProcessor } from '../worklet';
 /**
  * This class extends `AudioWorkletProcessor`.
  * Overrides `process` method for sound source (bypass).
- * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class OneshotModuleProcessor extends AudioWorkletProcessor {
   constructor() {

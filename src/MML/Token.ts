@@ -37,7 +37,6 @@ export const TokenMap = new Map<string|undefined, TokenType>([
 /**
  * This class is entity for MML token.
  * This class has token type, token data and token value if token is number.
- * @constructor
  */
 export class Token {
   private _id: string;

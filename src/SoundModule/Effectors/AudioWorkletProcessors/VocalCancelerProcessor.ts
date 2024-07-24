@@ -6,7 +6,6 @@ import { AudioWorkletProcessor } from '../../../worklet';
 /**
  * This class extends `AudioWorkletProcessor`.
  * Override `process` method for vocal canceler and Update parameters on message event.
- * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class VocalCancelerProcessor extends AudioWorkletProcessor {
   private depth = 0;

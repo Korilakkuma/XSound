@@ -17,8 +17,6 @@ export type FFTParams = VisualizerParams & {
 
 /**
  * This private class visualizes spectrum.
- * @constructor
- * @extends {Visualizer}
  */
 export class FFT extends Visualizer {
   // for logarithmic

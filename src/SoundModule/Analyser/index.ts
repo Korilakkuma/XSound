@@ -46,8 +46,6 @@ export type AnalyserParams = {
 
 /**
  * This private class manages 3 private classes (`TimeOverview`, `Time`, `FFT`) for visualizing sound wave.
- * @constructor
- * @implements {Connectable}
  */
 export class Analyser implements Connectable {
   private analyser: AnalyserNode;

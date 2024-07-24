@@ -8,8 +8,6 @@ export type VocalCancelerParams = {
 
 /**
  * This private class is for Vocal Canceler.
- * @constructor
- * @extends {Effector}
  */
 export class VocalCanceler extends Effector {
   private processor: AudioWorkletNode;

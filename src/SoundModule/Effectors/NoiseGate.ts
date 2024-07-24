@@ -8,8 +8,6 @@ export type NoiseGateParams = {
 
 /**
  * This private class is for Noise Gate.
- * @constructor
- * @extends {Effector}
  */
 export class NoiseGate extends Effector {
   private processor: AudioWorkletNode;

@@ -30,8 +30,6 @@ import { SoundModule } from '../SoundModule';
 
 /**
  * This subclass is for using `AudioWorkletNode` as sound source.
- * @constructor
- * @extends {SoundModule}
  */
 export class ProcessorModule extends SoundModule {
   private processorName = '';

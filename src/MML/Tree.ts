@@ -2,7 +2,6 @@ import type { Token } from '../../src/MML/Token';
 
 /**
  * This class is entity for MML syntax tree.
- * @constructor
  */
 export class Tree {
   private static indent = 0;
@@ -88,7 +87,6 @@ ${space}${this._left?.operator.token ?? ''}${((this._right !== null) && (this._r
 
 /**
  * This class is error class for MML syntax error.
- * @constructor
  */
 export class MMLSyntaxError {
   private _token: Token;

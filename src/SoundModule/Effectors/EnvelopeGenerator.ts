@@ -10,8 +10,6 @@ export type EnvelopeGeneratorParams = {
 
 /**
  * This private class is for Envelope Generator.
- * @constructor
- * @implements {Statable}
  */
 export class EnvelopeGenerator implements Statable {
   public static MIN_GAIN = 1e-3;

@@ -15,9 +15,6 @@ export type OscillatorParams = {
 
 /**
  * This private class is entity for oscillator.
- * @constructor
- * @implements {Connectable}
- * @implements {Statable}
  */
 export class Oscillator implements Connectable, Statable {
   // 1 Octave = 1200 cent

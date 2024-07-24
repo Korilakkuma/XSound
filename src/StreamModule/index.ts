@@ -42,8 +42,6 @@ export { StreamModuleProcessor };
 
 /**
  * This class is for processing sound data from WebRTC.
- * @constructor
- * @extends {SoundModule}
  */
 export class StreamModule extends SoundModule {
   private sources: MediaStreamAudioSourceNode[] | MediaStreamTrackAudioSourceNode[] = [];

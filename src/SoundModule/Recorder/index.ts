@@ -25,7 +25,6 @@ export { RecorderProcessor };
 
 /**
  * This private class is for multi track recording.
- * @constructor
  */
 export class Recorder implements Connectable {
   private processor: AudioWorkletNode;

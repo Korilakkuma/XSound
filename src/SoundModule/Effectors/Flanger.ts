@@ -12,8 +12,6 @@ export type FlangerParams = {
 
 /**
  * Effector's subclass for Flanger.
- * @constructor
- * @extends {Effector}
  */
 export class Flanger extends Effector {
   private delay: DelayNode;

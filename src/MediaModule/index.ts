@@ -46,8 +46,6 @@ export { MediaModuleProcessor };
  * Namely, this class enables to create audio player that has higher features from `HTMLMediaElement`.
  * But, this class is disadvantage to play many one shot audios.
  * In that case, developer should use `OneshotModule`.
- * @constructor
- * @extends {SoundModule}
  */
 export class MediaModule extends SoundModule {
   private source: MediaElementAudioSourceNode | null = null;

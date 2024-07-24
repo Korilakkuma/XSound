@@ -16,8 +16,6 @@ export type ListenerParams = {
 
 /**
  * Effector's subclass for Listener.
- * @constructor
- * @extends {Effector}
  */
 export class Listener extends Effector {
   private listener: AudioListener;

@@ -33,8 +33,6 @@ export { MixerModuleProcessor };
 
 /**
  * This class is for mixing sound sources (instance of `SoundModule` subclass).
- * @constructor
- * @extends {SoundModule}
  */
 export class MixerModule extends SoundModule {
   private sources: SoundModule[] = [];

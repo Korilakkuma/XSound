@@ -3,10 +3,6 @@ import type { Connectable, Statable } from '../../interfaces';
 /**
  * This class is superclass for effector classes.
  * Also, this class is used for implementing custom effector.
- * @constructor
- * @abstract
- * @implements {Connectable}
- * @implements {Statable}
  */
 export abstract class Effector implements Connectable, Statable {
   protected context: AudioContext;
@@ -82,13 +78,11 @@ export abstract class Effector implements Connectable, Statable {
   /**
    * This method connects `AudioNode`s for effector.
    * @return {GainNode} Return value is for `connect` method chain.
-   * @abstract
    */
   public abstract connect(): GainNode;
 
   /**
    * This method gets effector's parameters as associative array.
-   * @abstract
    */
   public abstract params(): void;
 

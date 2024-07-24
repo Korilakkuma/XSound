@@ -8,8 +8,6 @@ export type AutopannerParams = {
 
 /**
  * Effector's subclass for Autopanner.
- * @constructor
- * @extends {Effector}
  */
 export class Autopanner extends Effector {
   private panner: StereoPannerNode;

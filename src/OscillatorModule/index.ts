@@ -53,8 +53,6 @@ export type OscillatorModuleParams = SoundModuleParams & {
 
 /**
  * This class manages instances of `Oscillator` for creating sound.
- * @constructor
- * @extends {SoundModule}
  */
 export class OscillatorModule extends SoundModule {
   private sources: Oscillator[] = [];

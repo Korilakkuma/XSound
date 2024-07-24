@@ -11,8 +11,6 @@ export type WahParams = {
 
 /**
  * Effector's subclass for Wah.
- * @constructor
- * @extends {Effector}
  */
 export class Wah extends Effector {
   private auto = false;

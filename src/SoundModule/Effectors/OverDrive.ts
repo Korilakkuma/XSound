@@ -9,8 +9,6 @@ export type OverDriveParams = {
 
 /**
  * Effector's subclass for OverDrive.
- * @constructor
- * @extends {Effector}
  */
 export class OverDrive extends Effector {
   private shaper: WaveShaperNode;

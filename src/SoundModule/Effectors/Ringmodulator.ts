@@ -8,8 +8,6 @@ export type RingmodulatorParams = {
 
 /**
  * Effector's subclass for Ring Modulator.
- * @constructor
- * @extends {Effector}
  */
 export class Ringmodulator extends Effector {
   private amplitude: GainNode;

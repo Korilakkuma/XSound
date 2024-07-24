@@ -12,8 +12,6 @@ export type ReverbParams = {
 
 /**
  * Effector's subclass for Reverb.
- * @constructor
- * @extends {Effector}
  */
 export class Reverb extends Effector {
   private convolver: ConvolverNode;

@@ -2,7 +2,6 @@ import type { Frame } from './Frame';
 
 /**
  * This class is entity for recording channel.
- * @constructor
  */
 export class Channel {
   private id: string;

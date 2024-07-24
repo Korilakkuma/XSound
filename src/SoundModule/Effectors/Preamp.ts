@@ -35,8 +35,6 @@ export type PreampParams = {
 
 /**
  * Effector's subclass for Pre-Equalizer.
- * @constructor
- * @extends {Effector}
  */
 export class PreEqualizer extends Effector {
   private shaper: WaveShaperNode;
@@ -227,8 +225,6 @@ export class PreEqualizer extends Effector {
 
 /**
  * Effector's subclass for Post-Equalizer.
- * @constructor
- * @extends {Effector}
  */
 export class PostEqualizer extends Effector {
   private shaper: WaveShaperNode;
@@ -448,8 +444,6 @@ export class PostEqualizer extends Effector {
 
 /**
  * Effector's subclass for Cabinet.
- * @constructor
- * @extends {Effector}
  */
 export class Cabinet extends Effector {
   private lowpass: BiquadFilterNode;
@@ -545,8 +539,6 @@ export class Cabinet extends Effector {
 
 /**
  * Effector's subclass for Preamplifier.
- * @constructor
- * @extends {Effector}
  */
 export class Preamp extends Effector {
   /**

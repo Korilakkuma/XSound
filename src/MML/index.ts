@@ -22,7 +22,6 @@ export type {
 
 /**
  * This class manages instance of `Part` for playing MML (Music Macro Language).
- * @constructor
  */
 export class MML {
   private parts: Part[] = [];

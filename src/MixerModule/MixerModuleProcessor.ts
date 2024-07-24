@@ -5,7 +5,6 @@ import { AudioWorkletProcessor } from '../worklet';
 /**
  * This class extends `AudioWorkletProcessor`.
  * Overrides `process` method for mixing sound source.
- * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class MixerModuleProcessor extends AudioWorkletProcessor {
   constructor() {

@@ -8,8 +8,6 @@ export type StereoParams = {
 
 /**
  * Effector's subclass for Stereo.
- * @constructor
- * @extends {Effector}
  */
 export class Stereo extends Effector {
   public static MAX_DELAY_TIME = 1;  // Max delay time is 1000 [ms]

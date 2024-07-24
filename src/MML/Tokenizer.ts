@@ -2,7 +2,6 @@ import { TokenMap, Token } from './Token';
 
 /**
  * This class is for MML Tokenization.
- * @constructor
  */
 export class Tokenizer {
   public static id = 0;

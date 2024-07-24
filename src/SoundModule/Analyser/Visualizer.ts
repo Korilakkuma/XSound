@@ -44,9 +44,6 @@ export type VisualizerParams = {
 
 /**
  * This private class is superclass for visualizer class (`TimeOverview`, `Time`, `FFT`).
- * @constructor
- * @abstract
- * @implements {Statable}
  */
 export abstract class Visualizer implements Statable {
   public static readonly XMLNS = 'http://www.w3.org/2000/svg' as const;
@@ -518,9 +515,6 @@ export abstract class Visualizer implements Statable {
     return `${style ?? 'normal'} ${weight ?? 'normal'} ${size ?? '13px'} "${family ?? 'Arial'}"`;
   }
 
-  /** @abstract */
   protected abstract visualizeOnCanvas(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void;
-
-  /** @abstract */
   protected abstract visualizeBySVG(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void;
 }

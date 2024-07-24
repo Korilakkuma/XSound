@@ -10,8 +10,6 @@ export type EqualizerParams = {
 
 /**
  * Effector's subclass for Equalizer.
- * @constructor
- * @extends {Effector}
  */
 export class Equalizer extends Effector {
   private bass: BiquadFilterNode;

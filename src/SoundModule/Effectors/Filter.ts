@@ -15,8 +15,6 @@ export type FilterParams = {
 
 /**
  * Effector's subclass for Filter.
- * @constructor
- * @extends {Effector}
  */
 export class Filter extends Effector {
   private filter: BiquadFilterNode;

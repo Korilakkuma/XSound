@@ -11,8 +11,6 @@ export type DelayParams = {
 
 /**
  * Effector's subclass for Delay.
- * @constructor
- * @extends {Effector}
  */
 export class Delay extends Effector {
   public static MAX_DELAY_TIME = 5;  // Max delay time is 5000 [ms]

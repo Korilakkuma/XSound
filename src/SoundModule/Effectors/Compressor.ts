@@ -11,8 +11,6 @@ export type CompressorParams = {
 
 /**
  * Effector's subclass for Compressor.
- * @constructor
- * @extends {Effector}
  */
 export class Compressor extends Effector {
   private compressor: DynamicsCompressorNode;

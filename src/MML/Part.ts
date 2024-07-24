@@ -18,7 +18,6 @@ export type {
 
 /**
  * This class starts and stops each MML part.
- * @constructor
  */
 export class Part {
   private sequences: Sequence[] = [];

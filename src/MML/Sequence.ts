@@ -1,6 +1,5 @@
 /**
  * This class is entity for sequence that has musical note.
- * @constructor
  */
 export class Sequence {
   private _id: string;

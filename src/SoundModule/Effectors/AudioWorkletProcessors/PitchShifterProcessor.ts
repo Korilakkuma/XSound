@@ -6,7 +6,6 @@ import { AudioWorkletProcessor } from '../../../worklet';
 /**
  * This class extends `AudioWorkletProcessor`.
  * Override `process` method for pitch shifter and Update parameters on message event.
- * @extends {AudioWorkletGlobalScope.AudioWorkletProcessor}
  */
 export class PitchShifterProcessor extends AudioWorkletProcessor {
   private static readonly GAIN_CORRECTION = 2 as const;

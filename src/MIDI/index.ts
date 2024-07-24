@@ -1,6 +1,5 @@
 /**
  * This class is for using Web MIDI API.
- * @constructor
  */
 export class MIDI {
   private midiAccess: MIDIAccess | null = null;

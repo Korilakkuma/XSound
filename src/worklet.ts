@@ -7,7 +7,6 @@ export type Parameters = { [parameterName: string]: Float32Array };
 
 /**
  * This class enables to use inline AudioWorklet.
- * @abstract
  */
 export abstract class AudioWorkletProcessor {
   protected port = new MessagePort();

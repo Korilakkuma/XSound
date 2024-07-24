@@ -9,8 +9,6 @@ export type FuzzParams = {
 
 /**
  * Effector's subclass for Fuzz.
- * @constructor
- * @extends {Effector}
  */
 export class Fuzz extends Effector {
   private positiveShaper: WaveShaperNode;

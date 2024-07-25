@@ -9,7 +9,6 @@
     "src/types.ts"
   ],
   "excludeExternals": true,
-  "gaID": "UA-41390233-1",
   "gitRevision": "main",
   "includeVersion": true,
   "name": "XSound"

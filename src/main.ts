@@ -52,7 +52,9 @@ import type { OverDriveParams } from './SoundModule/Effectors/OverDrive';
 import type { PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import type { PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
-import type { PreampParams, PreampCurve, PreEqualizer, PreEqualizerParams, PostEqualizer, PostEqualizerParams, Cabinet, CabinetParams } from './SoundModule/Effectors/Preamp';
+import type { PreampParams, PreampType, PreampCurve } from './SoundModule/Effectors/Preamp';
+import type { MarshallParams, PreEqualizerParams as MarshallPreEqualizerParams, PostEqualizerParams as MarshallPostEqualizerParams } from './SoundModule/Effectors/Preamps/Marshall';
+import type { CabinetParams } from './SoundModule/Effectors/Preamps/Cabinet';
 import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
 import type { RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
 import type { StereoParams } from './SoundModule/Effectors/Stereo';
@@ -635,12 +637,11 @@ export type {
   PitchShifterProcessor,
   Preamp,
   PreampParams,
+  PreampType,
   PreampCurve,
-  PreEqualizer,
-  PreEqualizerParams,
-  PostEqualizer,
-  PostEqualizerParams,
-  Cabinet,
+  MarshallParams,
+  MarshallPreEqualizerParams,
+  MarshallPostEqualizerParams,
   CabinetParams,
   Reverb,
   ReverbParams,

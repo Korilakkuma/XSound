@@ -1,4 +1,4 @@
-import type { PreampParams, PreEqualizerParams, PostEqualizerParams, CabinetParams } from '/src/SoundModule/Effectors/Preamp';
+import type { PreampParams } from '/src/SoundModule/Effectors/Preamp';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Preamp } from '/src/SoundModule/Effectors/Preamp';
@@ -10,128 +10,82 @@ describe(Preamp.name, () => {
   const preamp = new Preamp(context);
 
   describe(preamp.connect.name, () => {
-    /* eslint-disable dot-notation */
-    const originalInput   = preamp['input'];
-    const originalPreEQ   = preamp['preEQ']['output'];
-    const originalPostEQ  = preamp['postEQ']['output'];
-    const originalCabinet = preamp['cabinet']['output'];
-    /* eslint-enable dot-notation */
+    // eslint-disable-next-line dot-notation
+    const originalConnect = preamp['preamp'].connect;
 
-    afterAll(() => {
-      /* eslint-disable dot-notation */
-      preamp['input']             = originalInput;
-      preamp['preEQ']['output']   = originalPreEQ;
-      preamp['postEQ']['output']  = originalPostEQ;
-      preamp['cabinet']['output'] = originalCabinet;
-      /* eslint-enable dot-notation */
+    const preampConnectMock = jest.fn();
 
-      preamp.deactivate();
-    });
+    preamp.activate();
 
-    test('should call `connect` method', () => {
-      const inputConnectMock      = jest.fn();
-      const inputDisconnectMock   = jest.fn();
-      const preEQConnectMock      = jest.fn();
-      const preEQDisconnectMock   = jest.fn();
-      const postEQConnectMock     = jest.fn();
-      const postEQDisconnectMock  = jest.fn();
-      const cabinetConnectMock    = jest.fn();
-      const cabinetDisconnectMock = jest.fn();
+    preamp['preamp'].connect = preampConnectMock;
 
-      /* eslint-disable dot-notation */
-      preamp['input'].connect                = inputConnectMock;
-      preamp['input'].disconnect             = inputDisconnectMock;
-      preamp['preEQ']['output'].connect      = preEQConnectMock;
-      preamp['preEQ']['output'].disconnect   = preEQDisconnectMock;
-      preamp['postEQ']['output'].connect     = postEQConnectMock;
-      preamp['postEQ']['output'].disconnect  = postEQDisconnectMock;
-      preamp['cabinet']['output'].connect    = cabinetConnectMock;
-      preamp['cabinet']['output'].disconnect = cabinetDisconnectMock;
-      /* eslint-enable dot-notation */
+    preamp.connect();
 
-      preamp.connect();
+    expect(preampConnectMock).toHaveBeenCalledTimes(1);
 
-      expect(inputConnectMock).toHaveBeenCalledTimes(1);
-      expect(preEQConnectMock).toHaveBeenCalledTimes(0);
-      expect(postEQConnectMock).toHaveBeenCalledTimes(0);
-      expect(cabinetConnectMock).toHaveBeenCalledTimes(0);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(preEQDisconnectMock).toHaveBeenCalledTimes(0);
-      expect(postEQDisconnectMock).toHaveBeenCalledTimes(0);
-      expect(cabinetDisconnectMock).toHaveBeenCalledTimes(0);
+    // eslint-disable-next-line dot-notation
+    preamp['preamp'].connect = originalConnect;
 
-      preamp.activate();
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(2);
-      expect(preEQConnectMock).toHaveBeenCalledTimes(1);
-      expect(postEQConnectMock).toHaveBeenCalledTimes(1);
-      expect(cabinetConnectMock).toHaveBeenCalledTimes(1);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(preEQDisconnectMock).toHaveBeenCalledTimes(0);
-      expect(postEQDisconnectMock).toHaveBeenCalledTimes(0);
-      expect(cabinetDisconnectMock).toHaveBeenCalledTimes(0);
-    });
+    preamp.deactivate();
   });
 
   describe(preamp.param.name, () => {
-    const defaultPreEQParams: PreEqualizerParams = {
-      state     : false,
-      curve     : null,
-      oversample: '4x',
-      gain      : 0.5,
-      lead      : 0.5
-    };
-
-    const defaultPostEQParams: PostEqualizerParams = {
-      state     : false,
-      curve     : null,
-      oversample: '4x',
-      bass      : 0,
-      middle    : 0,
-      treble    : 0,
-      frequency : 500
-    };
-
-    const defaultCabinetParams: CabinetParams = {
-      state: true
-    };
-
     const defaultParams: PreampParams = {
-      level  : 0,
-      samples: 1024,
-      pre    : defaultPreEQParams,
-      post   : defaultPostEQParams,
-      cabinet: defaultCabinetParams
-    };
-
-    const preEQParams: PreEqualizerParams = {
-      state     : true,
-      curve     : new Float32Array([0, 0, 0, 0]),
-      oversample: 'none',
-      gain      : 0.75,
-      lead      : 0.5
-    };
-
-    const postEQParams: PostEqualizerParams = {
-      state     : true,
-      curve     : new Float32Array([0, 0, 0, 0]),
-      oversample: 'none',
-      bass      : 10,
-      middle    : -10,
-      treble    : 10,
-      frequency : 1000
-    };
-
-    const cabinetParams: CabinetParams = {
-      state: false
+      state : false,
+      type  : 'marshall',
+      preamp: {
+        state  : false,
+        level  : 0,
+        samples: 1024,
+        pre    : {
+          state     : true,
+          curve     : new Float32Array([0, 0, 0, 0]),
+          oversample: '4x',
+          gain      : 0.5,
+          lead      : 0.5
+        },
+        post: {
+          state     : true,
+          curve     : new Float32Array([0, 0, 0, 0]),
+          oversample: '4x',
+          bass      : 0,
+          middle    : 0,
+          treble    : 0,
+          frequency : 500
+        },
+        cabinet: {
+          state: true
+        }
+      }
     };
 
     const params: PreampParams = {
-      level  : 0.5,
-      samples: 2048,
-      pre    : preEQParams,
-      post   : postEQParams,
-      cabinet: cabinetParams
+      state : true,
+      type  : 'marshall',
+      preamp: {
+        state  : true,
+        level  : 0.5,
+        samples: 2048,
+        pre    : {
+          state     : true,
+          curve     : new Float32Array([0, 0, 0, 0]),
+          oversample: '2x',
+          gain      : 0.75,
+          lead      : 0.75
+        },
+        post: {
+          state     : true,
+          curve     : new Float32Array([0, 0, 0, 0]),
+          oversample: '2x',
+          bass      : 10,
+          middle    : -10,
+          treble    : 10,
+          frequency : 1000
+        },
+        cabinet: {
+          state: false
+        }
+      }
     };
 
     beforeAll(() => {
@@ -148,69 +102,86 @@ describe(Preamp.name, () => {
     });
 
     // Getter
-    test('should return `level`', () => {
-      expect(preamp.param('level')).toBeCloseTo(0.5, 1);
+    test('should return `type`', () => {
+      expect(preamp.param('type')).toBe('marshall');
     });
 
-    test('should return `samples`', () => {
-      expect(preamp.param('samples')).toBe(2048);
-    });
-
-    test('should return Pre-Equalizer parameters', () => {
-      expect(preamp.param('pre')).toStrictEqual(preEQParams);
-    });
-
-    test('should return Post-Equalizer parameters', () => {
-      expect(preamp.param('post')).toStrictEqual(postEQParams);
-    });
-
-    test('should return Cabinet parameters', () => {
-      expect(preamp.param('cabinet')).toStrictEqual(cabinetParams);
-    });
-  });
-
-  describe(preamp.params.name, () => {
-    test('should return parameters for preamp effector as associative array', () => {
-      expect(preamp.params()).toStrictEqual({
-        state  : false,
-        level  : 0,
-        samples: 1024,
-        pre    : preamp.param('pre'),
-        post   : preamp.param('post'),
-        cabinet: preamp.param('cabinet')
+    test('should return `preamp`', () => {
+      expect(preamp.param('preamp')).toStrictEqual({
+        state  : true,
+        level  : 0.5,
+        samples: 2048,
+        pre    : {
+          state     : true,
+          curve     : new Float32Array([0, 0, 0, 0]),
+          oversample: '2x',
+          gain      : 0.75,
+          lead      : 0.75
+        },
+        post: {
+          state     : true,
+          curve     : new Float32Array([0, 0, 0, 0]),
+          oversample: '2x',
+          bass      : 10,
+          middle    : -10,
+          treble    : 10,
+          frequency : 1000
+        },
+        cabinet: {
+          state: false
+        }
       });
     });
   });
 
+  describe(preamp.params.name, () => {
+    test('should call preamp `params` method', () => {
+      // eslint-disable-next-line dot-notation
+      const originalParams = preamp['preamp'].params;
+
+      const preampParamsMock = jest.fn();
+
+      // eslint-disable-next-line dot-notation
+      preamp['preamp'].params = preampParamsMock;
+
+      preamp.params();
+
+      expect(preampParamsMock).toHaveBeenCalledTimes(1);
+
+      // eslint-disable-next-line dot-notation
+      preamp['preamp'].params = originalParams;
+    });
+  });
+
   describe(preamp.activate.name, () => {
-    test('should call `connect` method', () => {
-      const originalConnect = preamp.connect;
+    test('should call preamp `activate` method', () => {
+      const originalActivate = preamp.activate;
 
-      const connectMock = jest.fn();
+      const preampActivateMock = jest.fn();
 
-      preamp.connect = connectMock;
+      preamp.activate = preampActivateMock;
 
       preamp.activate();
 
-      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(preampActivateMock).toHaveBeenCalledTimes(1);
 
-      preamp.connect = originalConnect;
+      preamp.activate = originalActivate;
     });
   });
 
   describe(preamp.deactivate.name, () => {
-    test('should call `connect` method', () => {
-      const originalConnect = preamp.connect;
+    test('should call `deactivate` method', () => {
+      const originalDeactivate = preamp.deactivate;
 
-      const connectMock = jest.fn();
+      const preampDeactivateMock = jest.fn();
 
-      preamp.connect = connectMock;
+      preamp.deactivate = preampDeactivateMock;
 
       preamp.deactivate();
 
-      expect(connectMock).toHaveBeenCalledTimes(1);
+      expect(preampDeactivateMock).toHaveBeenCalledTimes(1);
 
-      preamp.connect = originalConnect;
+      preamp.deactivate = originalDeactivate;
     });
   });
 });

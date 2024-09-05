@@ -11,6 +11,7 @@ import { ConvolverNodeMock } from '/mock/ConvolverNodeMock';
 import { DelayNodeMock } from '/mock/DelayNodeMock';
 import { DynamicsCompressorNodeMock } from '/mock/DynamicsCompressorNodeMock';
 import { GainNodeMock } from '/mock/GainNodeMock';
+import { IIRFilterNodeMock } from '/mock/IIRFilterNodeMock';
 import { MediaElementAudioSourceNodeMock } from '/mock/MediaElementAudioSourceNodeMock';
 import { MediaStreamAudioSourceNodeMock } from '/mock/MediaStreamAudioSourceNodeMock';
 import { OscillatorNodeMock } from '/mock/OscillatorNodeMock';
@@ -90,7 +91,7 @@ export class AudioContextMock {
   }
 
   createIIRFilter() {
-    return {} as IIRFilterNode;
+    return new IIRFilterNodeMock();
   }
 
   createMediaElementSource() {

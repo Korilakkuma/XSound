@@ -54,6 +54,7 @@ import type { PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
 import type { PreampParams, PreampType, PreampCurve } from './SoundModule/Effectors/Preamp';
 import type { MarshallParams, PreEqualizerParams as MarshallPreEqualizerParams, PostEqualizerParams as MarshallPostEqualizerParams } from './SoundModule/Effectors/Preamps/Marshall';
+import type { FenderParams, PreEqualizerParams as FenderPreEqualizerParams, PostFilterParams as FenderPostFilterParams, SpeakerInches as FenderSpeakerInches } from './SoundModule/Effectors/Preamps/Fender';
 import type { CabinetParams } from './SoundModule/Effectors/Preamps/Cabinet';
 import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
 import type { RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
@@ -642,6 +643,10 @@ export type {
   MarshallParams,
   MarshallPreEqualizerParams,
   MarshallPostEqualizerParams,
+  FenderParams,
+  FenderPreEqualizerParams,
+  FenderPostFilterParams,
+  FenderSpeakerInches,
   CabinetParams,
   Reverb,
   ReverbParams,

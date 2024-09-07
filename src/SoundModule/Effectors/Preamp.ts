@@ -1,16 +1,18 @@
 import type { MarshallParams } from './Preamps/Marshall';
+import type { FenderParams } from './Preamps/Fender';
 
 import { Effector } from './Effector';
 import { Marshall } from './Preamps/Marshall';
+import { Fender } from './Preamps/Fender';
 
-export type PreampType = 'marshall';
+export type PreampType = 'marshall' | 'fender';
 
 export type PreampCurve = Float32Array | null;
 
 export type PreampParams = {
   state?: boolean,
   type?: PreampType,
-  preamp?: MarshallParams  // TODO: Add `FenderParams`, `MesaBoogieParams`
+  preamp?: MarshallParams | FenderParams  // TODO: Add `MesaBoogieParams`
 };
 
 /**
@@ -50,7 +52,7 @@ export function createCurve(level: number, numberOfSamples: number): PreampCurve
  */
 export class Preamp extends Effector {
   private type: PreampType = 'marshall';
-  private preamp: Marshall;  // TODO: Add `Fender`, `MesaBoogie`
+  private preamp: Marshall | Fender;  // TODO: Add `MesaBoogie`
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -133,8 +135,19 @@ export class Preamp extends Effector {
 
         case 'type': {
           if (typeof value === 'string') {
-            if (value === 'marshall') {
-              this.type = value;
+            // TODO:
+            switch (value) {
+              case 'marshall': {
+                this.type   = 'marshall';
+                this.preamp = new Marshall(this.context);
+                break;
+              }
+
+              case 'fender': {
+                this.type   = 'fender';
+                this.preamp = new Fender(this.context);
+                break;
+              }
             }
 
             this.connect();
@@ -145,7 +158,17 @@ export class Preamp extends Effector {
 
         case 'preamp': {
           if (typeof value === 'object') {
-            this.preamp.param(value);
+            if (this.preamp instanceof Marshall) {
+              const v: MarshallParams = value;
+
+              this.preamp.param(v);
+            }
+
+            if (this.preamp instanceof Fender) {
+              const v: FenderParams = value;
+
+              this.preamp.param(v);
+            }
           }
 
           break;

@@ -1,18 +1,20 @@
 import type { MarshallParams } from './Preamps/Marshall';
+import type { MesaBoogieParams } from './Preamps/MesaBoogie';
 import type { FenderParams } from './Preamps/Fender';
 
 import { Effector } from './Effector';
 import { Marshall } from './Preamps/Marshall';
+import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
 
-export type PreampType = 'marshall' | 'fender';
+export type PreampType = 'marshall' | 'mesa' | 'fender';
 
 export type PreampCurve = Float32Array | null;
 
 export type PreampParams = {
   state?: boolean,
   type?: PreampType,
-  preamp?: MarshallParams | FenderParams  // TODO: Add `MesaBoogieParams`
+  preamp?: MarshallParams | MesaBoogieParams | FenderParams
 };
 
 /**
@@ -52,7 +54,7 @@ export function createCurve(level: number, numberOfSamples: number): PreampCurve
  */
 export class Preamp extends Effector {
   private type: PreampType = 'marshall';
-  private preamp: Marshall | Fender;  // TODO: Add `MesaBoogie`
+  private preamp: Marshall | MesaBoogie | Fender;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -135,11 +137,16 @@ export class Preamp extends Effector {
 
         case 'type': {
           if (typeof value === 'string') {
-            // TODO:
             switch (value) {
               case 'marshall': {
                 this.type   = 'marshall';
                 this.preamp = new Marshall(this.context);
+                break;
+              }
+
+              case 'mesa': {
+                this.type   = 'mesa';
+                this.preamp = new MesaBoogie(this.context);
                 break;
               }
 
@@ -160,6 +167,12 @@ export class Preamp extends Effector {
           if (typeof value === 'object') {
             if (this.preamp instanceof Marshall) {
               const v: MarshallParams = value;
+
+              this.preamp.param(v);
+            }
+
+            if (this.preamp instanceof MesaBoogie) {
+              const v: MesaBoogieParams = value;
 
               this.preamp.param(v);
             }

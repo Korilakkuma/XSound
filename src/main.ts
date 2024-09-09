@@ -54,6 +54,7 @@ import type { PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
 import type { PreampParams, PreampType, PreampCurve } from './SoundModule/Effectors/Preamp';
 import type { MarshallParams, PreEqualizerParams as MarshallPreEqualizerParams, PostEqualizerParams as MarshallPostEqualizerParams } from './SoundModule/Effectors/Preamps/Marshall';
+import type { MesaBoogieParams, PreEqualizerParams as MesaBoogiePreEqualizerParams, PostEqualizerParams as MesaBoogiePostEqualizerParams } from './SoundModule/Effectors/Preamps/MesaBoogie';
 import type { FenderParams, PreEqualizerParams as FenderPreEqualizerParams, PostFilterParams as FenderPostFilterParams, SpeakerInches as FenderSpeakerInches } from './SoundModule/Effectors/Preamps/Fender';
 import type { CabinetParams } from './SoundModule/Effectors/Preamps/Cabinet';
 import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
@@ -643,6 +644,9 @@ export type {
   MarshallParams,
   MarshallPreEqualizerParams,
   MarshallPostEqualizerParams,
+  MesaBoogieParams,
+  MesaBoogiePreEqualizerParams,
+  MesaBoogiePostEqualizerParams,
   FenderParams,
   FenderPreEqualizerParams,
   FenderPostFilterParams,

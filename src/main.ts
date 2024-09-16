@@ -53,9 +53,25 @@ import type { PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import type { PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
 import type { PreampParams, PreampType, PreampCurve } from './SoundModule/Effectors/Preamp';
-import type { MarshallParams, PreEqualizerParams as MarshallPreEqualizerParams, PostEqualizerParams as MarshallPostEqualizerParams } from './SoundModule/Effectors/Preamps/Marshall';
-import type { MesaBoogieParams, PreEqualizerParams as MesaBoogiePreEqualizerParams, PostEqualizerParams as MesaBoogiePostEqualizerParams } from './SoundModule/Effectors/Preamps/MesaBoogie';
-import type { FenderParams, PreEqualizerParams as FenderPreEqualizerParams, PostFilterParams as FenderPostFilterParams, SpeakerInches as FenderSpeakerInches } from './SoundModule/Effectors/Preamps/Fender';
+import type {
+  Marshall,
+  MarshallParams,
+  PreEqualizerParams as MarshallPreEqualizerParams,
+  PostEqualizerParams as MarshallPostEqualizerParams
+} from './SoundModule/Effectors/Preamps/Marshall';
+import type {
+  MesaBoogie,
+  MesaBoogieParams,
+  PreEqualizerParams as MesaBoogiePreEqualizerParams,
+  PostEqualizerParams as MesaBoogiePostEqualizerParams
+} from './SoundModule/Effectors/Preamps/MesaBoogie';
+import type {
+  Fender,
+  FenderParams,
+  PreEqualizerParams as FenderPreEqualizerParams,
+  PostFilterParams as FenderPostFilterParams,
+  SpeakerInches as FenderSpeakerInches
+} from './SoundModule/Effectors/Preamps/Fender';
 import type { CabinetParams } from './SoundModule/Effectors/Preamps/Cabinet';
 import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
 import type { RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
@@ -641,12 +657,15 @@ export type {
   PreampParams,
   PreampType,
   PreampCurve,
+  Marshall,
   MarshallParams,
   MarshallPreEqualizerParams,
   MarshallPostEqualizerParams,
+  MesaBoogie,
   MesaBoogieParams,
   MesaBoogiePreEqualizerParams,
   MesaBoogiePostEqualizerParams,
+  Fender,
   FenderParams,
   FenderPreEqualizerParams,
   FenderPostFilterParams,

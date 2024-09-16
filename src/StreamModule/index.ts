@@ -29,7 +29,7 @@ import type { Wah } from '../SoundModule/Effectors/Wah';
 import { SoundModule } from '../SoundModule';
 import { StreamModuleProcessor } from './StreamModuleProcessor';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface MediaStreamTrackAudioSourceNode extends AudioNode {
 }
 

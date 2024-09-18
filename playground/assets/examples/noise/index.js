@@ -34,6 +34,14 @@ document.getElementById('button-set-parameters').onclick = () => {
     X('noise').param(params);
   } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
     X('noise').module('analyser').domain(moduleName).param(params);
+  } else if (moduleName.includes('/')) {
+    X('noise').module('preamp').param(params);
+
+    if (state) {
+      X('noise').module('preamp').activate();
+    } else {
+      X('noise').module('preamp').deactivate();
+    }
   } else if (X('noise').module(moduleName)) {
     X('noise').module(moduleName).param(params);
 

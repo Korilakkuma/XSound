@@ -64,7 +64,7 @@
     "README.md"
   ],
   "devDependencies": {
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.13",
     "cross-env": "^7.0.3",
     "dotenv-webpack": "^8.1.0",
     "eslint": "^8.57.0",
@@ -77,7 +77,7 @@
     "ts-loader": "^9.5.1",
     "typedoc": "^0.26.7",
     "typescript": "^5.6.2",
-    "typescript-eslint": "^7.17.0",
+    "typescript-eslint": "^8.6.0",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0"

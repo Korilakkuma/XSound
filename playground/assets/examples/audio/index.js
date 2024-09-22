@@ -52,6 +52,14 @@ document.getElementById('button-set-parameters').onclick = () => {
     X('audio').param(params);
   } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
     X('audio').module('analyser').domain(moduleName).param(params);
+  } else if (moduleName.includes('/')) {
+    X('audio').module('preamp').param(params);
+
+    if (state) {
+      X('audio').module('preamp').activate();
+    } else {
+      X('audio').module('preamp').deactivate();
+    }
   } else if (X('audio').module(moduleName)) {
     X('audio').module(moduleName).param(params);
 

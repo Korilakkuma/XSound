@@ -2,17 +2,17 @@
   "state": false,
   "type": "marshall",
   "preamp": {
-    "state": false,
+    "state": true,
     "level": 0,
     "samples": 1024,
     "pre": {
-      "state": false,
+      "state": true,
       "oversample": "4x",
       "gain": 0.5,
       "lead": 0.5
     },
     "post": {
-      "state": false,
+      "state": true,
       "oversample": "4x",
       "bass": 0,
       "middle": 0,

@@ -1,0 +1,29 @@
+{
+  "state": false,
+  "type": "mesa",
+  "preamp": {
+    "state": true,
+    "pre": {
+      "state": true,
+      "gain": 0,
+      "bass": 0,
+      "middle": 0,
+      "treble": 0,
+      "level": 0,
+      "samples": 1024,
+      "oversample": "4x",
+      "postFilters": true
+    },
+    "post": {
+      "state": true,
+      "fc100": 0,
+      "fc360": 0,
+      "fc720": 0,
+      "fc1600": 0,
+      "fc4800": 0
+    },
+    "cabinet": {
+      "state": true
+    }
+  }
+}

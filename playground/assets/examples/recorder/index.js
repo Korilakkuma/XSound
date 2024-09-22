@@ -64,6 +64,14 @@ document.getElementById('button-set-parameters').onclick = () => {
     X('stream').param(params);
   } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
     X('stream').module('analyser').domain(moduleName).param(params);
+  } else if (moduleName.includes('/')) {
+    X('stream').module('preamp').param(params);
+
+    if (state) {
+      X('stream').module('preamp').activate();
+    } else {
+      X('stream').module('preamp').deactivate();
+    }
   } else if (X('stream').module(moduleName)) {
     X('stream').module(moduleName).param(params);
 

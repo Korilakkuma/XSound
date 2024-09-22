@@ -124,6 +124,14 @@ const successCallback = () => {
       X('oneshot').param(params);
     } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
       X('oneshot').module('analyser').domain(moduleName).param(params);
+    } else if (moduleName.includes('/')) {
+      X('oneshot').module('preamp').param(params);
+
+      if (state) {
+        X('oneshot').module('preamp').activate();
+      } else {
+        X('oneshot').module('preamp').deactivate();
+      }
     } else if (X('oneshot').module(moduleName)) {
       X('oneshot').module(moduleName).param(params);
 

@@ -59,7 +59,8 @@ describe(Phaser.name, () => {
   describe(phaser.connect.name, () => {
     /* eslint-disable dot-notation */
     const originalInput      = phaser['input'];
-    const originalMix        = phaser['mix'];
+    const originalDry        = phaser['dry'];
+    const originalWet        = phaser['wet'];
     const originalConnect    = BiquadFilterNode.prototype.connect;
     const originalDisconnect = BiquadFilterNode.prototype.disconnect;
     /* eslint-enable dot-notation */
@@ -67,7 +68,8 @@ describe(Phaser.name, () => {
     afterAll(() => {
       /* eslint-disable dot-notation */
       phaser['input']                       = originalInput;
-      phaser['mix']                         = originalMix;
+      phaser['dry']                         = originalDry;
+      phaser['wet']                         = originalWet;
       BiquadFilterNode.prototype.connect    = originalConnect;
       BiquadFilterNode.prototype.disconnect = originalDisconnect;
       /* eslint-enable dot-notation */
@@ -80,14 +82,18 @@ describe(Phaser.name, () => {
       const inputDisconnectMock    = jest.fn();
       const filterConnectMock      = jest.fn();
       const filterDisconnectMock   = jest.fn();
-      const mixConnectMock         = jest.fn();
-      const mixDisconnectMock      = jest.fn();
+      const dryConnectMock         = jest.fn();
+      const dryDisconnectMock      = jest.fn();
+      const wetConnectMock         = jest.fn();
+      const wetDisconnectMock      = jest.fn();
 
       /* eslint-disable dot-notation */
       phaser['input'].connect               = inputConnectMock;
       phaser['input'].disconnect            = inputDisconnectMock;
-      phaser['mix'].connect                 = mixConnectMock;
-      phaser['mix'].disconnect              = mixDisconnectMock;
+      phaser['dry'].connect                 = dryConnectMock;
+      phaser['dry'].disconnect              = dryDisconnectMock;
+      phaser['wet'].connect                 = wetConnectMock;
+      phaser['wet'].disconnect              = wetDisconnectMock;
       BiquadFilterNode.prototype.connect    = filterConnectMock;
       BiquadFilterNode.prototype.disconnect = filterDisconnectMock;
       /* eslint-enable dot-notation */
@@ -96,19 +102,20 @@ describe(Phaser.name, () => {
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(filterConnectMock).toHaveBeenCalledTimes(0);
-      expect(mixConnectMock).toHaveBeenCalledTimes(0);
-      expect(mixConnectMock).toHaveBeenCalledTimes(0);
+      expect(dryConnectMock).toHaveBeenCalledTimes(1);
+      expect(wetConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(filterDisconnectMock).toHaveBeenCalledTimes(24);
-      expect(mixDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(dryDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(wetDisconnectMock).toHaveBeenCalledTimes(1);
 
       phaser.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(3);
       expect(filterConnectMock).toHaveBeenCalledTimes(12);
-      expect(mixConnectMock).toHaveBeenCalledTimes(1);
+      expect(dryConnectMock).toHaveBeenCalledTimes(2);
       expect(filterDisconnectMock).toHaveBeenCalledTimes(48);
-      expect(mixDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(wetDisconnectMock).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -119,7 +126,9 @@ describe(Phaser.name, () => {
       resonance: 1,
       depth    : 0,
       rate     : 0,
-      mix      : 0
+      mix      : 0,
+      dry      : 1,
+      wet      : 0,
     };
 
     const params: PhaserParams = {
@@ -128,7 +137,9 @@ describe(Phaser.name, () => {
       resonance: 10,
       depth    : 0.5,
       rate     : 0.5,
-      mix      : 0.5
+      mix      : 0.5,
+      dry      : 0.5,
+      wet      : 0.5
     };
 
     beforeAll(() => {
@@ -168,6 +179,14 @@ describe(Phaser.name, () => {
     test('should return `mix`', () => {
       expect(phaser.param('mix')).toBeCloseTo(0.5, 1);
     });
+
+    test('should return `dry`', () => {
+      expect(phaser.param('dry')).toBeCloseTo(0.5, 1);
+    });
+
+    test('should return `wet`', () => {
+      expect(phaser.param('wet')).toBeCloseTo(0.5, 1);
+    });
   });
 
   describe(phaser.params.name, () => {
@@ -179,7 +198,9 @@ describe(Phaser.name, () => {
         resonance: 1,
         depth    : 0,
         rate     : 0,
-        mix      : 0
+        mix      : 0,
+        dry      : 1,
+        wet      : 0
       });
     });
   });

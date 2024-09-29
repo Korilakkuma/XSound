@@ -9,7 +9,9 @@ export type PhaserParams = {
   resonance?: number,
   depth?: number,
   rate?: number,
-  mix?: number
+  mix?: number,
+  dry?: number,
+  wet?: number
 };
 
 /**
@@ -20,7 +22,8 @@ export class Phaser extends Effector {
 
   private numberOfStages: PhaserNumberOfStages = 12;  // The default number of All-pass Filters
   private filters: BiquadFilterNode[] = [];
-  private mix: GainNode;
+  private dry: GainNode;
+  private wet: GainNode;
   private depthRate = 0;
 
   /**
@@ -40,12 +43,14 @@ export class Phaser extends Effector {
       this.filters.push(filter);
     }
 
-    this.mix = context.createGain();
+    this.dry = context.createGain();
+    this.wet = context.createGain();
 
     // Initialize parameters
     this.depth.gain.value = 0;
     this.rate.value       = 0;
-    this.mix.gain.value   = 0;
+    this.dry.gain.value   = 1;
+    this.wet.gain.value   = 0;
 
     // `Phaser` is not connected by default
     this.deactivate();
@@ -82,22 +87,24 @@ export class Phaser extends Effector {
       this.filters[i].disconnect(0);
     }
 
-    this.mix.disconnect(0);
+    this.dry.disconnect(0);
+    this.wet.disconnect(0);
 
-    // GainNode (Input) -> GainNode (Output)
-    this.input.connect(this.output);
+    // GainNode (Input) -> GainNode (Dry) -> GainNode (Output)
+    this.input.connect(this.dry);
+    this.dry.connect(this.output);
 
     // Effect ON
     if (this.isActive && (this.numberOfStages > 0)) {
-      // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Mix) -> GainNode (Output)
+      // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Wet) -> GainNode (Output)
       this.input.connect(this.filters[0]);
 
       for (let i = 0; i < this.numberOfStages; i++) {
         if (i < (this.numberOfStages - 1)) {
           this.filters[i].connect(this.filters[i + 1]);
         } else {
-          this.filters[i].connect(this.mix);
-          this.mix.connect(this.output);
+          this.filters[i].connect(this.wet);
+          this.wet.connect(this.output);
         }
       }
 
@@ -122,6 +129,8 @@ export class Phaser extends Effector {
   public param(params: 'depth'): number;
   public param(params: 'rate'): number;
   public param(params: 'mix'): number;
+  public param(params: 'dry'): number;
+  public param(params: 'wet'): number;
   public param(params: PhaserParams): Phaser;
   public param(params: keyof PhaserParams | PhaserParams): PhaserParams[keyof PhaserParams] | Phaser {
     if (typeof params === 'string') {
@@ -151,7 +160,15 @@ export class Phaser extends Effector {
         }
 
         case 'mix': {
-          return this.mix.gain.value;
+          return this.wet.gain.value;
+        }
+
+        case 'dry': {
+          return this.dry.gain.value;
+        }
+
+        case 'wet': {
+          return this.wet.gain.value;
         }
       }
     }
@@ -226,7 +243,24 @@ export class Phaser extends Effector {
 
         case 'mix': {
           if (typeof value === 'number') {
-            this.mix.gain.value = value;
+            this.wet.gain.value = value;
+            this.dry.gain.value = 1 - this.wet.gain.value;
+          }
+
+          break;
+        }
+
+        case 'dry': {
+          if (typeof value === 'number') {
+            this.dry.gain.value = value;
+          }
+
+          break;
+        }
+
+        case 'wet': {
+          if (typeof value === 'number') {
+            this.wet.gain.value = value;
           }
 
           break;
@@ -246,7 +280,9 @@ export class Phaser extends Effector {
       resonance: this.filters[0].Q.value,
       depth    : this.depthRate,
       rate     : this.rate.value,
-      mix      : this.mix.gain.value
+      mix      : this.wet.gain.value,
+      dry      : this.dry.gain.value,
+      wet      : this.wet.gain.value
     };
   }
 

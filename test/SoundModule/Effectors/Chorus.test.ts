@@ -60,7 +60,8 @@ describe(Chorus.name, () => {
     /* eslint-disable dot-notation */
     const originalInput    = chorus['input'];
     const originalDelay    = chorus['delay'];
-    const originalMix      = chorus['mix'];
+    const originalDry      = chorus['dry'];
+    const originalWet      = chorus['wet'];
     const originalTone     = chorus['tone'];
     const originalFeedback = chorus['feedback'];
     /* eslint-enable dot-notation */
@@ -69,7 +70,8 @@ describe(Chorus.name, () => {
       /* eslint-disable dot-notation */
       chorus['input']    = originalInput;
       chorus['delay']    = originalDelay;
-      chorus['mix']      = originalMix;
+      chorus['dry']      = originalDry;
+      chorus['wet']      = originalWet;
       chorus['tone']     = originalTone;
       chorus['feedback'] = originalFeedback;
       /* eslint-enable dot-notation */
@@ -82,8 +84,10 @@ describe(Chorus.name, () => {
       const inputDisconnectMock    = jest.fn();
       const delayConnectMock       = jest.fn();
       const delayDisconnectMock    = jest.fn();
-      const mixConnectMock         = jest.fn();
-      const mixDisconnectMock      = jest.fn();
+      const dryConnectMock         = jest.fn();
+      const dryDisconnectMock      = jest.fn();
+      const wetConnectMock         = jest.fn();
+      const wetDisconnectMock      = jest.fn();
       const toneConnectMock        = jest.fn();
       const toneDisconnectMock     = jest.fn();
       const feedbackConnectMock    = jest.fn();
@@ -94,8 +98,10 @@ describe(Chorus.name, () => {
       chorus['input'].disconnect    = inputDisconnectMock;
       chorus['delay'].connect       = delayConnectMock;
       chorus['delay'].disconnect    = delayDisconnectMock;
-      chorus['mix'].connect         = mixConnectMock;
-      chorus['mix'].disconnect      = mixDisconnectMock;
+      chorus['dry'].connect         = dryConnectMock;
+      chorus['dry'].disconnect      = dryDisconnectMock;
+      chorus['wet'].connect         = wetConnectMock;
+      chorus['wet'].disconnect      = wetDisconnectMock;
       chorus['tone'].connect        = toneConnectMock;
       chorus['tone'].disconnect     = toneDisconnectMock;
       chorus['feedback'].connect    = feedbackConnectMock;
@@ -106,12 +112,14 @@ describe(Chorus.name, () => {
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(delayConnectMock).toHaveBeenCalledTimes(0);
-      expect(mixConnectMock).toHaveBeenCalledTimes(0);
+      expect(dryConnectMock).toHaveBeenCalledTimes(1);
+      expect(wetConnectMock).toHaveBeenCalledTimes(0);
       expect(toneConnectMock).toHaveBeenCalledTimes(0);
       expect(feedbackConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(delayDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(mixDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(dryDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(wetDisconnectMock).toHaveBeenCalledTimes(1);
       expect(toneDisconnectMock).toHaveBeenCalledTimes(1);
       expect(feedbackDisconnectMock).toHaveBeenCalledTimes(1);
 
@@ -119,12 +127,14 @@ describe(Chorus.name, () => {
 
       expect(inputConnectMock).toHaveBeenCalledTimes(3);
       expect(delayConnectMock).toHaveBeenCalledTimes(2);
-      expect(mixConnectMock).toHaveBeenCalledTimes(1);
+      expect(dryConnectMock).toHaveBeenCalledTimes(2);
+      expect(wetConnectMock).toHaveBeenCalledTimes(1);
       expect(toneConnectMock).toHaveBeenCalledTimes(1);
       expect(feedbackConnectMock).toHaveBeenCalledTimes(1);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
       expect(delayDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(mixDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(dryDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(wetDisconnectMock).toHaveBeenCalledTimes(2);
       expect(toneDisconnectMock).toHaveBeenCalledTimes(2);
       expect(feedbackDisconnectMock).toHaveBeenCalledTimes(2);
     });
@@ -145,6 +155,8 @@ describe(Chorus.name, () => {
       depth   : 0.5,
       rate    : 0.5,
       mix     : 0.5,
+      dry     : 0.5,
+      wet     : 0.5,
       tone    : 4000,
       feedback: 0.5
     };
@@ -179,6 +191,14 @@ describe(Chorus.name, () => {
       expect(chorus.param('mix')).toBeCloseTo(0.5, 1);
     });
 
+    test('should return `dry`', () => {
+      expect(chorus.param('dry')).toBeCloseTo(0.5, 1);
+    });
+
+    test('should return `wet`', () => {
+      expect(chorus.param('wet')).toBeCloseTo(0.5, 1);
+    });
+
     test('should return `tone`', () => {
       expect(chorus.param('tone')).toBeCloseTo(4000, 1);
     });
@@ -196,6 +216,8 @@ describe(Chorus.name, () => {
         depth   : 0,
         rate    : 0,
         mix     : 0,
+        dry     : 1,
+        wet     : 0,
         tone    : 350,
         feedback: 0
       });

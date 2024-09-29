@@ -6,6 +6,8 @@ export type ChorusParams = {
   depth?: number,
   rate?: number,
   mix?: number,
+  dry?: number,
+  wet?: number,
   tone?: number,
   feedback?: number
 };
@@ -16,7 +18,8 @@ export type ChorusParams = {
 export class Chorus extends Effector {
   private delay: DelayNode;
   private tone: BiquadFilterNode;
-  private mix: GainNode;
+  private dry: GainNode;
+  private wet: GainNode;
   private feedback: GainNode;
   private depthRate = 0;
 
@@ -27,7 +30,8 @@ export class Chorus extends Effector {
     super(context);
 
     this.delay    = context.createDelay();
-    this.mix      = context.createGain();
+    this.dry      = context.createGain();
+    this.wet      = context.createGain();
     this.tone     = context.createBiquadFilter();
     this.feedback = context.createGain();
 
@@ -35,7 +39,8 @@ export class Chorus extends Effector {
     this.delay.delayTime.value = 0;
     this.depth.gain.value      = 0;
     this.rate.value            = 0;
-    this.mix.gain.value        = 0;
+    this.dry.gain.value        = 1;
+    this.wet.gain.value        = 0;
     this.tone.type             = 'lowpass';
     this.tone.frequency.value  = 350;
     this.tone.Q.value          = Math.SQRT1_2;
@@ -68,20 +73,22 @@ export class Chorus extends Effector {
     // Clear connection
     this.input.disconnect(0);
     this.delay.disconnect(0);
-    this.mix.disconnect(0);
+    this.dry.disconnect(0);
+    this.wet.disconnect(0);
     this.tone.disconnect(0);
     this.feedback.disconnect(0);
 
-    // GainNode (Input) -> GainNode (Output)
-    this.input.connect(this.output);
+    // GainNode (Input) -> GainNode (Dry) -> GainNode (Output)
+    this.input.connect(this.dry);
+    this.dry.connect(this.output);
 
     // Effect ON
     if (this.isActive) {
-      // GainNode (Input) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Mix) -> GainNode (Output)
+      // GainNode (Input) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
       this.input.connect(this.tone);
       this.tone.connect(this.delay);
-      this.delay.connect(this.mix);
-      this.mix.connect(this.output);
+      this.delay.connect(this.wet);
+      this.wet.connect(this.output);
 
       // Feedback
       // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
@@ -104,6 +111,8 @@ export class Chorus extends Effector {
   public param(params: 'depth'): number;
   public param(params: 'rate'): number;
   public param(params: 'mix'): number;
+  public param(params: 'dry'): number;
+  public param(params: 'wet'): number;
   public param(params: 'tone'): number;
   public param(params: 'feedback'): number;
   public param(params: ChorusParams): Chorus;
@@ -127,7 +136,15 @@ export class Chorus extends Effector {
         }
 
         case 'mix': {
-          return this.mix.gain.value;
+          return this.wet.gain.value;
+        }
+
+        case 'dry': {
+          return this.dry.gain.value;
+        }
+
+        case 'wet': {
+          return this.wet.gain.value;
         }
 
         case 'tone': {
@@ -178,7 +195,24 @@ export class Chorus extends Effector {
 
         case 'mix': {
           if (typeof value === 'number') {
-            this.mix.gain.value = value;
+            this.wet.gain.value = value;
+            this.dry.gain.value = 1 - this.wet.gain.value;
+          }
+
+          break;
+        }
+
+        case 'dry': {
+          if (typeof value === 'number') {
+            this.dry.gain.value = value;
+          }
+
+          break;
+        }
+
+        case 'wet': {
+          if (typeof value === 'number') {
+            this.wet.gain.value = value;
           }
 
           break;
@@ -212,7 +246,9 @@ export class Chorus extends Effector {
       time    : this.delay.delayTime.value,
       depth   : this.depthRate,
       rate    : this.rate.value,
-      mix     : this.mix.gain.value,
+      mix     : this.wet.gain.value,
+      dry     : this.dry.gain.value,
+      wet     : this.wet.gain.value,
       tone    : this.tone.frequency.value,
       feedback: this.feedback.gain.value
     };

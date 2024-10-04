@@ -102,7 +102,7 @@ describe(Phaser.name, () => {
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(filterConnectMock).toHaveBeenCalledTimes(0);
-      expect(dryConnectMock).toHaveBeenCalledTimes(1);
+      expect(dryConnectMock).toHaveBeenCalledTimes(0);
       expect(wetConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(filterDisconnectMock).toHaveBeenCalledTimes(24);
@@ -113,7 +113,7 @@ describe(Phaser.name, () => {
 
       expect(inputConnectMock).toHaveBeenCalledTimes(3);
       expect(filterConnectMock).toHaveBeenCalledTimes(12);
-      expect(dryConnectMock).toHaveBeenCalledTimes(2);
+      expect(dryConnectMock).toHaveBeenCalledTimes(1);
       expect(filterDisconnectMock).toHaveBeenCalledTimes(48);
       expect(wetDisconnectMock).toHaveBeenCalledTimes(2);
     });

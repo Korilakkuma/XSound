@@ -78,12 +78,13 @@ export class Chorus extends Effector {
     this.tone.disconnect(0);
     this.feedback.disconnect(0);
 
-    // GainNode (Input) -> GainNode (Dry) -> GainNode (Output)
-    this.input.connect(this.dry);
-    this.dry.connect(this.output);
-
-    // Effect ON
     if (this.isActive) {
+      // Effect ON
+
+      // GainNode (Input) -> GainNode (Dry) -> GainNode (Output)
+      this.input.connect(this.dry);
+      this.dry.connect(this.output);
+
       // GainNode (Input) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
       this.input.connect(this.tone);
       this.tone.connect(this.delay);
@@ -94,6 +95,11 @@ export class Chorus extends Effector {
       // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
       this.delay.connect(this.feedback);
       this.feedback.connect(this.delay);
+    } else {
+      // Effect OFF
+
+      // GainNode (Input) -> GainNode (Output)
+      this.input.connect(this.output);
     }
 
     return this.output;

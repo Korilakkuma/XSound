@@ -112,7 +112,7 @@ describe(Chorus.name, () => {
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(delayConnectMock).toHaveBeenCalledTimes(0);
-      expect(dryConnectMock).toHaveBeenCalledTimes(1);
+      expect(dryConnectMock).toHaveBeenCalledTimes(0);
       expect(wetConnectMock).toHaveBeenCalledTimes(0);
       expect(toneConnectMock).toHaveBeenCalledTimes(0);
       expect(feedbackConnectMock).toHaveBeenCalledTimes(0);
@@ -127,7 +127,7 @@ describe(Chorus.name, () => {
 
       expect(inputConnectMock).toHaveBeenCalledTimes(3);
       expect(delayConnectMock).toHaveBeenCalledTimes(2);
-      expect(dryConnectMock).toHaveBeenCalledTimes(2);
+      expect(dryConnectMock).toHaveBeenCalledTimes(1);
       expect(wetConnectMock).toHaveBeenCalledTimes(1);
       expect(toneConnectMock).toHaveBeenCalledTimes(1);
       expect(feedbackConnectMock).toHaveBeenCalledTimes(1);

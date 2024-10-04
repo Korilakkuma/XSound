@@ -90,12 +90,13 @@ export class Phaser extends Effector {
     this.dry.disconnect(0);
     this.wet.disconnect(0);
 
-    // GainNode (Input) -> GainNode (Dry) -> GainNode (Output)
-    this.input.connect(this.dry);
-    this.dry.connect(this.output);
-
-    // Effect ON
     if (this.isActive && (this.numberOfStages > 0)) {
+      // Effect ON
+
+      // GainNode (Input) -> GainNode (Dry) -> GainNode (Output)
+      this.input.connect(this.dry);
+      this.dry.connect(this.output);
+
       // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Wet) -> GainNode (Output)
       this.input.connect(this.filters[0]);
 
@@ -110,6 +111,11 @@ export class Phaser extends Effector {
 
       // Phaser don't work in Firefox if there is feedback connection.
       // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Feedback) -> BiquadFilterNode (All-pass Filter x N) ...
+    } else {
+      // Effect OFF
+
+      // GainNode (Input) -> GainNode (Output)
+      this.input.connect(this.output);
     }
 
     return this.output;

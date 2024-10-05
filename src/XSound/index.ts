@@ -542,7 +542,11 @@ export function drop(params: {
 
   event.preventDefault();
 
-  const file = event.dataTransfer?.items[0].getAsFile() ?? null;
+  if (!event.dataTransfer?.items[0]) {
+    return null;
+  }
+
+  const file = event.dataTransfer.items[0].getAsFile();
 
   if (file === null) {
     return null;

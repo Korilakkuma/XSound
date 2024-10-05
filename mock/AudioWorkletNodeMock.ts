@@ -4,6 +4,7 @@ import { AudioParamMock } from '/mock/AudioParamMock';
 // HACK: Error occurs if Jest uses `Map` or `MessagePort`
 
 export class AudioParamMapMock {
+  // eslint-disable-next-line no-useless-constructor
   constructor(_map: [string, AudioParamMock][]) {
   }
 

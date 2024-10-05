@@ -13,6 +13,7 @@ export type RecorderProcessorMessageEventData = {
 export class RecorderProcessor extends AudioWorkletProcessor {
   public static readonly BUFFER_SIZE = 128 as const;
 
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
   }

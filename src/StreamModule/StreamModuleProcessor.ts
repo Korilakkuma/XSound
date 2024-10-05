@@ -7,6 +7,7 @@ import { AudioWorkletProcessor } from '../worklet';
  * Overrides `process` method for sound source (bypass).
  */
 export class StreamModuleProcessor extends AudioWorkletProcessor {
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
   }

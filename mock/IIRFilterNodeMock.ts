@@ -1,6 +1,7 @@
 import { AudioNodeMock } from '/mock/AudioNodeMock';
 
 export class IIRFilterNodeMock extends AudioNodeMock {
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
   }

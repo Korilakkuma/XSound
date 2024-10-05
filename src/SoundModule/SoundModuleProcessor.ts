@@ -8,6 +8,7 @@ import { AudioWorkletProcessor } from '../worklet';
  * However, this processor is not used.
  */
 export class SoundModuleProcessor extends AudioWorkletProcessor {
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
   }

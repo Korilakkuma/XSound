@@ -97,14 +97,12 @@ describe(EnvelopeGenerator.name, () => {
     const setTargetAtTimeMock         = jest.fn();
     const setValueCurveAtTimeMock     = jest.fn();
 
-    /* eslint-disable dot-notation */
     generator.gain.cancelScheduledValues   = cancelScheduledValuesMock;
     generator.gain.setValueAtTime          = setValueAtTimeMock;
     generator.gain.linearRampToValueAtTime = linearRampToValueAtTimeMock;
     generator.gain.setTargetAtTime         = setTargetAtTimeMock;
     generator.gain.setValueCurveAtTime     = setValueCurveAtTimeMock;
     generator.gain.cancelScheduledValues   = cancelScheduledValuesMock;
-    /* eslint-enable dot-notation */
 
     envelopegenerator.start(0);
 

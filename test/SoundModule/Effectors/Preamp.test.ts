@@ -17,6 +17,7 @@ describe(Preamp.name, () => {
 
     preamp.activate();
 
+    // eslint-disable-next-line dot-notation
     preamp['preamp'].connect = preampConnectMock;
 
     preamp.connect();

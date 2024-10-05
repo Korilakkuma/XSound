@@ -7,6 +7,7 @@ import { AudioWorkletProcessor } from '../worklet';
  * Overrides `process` method for mixing sound source.
  */
 export class MixerModuleProcessor extends AudioWorkletProcessor {
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
   }

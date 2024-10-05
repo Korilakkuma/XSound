@@ -11,11 +11,15 @@ export default tseslint.config(
     languageOptions: {
       'parser': tseslint.parser
     },
+    linterOptions: {
+      'reportUnusedDisableDirectives': 'error'
+    },
     extends: [
       ...tseslint.configs.recommended
     ],
     rules: {
       'default-param-last': 'off',
+      'dot-notation': 'error',
       'indent': ['error', 2, {
         'ignoredNodes': ['TemplateLiteral'],
         'SwitchCase': 1
@@ -28,6 +32,8 @@ export default tseslint.config(
       'no-multi-spaces': 'off',
       'no-unneeded-ternary': 'off',
       'no-unused-vars': ['off', { 'vars': 'all', 'args': 'after-used' }],
+      'no-use-before-define': 'error',
+      'no-useless-constructor': 'error',
       'no-var': 'warn',
       'prefer-promise-reject-errors': 'off',
       'quote-props': 'off',

@@ -43,6 +43,10 @@ const baseConfig = {
             }
           }
         ]
+      },
+      {
+        test: /\.wasm$/,
+        type: 'asset/inline'
       }
     ]
   },

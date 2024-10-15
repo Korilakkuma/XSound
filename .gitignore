@@ -1,6 +1,10 @@
 .DS_Store
+
 build/
 coverage/
 docs/
 node_modules/
+
+*.wasm
+
 npm-debug.log

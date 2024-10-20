@@ -1,6 +1,9 @@
 import { Effector } from './Effector';
 import { NoiseSuppressorProcessor } from './AudioWorkletProcessors/NoiseSuppressorProcessor';
 
+// @ts-expect-error Because of import WebAssembly Module
+import wasm from './AudioWorkletProcessors/WebAssemblyModules/noisesuppressor.wasm';
+
 export type NoiseSuppressorParams = {
   state?: boolean,
   threshold?: number
@@ -21,7 +24,17 @@ export class NoiseSuppressor extends Effector {
     super(context);
 
     this.processor = new AudioWorkletNode(this.context, NoiseSuppressorProcessor.name);
-    this.activate();
+
+    fetch(wasm)
+      .then(async (response) => {
+        const wasm = await response.arrayBuffer();
+
+        this.processor.port.postMessage(wasm);
+        this.activate();
+      })
+      .catch((error: Error) => {
+        throw error;
+      });
   }
 
   /** @override */

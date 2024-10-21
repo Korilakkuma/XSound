@@ -3,7 +3,7 @@
   "description": "XSound gives Web Developers Powerful Audio Features Easily !",
   "main": "index.html",
   "scripts": {
-    "lint:css": "stylelint 'app.css'",
+    "lint:css": "stylelint app.css",
     "lint:html": "markuplint index.html",
     "lint": "run-p lint:css lint:html",
     "fix:css": "stylelint --fix app.css",

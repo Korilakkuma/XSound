@@ -30,6 +30,9 @@ import type { Wah } from '../SoundModule/Effectors/Wah';
 import { SoundModule } from '../SoundModule';
 import { NoiseModuleProcessor } from './NoiseModuleProcessor';
 
+// @ts-expect-error Because of import WebAssembly Module
+import wasm from './WebAssemblyModules/noisegenerator.wasm';
+
 export type NoiseType = 'whitenoise' | 'pinknoise' | 'browniannoise';
 
 export type NoiseModuleParams = SoundModuleParams & {
@@ -53,6 +56,16 @@ export class NoiseModule extends SoundModule {
     this.processor = new AudioWorkletNode(context, NoiseModuleProcessor.name);
 
     this.envelopegenerator.setGenerator(0);
+
+    fetch(wasm)
+      .then(async (response) => {
+        const wasm = await response.arrayBuffer();
+
+        this.processor.port.postMessage(wasm);
+      })
+      .catch((error: Error) => {
+        throw error;
+      });
   }
 
   /**

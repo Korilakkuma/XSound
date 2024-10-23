@@ -220,10 +220,6 @@ nav > a:last-of-type:hover {
   border-color: #800080;
 }
 
-aside h3 {
-  text-transform: uppercase;
-}
-
 pre {
   display: flex;
   align-items: center;

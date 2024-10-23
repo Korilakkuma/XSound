@@ -1,5 +1,6 @@
 const preNpm = document.getElementById('pre-npm');
 const preYarn = document.getElementById('pre-yarn');
+const prePnpm = document.getElementById('pre-pnpm');
 const preCdn = document.getElementById('pre-cdn');
 
 preNpm.addEventListener('animationend', (event) => {
@@ -34,6 +35,18 @@ document.getElementById('button-yarn').addEventListener('mousedown', () => {
   navigator.clipboard.writeText('yarn add xsound')
     .then(() => {
       preYarn.classList.add('copy-highlight');
+    })
+    .catch(console.error);
+}, false);
+
+document.getElementById('button-pnpm').addEventListener('mousedown', () => {
+  if (!navigator.clipboard) {
+    return;
+  }
+
+  navigator.clipboard.writeText('pnpm install xsound')
+    .then(() => {
+      prePnpm.classList.add('copy-highlight');
     })
     .catch(console.error);
 }, false);

@@ -5,9 +5,11 @@ const preYarn = document.getElementById('pre-yarn');
 const prePnpm = document.getElementById('pre-pnpm');
 const preCdn = document.getElementById('pre-cdn');
 
-preNpm.addEventListener('animationend', (event) => {
-  event.currentTarget.classList.remove('copy-highlight');
-}, false);
+const buttonNpm = document.getElementById('button-npm');
+const buttonYarn = document.getElementById('button-yarn');
+const buttonPnpm = document.getElementById('button-pnpm');
+const buttonCdn = document.getElementById('button-cdn');
+
 
 preYarn.addEventListener('animationend', (event) => {
   event.currentTarget.classList.remove('copy-highlight');
@@ -17,53 +19,66 @@ preCdn.addEventListener('animationend', (event) => {
   event.currentTarget.classList.remove('copy-highlight');
 }, false);
 
-document.getElementById('button-npm').addEventListener('mousedown', () => {
+const onAnimationEnd = (event) => {
+  event.currentTarget.classList.remove('copy-highlight');
+};
+
+const onDown = (event) => {
   if (!navigator.clipboard) {
     return;
   }
 
-  navigator.clipboard.writeText('npm install --save xsound')
-    .then(() => {
-      preNpm.classList.add('copy-highlight');
-    })
-    .catch(console.error);
-}, false);
+  let text = '';
+  let highlightElement = null;
 
-document.getElementById('button-yarn').addEventListener('mousedown', () => {
-  if (!navigator.clipboard) {
-    return;
+  switch (event.currentTarget.id.slice(7)) {
+    case 'npm': {
+      text = 'npm install --save xsound';
+      highlightElement = preNpm;
+      break;
+    }
+
+    case 'yarn': {
+      text = 'yarn add xsound';
+      highlightElement = preYarn;
+      break;
+    }
+
+    case 'pnpm': {
+      text = 'pnpm install xsound';
+      highlightElement = prePnpm;
+      break;
+    }
+
+    case 'cdn': {
+      text = '<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js"></script>';
+      highlightElement = preCdn;
+      break;
+    }
   }
 
-  navigator.clipboard.writeText('yarn add xsound')
+  navigator
+    .clipboard
+    .writeText(text)
     .then(() => {
-      preYarn.classList.add('copy-highlight');
+      highlightElement.classList.add('copy-highlight');
     })
     .catch(console.error);
-}, false);
+};
 
-document.getElementById('button-pnpm').addEventListener('mousedown', () => {
-  if (!navigator.clipboard) {
-    return;
-  }
+preNpm.addEventListener('animationend', onAnimationEnd);
+preYarn.addEventListener('animationend', onAnimationEnd);
+prePnpm.addEventListener('animationend', onAnimationEnd);
+preCdn.addEventListener('animationend', onAnimationEnd);
 
-  navigator.clipboard.writeText('pnpm install xsound')
-    .then(() => {
-      prePnpm.classList.add('copy-highlight');
-    })
-    .catch(console.error);
-}, false);
-
-document.getElementById('button-cdn').addEventListener('mousedown', () => {
-  if (!navigator.clipboard) {
-    return;
-  }
-
-  navigator.clipboard.writeText('<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/xsound@latest/build/xsound.min.js"></script>')
-    .then(() => {
-      preCdn.classList.add('copy-highlight');
-    })
-    .catch(console.error);
-}, false);
+buttonNpm.addEventListener('mousedown', onDown);
+buttonNpm.addEventListener('touchstart', onDown);
+buttonYarn.addEventListener('mousedown', onDown);
+buttonYarn.addEventListener('touchstart', onDown);
+buttonPnpm.addEventListener('mousedown', onDown);
+buttonPnpm.addEventListener('touchstart', onDown);
+buttonCdn.addEventListener('mousedown', onDown);
+buttonCdn.addEventListener('touchstart', onDown);
 
 const date = new Date();
 

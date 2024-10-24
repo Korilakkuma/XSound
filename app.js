@@ -1,3 +1,5 @@
+'use strict';
+
 const preNpm = document.getElementById('pre-npm');
 const preYarn = document.getElementById('pre-yarn');
 const prePnpm = document.getElementById('pre-pnpm');

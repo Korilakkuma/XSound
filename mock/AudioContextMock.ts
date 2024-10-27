@@ -1,4 +1,5 @@
 import '/mock/AudioWorkletNodeMock';
+import '/mock/fetchMock';
 import { AnalyserNodeMock } from '/mock/AnalyserNodeMock';
 import { AudioBufferMock } from '/mock/AudioBufferMock';
 import { AudioBufferSourceNodeMock } from '/mock/AudioBufferSourceNodeMock';

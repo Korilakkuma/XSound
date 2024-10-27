@@ -149,6 +149,7 @@ In case of using CDN,
 $ git clone git@github.com:Korilakkuma/XSound.git
 $ cd XSound
 $ npm install
+$ npm run build  # for build WebAssembly Modules
 $ npm run dev
 $ open http://localhost:8080/playground/
 ```
@@ -159,9 +160,26 @@ $ open http://localhost:8080/playground/
 $ git clone git@github.com:Korilakkuma/XSound.git
 $ cd XSound
 $ npm install
+$ npm run build  # for build WebAssembly Modules
 $ npm run watch
 $ docker compose up -d --build
 $ open http://localhost:8080/playground/
+```
+
+### Installation instructions using the emsdk
+
+Use WebAssembly Modules on v4 or later.  
+Therefore, it is required to set up emsdk (Refer to [details](https://emscripten.org/docs/getting_started/downloads.html)).
+
+```bash
+$ git clone https://github.com/emscripten-core/emsdk.git  # Use an another directory excepte XSound directory
+$ cd emsdk
+$ ./emsdk install latest
+$ ./emsdk activate latest
+$ source ./emsdk_env.sh
+$ cd /${path}/XSound
+
+# if error occurred, execute `softwareupdate --install-rosetta`, then retry (in case of using macOS)
 ```
 
 ## API Documentation

@@ -105,7 +105,7 @@ X.Wah(context: AudioContext);
   
 Now, I'm creating website for Web Audio API. Please refer to the following site for understanding API Documentation.
   
-[WEB SOUNDER](https://weblike-curtaincall.ssl-lolipop.jp/portfolio-web-sounder/)
+[Web Music Documentation](https://korilakkuma.github.io/Web-Music-Documentation/)
 
 ## Installation
 
@@ -116,7 +116,7 @@ $ npm install --save xsound
 or,
 
 ```bash
-$ yarn add xsound
+$ pnpm install xsound
 ```
 
 ## Usage
@@ -179,7 +179,7 @@ $ ./emsdk activate latest
 $ source ./emsdk_env.sh
 $ cd /${path}/XSound
 
-# if error occurred, execute `softwareupdate --install-rosetta`, then retry (in case of using macOS)
+# If error occurred, execute `softwareupdate --install-rosetta`, then retry (in case of using macOS)
 ```
 
 ## API Documentation

@@ -1,7 +1,12 @@
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import path from 'path';
-import packageJson from './package.json' assert { type: 'json' };
+import fs from 'node:fs';
+
+const dirname = path.resolve('.');
+
+const packageJsonPath = `${dirname}/package.json`;
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
 const {
   name,
@@ -9,8 +14,6 @@ const {
   author,
   license
 } = packageJson;
-
-const dirname = path.resolve('.');
 
 const plugins = [
   new webpack.BannerPlugin({

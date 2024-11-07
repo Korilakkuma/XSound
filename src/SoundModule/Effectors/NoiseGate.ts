@@ -1,6 +1,9 @@
 import { Effector } from './Effector';
 import { NoiseGateProcessor } from './AudioWorkletProcessors/NoiseGateProcessor';
 
+// @ts-expect-error Because of import WebAssembly Module
+import wasm from './AudioWorkletProcessors/WebAssemblyModules/noisegate.wasm';
+
 export type NoiseGateParams = {
   state?: boolean,
   level?: number
@@ -21,7 +24,17 @@ export class NoiseGate extends Effector {
     super(context);
 
     this.processor = new AudioWorkletNode(this.context, NoiseGateProcessor.name);
-    this.activate();
+
+    fetch(wasm)
+      .then(async (response) => {
+        const wasm = await response.arrayBuffer();
+
+        this.processor.port.postMessage(wasm);
+        this.activate();
+      })
+      .catch((error: Error) => {
+        throw error;
+      });
   }
 
   /** @override */

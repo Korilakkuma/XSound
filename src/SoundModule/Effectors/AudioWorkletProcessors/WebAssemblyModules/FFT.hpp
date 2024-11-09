@@ -1,6 +1,6 @@
 #include <math.h>
 
-static inline int pow2(int n) {
+static inline int pow2(const int n) {
   if (n == 0) {
     return 1;
   }
@@ -8,7 +8,7 @@ static inline int pow2(int n) {
   return 2 << (n - 1);
 }
 
-static inline void swap(float *reals, float *imags, int i, int k) {
+static inline void swap(float *const reals, float *const imags, const int i, const int k) {
   float tmp_real;
   float tmp_imag;
 
@@ -22,7 +22,7 @@ static inline void swap(float *reals, float *imags, int i, int k) {
   imags[k] = tmp_imag;
 }
 
-static void FFT(float *reals, float *imags, int size) {
+static void FFT(float *const reals, float *const imags, const size_t size) {
   int number_of_stages = (int)log2f((float)size);
 
   for (int stage = 1; stage <= number_of_stages; stage++) {
@@ -78,7 +78,7 @@ static void FFT(float *reals, float *imags, int size) {
   free(index);
 }
 
-static void IFFT(float *reals, float *imags, int size) {
+static void IFFT(float *const reals, float *const imags, const size_t size) {
   int number_of_stages = (int)log2f((float)size);
 
   for (int stage = 1; stage <= number_of_stages; stage++) {

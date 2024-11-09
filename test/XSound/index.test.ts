@@ -1,4 +1,4 @@
-import type { FileEvent } from '/src/XSound';
+import type { FileEvent, FFTWebAssemblyInstance } from '/src/XSound';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
 import {
@@ -20,6 +20,9 @@ import {
   toFrequencies,
   toTextFile
 } from '/src/XSound';
+
+import fs from 'node:fs';
+import path from 'node:path';
 
 describe(isPitchChar.name, () => {
   test('should return `true`', () => {
@@ -93,25 +96,50 @@ describe(`${fft.name} and ${ifft.name}`, () => {
   const imags = new Float32Array([0, 0, 0, 0]);
   const size  = 4;
 
-  test('should return `Float32Array`', () => {
-    fft(reals, imags, size);
+  const dirname = path.resolve('.');
+  const buffer  = fs.readFileSync(`${dirname}/src/XSound/WebAssemblyModules/FFT.wasm`);
 
-    [1.8918883800506592, -0.9092974066734314, -0.07329356670379639, -0.9092974066734314].forEach((expected, index) => {
-      expect(reals[index]).toBeCloseTo(expected, 3);
+  test('should set `Float32Array`', async () => {
+    const source = await WebAssembly.instantiate(new Uint8Array(buffer));
+    const wasm   = source.instance.exports as FFTWebAssemblyInstance;  // HACK:
+
+    const { FFT, IFFT } = wasm;
+
+    const linearMemory = wasm.memory.buffer;
+
+    const offsetReal = wasm.alloc_memory_reals(size);
+    const offsetImag = wasm.alloc_memory_imags(size);
+
+    const realsLinearMemory = new Float32Array(linearMemory, offsetReal, size);
+    const imagsLinearMemory = new Float32Array(linearMemory, offsetImag, size);
+
+    realsLinearMemory.set(reals);
+    imagsLinearMemory.set(imags);
+
+    FFT(size);
+
+    reals.set(realsLinearMemory);
+    imags.set(imagsLinearMemory);
+
+    [1.8918883800506592, -0.9092974662780762, -0.07329356670379639, -0.909297347068786].forEach((expected, index) => {
+      expect(reals[index]).toBeCloseTo(expected, 7);
     });
 
     [0, -0.7003509402275085, 0, 0.7003509402275085].forEach((expected, index) => {
-      expect(imags[index]).toBeCloseTo(expected, 3);
+      expect(imags[index]).toBeCloseTo(expected, 7);
     });
 
-    ifft(reals, imags, size);
+    IFFT(size);
+
+    reals.set(realsLinearMemory);
+    imags.set(imagsLinearMemory);
 
     [Math.sin(0), Math.sin(1), Math.sin(2), Math.sin(3)].forEach((expected, index) => {
-      expect(reals[index]).toBeCloseTo(expected, 3);
+      expect(reals[index]).toBeCloseTo(expected, 7);
     });
 
     [0, 0, 0, 0].forEach((expected, index) => {
-      expect(imags[index]).toBeCloseTo(expected, 3);
+      expect(imags[index]).toBeCloseTo(expected, 7);
     });
   });
 });

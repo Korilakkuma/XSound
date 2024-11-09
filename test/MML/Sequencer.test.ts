@@ -1,3 +1,5 @@
+import '/mock/fetchMock';
+import '/mock/instantiateStreamingMock';
 import { Token } from '/src/MML/Token';
 import { MMLSyntaxError } from '/src/MML/Tree';
 import { Tokenizer } from '/src/MML/Tokenizer';

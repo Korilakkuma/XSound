@@ -1,3 +1,6 @@
+// @ts-expect-error Because of import WebAssembly Module
+import wasm from './WebAssemblyModules/FFT.wasm';
+
 // Constants for Music
 
 // 12 equal temperament
@@ -148,6 +151,24 @@ export interface FileEvent extends Event {
 export type FileReaderType      = 'arraybuffer' | 'dataURL' | 'text' | 'json';
 export type FileReaderErrorText = 'NOT_FOUND_ERR' | 'SECURITY_ERR' | 'ABORT_ERR' | 'NOT_READABLE_ERR' | 'ERR' | '';
 
+export interface FFTWebAssemblyInstance extends WebAssembly.Exports {
+  memory: WebAssembly.Memory;
+  FFT: (size: number) => void;
+  IFFT: (size: number) => void;
+  alloc_memory_reals: (size: number) => number;
+  alloc_memory_imags: (size: number) => number;
+};
+
+let instance: WebAssembly.Instance | null = null;
+
+WebAssembly.instantiateStreaming(fetch(wasm))
+  .then((source: WebAssembly.WebAssemblyInstantiatedSource) => {
+    instance = source.instance;
+  })
+  .catch((error: Error) => {
+    return error;
+  });
+
 /**
  * This class (static) method executes FFT.
  * @param {Float32Array} reals This argument is instance of `Float32Array` for real number.
@@ -155,65 +176,28 @@ export type FileReaderErrorText = 'NOT_FOUND_ERR' | 'SECURITY_ERR' | 'ABORT_ERR'
  * @param {number} size This argument is FFT size (power of two).
  */
 export function fft(reals: Float32Array, imags: Float32Array, size: number): void {
-  const pow2 = (n: number) => 2 ** n;
-
-  const indexes = new Uint16Array(size);
-
-  const numberOfStages = Math.log2(size);
-
-  for (let stage = 1; stage <= numberOfStages; stage++) {
-    for (let i = 0; i < pow2(stage - 1); i++) {
-      const rest = numberOfStages - stage;
-
-      for (let j = 0; j < pow2(rest); j++) {
-        const n = i * pow2(rest + 1) + j;
-        const m = pow2(rest) + n;
-        const r = j * pow2(stage - 1);
-
-        const areal = reals[n];
-        const aimag = imags[n];
-        const breal = reals[m];
-        const bimag = imags[m];
-        const creal = Math.cos((2.0 * Math.PI * r) / size);
-        const cimag = -1 * Math.sin((2.0 * Math.PI * r) / size);
-
-        if (stage < numberOfStages) {
-          reals[n] = areal + breal;
-          imags[n] = aimag + bimag;
-          reals[m] = (creal * (areal - breal)) - (cimag * (aimag - bimag));
-          imags[m] = (creal * (aimag - bimag)) + (cimag * (areal - breal));
-        } else {
-          reals[n] = areal + breal;
-          imags[n] = aimag + bimag;
-          reals[m] = areal - breal;
-          imags[m] = aimag - bimag;
-        }
-      }
-    }
+  if (instance === null) {
+    return;
   }
 
-  for (let stage = 1; stage <= numberOfStages; stage++) {
-    const rest = numberOfStages - stage;
+  // HACK:
+  const wasm = instance.exports as FFTWebAssemblyInstance;
 
-    for (let i = 0; i < pow2(stage - 1); i++) {
-      indexes[pow2(stage - 1) + i] = indexes[i] + pow2(rest);
-    }
-  }
+  const linearMemory = wasm.memory.buffer;
 
-  for (let k = 0; k < size; k++) {
-    if (indexes[k] <= k) {
-      continue;
-    }
+  const offsetReal = wasm.alloc_memory_reals(size);
+  const offsetImag = wasm.alloc_memory_imags(size);
 
-    const real = reals[indexes[k]];
-    const imag = imags[indexes[k]];
+  const realsLinearMemory = new Float32Array(linearMemory, offsetReal, size);
+  const imagsLinearMemory = new Float32Array(linearMemory, offsetImag, size);
 
-    reals[indexes[k]] = reals[k];
-    imags[indexes[k]] = imags[k];
+  realsLinearMemory.set(reals);
+  imagsLinearMemory.set(imags);
 
-    reals[k] = real;
-    imags[k] = imag;
-  }
+  wasm.FFT(size);
+
+  reals.set(realsLinearMemory);
+  imags.set(imagsLinearMemory);
 }
 
 /**
@@ -223,70 +207,28 @@ export function fft(reals: Float32Array, imags: Float32Array, size: number): voi
  * @param {number} size This argument is IFFT size (power of two).
  */
 export function ifft(reals: Float32Array, imags: Float32Array, size: number): void {
-  const pow2 = (n: number) => 2 ** n;
-
-  const indexes = new Uint16Array(size);
-
-  const numberOfStages = Math.log2(size);
-
-  for (let stage = 1; stage <= numberOfStages; stage++) {
-    for (let i = 0; i < pow2(stage - 1); i++) {
-      const rest = numberOfStages - stage;
-
-      for (let j = 0; j < pow2(rest); j++) {
-        const n = i * pow2(rest + 1) + j;
-        const m = pow2(rest) + n;
-        const r = j * pow2(stage - 1);
-
-        const areal = reals[n];
-        const aimag = imags[n];
-        const breal = reals[m];
-        const bimag = imags[m];
-        const creal = Math.cos((2.0 * Math.PI * r) / size);
-        const cimag = Math.sin((2.0 * Math.PI * r) / size);
-
-        if (stage < numberOfStages) {
-          reals[n] = areal + breal;
-          imags[n] = aimag + bimag;
-          reals[m] = (creal * (areal - breal)) - (cimag * (aimag - bimag));
-          imags[m] = (creal * (aimag - bimag)) + (cimag * (areal - breal));
-        } else {
-          reals[n] = areal + breal;
-          imags[n] = aimag + bimag;
-          reals[m] = areal - breal;
-          imags[m] = aimag - bimag;
-        }
-      }
-    }
+  if (instance === null) {
+    return;
   }
 
-  for (let stage = 1; stage <= numberOfStages; stage++) {
-    const rest = numberOfStages - stage;
+  // HACK:
+  const wasm = instance.exports as FFTWebAssemblyInstance;
 
-    for (let i = 0; i < pow2(stage - 1); i++) {
-      indexes[pow2(stage - 1) + i] = indexes[i] + pow2(rest);
-    }
-  }
+  const linearMemory = wasm.memory.buffer;
 
-  for (let k = 0; k < size; k++) {
-    if (indexes[k] <= k) {
-      continue;
-    }
+  const offsetReal = wasm.alloc_memory_reals(size);
+  const offsetImag = wasm.alloc_memory_imags(size);
 
-    const real = reals[indexes[k]];
-    const imag = imags[indexes[k]];
+  const realsLinearMemory = new Float32Array(linearMemory, offsetReal, size);
+  const imagsLinearMemory = new Float32Array(linearMemory, offsetImag, size);
 
-    reals[indexes[k]] = reals[k];
-    imags[indexes[k]] = imags[k];
+  realsLinearMemory.set(reals);
+  imagsLinearMemory.set(imags);
 
-    reals[k] = real;
-    imags[k] = imag;
-  }
+  wasm.IFFT(size);
 
-  for (let k = 0; k < size; k++) {
-    reals[k] /= size;
-    imags[k] /= size;
-  }
+  reals.set(realsLinearMemory);
+  imags.set(imagsLinearMemory);
 }
 
 /**

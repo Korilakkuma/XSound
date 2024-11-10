@@ -1,11 +1,9 @@
-#include <stdlib.h>
+#include "constants.hpp"
 #include "FFT.hpp"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
-
-static const int buffer_size = 128;
 
 static float *inputs  = NULL;
 static float *outputs = NULL;

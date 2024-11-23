@@ -4,7 +4,7 @@
 #include <emscripten.h>
 #endif
 
-static const int buffer_size = 128;
+static const size_t buffer_size = 128;
 
 static float *outputs = NULL;
 

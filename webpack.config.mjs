@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
-import path from 'path';
 import fs from 'node:fs';
+import path from 'node:path';
 
 const dirname = path.resolve('.');
 

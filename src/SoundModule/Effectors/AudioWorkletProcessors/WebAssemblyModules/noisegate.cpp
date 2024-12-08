@@ -24,8 +24,8 @@ float *noisegate(const float level) {
   outputs = (float *)calloc(buffer_size, sizeof(float));
 
   for (int n = 0; n < buffer_size; n++) {
-    // input[n]: Amplitude is equal to argument.
-    //        0: Because signal is detected as background noise, amplitude is `0`.
+    // input[n]: If amplitude is greater than `level`.
+    //        0: Otherwise, signal is detected as background noise (amplitude is `0`).
     if (absf(inputs[n]) > level) {
       outputs[n] = inputs[n];
     } else {

@@ -1,4 +1,5 @@
 #include "constants.hpp"
+#include "window_functions.hpp"
 #include "FFT.hpp"
 
 #ifdef __EMSCRIPTEN__
@@ -29,6 +30,8 @@ float *noisesuppressor(const float threshold) {
 
   float *amplitudes = (float *)calloc(buffer_size, sizeof(float));
   float *phases     = (float *)calloc(buffer_size, sizeof(float));
+
+  window_function(inputs, buffer_size, HANNING);
 
   for (int n = 0; n < buffer_size; n++) {
     input_reals[n] = inputs[n];

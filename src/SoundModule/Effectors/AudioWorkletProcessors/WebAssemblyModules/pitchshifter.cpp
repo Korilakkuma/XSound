@@ -1,4 +1,5 @@
 #include "constants.hpp"
+#include "window_functions.hpp"
 #include "FFT.hpp"
 
 #ifdef __EMSCRIPTEN__
@@ -26,6 +27,8 @@ float *pitchshifter(const float pitch) {
   float *input_imags  = (float *)calloc(buffer_size, sizeof(float));
   float *output_reals = (float *)calloc(buffer_size, sizeof(float));
   float *output_imags = (float *)calloc(buffer_size, sizeof(float));
+
+  window_function(inputs, buffer_size, RECTANGULAR);
 
   for (int n = 0; n < buffer_size; n++) {
     input_reals[n] = inputs[n];

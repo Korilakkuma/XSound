@@ -1,5 +1,4 @@
 #include "constants.hpp"
-#include "window_functions.hpp"
 #include "FFT.hpp"
 
 #ifdef __EMSCRIPTEN__

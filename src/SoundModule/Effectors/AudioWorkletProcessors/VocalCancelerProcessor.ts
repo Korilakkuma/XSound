@@ -10,6 +10,7 @@ interface VocalCancelerProcessorWebAssemblyInstance extends WebAssembly.Exports 
   alloc_memory_inputLs: () => number;
   alloc_memory_inputRs: () => number;
 };
+
 /**
  * This class extends `AudioWorkletProcessor`.
  * Override `process` method for vocal canceler and Update parameters on message event.
@@ -92,22 +93,20 @@ export class VocalCancelerProcessor extends AudioWorkletProcessor {
 
     const bufferSize = input[0].length;
 
-    for (let i = 0; i < bufferSize; i++) {
-      const offsetInputL = wasm.alloc_memory_inputLs();
-      const offsetInputR = wasm.alloc_memory_inputRs();
+    const offsetInputL = wasm.alloc_memory_inputLs();
+    const offsetInputR = wasm.alloc_memory_inputRs();
 
-      const inputLinearMemoryL = new Float32Array(linearMemory, offsetInputL, bufferSize);
-      const inputLinearMemoryR = new Float32Array(linearMemory, offsetInputR, bufferSize);
+    const inputLinearMemoryL = new Float32Array(linearMemory, offsetInputL, bufferSize);
+    const inputLinearMemoryR = new Float32Array(linearMemory, offsetInputR, bufferSize);
 
-      inputLinearMemoryL.set(input[0]);
-      inputLinearMemoryR.set(input[1]);
+    inputLinearMemoryL.set(input[0]);
+    inputLinearMemoryR.set(input[1]);
 
-      const offsetOutputL = wasm.vocalcancelerL(this.depth);
-      const offsetOutputR = wasm.vocalcancelerR(this.depth);
+    const offsetOutputL = wasm.vocalcancelerL(this.depth);
+    const offsetOutputR = wasm.vocalcancelerR(this.depth);
 
-      output[0].set(new Float32Array(linearMemory, offsetOutputL, bufferSize));
-      output[1].set(new Float32Array(linearMemory, offsetOutputR, bufferSize));
-    }
+    output[0].set(new Float32Array(linearMemory, offsetOutputL, bufferSize));
+    output[1].set(new Float32Array(linearMemory, offsetOutputR, bufferSize));
 
     return true;
   }

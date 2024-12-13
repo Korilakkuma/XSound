@@ -11,11 +11,19 @@ describe(VocalCanceler.name, () => {
 
   describe(vocalcanceler.param.name, () => {
     const defaultParams: VocalCancelerParams = {
-      depth: 0
+      algorithm   : 'time',
+      depth       : 0,
+      minFrequency: 200,
+      maxFrequency: 8000,
+      threshold   : 0.05
     };
 
     const params: VocalCancelerParams = {
-      depth: 1
+      algorithm   : 'spectrum',
+      depth       : 1,
+      minFrequency: 400,
+      maxFrequency: 4000,
+      threshold   : 0.005
     };
 
     beforeAll(() => {
@@ -32,16 +40,36 @@ describe(VocalCanceler.name, () => {
     });
 
     // Getter
+    test('should return `algorithm`', () => {
+      expect(vocalcanceler.param('algorithm')).toBe('spectrum');
+    });
+
     test('should return `depth`', () => {
       expect(vocalcanceler.param('depth')).toBeCloseTo(1, 1);
+    });
+
+    test('should return `minFrequency`', () => {
+      expect(vocalcanceler.param('minFrequency')).toBeCloseTo(400, 1);
+    });
+
+    test('should return `maxFrequency`', () => {
+      expect(vocalcanceler.param('maxFrequency')).toBeCloseTo(4000, 1);
+    });
+
+    test('should return `threshold`', () => {
+      expect(vocalcanceler.param('threshold')).toBeCloseTo(0.005, 3);
     });
   });
 
   describe(vocalcanceler.params.name, () => {
     test('should return parameters for vocal canceler as associative array', () => {
       expect(vocalcanceler.params()).toStrictEqual({
-        state: true,
-        depth: 0
+        state       : true,
+        algorithm   : 'time',
+        depth       : 0,
+        minFrequency: 200,
+        maxFrequency: 8000,
+        threshold   : 0.05
       });
     });
   });

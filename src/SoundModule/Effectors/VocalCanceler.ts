@@ -4,9 +4,15 @@ import { VocalCancelerProcessor } from './AudioWorkletProcessors/VocalCancelerPr
 // @ts-expect-error Because of import WebAssembly Module
 import wasm from './AudioWorkletProcessors/WebAssemblyModules/vocalcanceler.wasm';
 
+export type VocalCancelerAlgorithm = 'time' | 'spectrum';
+
 export type VocalCancelerParams = {
   state?: boolean,
-  depth?: number
+  algorithm?: VocalCancelerAlgorithm,
+  depth?: number,
+  minFrequency?: number,
+  maxFrequency?: number,
+  threshold?: number
 };
 
 /**
@@ -14,6 +20,11 @@ export type VocalCancelerParams = {
  */
 export class VocalCanceler extends Effector {
   private processor: AudioWorkletNode;
+
+  private algorithm: VocalCancelerAlgorithm = 'time';
+  private minFrequency = 200;
+  private maxFrequency = 8000;
+  private threshold = 0.05;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -70,7 +81,11 @@ export class VocalCanceler extends Effector {
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
+  public param(params: 'algorithm'): VocalCancelerAlgorithm;
   public param(params: 'depth'): number;
+  public param(params: 'minFrequency'): number;
+  public param(params: 'maxFrequency'): number;
+  public param(params: 'threshold'): number;
   public param(params: VocalCancelerParams): VocalCanceler;
   public param(params: keyof VocalCancelerParams | VocalCancelerParams): VocalCancelerParams[keyof VocalCancelerParams] | VocalCanceler {
     if (typeof params === 'string') {
@@ -79,8 +94,24 @@ export class VocalCanceler extends Effector {
           return this.isActive;
         }
 
+        case 'algorithm': {
+          return this.algorithm;
+        }
+
         case 'depth': {
           return this.depth.gain.value;
+        }
+
+        case 'minFrequency': {
+          return this.minFrequency;
+        }
+
+        case 'maxFrequency': {
+          return this.maxFrequency;
+        }
+
+        case 'threshold': {
+          return this.threshold;
         }
       }
     }
@@ -99,11 +130,59 @@ export class VocalCanceler extends Effector {
           break;
         }
 
+        case 'algorithm': {
+          if (typeof value === 'string') {
+            this.algorithm = value;
+
+            const message: VocalCancelerParams = { algorithm: value };
+
+            this.processor.port.postMessage(message);
+          }
+
+          break;
+        }
+
         case 'depth': {
           if (typeof value === 'number') {
             this.depth.gain.value = value;
 
             const message: VocalCancelerParams = { depth: value };
+
+            this.processor.port.postMessage(message);
+          }
+
+          break;
+        }
+
+        case 'minFrequency': {
+          if (typeof value === 'number') {
+            this.minFrequency = value;
+
+            const message: VocalCancelerParams = { minFrequency: value };
+
+            this.processor.port.postMessage(message);
+          }
+
+          break;
+        }
+
+        case 'maxFrequency': {
+          if (typeof value === 'number') {
+            this.maxFrequency = value;
+
+            const message: VocalCancelerParams = { maxFrequency: value };
+
+            this.processor.port.postMessage(message);
+          }
+
+          break;
+        }
+
+        case 'threshold': {
+          if (typeof value === 'number') {
+            this.threshold = value;
+
+            const message: VocalCancelerParams = { threshold: value };
 
             this.processor.port.postMessage(message);
           }
@@ -122,8 +201,12 @@ export class VocalCanceler extends Effector {
    */
   public params(): Required<VocalCancelerParams> {
     return {
-      state: this.isActive,
-      depth: this.depth.gain.value
+      state       : this.isActive,
+      algorithm   : this.algorithm,
+      depth       : this.depth.gain.value,
+      minFrequency: this.minFrequency,
+      maxFrequency: this.maxFrequency,
+      threshold   : this.threshold
     };
   }
 

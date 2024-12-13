@@ -3,9 +3,9 @@
 import type { SoundModule, SoundModuleParams, Module, ModuleName } from './SoundModule';
 import type { OscillatorModuleParams, Glide, GlideParams, GlideType, Oscillator, OscillatorParams, OscillatorCustomType } from './OscillatorModule';
 import type { OneshotModuleParams, OneshotSetting, OneshotSettings, OneshotErrorText } from './OneshotModule';
-import type { NoiseModuleParams, NoiseType} from './NoiseModule';
-import type { AudioModuleParams, AudioBufferSprite} from './AudioModule';
-import type { MediaModuleParams} from './MediaModule';
+import type { NoiseModuleParams, NoiseType } from './NoiseModule';
+import type { AudioModuleParams, AudioBufferSprite } from './AudioModule';
+import type { MediaModuleParams } from './MediaModule';
 import type { StreamModuleParams, MediaStreamTrackAudioSourceNode } from './StreamModule';
 import type { Part, Sequence, MMLSyntaxError, Tree, TokenType, TokenMap, Token, MMLScheduleWorkerMessageEventType, MMLScheduleWorkerMessageEventData } from './MML';
 import type {

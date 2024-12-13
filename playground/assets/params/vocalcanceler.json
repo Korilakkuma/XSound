@@ -1,4 +1,8 @@
 {
   "state": true,
-  "depth": 0
+  "algorithm": "time",
+  "depth": 0,
+  "minFrequency": 200,
+  "maxFrequency": 8000,
+  "threshold": 0.05
 }

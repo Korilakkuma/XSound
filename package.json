@@ -71,6 +71,7 @@
     "README.md"
   ],
   "devDependencies": {
+    "@types/audioworklet": "^0.0.65",
     "@types/jest": "^29.5.14",
     "cross-env": "^7.0.3",
     "dotenv-webpack": "^8.1.0",

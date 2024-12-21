@@ -152,7 +152,6 @@ export class VocalCancelerProcessor extends AudioWorkletProcessor {
       }
 
       case 'spectrum': {
-        // @ts-expect-error Because of `AudioWorkletGlobalScope`
         const offsetOutputL = wasm.vocalcanceler_on_spectrum(sampleRate, this.minFrequency, this.maxFrequency, this.threshold);
         const offsetOutputR = offsetOutputL + (bufferSize * Float32Array.BYTES_PER_ELEMENT);
 

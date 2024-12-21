@@ -18,7 +18,6 @@ export class AudioModuleProcessor extends AudioWorkletProcessor {
     const output = outputs[0];
 
     if ((input.length > 0) && (input[0].length > 0)) {
-      // @ts-expect-error `currentFrame` is not defined in `AudioWorkletGlobalScope`
       if ((currentFrame % 16384) === 0) {
         // Fire `onmessage` event (that main thread has) every `16384` samples
         this.port.postMessage({});

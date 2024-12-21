@@ -72,7 +72,6 @@ export class NoiseModuleProcessor extends AudioWorkletProcessor {
 
       switch (this.type) {
         case 'whitenoise': {
-          // @ts-expect-error `AudioWorkletGlobalScope` has `currentFrame` property
           const offsetOutput = wasm.whitenoise(currentFrame);
 
           output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, bufferSize));
@@ -80,7 +79,6 @@ export class NoiseModuleProcessor extends AudioWorkletProcessor {
         }
 
         case 'pinknoise': {
-          // @ts-expect-error `AudioWorkletGlobalScope` has `currentFrame` property
           const offsetOutput = wasm.pinknoise(currentFrame);
 
           output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, bufferSize));
@@ -88,7 +86,6 @@ export class NoiseModuleProcessor extends AudioWorkletProcessor {
         }
 
         case 'browniannoise': {
-          // @ts-expect-error `AudioWorkletGlobalScope` has `currentFrame` property
           const offsetOutput = wasm.browniannoise(currentFrame);
 
           output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, bufferSize));

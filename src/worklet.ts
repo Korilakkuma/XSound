@@ -11,6 +11,10 @@ export type Parameters = { [parameterName: string]: Float32Array };
 export abstract class AudioWorkletProcessor {
   protected port = new MessagePort();
   protected abstract process(inputs: Inputs, outputs: Outputs, parameters: Parameters): boolean;
+
+  // eslint-disable-next-line no-useless-constructor
+  constructor(_options?: AudioWorkletNodeOptions) {
+  }
 }
 
 /**

@@ -1,22 +1,22 @@
 import type { Inputs, Outputs } from '../../../worklet';
 import type { VocalCancelerParams, VocalCancelerAlgorithm } from '../VocalCanceler';
 
-import { AudioWorkletProcessor } from '../../../worklet';
+import { OverlapAddProcessor } from '../../../worklet';
 
 interface VocalCancelerProcessorWebAssemblyInstance extends WebAssembly.Exports {
   memory: WebAssembly.Memory;
-  vocalcancelerL: (depth: number) => number;
-  vocalcancelerR: (depth: number) => number;
-  vocalcanceler_on_spectrum: (sampleRate: number, minFrequency: number, maxFrequency: number, threshold: number) => number;
-  alloc_memory_inputLs: () => number;
-  alloc_memory_inputRs: () => number;
+  vocalcancelerL: (depth: number, bufferSize: number) => number;
+  vocalcancelerR: (depth: number, bufferSize: number) => number;
+  vocalcanceler_on_spectrum: (sampleRate: number, minFrequency: number, maxFrequency: number, threshold: number, fftSize: number) => number;
+  alloc_memory_inputLs: (bufferSize: number) => number;
+  alloc_memory_inputRs: (bufferSize: number) => number;
 };
 
 /**
- * This class extends `AudioWorkletProcessor`.
- * Override `process` method for vocal canceler and Update parameters on message event.
+ * This class extends `OverlapAddProcessor`.
+ * Override `processOverlapAdd` method for vocal canceler and Update parameters on message event.
  */
-export class VocalCancelerProcessor extends AudioWorkletProcessor {
+export class VocalCancelerProcessor extends OverlapAddProcessor {
   private instance: WebAssembly.Instance | null = null;
 
   private algorithm: VocalCancelerAlgorithm = 'time';
@@ -27,8 +27,8 @@ export class VocalCancelerProcessor extends AudioWorkletProcessor {
 
   private isActive = true;
 
-  constructor() {
-    super();
+  constructor(options: AudioWorkletNodeOptions) {
+    super(options);
 
     this.port.onmessage = (event: MessageEvent<ArrayBuffer | VocalCancelerParams>) => {
       if (event.data instanceof ArrayBuffer) {
@@ -96,7 +96,7 @@ export class VocalCancelerProcessor extends AudioWorkletProcessor {
   }
 
   /** @override */
-  protected override process(inputs: Inputs, outputs: Outputs): boolean {
+  protected override processOverlapAdd(inputs: Inputs, outputs: Outputs): boolean {
     if (this.instance === null) {
       return false;
     }
@@ -129,36 +129,34 @@ export class VocalCancelerProcessor extends AudioWorkletProcessor {
 
     const linearMemory = wasm.memory.buffer;
 
-    const bufferSize = input[0].length;
+    const offsetInputL = wasm.alloc_memory_inputLs(this.blockSize);
+    const offsetInputR = wasm.alloc_memory_inputRs(this.blockSize);
 
-    const offsetInputL = wasm.alloc_memory_inputLs();
-    const offsetInputR = wasm.alloc_memory_inputRs();
-
-    const inputLinearMemoryL = new Float32Array(linearMemory, offsetInputL, bufferSize);
-    const inputLinearMemoryR = new Float32Array(linearMemory, offsetInputR, bufferSize);
+    const inputLinearMemoryL = new Float32Array(linearMemory, offsetInputL, this.blockSize);
+    const inputLinearMemoryR = new Float32Array(linearMemory, offsetInputR, this.blockSize);
 
     inputLinearMemoryL.set(input[0]);
     inputLinearMemoryR.set(input[1]);
 
     switch (this.algorithm) {
       case 'time': {
-        const offsetOutputL = wasm.vocalcancelerL(this.depth);
-        const offsetOutputR = wasm.vocalcancelerR(this.depth);
+        const offsetOutputL = wasm.vocalcancelerL(this.depth, this.blockSize);
+        const offsetOutputR = wasm.vocalcancelerR(this.depth, this.blockSize);
 
-        output[0].set(new Float32Array(linearMemory, offsetOutputL, bufferSize));
-        output[1].set(new Float32Array(linearMemory, offsetOutputR, bufferSize));
+        output[0].set(new Float32Array(linearMemory, offsetOutputL, this.blockSize));
+        output[1].set(new Float32Array(linearMemory, offsetOutputR, this.blockSize));
 
         break;
       }
 
       case 'spectrum': {
-        const offsetOutputL = wasm.vocalcanceler_on_spectrum(sampleRate, this.minFrequency, this.maxFrequency, this.threshold);
-        const offsetOutputR = offsetOutputL + (bufferSize * Float32Array.BYTES_PER_ELEMENT);
+        const offsetOutputL = wasm.vocalcanceler_on_spectrum(sampleRate, this.minFrequency, this.maxFrequency, this.threshold, this.blockSize);
+        const offsetOutputR = offsetOutputL + (this.blockSize * Float32Array.BYTES_PER_ELEMENT);
 
-        const canceledInputLs = new Float32Array(linearMemory, offsetOutputL, bufferSize);
-        const canceledInputRs = new Float32Array(linearMemory, offsetOutputR, bufferSize);
+        const canceledInputLs = new Float32Array(linearMemory, offsetOutputL, this.blockSize);
+        const canceledInputRs = new Float32Array(linearMemory, offsetOutputR, this.blockSize);
 
-        for (let n = 0; n < bufferSize; n++) {
+        for (let n = 0; n < this.blockSize; n++) {
           output[0][n] = ((1 - this.depth) * input[0][n]) + (this.depth * canceledInputLs[n]);
           output[1][n] = ((1 - this.depth) * input[1][n]) + (this.depth * canceledInputRs[n]);
         }

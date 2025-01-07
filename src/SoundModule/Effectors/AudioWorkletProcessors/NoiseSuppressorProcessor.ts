@@ -1,26 +1,26 @@
 import type { Inputs, Outputs } from '../../../worklet';
 import type { NoiseSuppressorParams } from '../NoiseSuppressor';
 
-import { AudioWorkletProcessor } from '../../../worklet';
+import { OverlapAddProcessor } from '../../../worklet';
 
 interface NoiseSuppressorProcessorWebAssemblyInstance extends WebAssembly.Exports {
   memory: WebAssembly.Memory;
-  noisesuppressor: (threshold: number) => number;
-  alloc_memory_inputs: () => number;
+  noisesuppressor: (threshold: number, fftSize: number) => number;
+  alloc_memory_inputs: (bufferSize: number) => number;
 };
 
 /**
- * This class extends `AudioWorkletProcessor`.
- * Override `process` method for noise suppressor and Update parameters on message event.
+ * This class extends `OverlapAddProcessor`.
+ * Override `processOverlapAdd` method for noise suppressor and Update parameters on message event.
  */
-export class NoiseSuppressorProcessor extends AudioWorkletProcessor {
+export class NoiseSuppressorProcessor extends OverlapAddProcessor {
   private instance: WebAssembly.Instance | null = null;
 
   private threshold = 0;
   private isActive = true;
 
-  constructor() {
-    super();
+  constructor(options: AudioWorkletNodeOptions) {
+    super(options);
 
     this.port.onmessage = async (event: MessageEvent<ArrayBuffer | NoiseSuppressorParams>) => {
       if (event.data instanceof ArrayBuffer) {
@@ -56,7 +56,7 @@ export class NoiseSuppressorProcessor extends AudioWorkletProcessor {
   }
 
   /** @override */
-  protected override process(inputs: Inputs, outputs: Outputs): boolean {
+  protected override processOverlapAdd(inputs: Inputs, outputs: Outputs): boolean {
     if (this.instance === null) {
       return false;
     }
@@ -81,18 +81,16 @@ export class NoiseSuppressorProcessor extends AudioWorkletProcessor {
 
     const linearMemory = wasm.memory.buffer;
 
-    const bufferSize = input[0].length;
-
     for (let channelNumber = 0, numberOfChannels = input.length; channelNumber < numberOfChannels; channelNumber++) {
-      const offsetInput = wasm.alloc_memory_inputs();
+      const offsetInput = wasm.alloc_memory_inputs(this.blockSize);
 
-      const inputLinearMemory = new Float32Array(linearMemory, offsetInput, bufferSize);
+      const inputLinearMemory = new Float32Array(linearMemory, offsetInput, this.blockSize);
 
       inputLinearMemory.set(input[channelNumber]);
 
-      const offsetOutput = wasm.noisesuppressor(this.threshold);
+      const offsetOutput = wasm.noisesuppressor(this.threshold, this.blockSize);
 
-      output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, bufferSize));
+      output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, this.blockSize));
     }
 
     return true;

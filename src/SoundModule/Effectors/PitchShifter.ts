@@ -1,9 +1,6 @@
 import { Effector } from './Effector';
 import { PitchShifterProcessor } from './AudioWorkletProcessors/PitchShifterProcessor';
 
-// @ts-expect-error Because of import WebAssembly Module
-import wasm from './AudioWorkletProcessors/WebAssemblyModules/pitchshifter.wasm';
-
 export type PitchShifterParams = {
   state?: boolean,
   pitch?: number
@@ -23,18 +20,13 @@ export class PitchShifter extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.processor = new AudioWorkletNode(this.context, PitchShifterProcessor.name);
+    this.processor = new AudioWorkletNode(this.context, PitchShifterProcessor.name, {
+      processorOptions: {
+        blockSize: 2048
+      }
+    });
 
-    fetch(wasm)
-      .then(async (response) => {
-        const wasm = await response.arrayBuffer();
-
-        this.processor.port.postMessage(wasm);
-        this.activate();
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
+    this.activate();
   }
 
   /** @override */

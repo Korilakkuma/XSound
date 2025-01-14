@@ -6,7 +6,7 @@
     "lint:css": "stylelint app.css",
     "lint:html": "markuplint index.html",
     "lint": "run-p lint:css lint:html",
-    "fix:css": "stylelint --fix app.css",
+    "fix:css": "stylelint --fix=strict app.css",
     "fix:html": "markuplint --fix index.html",
     "fix": "run-p fix:css fix:html"
   },

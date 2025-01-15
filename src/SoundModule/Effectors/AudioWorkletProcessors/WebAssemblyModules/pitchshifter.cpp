@@ -1,4 +1,3 @@
-#include "constants.hpp"
 #include "FFT.hpp"
 
 #ifdef __EMSCRIPTEN__

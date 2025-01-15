@@ -5,8 +5,8 @@
 #include <emscripten.h>
 #endif
 
-static float *reals = NULL;
-static float *imags = NULL;
+static float *reals = nullptr;
+static float *imags = nullptr;
 
 #ifdef __cplusplus
 extern "C" {

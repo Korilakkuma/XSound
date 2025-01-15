@@ -7,11 +7,11 @@
 // Safe positive minimum on `float` (6 digits)
 static const float minimum_amplitude = 0.000001f;
 
-static float *inputLs  = NULL;
-static float *inputRs  = NULL;
-static float *outputLs = NULL;
-static float *outputRs = NULL;
-static float *outputs  = NULL;
+static float *inputLs  = nullptr;
+static float *inputRs  = nullptr;
+static float *outputLs = nullptr;
+static float *outputRs = nullptr;
+static float *outputs  = nullptr;
 
 #ifdef __cplusplus
 extern "C" {

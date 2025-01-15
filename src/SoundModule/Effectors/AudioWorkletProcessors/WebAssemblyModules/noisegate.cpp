@@ -8,8 +8,8 @@
 
 static const size_t buffer_size = 128;
 
-static float *inputs  = NULL;
-static float *outputs = NULL;
+static float *inputs  = nullptr;
+static float *outputs = nullptr;
 
 #ifdef __cplusplus
 extern "C" {

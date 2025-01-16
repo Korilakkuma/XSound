@@ -29,10 +29,12 @@ float *noisesuppressor(const float threshold, const size_t fft_size) {
   float *amplitudes = (float *)calloc(fft_size, sizeof(float));
   float *phases     = (float *)calloc(fft_size, sizeof(float));
 
-  window_function(inputs, fft_size, HANNING);
+  float *window = (float *)calloc(fft_size, sizeof(float));
+
+  window_function(window, fft_size, HANNING);
 
   for (int n = 0; n < fft_size; n++) {
-    input_reals[n] = inputs[n];
+    input_reals[n] = window[n] * inputs[n];
     input_imags[n] = 0.0f;
   }
 
@@ -62,10 +64,8 @@ float *noisesuppressor(const float threshold, const size_t fft_size) {
   IFFT(output_reals, output_imags, fft_size);
 
   for (int n = 0; n < fft_size; n++) {
-    outputs[n] = output_reals[n];
+    outputs[n] = window[n] * output_reals[n];
   }
-
-  window_function(outputs, fft_size, HANNING);
 
   free(input_reals);
   free(input_imags);
@@ -73,6 +73,7 @@ float *noisesuppressor(const float threshold, const size_t fft_size) {
   free(output_imags);
   free(amplitudes);
   free(phases);
+  free(window);
 
   return outputs;
 }

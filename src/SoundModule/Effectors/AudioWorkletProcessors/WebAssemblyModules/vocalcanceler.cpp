@@ -71,12 +71,13 @@ float *vocalcanceler_on_spectrum(const float sample_rate, const float min_freque
   float *imagLs = (float *)calloc(fft_size, sizeof(float));
   float *imagRs = (float *)calloc(fft_size, sizeof(float));
 
-  window_function(inputLs, fft_size, RECTANGULAR);
-  window_function(inputRs, fft_size, RECTANGULAR);
+  float *window = (float *)calloc(fft_size, sizeof(float));
+
+  window_function(window, fft_size, HANNING);
 
   for (int n = 0; n < fft_size; n++) {
-    realLs[n] = inputLs[n];
-    realRs[n] = inputRs[n];
+    realLs[n] = window[n] * inputLs[n];
+    realRs[n] = window[n] * inputRs[n];
     imagLs[n] = 0.0f;
     imagRs[n] = 0.0f;
   }
@@ -133,24 +134,22 @@ float *vocalcanceler_on_spectrum(const float sample_rate, const float min_freque
   IFFT(realLs, imagLs, fft_size);
   IFFT(realRs, imagRs, fft_size);
 
-  window_function(realLs, fft_size, RECTANGULAR);
-  window_function(realRs, fft_size, RECTANGULAR);
-
   // Unify left channel data and right channel data
   outputs = (float *)calloc((2 * fft_size), sizeof(float));
 
   for (int n = 0; n < fft_size; n++) {
-    outputs[n] = realLs[n];
+    outputs[n] = window[n] * realLs[n];
   }
 
   for (int n = 0; n < fft_size; n++) {
-    outputs[fft_size + n] = realRs[n];
+    outputs[fft_size + n] = window[n] * realRs[n];
   }
 
   free(realLs);
   free(realRs);
   free(imagLs);
   free(imagRs);
+  free(window);
 
   return outputs;
 }

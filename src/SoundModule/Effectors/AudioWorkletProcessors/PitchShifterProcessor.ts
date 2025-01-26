@@ -63,11 +63,12 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
       return;
     }
 
+    const input  = inputs[0];
+    const output = outputs[0];
+
     if (!this.isActive || (this.pitch === 1)) {
-      for (let n = 0; n < this.numberOfInputs; n++) {
-        for (let channelNumber = 0; channelNumber < inputs[n].length; channelNumber++) {
-          outputs[n][channelNumber].set(inputs[n][channelNumber]);
-        }
+      for (let channelNumber = 0; channelNumber < input.length; channelNumber++) {
+        output[channelNumber].set(input[channelNumber]);
       }
 
       return;
@@ -78,21 +79,16 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
 
     const linearMemory = wasm.memory.buffer;
 
-    for (let n = 0; n < this.numberOfInputs; n++) {
-      for (let channelNumber = 0; channelNumber < inputs[n].length; channelNumber++) {
-        const input  = inputs[n][channelNumber];
-        const output = outputs[n][channelNumber];
+    for (let channelNumber = 0; channelNumber < input.length; channelNumber++) {
+      const offsetInput = wasm.alloc_memory_inputs(this.blockSize);
 
-        const offsetInput = wasm.alloc_memory_inputs(this.blockSize);
+      const inputLinearMemory = new Float32Array(linearMemory, offsetInput, this.blockSize);
 
-        const inputLinearMemory = new Float32Array(linearMemory, offsetInput, this.blockSize);
+      inputLinearMemory.set(input[channelNumber]);
 
-        inputLinearMemory.set(input);
+      const offsetOutput = wasm.pitchshifter(this.pitch, this.blockSize, this.timeCursor);
 
-        const offsetOutput = wasm.pitchshifter(this.pitch, this.blockSize, this.timeCursor);
-
-        output.set(new Float32Array(linearMemory, offsetOutput, this.blockSize));
-      }
+      output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, this.blockSize));
     }
 
     this.timeCursor += this.hopSize;

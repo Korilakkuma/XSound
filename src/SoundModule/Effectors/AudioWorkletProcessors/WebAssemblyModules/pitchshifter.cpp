@@ -14,7 +14,7 @@ extern "C" {
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_KEEPALIVE
 #endif
-float *pitchshifter(const float pitch, const size_t fft_size, const size_t time_cursor) {
+float *pitchshifter(const float pitch, const float speed, const size_t fft_size, const size_t time_cursor) {
   if (outputs) {
     free(outputs);
   }
@@ -77,7 +77,7 @@ float *pitchshifter(const float pitch, const size_t fft_size, const size_t time_
   for (int k = 0; k < number_of_peaks; k++) {
     const int peak_index = peak_indexes[k];
 
-    const int shifted_peak_index = roundf(peak_index * pitch);
+    const int shifted_peak_index = roundf(peak_index * pitch * (1 / speed));
 
     if (shifted_peak_index > buffer_size) {
       break;

@@ -61,11 +61,13 @@ describe(PitchShifter.name, () => {
 
   describe(pitchshifter.param.name, () => {
     const defaultParams: PitchShifterParams = {
-      pitch: 1
+      pitch: 1,
+      speed: 1
     };
 
     const params: PitchShifterParams = {
-      pitch: 1.5
+      pitch: 1.5,
+      speed: 0.7
     };
 
     beforeAll(() => {
@@ -85,13 +87,18 @@ describe(PitchShifter.name, () => {
     test('should return `pitch`', () => {
       expect(pitchshifter.param('pitch')).toBeCloseTo(1.5, 1);
     });
+
+    test('should return `speed`', () => {
+      expect(pitchshifter.param('speed')).toBeCloseTo(0.7, 1);
+    });
   });
 
   describe(pitchshifter.params.name, () => {
     test('should return parameters for pitch shifter as associative array', () => {
       expect(pitchshifter.params()).toStrictEqual({
         state: false,
-        pitch: 1
+        pitch: 1,
+        speed: 1
       });
     });
   });

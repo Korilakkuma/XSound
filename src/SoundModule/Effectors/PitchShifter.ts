@@ -6,7 +6,8 @@ import wasm from './AudioWorkletProcessors/WebAssemblyModules/pitchshifter.wasm'
 
 export type PitchShifterParams = {
   state?: boolean,
-  pitch?: number
+  pitch?: number,
+  speed?: number
 };
 
 /**
@@ -16,6 +17,7 @@ export class PitchShifter extends Effector {
   private processor: AudioWorkletNode;
 
   private pitch = 1;
+  private speed = 1;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -76,6 +78,7 @@ export class PitchShifter extends Effector {
    */
   public param(params: 'state'): boolean;
   public param(params: 'pitch'): number;
+  public param(params: 'speed'): number;
   public param(params: PitchShifterParams): PitchShifter;
   public param(params: keyof PitchShifterParams | PitchShifterParams): PitchShifterParams[keyof PitchShifterParams] | PitchShifter {
     if (typeof params === 'string') {
@@ -86,6 +89,10 @@ export class PitchShifter extends Effector {
 
         case 'pitch': {
           return this.pitch;
+        }
+
+        case 'speed': {
+          return this.speed;
         }
       }
     }
@@ -117,6 +124,20 @@ export class PitchShifter extends Effector {
 
           break;
         }
+
+        case 'speed': {
+          if (typeof value === 'number') {
+            if (value > 0) {
+              this.speed = value;
+
+              const message: PitchShifterParams = { speed: value };
+
+              this.processor.port.postMessage(message);
+            }
+          }
+
+          break;
+        }
       }
     }
 
@@ -127,7 +148,8 @@ export class PitchShifter extends Effector {
   public override params(): Required<PitchShifterParams> {
     return {
       state: this.isActive,
-      pitch: this.pitch
+      pitch: this.pitch,
+      speed: this.speed
     };
   }
 

@@ -5,7 +5,7 @@ import { OverlapAddProcessor } from '../../../worklet';
 
 interface PitchShifterProcessorebAssemblyInstance extends WebAssembly.Exports {
   memory: WebAssembly.Memory;
-  pitchshifter: (pitch: number, fftSize: number, timeCursor: number) => number;
+  pitchshifter: (pitch: number, speed: number, fftSize: number, timeCursor: number) => number;
   alloc_memory_inputs: (bufferSize: number) => number;
 };
 
@@ -20,6 +20,7 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
 
   private isActive = true;
   private pitch = 1;
+  private speed = 1;
 
   constructor(options: AudioWorkletNodeOptions) {
     super(options);
@@ -51,6 +52,14 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
 
               break;
             }
+
+            case 'speed': {
+              if (typeof value === 'number') {
+                this.speed = value;
+              }
+
+              break;
+            }
           }
         }
       }
@@ -66,7 +75,7 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
     const input  = inputs[0];
     const output = outputs[0];
 
-    if (!this.isActive || (this.pitch === 1)) {
+    if (!this.isActive || ((this.pitch === 1) && (this.speed === 1))) {
       for (let channelNumber = 0; channelNumber < input.length; channelNumber++) {
         output[channelNumber].set(input[channelNumber]);
       }
@@ -86,7 +95,7 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
 
       inputLinearMemory.set(input[channelNumber]);
 
-      const offsetOutput = wasm.pitchshifter(this.pitch, this.blockSize, this.timeCursor);
+      const offsetOutput = wasm.pitchshifter(this.pitch, this.speed, this.blockSize, this.timeCursor);
 
       output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, this.blockSize));
     }

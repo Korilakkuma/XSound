@@ -30,7 +30,7 @@ import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
 import { Wah } from '/src/SoundModule/Effectors/Wah';
 import { AudioModule } from '/src/AudioModule';
 
-type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
+type Params = Partial<Pick<AudioModuleParams, 'mastervolume' | 'playbackRate' | 'detune' | 'speed' | 'loop' | 'currentTime' | 'duration' | 'sampleRate' | 'numberOfChannels'>>;
 
 describe(AudioModule.name, () => {
   const context = new AudioContextMock();
@@ -141,6 +141,7 @@ describe(AudioModule.name, () => {
       mastervolume: 1,
       playbackRate: 1,
       detune      : 0,
+      speed       : 1,
       loop        : false,
       currentTime : 0
     };
@@ -148,6 +149,7 @@ describe(AudioModule.name, () => {
     const params: Params = {
       mastervolume: 0.5,
       playbackRate: 1.5,
+      speed       : 1.5,
       detune      : -600,
       loop        : true,
       currentTime : 48000
@@ -171,6 +173,10 @@ describe(AudioModule.name, () => {
 
     test('should return `detune`', () => {
       expect(audioModule.param('detune')).toBeCloseTo(-600, 1);
+    });
+
+    test('should return `speed`', () => {
+      expect(audioModule.param('speed')).toBeCloseTo(1.5, 1);
     });
 
     test('should return `loop`', () => {
@@ -354,6 +360,7 @@ describe(AudioModule.name, () => {
         mastervolume     : 1,
         playbackRate     : 1,
         detune           : 0,
+        speed            : 1,
         loop             : false,
         currentTime      : 0,
         duration         : 0,

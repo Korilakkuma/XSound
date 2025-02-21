@@ -34,6 +34,7 @@ export type AudioBufferSprite = { [spriteName: string]: AudioBuffer };
 export type AudioModuleParams = SoundModuleParams & {
   playbackRate?: number,
   detune?: number,
+  speed?: number,
   loop?: boolean,
   currentTime?: number,
   readonly duration?: number,
@@ -55,6 +56,8 @@ export class AudioModule extends SoundModule {
 
   private currentTime = 0;
   private stopped = true;
+
+  private speed = 1;
 
   private decodeCallback?(buffer: AudioBuffer): void;
   private updateCallback?(source: AudioBufferSourceNode, currentTime: number): void;
@@ -275,6 +278,7 @@ export class AudioModule extends SoundModule {
   public param(params: 'mastervolume'): number;
   public param(params: 'playbackRate'): number;
   public param(params: 'detune'): number;
+  public param(params: 'speed'): number;
   public param(params: 'loop'): boolean;
   public param(params: 'currentTime'): number;
   public param(params: 'duration'): number;
@@ -295,6 +299,10 @@ export class AudioModule extends SoundModule {
 
         case 'detune': {
           return this.source.detune.value;
+        }
+
+        case 'speed': {
+          return this.speed;
         }
 
         case 'loop': {
@@ -358,6 +366,29 @@ export class AudioModule extends SoundModule {
 
             this.envelopegenerator.start(startTime);
             this.envelopegenerator.stop((startTime + ((duration - currentTime) / playbackRate)), true);
+          }
+
+          break;
+        }
+
+        case 'speed': {
+          if (typeof value === 'number') {
+            if (value > 0) {
+              this.speed = value;
+
+              const pitch = this.pitchshifter.param('pitch');
+
+              this.pitchshifter.param({ pitch: pitch, speed: this.speed });
+
+              this.source.playbackRate.value = this.speed;
+
+              const startTime    = this.context.currentTime;
+              const currentTime  = this.currentTime;
+              const duration     = this.source.buffer?.duration ?? 0;
+
+              this.envelopegenerator.start(startTime);
+              this.envelopegenerator.stop((startTime + ((duration - currentTime) / this.speed)), true);
+            }
           }
 
           break;
@@ -745,6 +776,7 @@ export class AudioModule extends SoundModule {
       ...params,
       playbackRate    : this.source.playbackRate.value,
       detune          : this.source.detune.value,
+      speed           : this.speed,
       loop            : this.source.loop,
       currentTime     : this.currentTime,
       duration        : this.buffer?.duration ?? 0,

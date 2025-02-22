@@ -2,6 +2,7 @@
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import jestDomPlugin from 'eslint-plugin-jest-dom';
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -13,6 +14,9 @@ export default tseslint.config(
     },
     linterOptions: {
       'reportUnusedDisableDirectives': 'error'
+    },
+    plugins: {
+      'jest-dom': jestDomPlugin
     },
     extends: [
       ...tseslint.configs.recommended

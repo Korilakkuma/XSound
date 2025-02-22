@@ -97,9 +97,10 @@ class PreEqualizer extends Effector {
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> BiquadFilterNode (High-pass) -> GainNode (Pre-gain) -> BiquadFilterNode (High-pass) -> GainNode (Output)
+      // GainNode (Input) -> BiquadFilterNode (High-pass) -> BiquadFilterNode (Low-pass) -> GainNode (Pre-gain) -> BiquadFilterNode (High-pass)
       this.input.connect(this.highpass1);
-      this.highpass1.connect(this.preGain);
+      this.highpass1.connect(this.lowpass);
+      this.lowpass.connect(this.preGain);
       this.preGain.connect(this.highpass3);
 
       // GainNode (Input) -> BiquadFilterNode (High-pass) -> GainNode (Lead-gain) -> BiquadFilterNode (High-pass)
@@ -260,9 +261,9 @@ class PostEqualizer extends Effector {
     this.treble.frequency.value = 1600; // 1.6 kHz
 
     // Set Q
-    this.bass.Q.value   = Math.SQRT1_2;
-    this.middle.Q.value = Math.SQRT1_2;
-    this.treble.Q.value = Math.SQRT1_2;
+    this.bass.Q.value   = 0;  // Not used
+    this.middle.Q.value = 1.5;
+    this.treble.Q.value = 0;  // Not used
 
     // Set Gain
     this.bass.gain.value   = 0;
@@ -273,7 +274,7 @@ class PostEqualizer extends Effector {
     this.highpass = context.createBiquadFilter();
 
     this.lowpass.type            = 'lowpass';
-    this.lowpass.frequency.value = 20000;
+    this.lowpass.frequency.value = 4000;
     this.lowpass.Q.value         = -3;
     this.lowpass.gain.value      = 0;  // Not used
 

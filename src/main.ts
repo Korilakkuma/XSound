@@ -123,7 +123,6 @@ import { Wah } from './SoundModule/Effectors/Wah';
 import { NoiseGateProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/NoiseGateProcessor';
 import { NoiseSuppressorProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/NoiseSuppressorProcessor';
 import { PitchShifterProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/PitchShifterProcessor';
-import { StereoProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/StereoProcessor';
 import { VocalCancelerProcessor } from './SoundModule/Effectors/AudioWorkletProcessors/VocalCancelerProcessor';
 import {
   EQUAL_TEMPERAMENT,
@@ -190,7 +189,6 @@ const promise = Promise
     addAudioWorklet(audiocontext, NoiseGateProcessor),
     addAudioWorklet(audiocontext, NoiseSuppressorProcessor),
     addAudioWorklet(audiocontext, PitchShifterProcessor),
-    addAudioWorklet(audiocontext, StereoProcessor),
     addAudioWorklet(audiocontext, VocalCancelerProcessor)
   ])
   .then(() => {
@@ -678,7 +676,6 @@ export type {
   RingmodulatorParams,
   Stereo,
   StereoParams,
-  StereoProcessor,
   Tremolo,
   TremoloParams,
   VocalCanceler,

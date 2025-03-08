@@ -14,8 +14,9 @@ describe(Stereo.name, () => {
     const originalInput    = stereo['input'];
     const originalSplitter = stereo['splitter'];
     const originalMerger   = stereo['merger'];
-    const originalDelayL   = stereo['delayL'];
-    const originalDelayR   = stereo['delayR'];
+    const originalDelay    = stereo['delay'];
+    const originalGainL    = stereo['gainL'];
+    const originalGainR    = stereo['gainR'];
     /* eslint-enable dot-notation */
 
     afterAll(() => {
@@ -23,8 +24,9 @@ describe(Stereo.name, () => {
       stereo['splitter'] = originalSplitter;
       stereo['merger']   = originalMerger;
       stereo['input']    = originalInput;
-      stereo['delayL']   = originalDelayL;
-      stereo['delayR']   = originalDelayR;
+      stereo['delay']    = originalDelay;
+      stereo['gainL']    = originalGainL;
+      stereo['gainR']    = originalGainR;
       /* eslint-enable dot-notation */
 
       stereo.deactivate();
@@ -37,10 +39,12 @@ describe(Stereo.name, () => {
       const splitterDisconnectMock = jest.fn();
       const mergerConnectMock      = jest.fn();
       const mergerDisconnectMock   = jest.fn();
-      const delayLConnectMock      = jest.fn();
-      const delayLDisconnectMock   = jest.fn();
-      const delayRConnectMock      = jest.fn();
-      const delayRDisconnectMock   = jest.fn();
+      const delayConnectMock       = jest.fn();
+      const delayDisconnectMock    = jest.fn();
+      const gainLConnectMock       = jest.fn();
+      const gainLDisconnectMock    = jest.fn();
+      const gainRConnectMock       = jest.fn();
+      const gainRDisconnectMock    = jest.fn();
 
       /* eslint-disable dot-notation */
       stereo['input'].connect       = inputConnectMock;
@@ -49,10 +53,12 @@ describe(Stereo.name, () => {
       stereo['splitter'].disconnect = splitterDisconnectMock;
       stereo['merger'].connect      = mergerConnectMock;
       stereo['merger'].disconnect   = mergerDisconnectMock;
-      stereo['delayL'].connect      = delayLConnectMock;
-      stereo['delayL'].disconnect   = delayLDisconnectMock;
-      stereo['delayR'].connect      = delayRConnectMock;
-      stereo['delayR'].disconnect   = delayRDisconnectMock;
+      stereo['delay'].connect       = delayConnectMock;
+      stereo['delay'].disconnect    = delayDisconnectMock;
+      stereo['gainL'].connect       = gainLConnectMock;
+      stereo['gainL'].disconnect    = gainLDisconnectMock;
+      stereo['gainR'].connect       = gainRConnectMock;
+      stereo['gainR'].disconnect    = gainRDisconnectMock;
       /* eslint-enable dot-notation */
 
       stereo.connect();
@@ -60,26 +66,30 @@ describe(Stereo.name, () => {
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(splitterConnectMock).toHaveBeenCalledTimes(0);
       expect(mergerConnectMock).toHaveBeenCalledTimes(0);
-      expect(delayLConnectMock).toHaveBeenCalledTimes(0);
-      expect(delayRConnectMock).toHaveBeenCalledTimes(0);
+      expect(delayConnectMock).toHaveBeenCalledTimes(0);
+      expect(gainLConnectMock).toHaveBeenCalledTimes(0);
+      expect(gainRConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(splitterDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(splitterDisconnectMock).toHaveBeenCalledTimes(2);
       expect(mergerDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(delayLDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(delayRDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(delayDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(gainLDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(gainRDisconnectMock).toHaveBeenCalledTimes(1);
 
       stereo.activate();
 
-      expect(inputConnectMock).toHaveBeenCalledTimes(2);
+      expect(inputConnectMock).toHaveBeenCalledTimes(4);
       expect(splitterConnectMock).toHaveBeenCalledTimes(2);
       expect(mergerConnectMock).toHaveBeenCalledTimes(1);
-      expect(delayLConnectMock).toHaveBeenCalledTimes(1);
-      expect(delayRConnectMock).toHaveBeenCalledTimes(1);
+      expect(delayConnectMock).toHaveBeenCalledTimes(1);
+      expect(gainLConnectMock).toHaveBeenCalledTimes(1);
+      expect(gainRConnectMock).toHaveBeenCalledTimes(1);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(splitterDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(splitterDisconnectMock).toHaveBeenCalledTimes(4);
       expect(mergerDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(delayLDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(delayRDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(delayDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(gainLDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(gainRDisconnectMock).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -138,33 +148,17 @@ describe(Stereo.name, () => {
 
   describe(stereo.deactivate.name, () => {
     test('should call `connect` method', () => {
-      // HACK:
-      // eslint-disable-next-line dot-notation
-      if (stereo['processor'] === null) {
-        return;
-      }
-
       const originalConnect = stereo.connect;
 
-      // eslint-disable-next-line dot-notation
-      const originalProcessor = stereo['processor'];
-
-      const connectMock    = jest.fn();
-      const disconnectMock = jest.fn();
+      const connectMock = jest.fn();
 
       stereo.connect = connectMock;
-
-      // eslint-disable-next-line dot-notation
-      stereo['processor'].disconnect = disconnectMock;
 
       stereo.deactivate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
       stereo.connect = originalConnect;
-
-      // eslint-disable-next-line dot-notation
-      stereo['processor'] = originalProcessor;
     });
   });
 });

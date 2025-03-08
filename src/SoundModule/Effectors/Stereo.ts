@@ -1,5 +1,4 @@
 import { Effector } from './Effector';
-import { StereoProcessor } from './AudioWorkletProcessors/StereoProcessor';
 
 export type StereoParams = {
   state?: boolean,
@@ -12,12 +11,11 @@ export type StereoParams = {
 export class Stereo extends Effector {
   public static MAX_DELAY_TIME = 1;  // Max delay time is 1000 [ms]
 
-  private processor: AudioWorkletNode;
-
   private splitter: ChannelSplitterNode;
   private merger: ChannelMergerNode;
-  private delayL: DelayNode;
-  private delayR: DelayNode;
+  private delay: DelayNode;
+  private gainL: GainNode;
+  private gainR: GainNode;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -27,14 +25,16 @@ export class Stereo extends Effector {
 
     this.splitter = context.createChannelSplitter(2);
     this.merger   = context.createChannelMerger(2);
-    this.delayL   = context.createDelay(Stereo.MAX_DELAY_TIME);
-    this.delayR   = context.createDelay(Stereo.MAX_DELAY_TIME);
+    this.delay    = context.createDelay(Stereo.MAX_DELAY_TIME);
+    this.gainL    = context.createGain();
+    this.gainR    = context.createGain();
 
     // Initialize parameters
-    this.delayL.delayTime.value = 0;
-    this.delayR.delayTime.value = 0;
+    this.delay.delayTime.value = 0;
 
-    this.processor = new AudioWorkletNode(this.context, StereoProcessor.name);
+    this.gainL.gain.value = +1;
+    this.gainR.gain.value = -1;
+
     this.deactivate();
   }
 
@@ -50,22 +50,27 @@ export class Stereo extends Effector {
   public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
+    this.delay.disconnect(0);
     this.splitter.disconnect(0);
-    this.delayL.disconnect(0);
-    this.delayR.disconnect(0);
+    this.splitter.disconnect(1);
+    this.gainL.disconnect(0);
+    this.gainR.disconnect(0);
     this.merger.disconnect(0);
-    this.processor.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> ChannelSplitterNode -> DelayNode (L) / (R) -> AudioWorkletNode (Stereo) -> ChannelMergerNode -> GainNode (Output)
-      this.input.connect(this.splitter);
-      this.splitter.connect(this.delayL, 0, 0);
-      this.splitter.connect(this.delayR, 1, 0);
-      this.delayL.connect(this.processor);
-      this.delayR.connect(this.processor);
-      this.processor.connect(this.merger);
+      // GainNode (Input) -> ChannelMergerNode
+      this.input.connect(this.merger, 0, 0);
+      this.input.connect(this.merger, 0, 1);
+
+      // GainNode (Input) -> DelayNode -> ChannelSplitterNode -> GainNode (L) / (R) -> ChannelMergerNode -> GainNode (Output)
+      this.input.connect(this.delay);
+      this.delay.connect(this.splitter);
+      this.splitter.connect(this.gainL, 0, 0);
+      this.splitter.connect(this.gainR, 1, 0);
+      this.gainL.connect(this.merger, 0, 0);
+      this.gainR.connect(this.merger, 0, 1);
       this.merger.connect(this.output);
     } else {
       // Effect OFF
@@ -95,7 +100,7 @@ export class Stereo extends Effector {
         }
 
         case 'time': {
-          return this.delayL.delayTime.value;
+          return this.delay.delayTime.value;
         }
       }
     }
@@ -105,10 +110,6 @@ export class Stereo extends Effector {
         case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
-
-            const message: StereoParams = { state: value };
-
-            this.processor.port.postMessage(message);
           }
 
           break;
@@ -116,8 +117,7 @@ export class Stereo extends Effector {
 
         case 'time': {
           if (typeof value === 'number') {
-            this.delayL.delayTime.value = value;
-            this.delayR.delayTime.value = value;
+            this.delay.delayTime.value = value;
           }
 
           break;
@@ -132,7 +132,7 @@ export class Stereo extends Effector {
   public override params(): Required<StereoParams> {
     return {
       state: this.isActive,
-      time : this.delayL.delayTime.value
+      time : this.delay.delayTime.value
     };
   }
 

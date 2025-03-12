@@ -1,38 +1,45 @@
-(() => {
-  const STORAGE_KEY = 'xsound-playground';
+const STORAGE_KEY = 'xsound-playground';
 
-  const result     = document.getElementById('result-text');
-  const codeEditor = document.getElementById('textarea-codemirror');
-  const ui         = document.getElementById('ui');
+const codeEditorContainerElement = document.getElementById('code-editor-container');
 
-  const editor = CodeMirror.fromTextArea(codeEditor, {
-    mode       : 'javascript',
-    theme      : location.hostname === 'xsound.jp' ? 'default' : 'monokai',
-    lineNumbers: true,
-    indentUnit : 2,
-    smartIndent: true
+const resultElement = document.getElementById('result-text');
+const uiElement     = document.getElementById('ui');
+
+require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' } });
+require(['vs/editor/editor.main'], async () => {
+  const defaultValue = `X('oscillator').setup([true, true, false, false]);
+
+document.getElementById('button-start').onclick = () => {
+  X('oscillator').start([440, 880]);
+};
+
+document.getElementById('button-stop').onclick = () => {
+  X('oscillator').stop();
+};`;
+
+  const editor = monaco.editor.create(codeEditorContainerElement, {
+    value: defaultValue,
+    language: 'javascript',
+    automaticLayout: true,
+    theme: 'vs-dark'
   });
 
-  editor.save();
-
   document.getElementById('button-run').addEventListener('click', (event) => {
-    editor.save();
-
-    const executor = new Function(codeEditor.value);
+    const executor = new Function(editor.getValue());
 
     executor();
 
-    if (ui.hasAttribute('hidden')) {
-      ui.removeAttribute('hidden');
+    if (uiElement.hasAttribute('hidden')) {
+      uiElement.removeAttribute('hidden');
     }
 
     document.getElementById('button-stop').click();
-  }, false);
+  });
 
   document.getElementById('select-code').addEventListener('change', (event) => {
     const path = event.currentTarget.value;
 
-    result.innerHTML = '';
+    resultElement.innerHTML = '';
 
     editor.setValue('\'Loading ...\';');
 
@@ -42,21 +49,20 @@
       })
       .then((text) => {
         editor.setValue(text.trim());
-      });
-  }, false);
+     });
+  });
 
   document.getElementById('button-clear').addEventListener('click', (event) => {
     editor.setValue('');
-    editor.clearHistory();
-  }, false);
+  });
 
   document.getElementById('button-run').addEventListener('dragstart', (event) => {
     event.preventDefault();
-  }, false);
+  });
 
   document.getElementById('button-clear').addEventListener('dragstart', (event) => {
     event.preventDefault();
-  }, false);
+  });
 
   document.getElementById('select-module').addEventListener('change', (event) => {
     const select = event.currentTarget;
@@ -73,18 +79,15 @@
       .then((text) => {
         textarea.value = text.trim();
       });
-  }, false);
+  });
 
   window.addEventListener('load', () => {
     if (localStorage.getItem(STORAGE_KEY)) {
-      editor.setValue('');
-      editor.clearHistory();
       editor.setValue(localStorage.getItem(STORAGE_KEY));
     }
   }, true);
 
   window.addEventListener('unload', () => {
-    editor.save();
-    localStorage.setItem(STORAGE_KEY, codeEditor.value);
+    localStorage.setItem(STORAGE_KEY, editor.getValue())
   }, true);
-})();
+});

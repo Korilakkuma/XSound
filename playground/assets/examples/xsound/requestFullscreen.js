@@ -1,6 +1,6 @@
-const canvas = document.querySelector('canvas');
+const svg = document.getElementById('visualizer-svg');
 
-X.requestFullscreen(canvas);
+X.requestFullscreen(svg);
 
 document.onkeydown = (event) => {
   if ((event.key === 'Escape') || (event.keyCode === 27)) {

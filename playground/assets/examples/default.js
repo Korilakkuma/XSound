@@ -3,7 +3,7 @@ X('oscillator').setup([true, true, false, false]);
 X('oscillator')
   .module('analyser')
   .domain('time', 0)
-  .setup(document.querySelector('canvas'))
+  .setup(document.getElementById('visualizer-svg'))
   .param({ interval: -1 })
   .activate();
 

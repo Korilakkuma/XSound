@@ -2,18 +2,19 @@ X('oscillator').setup([true, true, false, false]);
 
 const styles = {
   font  : {
-    size: '48px'
+    famliy: 'Roboto',
+    size  : '12px'
   },
-  width : 4,
-  top   : 64,
-  bottom: 64,
-  left  : 124
+  width : 1,
+  top   : 16,
+  bottom: 16,
+  left  : 28
 };
 
 X('oscillator')
   .module('analyser')
   .domain('time', 0)
-  .setup(document.querySelector('canvas'))
+  .setup(document.getElementById('visualizer-svg'))
   .param({ interval: -1, styles })
   .activate();
 

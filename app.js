@@ -10,15 +10,6 @@ const buttonYarn = document.getElementById('button-yarn');
 const buttonPnpm = document.getElementById('button-pnpm');
 const buttonCdn = document.getElementById('button-cdn');
 
-
-preYarn.addEventListener('animationend', (event) => {
-  event.currentTarget.classList.remove('copy-highlight');
-}, false);
-
-preCdn.addEventListener('animationend', (event) => {
-  event.currentTarget.classList.remove('copy-highlight');
-}, false);
-
 const onAnimationEnd = (event) => {
   event.currentTarget.classList.remove('copy-highlight');
 };

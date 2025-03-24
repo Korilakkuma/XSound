@@ -51,7 +51,7 @@ static inline int pow2(const int n) {
   return 2 << (n - 1);
 }
 
-static inline void swap(float *const reals, float *const imags, const int i, const int k) {
+static inline void swap(float *const reals, float *const imags, const size_t i, const size_t k) {
   float tmp_real;
   float tmp_imag;
 
@@ -100,17 +100,17 @@ static void FFT(float *const reals, float *const imags, const size_t size) {
     }
   }
 
-  int *index = (int *)calloc(size, sizeof(int));
+  size_t *index = (size_t *)calloc(size, sizeof(size_t));
 
   for (int stage = 1; stage <= number_of_stages; stage++) {
     int rest = number_of_stages - stage;
 
     for (int i = 0; i < pow2(stage - 1); i++) {
-      index[pow2(stage - 1) + i] = index[i] + pow2(rest);
+      index[(size_t)(pow2(stage - 1) + i)] = index[i] + (size_t)pow2(rest);
     }
   }
 
-  for (int k = 0; k < size; k++) {
+  for (size_t k = 0; k < size; k++) {
     if (index[k] <= k) {
       continue;
     }
@@ -156,24 +156,23 @@ static void IFFT(float *const reals, float *const imags, const size_t size) {
     }
   }
 
-  int *index = (int *)calloc(size, sizeof(int));
+  size_t *index = (size_t *)calloc(size, sizeof(size_t));
 
   for (int stage = 1; stage <= number_of_stages; stage++) {
     int rest = number_of_stages - stage;
 
     for (int i = 0; i < pow2(stage - 1); i++) {
-      index[pow2(stage - 1) + i] = index[i] + pow2(rest);
+      index[(size_t)(pow2(stage - 1) + i)] = index[i] + (size_t)pow2(rest);
     }
   }
 
-  for (int k = 0; k < size; k++) {
+  for (size_t k = 0; k < size; k++) {
     if (index[k] <= k) {
       continue;
     }
 
     swap(reals, imags, index[k], k);
   }
-
   for (int k = 0; k < size; k++) {
     reals[k] /= size;
     imags[k] /= size;

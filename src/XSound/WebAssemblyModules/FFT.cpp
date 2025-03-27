@@ -55,7 +55,7 @@ void FFT(const size_t size) {
         float o_real = reals[m];
         float o_imag = imags[m];
         float w_real = cosf(w / size);
-        float w_imag = 0 - sinf(w / size);
+        float w_imag = 0.0f - sinf(w / size);
 
         if (stage < number_of_stages) {
           reals[n] = e_real + o_real;

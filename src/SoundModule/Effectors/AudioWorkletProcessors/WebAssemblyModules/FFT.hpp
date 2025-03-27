@@ -12,9 +12,9 @@ static void window_function(float *const window, const size_t size, const WINDOW
     case HANNING: {
       for (int n = 0; n < size; n++) {
         if (n & 0x00000001) {
-          window[n] = 0.5 - (0.5 * cosf(((2 * M_PI) * (n + 0.5)) / size));
+          window[n] = 0.5f - (0.5f * cosf(((2.0f * M_PI) * (n + 0.5f)) / size));
         } else {
-          window[n] = 0.5 - (0.5 * cosf(((2 * M_PI) * n) / size));
+          window[n] = 0.5f - (0.5f * cosf(((2.0f * M_PI) * n) / size));
         }
       }
 
@@ -24,9 +24,9 @@ static void window_function(float *const window, const size_t size, const WINDOW
     case HAMMING: {
       for (int n = 0; n < size; n++) {
         if (n & 0x00000001) {
-          window[n] = 0.54 - (0.46 * cosf(((2 * M_PI) * (n + 0.5)) / size));
+          window[n] = 0.54f - (0.46f * cosf(((2.0f * M_PI) * (n + 0.5f)) / size));
         } else {
-          window[n] = 0.54 - (0.46 * cosf(((2 * M_PI) * n) / size));
+          window[n] = 0.54f - (0.46f * cosf(((2.0f * M_PI) * n) / size));
         }
       }
 
@@ -83,7 +83,7 @@ static void FFT(float *const reals, float *const imags, const size_t size) {
         float o_real = reals[m];
         float o_imag = imags[m];
         float w_real = cosf(w / size);
-        float w_imag = 0 - sinf(w / size);
+        float w_imag = 0.0f - sinf(w / size);
 
         if (stage < number_of_stages) {
           reals[n] = e_real + o_real;

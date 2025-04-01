@@ -7,7 +7,7 @@ import { Marshall } from './Preamps/Marshall';
 import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
 
-export type PreampType = 'marshall' | 'mesa' | 'fender';
+export type PreampType = 'marshall' | 'mesa/boogie' | 'fender';
 
 export type PreampCurve = Float32Array | null;
 
@@ -144,8 +144,8 @@ export class Preamp extends Effector {
                 break;
               }
 
-              case 'mesa': {
-                this.type   = 'mesa';
+              case 'mesa/boogie': {
+                this.type   = 'mesa/boogie';
                 this.preamp = new MesaBoogie(this.context);
                 break;
               }

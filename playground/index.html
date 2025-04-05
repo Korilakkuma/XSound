@@ -20,8 +20,7 @@
     <link rel="apple-touch-icon" href="assets/images/icon.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro" type="text/css" media="all" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@latest/lib/codemirror.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@latest/theme/monokai.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/editor/editor.main.css" type="text/css" media="all" />
     <link rel="stylesheet" href="assets/app.css" type="text/css" media="all" />
   </head>
   <body>
@@ -74,17 +73,7 @@
           <button type="button" id="button-clear">Clear</button>
           <a href="https://xsound.jp/docs/" target="_blank" rel="noopener noreferrer">API Documentation</a>
         </div>
-        <label>
-          <textarea id="textarea-codemirror">X(&apos;oscillator&apos;).setup([true, true, false, false]);
-
-document.getElementById(&apos;button-start&apos;).onclick = () =&gt; {
-  X(&apos;oscillator&apos;).start([440, 880]);
-};
-
-document.getElementById(&apos;button-stop&apos;).onclick = () =&gt; {
-  X(&apos;oscillator&apos;).stop();
-};</textarea>
-        </label>
+        <div id="code-editor-container"></div>
         <div id="result-text"></div>
       </div>
       <fieldset id="ui" hidden>
@@ -134,20 +123,16 @@ document.getElementById(&apos;button-stop&apos;).onclick = () =&gt; {
 }</textarea>
         <button id="button-set-parameters">Set</button>
         <div class="visualizer-container">
-          <canvas width="4800" height="600"></canvas>
-        </div>
-        <div class="visualizer-container">
-          <svg width="1200" height="150"></svg>
+          <svg id="visualizer-svg" width="1200" height="150"></svg>
         </div>
       </fieldset>
     </main>
     <footer>
       <p>XSound maintained by <a href="https://github.com/Korilakkuma/XSound">Korilakkuma</a></p>
     </footer>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/codemirror@latest/lib/codemirror.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/codemirror@latest/mode/javascript/javascript.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/abcjs@latest/dist/abcjs-basic-min.js"></script>
     <script type="text/javascript" src="../build/xsound.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
     <script type="text/javascript" src="assets/app.js"></script>
   </body>
 </html>

@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
 * {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 [hidden] {
@@ -10,18 +10,18 @@
 }
 
 body {
+  min-width: 320px;
   font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
   font-size: 16px;
-  color: #999;
   line-height: 1.5;
+  color: #999;
   background-color: #fafafa;
-  min-width: 320px;
 }
 
 header {
   padding: 8px 0;
-  background-color: #212121;
   text-align: center;
+  background-color: #212121;
 }
 
 header h1 {
@@ -42,18 +42,18 @@ header a img {
 
 main {
   display: flex;
-  align-items: flex-start;
   gap: 24px;
-  margin: 48px auto;
+  align-items: flex-start;
   max-width: 1280px;
+  margin: 48px auto;
 }
 
-main a {
+main a[href="https://xsound.jp/docs/"] {
   display: inline-block;
   padding: 12px 24px;
   color: #fff;
-  text-decoration: none;
   text-transform: uppercase;
+  text-decoration: none;
   background-color: #c0c;
   transition: background-color 0.4s ease;
 }
@@ -72,23 +72,20 @@ main a:focus {
   outline: 1px dotted #800080;
 }
 
-.buttons {
-  display: flex;
-  align-items: stretch;
-  gap: 12px;
+#code-editor-container {
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.CodeMirror {
-  width: 885px;
-  height: auto;
-  font-family: "Source Code Pro", monospace;
-  font-size: 14px;
-  color: #666;
+.buttons {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
 }
 
 #result-text {
+  max-width: 720px;
   margin: 12px 16px;
-  max-width: 900px;
   white-space: pre-line;
 }
 
@@ -132,15 +129,15 @@ legend {
 }
 
 #button-start {
-  grid-area: 1 / 1 / 2 / 2;
+  grid-area: 2 / 1 / 3 / 2;
 }
 
 #button-stop {
-  grid-area: 1 / 2 / 2 / 3;
+  grid-area: 2 / 2 / 3 / 3;
 }
 
 #button-uploader {
-  grid-area: 1 / 3 / 2 / 4;
+  grid-area: 2 / 3 / 3 / 4;
   max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -148,13 +145,13 @@ legend {
 }
 
 button {
-  cursor: pointer;
-  border: none;
   min-height: 48px;
   padding: 0 32px;
   color: #fff;
-  background-color: #c0c;
   text-transform: uppercase;
+  cursor: pointer;
+  background-color: #c0c;
+  border: none;
   transition: background-color 0.4s ease;
 }
 
@@ -173,11 +170,11 @@ fieldset label {
 
 select {
   grid-area: 3 / 1 / 4 / 4;
-  cursor: pointer;
-  border: 2px solid #eee;
-  padding: 12px 16px;
   width: 100%;
+  padding: 12px 16px;
+  cursor: pointer;
   background-color: #fff;
+  border: 2px solid #eee;
   transition: background-color 0.4s ease;
 }
 
@@ -190,8 +187,8 @@ select:focus {
 }
 
 #select-code {
-  padding: 12px 72px;
   width: auto;
+  padding: 12px 72px;
   color: #666;
   background-color: #fff;
 }
@@ -206,16 +203,16 @@ input[type="file"]:focus {
 
 input[type="text"],
 textarea {
-  border: 2px solid #eee;
   padding: 12px 16px;
   background-color: #fff;
+  border: 2px solid #eee;
   transition: background-color 0.4s ease;
 }
 
 textarea {
-  grid-area: 4 / 1 / 5 / 4;
-  display: block;
   box-sizing: border-box;
+  display: block;
+  grid-area: 4 / 1 / 5 / 4;
   width: 100%;
   height: 10rem;
   font-family: "Source Code Pro", monospace;
@@ -246,20 +243,14 @@ textarea:focus {
   grid-area: 7 / 1 / 8 / 4;
 }
 
-canvas {
-  width: 1200px;
-  height: 150px;
-  background-color: #000;
-}
-
 .visualizer-container > svg {
   background-color: #000;
 }
 
 footer {
   padding: 64px;
-  background-color: #212121;
   text-align: center;
+  background-color: #212121;
 }
 
 footer > p {

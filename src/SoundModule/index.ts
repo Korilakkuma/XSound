@@ -148,6 +148,7 @@ export abstract class SoundModule implements Connectable {
   public static readonly NUMBER_OF_OUTPUTS = 2;
 
   protected context: AudioContext;
+  protected destination: AudioDestinationNode | MediaStreamAudioDestinationNode;
 
   protected modules: Connectable[] = [];
 
@@ -190,6 +191,8 @@ export abstract class SoundModule implements Connectable {
    */
   constructor(context: AudioContext) {
     this.context = context;
+
+    this.destination = context.destination;
 
     this.mastervolume = context.createGain();
     this.processor    = new AudioWorkletNode(context, SoundModuleProcessor.name);
@@ -289,14 +292,14 @@ export abstract class SoundModule implements Connectable {
       }
     }
 
-    this.mastervolume.connect(this.context.destination);
+    this.mastervolume.connect(this.destination);
 
     // for analyser
     this.mastervolume.connect(this.analyser.INPUT);
 
     // for recorder
     this.mastervolume.connect(this.recorder.INPUT);
-    this.recorder.OUTPUT.connect(this.context.destination);
+    this.recorder.OUTPUT.connect(this.destination);
   }
 
   /**
@@ -305,6 +308,22 @@ export abstract class SoundModule implements Connectable {
   public disconnect(): void {
     this.processor.disconnect(0);
   }
+
+  /**
+   *
+   * @param {boolean} useMediaStream
+   *
+   * @return
+   */
+  public changeDestination(useMediaStream: boolean): SoundModule {
+    if (useMediaStream) {
+      this.destination = this.context.createMediaStreamDestination();
+    } else {
+      this.destination = this.context.destination;
+    }
+
+    return this;
+  };
 
   /**
    * This method installs customized effector.

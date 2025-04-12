@@ -148,6 +148,7 @@ export abstract class SoundModule implements Connectable {
   public static readonly NUMBER_OF_OUTPUTS = 2;
 
   protected context: AudioContext;
+  protected destination: AudioDestinationNode | MediaStreamAudioDestinationNode;
 
   protected modules: Connectable[] = [];
 
@@ -304,6 +305,28 @@ export abstract class SoundModule implements Connectable {
    */
   public disconnect(): void {
     this.processor.disconnect(0);
+  }
+
+  /**
+   * This method switches destination over to `AudioDestinationNode`.
+   * @return {SoundModule} Return value is for method chain.
+   */
+  public audioDestination() {
+    this.destination = this.context.destination;
+
+    // Type inference every subclass
+    return this;
+  }
+
+  /**
+   * This method switches destination over to `MediaStreamAudioDestinationNode`.
+   * @return {SoundModule} Return value is for method chain.
+   */
+  public streamDestination() {
+    this.destination = this.context.createMediaStreamDestination();
+
+    // Type inference every subclass
+    return this;
   }
 
   /**

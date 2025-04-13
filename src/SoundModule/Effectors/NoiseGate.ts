@@ -123,16 +123,4 @@ export class NoiseGate extends Effector {
       level: this.level
     };
   }
-
-  /** @override */
-  public override activate(): NoiseGate {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): NoiseGate {
-    super.deactivate();
-    return this;
-  }
 }

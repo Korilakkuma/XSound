@@ -259,16 +259,4 @@ export class Chorus extends Effector {
       feedback: this.feedback.gain.value
     };
   }
-
-  /** @override */
-  public override activate(): Chorus {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Chorus {
-    super.deactivate();
-    return this;
-  }
 }

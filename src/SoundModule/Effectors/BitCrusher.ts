@@ -214,16 +214,4 @@ export class BitCrusher extends Effector {
       oversample: this.shaper.oversample
     };
   }
-
-  /** @override */
-  public override activate(): BitCrusher {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): BitCrusher {
-    super.deactivate();
-    return this;
-  }
 }

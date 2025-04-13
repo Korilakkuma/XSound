@@ -751,36 +751,6 @@ export class MediaModule extends SoundModule {
     }
   }
 
-  /** @override */
-  public override on(startTime?: number): MediaModule {
-    super.on(startTime);
-    return this;
-  }
-
-  /** @override */
-  public override off(stopTime?: number): MediaModule {
-    super.off(stopTime);
-    return this;
-  }
-
-  /** @override */
-  public override suspend(): MediaModule {
-    super.suspend();
-    return this;
-  }
-
-  /** @override */
-  public override mix(): MediaModule {
-    super.mix();
-    return this;
-  }
-
-  /** @override */
-  public override demix(): MediaModule {
-    super.demix();
-    return this;
-  }
-
   /**
    * This method gets media module parameters as associative array.
    * @return {MediaModuleParams}

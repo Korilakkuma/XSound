@@ -239,16 +239,4 @@ export class Fuzz extends Effector {
       oversample: this.positiveShaper.oversample
     };
   }
-
-  /** @override */
-  public override activate(): Fuzz {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Fuzz {
-    super.deactivate();
-    return this;
-  }
 }

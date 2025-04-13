@@ -213,16 +213,4 @@ export class VocalCanceler extends Effector {
       threshold   : this.threshold
     };
   }
-
-  /** @override */
-  public override activate(): VocalCanceler {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): VocalCanceler {
-    super.deactivate();
-    return this;
-  }
 }

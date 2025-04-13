@@ -319,36 +319,6 @@ export class MixerModule extends SoundModule {
   }
 
   /** @override */
-  public override on(startTime?: number): MixerModule {
-    super.on(startTime);
-    return this;
-  }
-
-  /** @override */
-  public override off(stopTime?: number): MixerModule {
-    super.off(stopTime);
-    return this;
-  }
-
-  /** @override */
-  public override suspend(): MixerModule {
-    super.suspend();
-    return this;
-  }
-
-  /** @override */
-  public override mix(): MixerModule {
-    super.mix();
-    return this;
-  }
-
-  /** @override */
-  public override demix(): MixerModule {
-    super.demix();
-    return this;
-  }
-
-  /** @override */
   public override get INPUT(): AudioWorkletNode {
     return this.processor;
   }

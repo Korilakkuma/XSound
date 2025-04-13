@@ -154,11 +154,12 @@ export abstract class Visualizer implements Statable {
    * This method is overloaded for type interface and type check.
    * @param {keyof VisualizerParams|VisualizerParams} params This argument is string if getter. Otherwise, setter.
    * @return {VisualizerParams[keyof VisualizerParams]} Return value is parameter for visualization if getter.
+   *     Otherwise, return value is for method chain.
    */
   public param(params: 'interval'): number;
   public param(params: 'styles'): GraphicsStyles;
-  public param(params: VisualizerParams): void;
-  public param(params: keyof VisualizerParams | VisualizerParams): VisualizerParams[keyof VisualizerParams] | void {
+  public param(params: VisualizerParams): Visualizer;
+  public param(params: keyof VisualizerParams | VisualizerParams): VisualizerParams[keyof VisualizerParams] | Visualizer {
     if (typeof params === 'string') {
       switch (params) {
         case 'interval': {
@@ -190,6 +191,8 @@ export abstract class Visualizer implements Statable {
         }
       }
     }
+
+    return this;
   }
 
   /**

@@ -125,16 +125,4 @@ export class NoiseSuppressor extends Effector {
       threshold: this.threshold
     };
   }
-
-  /** @override */
-  public override activate(): NoiseSuppressor {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): NoiseSuppressor {
-    super.deactivate();
-    return this;
-  }
 }

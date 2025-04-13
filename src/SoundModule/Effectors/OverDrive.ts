@@ -230,16 +230,4 @@ export class OverDrive extends Effector {
       oversample: this.shaper.oversample
     };
   }
-
-  /** @override */
-  public override activate(): OverDrive {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): OverDrive {
-    super.deactivate();
-    return this;
-  }
 }

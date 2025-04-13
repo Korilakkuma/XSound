@@ -200,16 +200,4 @@ export class Preamp extends Effector {
       preamp: this.preamp.params()
     };
   }
-
-  /** @override */
-  public override activate(): Preamp {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Preamp {
-    super.deactivate();
-    return this;
-  }
 }

@@ -227,16 +227,4 @@ export class Wah extends Effector {
       resonance: this.auto ? this.sensitivity.Q.value : this.lowpass.Q.value
     };
   }
-
-  /** @override */
-  public override activate(): Wah {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Wah {
-    super.deactivate();
-    return this;
-  }
 }

@@ -109,7 +109,7 @@ export abstract class Visualizer implements Statable {
    * @param {HTMLCanvasElement|SVGSVGElement} element This argument is either `HTMLCanvasElement` or `SVGSVGElement`.
    * @return {Visualizer} Return value is for method chain.
    */
-  public setup(element: HTMLCanvasElement | SVGSVGElement): Visualizer {
+  public setup(element: HTMLCanvasElement | SVGSVGElement) {
     if (element instanceof HTMLCanvasElement) {
       this.graphics = 'canvas';
       this.canvas   = element;
@@ -119,6 +119,7 @@ export abstract class Visualizer implements Statable {
       this.svg      = element;
     }
 
+    // Type inference every subclass
     return this;
   }
 
@@ -129,7 +130,7 @@ export abstract class Visualizer implements Statable {
    * @param {number} maxDecibels This argument is parameter for spectrum. The default value is -30 dB.
    * @return {Visualizer} Return value is for method chain.
    */
-  public start(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): Visualizer {
+  public start(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number) {
     switch (this.graphics) {
       case 'canvas': {
         this.visualizeOnCanvas(data, minDecibels, maxDecibels);
@@ -146,6 +147,7 @@ export abstract class Visualizer implements Statable {
       }
     }
 
+    // Type inference every subclass
     return this;
   }
 
@@ -154,6 +156,7 @@ export abstract class Visualizer implements Statable {
    * This method is overloaded for type interface and type check.
    * @param {keyof VisualizerParams|VisualizerParams} params This argument is string if getter. Otherwise, setter.
    * @return {VisualizerParams[keyof VisualizerParams]} Return value is parameter for visualization if getter.
+   *     Otherwise, return value is for method chain.
    */
   public param(params: 'interval'): number;
   public param(params: 'styles'): GraphicsStyles;
@@ -216,7 +219,7 @@ export abstract class Visualizer implements Statable {
    * This method clears graphics.
    * @return {Visualizer} Return value is for method chain.
    */
-  public clear(): Visualizer {
+  public clear() {
     switch (this.graphics) {
       case 'canvas': {
         if (this.canvas && this.context) {
@@ -239,6 +242,7 @@ export abstract class Visualizer implements Statable {
       }
     }
 
+    // Type inference every subclass
     return this;
   }
 
@@ -282,8 +286,10 @@ export abstract class Visualizer implements Statable {
    * This method activates visualizer.
    * @return {Visualizer} Return value is for method chain.
    */
-  public activate(): Visualizer {
+  public activate() {
     this.isActive = true;
+
+    // Type inference every subclass
     return this;
   }
 
@@ -291,8 +297,10 @@ export abstract class Visualizer implements Statable {
    * This method deactivates visualizer.
    * @return {Visualizer} Return value is for method chain.
    */
-  public deactivate(): Visualizer {
+  public deactivate() {
     this.isActive = false;
+
+    // Type inference every subclass
     return this;
   }
 

@@ -377,7 +377,7 @@ export abstract class SoundModule implements Connectable {
    * @param {number} startTime This argument is used for scheduling parameter.
    * @return {SoundModule} Return value is for method chain.
    */
-  public on(startTime?: number): SoundModule {
+  public on(startTime?: number) {
     const s = startTime ?? this.context.currentTime;
 
     this.autopanner.start(s);
@@ -392,6 +392,7 @@ export abstract class SoundModule implements Connectable {
     this.tremolo.start(s);
     this.wah.start(s);
 
+    // Type inference every subclass
     return this;
   }
 
@@ -400,7 +401,7 @@ export abstract class SoundModule implements Connectable {
    * @param {number} stopTime This argument is used for scheduling parameter.
    * @return {SoundModule} Return value is for method chain.
    */
-  public off(stopTime?: number): SoundModule {
+  public off(stopTime?: number) {
     const s = stopTime ?? this.context.currentTime;
 
     this.autopanner.stop(s);
@@ -415,6 +416,7 @@ export abstract class SoundModule implements Connectable {
     this.tremolo.stop(s);
     this.wah.stop(s);
 
+    // Type inference every subclass
     return this;
   }
 
@@ -422,13 +424,14 @@ export abstract class SoundModule implements Connectable {
    * This method stops analyser, recorder and `onaudioprocess` event.
    * @return {SoundModule} Return value is for method chain.
    */
-  public suspend(): SoundModule {
+  public suspend() {
     this.analyser.stop('time');
     this.analyser.stop('fft');
     this.runningAnalyser = false;
 
     this.recorder.stop();
 
+    // Type inference every subclass
     return this;
   }
 
@@ -436,8 +439,10 @@ export abstract class SoundModule implements Connectable {
    * This method is invoked on mixing.
    * @return {SoundModule} Return value is for method chain.
    */
-  public mix(): SoundModule {
+  public mix() {
     this.mixed = true;
+
+    // Type inference every subclass
     return this;
   }
 
@@ -445,8 +450,10 @@ export abstract class SoundModule implements Connectable {
    * This method is invoked on demixing.
    * @return {SoundModule} Return value is for method chain.
    */
-  public demix(): SoundModule {
+  public demix() {
     this.mixed = false;
+
+    // Type inference every subclass
     return this;
   }
 

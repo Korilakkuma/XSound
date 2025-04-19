@@ -2,6 +2,7 @@ import type { PreampParams } from '/src/SoundModule/Effectors/Preamp';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Preamp } from '/src/SoundModule/Effectors/Preamp';
+import { Marshall } from '/src/SoundModule/Effectors/Preamps/Marshall';
 
 describe(Preamp.name, () => {
   const context = new AudioContextMock();
@@ -98,8 +99,8 @@ describe(Preamp.name, () => {
     });
 
     // Setter
-    test('should return instance of `Preamp`', () => {
-      expect(preamp.param(params)).toBeInstanceOf(Preamp);
+    test('should return instance of `Marshall`', () => {
+      expect(preamp.param(params)).toBeInstanceOf(Marshall);
     });
 
     // Getter

@@ -323,16 +323,4 @@ export class Panner extends Effector {
       distanceModel : this.panner.distanceModel
     };
   }
-
-  /** @override */
-  public override activate(): Panner {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Panner {
-    super.deactivate();
-    return this;
-  }
 }

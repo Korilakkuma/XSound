@@ -181,16 +181,4 @@ export class Equalizer extends Effector {
       presence: this.presence.gain.value
     };
   }
-
-  /** @override */
-  public override activate(): Equalizer {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Equalizer {
-    super.deactivate();
-    return this;
-  }
 }

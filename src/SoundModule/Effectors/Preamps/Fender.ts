@@ -660,16 +660,4 @@ export class Fender extends Effector {
       cabinet: this.cabinet.params()
     };
   }
-
-  /** @override */
-  public override activate(): Fender {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Fender {
-    super.deactivate();
-    return this;
-  }
 }

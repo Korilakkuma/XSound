@@ -337,36 +337,6 @@ export class NoiseModule extends SoundModule {
     }
   }
 
-  /** @override */
-  public override on(startTime?: number): NoiseModule {
-    super.on(startTime);
-    return this;
-  }
-
-  /** @override */
-  public override off(stopTime?: number): NoiseModule {
-    super.off(stopTime);
-    return this;
-  }
-
-  /** @override */
-  public override suspend(): NoiseModule {
-    super.suspend();
-    return this;
-  }
-
-  /** @override */
-  public override mix(): NoiseModule {
-    super.mix();
-    return this;
-  }
-
-  /** @override */
-  public override demix(): NoiseModule {
-    super.demix();
-    return this;
-  }
-
   /**
    * This method gets noise module parameters as associative array.
    * @return {NoiseModuleParams}

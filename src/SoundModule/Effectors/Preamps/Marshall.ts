@@ -618,16 +618,4 @@ export class Marshall extends Effector {
       cabinet: this.cabinet.params()
     };
   }
-
-  /** @override */
-  public override activate(): Marshall {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Marshall {
-    super.deactivate();
-    return this;
-  }
 }

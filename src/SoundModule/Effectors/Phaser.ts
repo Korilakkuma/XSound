@@ -291,16 +291,4 @@ export class Phaser extends Effector {
       wet      : this.wet.gain.value
     };
   }
-
-  /** @override */
-  public override activate(): Phaser {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Phaser {
-    super.deactivate();
-    return this;
-  }
 }

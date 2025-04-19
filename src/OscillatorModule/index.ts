@@ -370,36 +370,6 @@ export class OscillatorModule extends SoundModule {
     }
   }
 
-  /** @override */
-  public override on(startTime?: number): OscillatorModule {
-    super.on(startTime);
-    return this;
-  }
-
-  /** @override */
-  public override off(stopTime?: number): OscillatorModule {
-    super.off(stopTime);
-    return this;
-  }
-
-  /** @override */
-  public override suspend(): OscillatorModule {
-    super.suspend();
-    return this;
-  }
-
-  /** @override */
-  public override mix(): OscillatorModule {
-    super.mix();
-    return this;
-  }
-
-  /** @override */
-  public override demix(): OscillatorModule {
-    super.demix();
-    return this;
-  }
-
   /**
    * This method gets oscillator module parameters as associative array.
    * @return {OscillatorModuleParams}

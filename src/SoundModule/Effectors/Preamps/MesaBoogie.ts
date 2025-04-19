@@ -642,16 +642,4 @@ export class MesaBoogie extends Effector {
       cabinet: this.cabinet.params()
     };
   }
-
-  /** @override */
-  public override activate(): MesaBoogie {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): MesaBoogie {
-    super.deactivate();
-    return this;
-  }
 }

@@ -71,12 +71,6 @@ export class TimeOverview extends Visualizer {
     this.onTouchEnd   = this.onTouchEnd.bind(this);
   }
 
-  /** @override */
-  public override setup(element: HTMLCanvasElement | SVGSVGElement): TimeOverview {
-    super.setup(element);
-    return this;
-  }
-
   /**
    * This method gets or sets parameters for visualizing audio wave.
    * This method is overloaded for type interface and type check.
@@ -376,24 +370,6 @@ export class TimeOverview extends Visualizer {
     visualizationNode.addEventListener('touchmove',  { handleEvent: this.onTouchMove  }, false);
     window.addEventListener('touchend',              { handleEvent: this.onTouchEnd   }, false);
 
-    return this;
-  }
-
-  /** @override */
-  public override clear(): TimeOverview {
-    super.clear();
-    return this;
-  }
-
-  /** @override */
-  public override activate(): TimeOverview {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): TimeOverview {
-    super.deactivate();
     return this;
   }
 

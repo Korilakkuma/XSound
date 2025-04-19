@@ -27,12 +27,6 @@ export class Time extends Visualizer {
     super(sampleRate, channel);
   }
 
-  /** @override */
-  public override setup(element: HTMLCanvasElement | SVGSVGElement): Time {
-    super.setup(element);
-    return this;
-  }
-
   /**
    * This method gets or sets parameters for visualizing sound wave.
    * This method is overloaded for type interface and type check.
@@ -91,24 +85,6 @@ export class Time extends Visualizer {
 
     super.param(params);
 
-    return this;
-  }
-
-  /** @override */
-  public override clear(): Time {
-    super.clear();
-    return this;
-  }
-
-  /** @override */
-  public override activate(): Time {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Time {
-    super.deactivate();
     return this;
   }
 

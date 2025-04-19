@@ -241,22 +241,24 @@ export class Reverb extends Effector {
   }
 
   /** @override */
-  public override activate(): Reverb {
+  public override activate() {
     this.isActive = true;
 
     // Update connection
     this.connect();
 
+    // Type inference
     return this;
   }
 
   /** @override */
-  public override deactivate(): Reverb {
+  public override deactivate() {
     this.isActive = false;
 
     // Update connection
     this.connect();
 
+    // Type inference
     return this;
   }
 

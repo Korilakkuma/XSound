@@ -106,7 +106,7 @@ export abstract class Effector implements Connectable, Statable {
    * This method activates effector.
    * @return {Effector} Return value is for method chain.
    */
-  public activate(): Effector {
+  public activate() {
     this.isActive = true;
 
     // Update connection
@@ -115,6 +115,7 @@ export abstract class Effector implements Connectable, Statable {
     // Start LFO
     this.start(0);
 
+    // Type inference every subclass
     return this;
   }
 
@@ -122,7 +123,7 @@ export abstract class Effector implements Connectable, Statable {
    * This method deactivates effector.
    * @return {Effector} Return value is for method chain.
    */
-  public deactivate(): Effector {
+  public deactivate() {
     // Stop LFO
     this.stop(0);
 
@@ -131,6 +132,7 @@ export abstract class Effector implements Connectable, Statable {
     // Update connection
     this.connect();
 
+    // Type inference every subclass
     return this;
   }
 

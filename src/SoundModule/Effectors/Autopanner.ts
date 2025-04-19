@@ -134,16 +134,4 @@ export class Autopanner extends Effector {
       rate : this.rate.value
     };
   }
-
-  /** @override */
-  public override activate(): Autopanner {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Autopanner {
-    super.deactivate();
-    return this;
-  }
 }

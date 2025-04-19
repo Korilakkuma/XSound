@@ -491,36 +491,6 @@ export class StreamModule extends SoundModule {
     }
   }
 
-  /** @override */
-  public override on(startTime?: number): StreamModule {
-    super.on(startTime);
-    return this;
-  }
-
-  /** @override */
-  public override off(stopTime?: number): StreamModule {
-    super.off(stopTime);
-    return this;
-  }
-
-  /** @override */
-  public override suspend(): StreamModule {
-    super.suspend();
-    return this;
-  }
-
-  /** @override */
-  public override mix(): StreamModule {
-    super.mix();
-    return this;
-  }
-
-  /** @override */
-  public override demix(): StreamModule {
-    super.demix();
-    return this;
-  }
-
   /**
    * This method gets stream module parameters as associative array.
    * @return {StreamModuleParams}

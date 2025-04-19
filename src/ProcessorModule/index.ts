@@ -313,19 +313,7 @@ export class ProcessorModule extends SoundModule {
   }
 
   /** @override */
-  public override on(startTime?: number): ProcessorModule {
-    super.on(startTime);
-    return this;
-  }
-
-  /** @override */
-  public override off(stopTime?: number): ProcessorModule {
-    super.off(stopTime);
-    return this;
-  }
-
-  /** @override */
-  public override suspend(): ProcessorModule {
+  public override suspend() {
     super.suspend();
 
     const generator = this.envelopegenerator.getGenerator(0);
@@ -335,18 +323,6 @@ export class ProcessorModule extends SoundModule {
       this.processor.connect(generator);
     }
 
-    return this;
-  }
-
-  /** @override */
-  public override mix(): ProcessorModule {
-    super.mix();
-    return this;
-  }
-
-  /** @override */
-  public override demix(): ProcessorModule {
-    super.demix();
     return this;
   }
 

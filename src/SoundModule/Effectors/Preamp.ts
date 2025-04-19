@@ -95,14 +95,14 @@ export class Preamp extends Effector {
    * This method gets or sets parameters for preamp effector.
    * This method is overloaded for type interface and type check.
    * @param {keyof PreampParams|PreampParams} params This argument is string if getter. Otherwise, setter.
-   * @return {PreampParams[keyof PreampParams]|Preamp} Return value is parameter for preamp effector if getter.
+   * @return {PreampParams[keyof PreampParams]|Marshall|MesaBoogie|Fender} Return value is parameter for preamp effector if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
   public param(params: 'type'): PreampType;
   public param(params: 'preamp'): PreampParams['preamp'];
-  public param(params: PreampParams): Preamp;
-  public param(params: keyof PreampParams | PreampParams): PreampParams[keyof PreampParams] | Preamp {
+  public param(params: PreampParams): Marshall | MesaBoogie | Fender;
+  public param(params: keyof PreampParams | PreampParams): PreampParams[keyof PreampParams] | Marshall | MesaBoogie | Fender {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {
@@ -189,7 +189,7 @@ export class Preamp extends Effector {
       }
     }
 
-    return this;
+    return this.preamp;
   }
 
   /** @override */
@@ -199,17 +199,5 @@ export class Preamp extends Effector {
       type  : this.type,
       preamp: this.preamp.params()
     };
-  }
-
-  /** @override */
-  public override activate(): Preamp {
-    super.activate();
-    return this;
-  }
-
-  /** @override */
-  public override deactivate(): Preamp {
-    super.deactivate();
-    return this;
   }
 }

@@ -162,7 +162,7 @@ export class StreamModule extends SoundModule {
 
       // for recorder
       this.mastervolume.connect(this.recorder.INPUT);
-      this.recorder.OUTPUT.connect(this.context.destination);
+      this.recorder.OUTPUT.connect(this.destination);
     }
 
     this.on(this.context.currentTime);

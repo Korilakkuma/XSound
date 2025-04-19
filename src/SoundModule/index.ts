@@ -332,6 +332,34 @@ export abstract class SoundModule implements Connectable {
   }
 
   /**
+   * This method enables to use multiple output devices.
+   * @param {string} sinkId This argument is string as output device ID.
+   * @param {function} successCallback This argument is invoked on success.
+   * @param {function} errorCallback This argument is invoked on failure.
+   * @return {SoundModule} Return value is for method chain.
+   */
+  public setSinkId(sinkId: string, successCallback?: () => void, errorCallback?: (error: Error) => void) {
+    // @ts-expect-error It is possible that `setSinkId` method is not implemented
+    if (this.context.setSinkId) {
+      // @ts-expect-error It is possible that `setSinkId` method is not implemented
+      this.context.setSinkId(sinkId)
+        .then(() => {
+          if (typeof successCallback === 'function') {
+            successCallback();
+          }
+        })
+        .catch((error: Error) => {
+          if (typeof errorCallback === 'function') {
+            errorCallback(error);
+          }
+        });
+    }
+
+    // Type inference every subclass
+    return this;
+  }
+
+  /**
    * This method installs customized effector.
    * @param {Effector} effector This argument is subclass that extends `Effector` class.
    * @return {Effector} Return value is instance of customized effector (that extends `Effector` class).

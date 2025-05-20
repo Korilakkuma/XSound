@@ -375,6 +375,54 @@ describe(StreamModule.name, () => {
     });
   });
 
+  describe(streamModule.setInputDeviceId.name, () => {
+    const deviceId = 'input';
+
+    afterEach(() => {
+      streamModule.setConstraints({
+        audio: true,
+        video: true
+      });
+    });
+
+    test('should set `deviceId` property to `MediaStreamConstraints` (if audio constraint is `boolean`)', () => {
+      streamModule.setConstraints({
+        audio: true,
+        video: true
+      });
+
+      streamModule.setInputDeviceId(deviceId);
+
+      expect(streamModule.getConstraints()).toStrictEqual({
+        audio: {
+          deviceId
+        },
+        video: true
+      });
+    });
+
+    test('should set `deviceId` property to `MediaStreamConstraints` (if audio constraint is `MediaTrackConstraints`)', () => {
+      streamModule.setConstraints({
+        audio: {
+          autoGainControl : true,
+          echoCancellation: true
+        },
+        video: true
+      });
+
+      streamModule.setInputDeviceId(deviceId);
+
+      expect(streamModule.getConstraints()).toStrictEqual({
+        audio: {
+          autoGainControl : true,
+          echoCancellation: true,
+          deviceId
+        },
+        video: true
+      });
+    });
+  });
+
   describe(streamModule.module.name, () => {
     test('should return instance of `Module`', () => {
       expect(streamModule.module('analyser')).toBeInstanceOf(Analyser);

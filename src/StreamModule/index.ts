@@ -371,6 +371,34 @@ export class StreamModule extends SoundModule {
   }
 
   /**
+   * This method enables to designate input device.
+   * @param {string} deviceId This argument is string as input device ID.
+   * @return {StreamModule} Return value is for method chain.
+   */
+  public setInputDeviceId(deviceId: string): StreamModule {
+    const audioConstraints = this.constraints.audio ?? {};
+
+    if (typeof audioConstraints === 'boolean') {
+      this.constraints = {
+        ...this.constraints,
+        audio: {
+          deviceId
+        }
+      };
+    } else {
+      this.constraints = {
+        ...this.constraints,
+        audio: {
+          ...audioConstraints,
+          deviceId
+        }
+      };
+    }
+
+    return this;
+  }
+
+  /**
    * This method gets instance of `Module` (Analyser, Recorder, Effector ... etc).
    * @param {ModuleName} moduleName This argument selects module.
    * @return {Module}

@@ -322,10 +322,23 @@ export abstract class SoundModule implements Connectable {
 
   /**
    * This method switches destination over to `MediaStreamAudioDestinationNode`.
+   * @property {string} sinkId This argument is string as output device ID.
+   * @property {function} successCallback This argument is invoked on success.
+   * @property {function} errorCallback This argument is invoked on failure.
    * @return {SoundModule} Return value is for method chain.
    */
-  public streamDestination() {
+  public streamDestination(params?: {
+    sinkId: string;
+    successCallback?: () => void;
+    errorCallback?: (error: Error) => void;
+  }) {
     this.destination = this.context.createMediaStreamDestination();
+
+    if (params?.sinkId) {
+      const { sinkId, successCallback, errorCallback } = params;
+
+      this.setSinkId(sinkId, successCallback, errorCallback);
+    }
 
     // Type inference every subclass
     return this;

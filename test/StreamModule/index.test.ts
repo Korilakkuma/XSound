@@ -44,8 +44,7 @@ describe(StreamModule.name, () => {
 
   describe(streamModule.setup.name, () => {
     test('should return merged `MediaStreamConstraints`', () => {
-      // eslint-disable-next-line dot-notation
-      expect(streamModule['constraints']).toStrictEqual({
+      expect(streamModule.getConstraints()).toStrictEqual({
         audio: true,
         video: true
       });
@@ -191,6 +190,29 @@ describe(StreamModule.name, () => {
         })
         .catch(() => {
         });
+    });
+  });
+
+  describe(streamModule.setConstraints.name, () => {
+    test('should set designated `MediaStreamConstraints`', () => {
+      streamModule.setConstraints({
+        audio: {
+          autoGainControl : true,
+          echoCancellation: true
+        }
+      });
+
+      expect(streamModule.getConstraints()).toStrictEqual({
+        audio: {
+          autoGainControl : true,
+          echoCancellation: true
+        }
+      });
+
+      streamModule.setConstraints({
+        audio: true,
+        video: true
+      });
     });
   });
 

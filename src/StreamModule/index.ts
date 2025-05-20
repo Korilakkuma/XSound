@@ -274,6 +274,24 @@ export class StreamModule extends SoundModule {
   }
 
   /**
+   * This method gets current `MediaStreamConstraints`.
+   * @return {MediaStreamConstraints}
+   */
+  public getConstraints(): MediaStreamConstraints {
+    return this.constraints;
+  }
+
+  /**
+   * This method changes `MediaStreamConstraints`.
+   * @param {MediaStreamConstraints} constraints This argument is object based on `MediaStreamConstraints` dictionary.
+   * @return {StreamModule} Return value is for method chain.
+   */
+  public setConstraints(constraints: MediaStreamConstraints): StreamModule {
+    this.constraints = constraints;
+    return this;
+  }
+
+  /**
    * This method stops microphone and camera by stopping instances of `MediaStreamTrack`.
    * @return {StreamModule} Return value is for method chain.
    */

@@ -83,7 +83,6 @@ export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
 
     for (let channelNumber = 0; channelNumber < numberOfChannels; channelNumber++) {
       this.inputBuffers[0][channelNumber] = new Float32Array(this.blockSize + OverlapAddProcessor.RENDER_QUANTUM_SIZE);
-      this.inputBuffers[0][channelNumber].fill(0);
     }
 
     this.inputBuffersHead   = [[]];
@@ -100,14 +99,12 @@ export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
 
     for (let channelNumber = 0; channelNumber < numberOfChannels; channelNumber++) {
       this.outputBuffers[0][channelNumber] = new Float32Array(this.blockSize);
-      this.outputBuffers[0][channelNumber].fill(0);
     }
 
     this.outputBuffersToRetrieve = [[]];
 
     for (let channelNumber = 0; channelNumber < numberOfChannels; channelNumber++) {
       this.outputBuffersToRetrieve[0][channelNumber] = new Float32Array(this.blockSize);
-      this.outputBuffersToRetrieve[0][channelNumber].fill(0);
     }
   }
 

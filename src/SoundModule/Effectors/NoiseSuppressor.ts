@@ -23,7 +23,11 @@ export class NoiseSuppressor extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.processor = new AudioWorkletNode(this.context, NoiseSuppressorProcessor.name);
+    this.processor = new AudioWorkletNode(this.context, NoiseSuppressorProcessor.name, {
+      processorOptions: {
+        blockSize: 1024
+      }
+    });
 
     fetch(wasm)
       .then(async (response) => {

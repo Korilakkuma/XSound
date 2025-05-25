@@ -25,11 +25,7 @@ export class PitchShifter extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.processor = new AudioWorkletNode(this.context, PitchShifterProcessor.name, {
-      processorOptions: {
-        blockSize: 2048
-      }
-    });
+    this.processor = new AudioWorkletNode(this.context, PitchShifterProcessor.name);
 
     fetch(wasm)
       .then(async (response) => {

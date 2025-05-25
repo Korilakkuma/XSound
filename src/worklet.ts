@@ -23,7 +23,7 @@ export abstract class AudioWorkletProcessor {
 export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
   private static readonly RENDER_QUANTUM_SIZE = 128;
 
-  protected blockSize = 1024;
+  protected blockSize = 2048;
   protected hopSize = 128;
   protected numberOfOverlaps: number;
 
@@ -38,7 +38,7 @@ export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
     super(options);
 
     if (options.processorOptions) {
-      this.blockSize = options.processorOptions.blockSize ?? 1024;
+      this.blockSize = options.processorOptions.blockSize ?? 2048;
     }
 
     this.numberOfOverlaps = this.blockSize / this.hopSize;

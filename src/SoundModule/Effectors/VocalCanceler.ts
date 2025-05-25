@@ -34,11 +34,7 @@ export class VocalCanceler extends Effector {
 
     this.depth.gain.value = 0;
 
-    this.processor = new AudioWorkletNode(this.context, VocalCancelerProcessor.name, {
-      processorOptions: {
-        blockSize: 2048
-      }
-    });
+    this.processor = new AudioWorkletNode(this.context, VocalCancelerProcessor.name);
 
     fetch(wasm)
       .then(async (response) => {

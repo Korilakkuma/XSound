@@ -82,15 +82,15 @@ export class NoiseSuppressorProcessor extends OverlapAddProcessor {
     const linearMemory = wasm.memory.buffer;
 
     for (let channelNumber = 0, numberOfChannels = input.length; channelNumber < numberOfChannels; channelNumber++) {
-      const offsetInput = wasm.alloc_memory_inputs(this.blockSize);
+      const offsetInput = wasm.alloc_memory_inputs(this.frameSize);
 
-      const inputLinearMemory = new Float32Array(linearMemory, offsetInput, this.blockSize);
+      const inputLinearMemory = new Float32Array(linearMemory, offsetInput, this.frameSize);
 
       inputLinearMemory.set(input[channelNumber]);
 
-      const offsetOutput = wasm.noisesuppressor(this.threshold, this.blockSize);
+      const offsetOutput = wasm.noisesuppressor(this.threshold, this.frameSize);
 
-      output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, this.blockSize));
+      output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, this.frameSize));
     }
 
     return true;

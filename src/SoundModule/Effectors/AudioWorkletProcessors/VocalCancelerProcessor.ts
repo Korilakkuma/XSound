@@ -129,34 +129,34 @@ export class VocalCancelerProcessor extends OverlapAddProcessor {
 
     const linearMemory = wasm.memory.buffer;
 
-    const offsetInputL = wasm.alloc_memory_inputLs(this.blockSize);
-    const offsetInputR = wasm.alloc_memory_inputRs(this.blockSize);
+    const offsetInputL = wasm.alloc_memory_inputLs(this.frameSize);
+    const offsetInputR = wasm.alloc_memory_inputRs(this.frameSize);
 
-    const inputLinearMemoryL = new Float32Array(linearMemory, offsetInputL, this.blockSize);
-    const inputLinearMemoryR = new Float32Array(linearMemory, offsetInputR, this.blockSize);
+    const inputLinearMemoryL = new Float32Array(linearMemory, offsetInputL, this.frameSize);
+    const inputLinearMemoryR = new Float32Array(linearMemory, offsetInputR, this.frameSize);
 
     inputLinearMemoryL.set(input[0]);
     inputLinearMemoryR.set(input[1]);
 
     switch (this.algorithm) {
       case 'time': {
-        const offsetOutputL = wasm.vocalcancelerL(this.depth, this.blockSize);
-        const offsetOutputR = wasm.vocalcancelerR(this.depth, this.blockSize);
+        const offsetOutputL = wasm.vocalcancelerL(this.depth, this.frameSize);
+        const offsetOutputR = wasm.vocalcancelerR(this.depth, this.frameSize);
 
-        output[0].set(new Float32Array(linearMemory, offsetOutputL, this.blockSize));
-        output[1].set(new Float32Array(linearMemory, offsetOutputR, this.blockSize));
+        output[0].set(new Float32Array(linearMemory, offsetOutputL, this.frameSize));
+        output[1].set(new Float32Array(linearMemory, offsetOutputR, this.frameSize));
 
         break;
       }
 
       case 'spectrum': {
-        const offsetOutputL = wasm.vocalcanceler_on_spectrum(sampleRate, this.minFrequency, this.maxFrequency, this.threshold, this.blockSize);
-        const offsetOutputR = offsetOutputL + (this.blockSize * Float32Array.BYTES_PER_ELEMENT);
+        const offsetOutputL = wasm.vocalcanceler_on_spectrum(sampleRate, this.minFrequency, this.maxFrequency, this.threshold, this.frameSize);
+        const offsetOutputR = offsetOutputL + (this.frameSize * Float32Array.BYTES_PER_ELEMENT);
 
-        const canceledInputLs = new Float32Array(linearMemory, offsetOutputL, this.blockSize);
-        const canceledInputRs = new Float32Array(linearMemory, offsetOutputR, this.blockSize);
+        const canceledInputLs = new Float32Array(linearMemory, offsetOutputL, this.frameSize);
+        const canceledInputRs = new Float32Array(linearMemory, offsetOutputR, this.frameSize);
 
-        for (let n = 0; n < this.blockSize; n++) {
+        for (let n = 0; n < this.frameSize; n++) {
           output[0][n] = ((1 - this.depth) * input[0][n]) + (this.depth * canceledInputLs[n]);
           output[1][n] = ((1 - this.depth) * input[1][n]) + (this.depth * canceledInputRs[n]);
         }

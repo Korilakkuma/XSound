@@ -89,15 +89,15 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
     const linearMemory = wasm.memory.buffer;
 
     for (let channelNumber = 0; channelNumber < input.length; channelNumber++) {
-      const offsetInput = wasm.alloc_memory_inputs(this.blockSize);
+      const offsetInput = wasm.alloc_memory_inputs(this.frameSize);
 
-      const inputLinearMemory = new Float32Array(linearMemory, offsetInput, this.blockSize);
+      const inputLinearMemory = new Float32Array(linearMemory, offsetInput, this.frameSize);
 
       inputLinearMemory.set(input[channelNumber]);
 
-      const offsetOutput = wasm.pitchshifter(this.pitch, this.speed, this.blockSize, this.timeCursor);
+      const offsetOutput = wasm.pitchshifter(this.pitch, this.speed, this.frameSize, this.timeCursor);
 
-      output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, this.blockSize));
+      output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, this.frameSize));
     }
 
     this.timeCursor += this.hopSize;

@@ -25,7 +25,7 @@ export class NoiseSuppressor extends Effector {
 
     this.processor = new AudioWorkletNode(this.context, NoiseSuppressorProcessor.name, {
       processorOptions: {
-        blockSize: 1024
+        frameSize: 1024
       }
     });
 

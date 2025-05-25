@@ -23,7 +23,7 @@ export abstract class AudioWorkletProcessor {
 export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
   private static readonly RENDER_QUANTUM_SIZE = 128;
 
-  protected blockSize = 2048;
+  protected frameSize = 2048;
   protected hopSize = 128;
   protected numberOfOverlaps: number;
 
@@ -38,10 +38,10 @@ export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
     super(options);
 
     if (options.processorOptions) {
-      this.blockSize = options.processorOptions.blockSize ?? 2048;
+      this.frameSize = options.processorOptions.frameSize ?? 2048;
     }
 
-    this.numberOfOverlaps = this.blockSize / this.hopSize;
+    this.numberOfOverlaps = this.frameSize / this.hopSize;
 
     this.allocateInputChannels(1);
     this.allocateOutputChannels(1);
@@ -82,15 +82,15 @@ export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
     this.inputBuffers = [[]];
 
     for (let channelNumber = 0; channelNumber < numberOfChannels; channelNumber++) {
-      this.inputBuffers[0][channelNumber] = new Float32Array(this.blockSize + OverlapAddProcessor.RENDER_QUANTUM_SIZE);
+      this.inputBuffers[0][channelNumber] = new Float32Array(this.frameSize + OverlapAddProcessor.RENDER_QUANTUM_SIZE);
     }
 
     this.inputBuffersHead   = [[]];
     this.inputBuffersToSend = [[]];
 
     for (let channelNumber = 0; channelNumber < numberOfChannels; channelNumber++) {
-      this.inputBuffersHead[0][channelNumber]   = this.inputBuffers[0][channelNumber].subarray(0, this.blockSize);
-      this.inputBuffersToSend[0][channelNumber] = new Float32Array(this.blockSize);
+      this.inputBuffersHead[0][channelNumber]   = this.inputBuffers[0][channelNumber].subarray(0, this.frameSize);
+      this.inputBuffersToSend[0][channelNumber] = new Float32Array(this.frameSize);
     }
   }
 
@@ -98,27 +98,27 @@ export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
     this.outputBuffers = [[]];
 
     for (let channelNumber = 0; channelNumber < numberOfChannels; channelNumber++) {
-      this.outputBuffers[0][channelNumber] = new Float32Array(this.blockSize);
+      this.outputBuffers[0][channelNumber] = new Float32Array(this.frameSize);
     }
 
     this.outputBuffersToRetrieve = [[]];
 
     for (let channelNumber = 0; channelNumber < numberOfChannels; channelNumber++) {
-      this.outputBuffersToRetrieve[0][channelNumber] = new Float32Array(this.blockSize);
+      this.outputBuffersToRetrieve[0][channelNumber] = new Float32Array(this.frameSize);
     }
   }
 
   private readInputs(inputs: Inputs): void {
     if (inputs[0].length && (inputs[0][0].length === 0)) {
       for (let channelNumber = 0; channelNumber < this.inputBuffers[0].length; channelNumber++) {
-        this.inputBuffers[0][channelNumber].fill(0, this.blockSize);
+        this.inputBuffers[0][channelNumber].fill(0, this.frameSize);
       }
 
       return;
     }
 
     for (let channelNumber = 0; channelNumber < this.inputBuffers[0].length; channelNumber++) {
-      this.inputBuffers[0][channelNumber].set(inputs[0][channelNumber], this.blockSize);
+      this.inputBuffers[0][channelNumber].set(inputs[0][channelNumber], this.frameSize);
     }
   }
 
@@ -137,7 +137,7 @@ export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
   private shiftOutputBuffers(): void {
     for (let channelNumber = 0; channelNumber < this.outputBuffers[0].length; channelNumber++) {
       this.outputBuffers[0][channelNumber].copyWithin(0, OverlapAddProcessor.RENDER_QUANTUM_SIZE);
-      this.outputBuffers[0][channelNumber].subarray(this.blockSize - OverlapAddProcessor.RENDER_QUANTUM_SIZE).fill(0);
+      this.outputBuffers[0][channelNumber].subarray(this.frameSize - OverlapAddProcessor.RENDER_QUANTUM_SIZE).fill(0);
     }
   }
 
@@ -149,7 +149,7 @@ export abstract class OverlapAddProcessor extends AudioWorkletProcessor {
 
   private handleOutputBuffersToRetrieve(): void {
     for (let channelNumber = 0; channelNumber < this.outputBuffers[0].length; channelNumber++) {
-      for (let n = 0; n < this.blockSize; n++) {
+      for (let n = 0; n < this.frameSize; n++) {
         this.outputBuffers[0][channelNumber][n] += this.outputBuffersToRetrieve[0][channelNumber][n] / this.numberOfOverlaps;
       }
     }

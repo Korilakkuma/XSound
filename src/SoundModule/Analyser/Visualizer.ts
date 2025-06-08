@@ -247,14 +247,27 @@ export abstract class Visualizer implements Statable {
   }
 
   /**
-   * This method creates visualized graphics as string (Data URL or SVG).
-   * @return {string}
+   * This method creates visualized graphics as string (Data URL or `Blob` or SVG).
+   * @property {BlobCallback} callback This argument is callback function with resulting instance of `Blob`.
+   * @property {string} type This argument is string that indicates image format. The default value is `image/png`.
+   * @property {number} quality This argument is number between `0` and `1` that indicates image quality.
+   * @return {string|void}
    */
-  public create(): string {
+  public create(params?: {
+    callback: BlobCallback,
+    type?: string,
+    quality?: number,
+  }): string | void {
     switch (this.graphics) {
       case 'canvas': {
         if (this.canvas === null) {
           return '';
+        }
+
+        if (params) {
+          const { callback, type, quality } = params;
+
+          return this.canvas.toBlob(callback, type, quality);
         }
 
         return this.canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');

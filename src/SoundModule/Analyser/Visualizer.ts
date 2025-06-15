@@ -248,12 +248,13 @@ export abstract class Visualizer implements Statable {
 
   /**
    * This method creates visualized graphics as string (Data URL or `Blob` or SVG).
+   * @param {string} mimeType This argument is string that indicates image format. The default value is `image/octet-stream`.
    * @property {BlobCallback} callback This argument is callback function with resulting instance of `Blob`.
    * @property {string} type This argument is string that indicates image format. The default value is `image/png`.
    * @property {number} quality This argument is number between `0` and `1` that indicates image quality.
    * @return {string|void}
    */
-  public create(params?: {
+  public create(mimeType?: string, params?: {
     callback: BlobCallback,
     type?: string,
     quality?: number,
@@ -262,6 +263,10 @@ export abstract class Visualizer implements Statable {
       case 'canvas': {
         if (this.canvas === null) {
           return '';
+        }
+
+        if ((typeof mimeType === 'string') && /^image\/.+$/.test(mimeType)) {
+          return this.canvas.toDataURL(mimeType);
         }
 
         if (params) {

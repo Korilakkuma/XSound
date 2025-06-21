@@ -22,6 +22,9 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
   private pitch = 1;
   private speed = 1;
 
+  private dry = 0;
+  private wet = 1;
+
   constructor(options: AudioWorkletNodeOptions) {
     super(options);
 
@@ -56,6 +59,22 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
             case 'speed': {
               if (typeof value === 'number') {
                 this.speed = value;
+              }
+
+              break;
+            }
+
+            case 'dry': {
+              if (typeof value === 'number') {
+                this.dry = value;
+              }
+
+              break;
+            }
+
+            case 'wet': {
+              if (typeof value === 'number') {
+                this.wet = value;
               }
 
               break;
@@ -97,7 +116,15 @@ export class PitchShifterProcessor extends OverlapAddProcessor {
 
       const offsetOutput = wasm.pitchshifter(this.pitch, this.speed, this.frameSize, this.timeCursor);
 
-      output[channelNumber].set(new Float32Array(linearMemory, offsetOutput, this.frameSize));
+      const shiftedOutput = new Float32Array(linearMemory, offsetOutput, this.frameSize);
+
+      if (this.dry === 0) {
+        output[channelNumber].set(shiftedOutput);
+      } else {
+        for (let n = 0; n < this.frameSize; n++) {
+          output[channelNumber][n] = (this.dry * input[channelNumber][n]) + (this.wet * shiftedOutput[n]);
+        }
+      }
     }
 
     this.timeCursor += this.hopSize;

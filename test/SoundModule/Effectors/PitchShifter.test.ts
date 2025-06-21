@@ -62,12 +62,16 @@ describe(PitchShifter.name, () => {
   describe(pitchshifter.param.name, () => {
     const defaultParams: PitchShifterParams = {
       pitch: 1,
-      speed: 1
+      speed: 1,
+      dry  : 0,
+      wet  : 1,
     };
 
     const params: PitchShifterParams = {
       pitch: 1.5,
-      speed: 0.7
+      speed: 0.7,
+      dry  : 0.8,
+      wet  : 0.2,
     };
 
     beforeAll(() => {
@@ -91,6 +95,14 @@ describe(PitchShifter.name, () => {
     test('should return `speed`', () => {
       expect(pitchshifter.param('speed')).toBeCloseTo(0.7, 1);
     });
+
+    test('should return `dry`', () => {
+      expect(pitchshifter.param('dry')).toBeCloseTo(0.8, 1);
+    });
+
+    test('should return `wet`', () => {
+      expect(pitchshifter.param('wet')).toBeCloseTo(0.2, 1);
+    });
   });
 
   describe(pitchshifter.params.name, () => {
@@ -98,7 +110,9 @@ describe(PitchShifter.name, () => {
       expect(pitchshifter.params()).toStrictEqual({
         state: false,
         pitch: 1,
-        speed: 1
+        speed: 1,
+        dry  : 0,
+        wet  : 1
       });
     });
   });

@@ -7,7 +7,9 @@ import wasm from './AudioWorkletProcessors/WebAssemblyModules/pitchshifter.wasm'
 export type PitchShifterParams = {
   state?: boolean,
   pitch?: number,
-  speed?: number
+  speed?: number,
+  dry?: number,
+  wet?: number
 };
 
 /**
@@ -18,6 +20,9 @@ export class PitchShifter extends Effector {
 
   private pitch = 1;
   private speed = 1;
+
+  private dry = 0;
+  private wet = 1;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -75,6 +80,8 @@ export class PitchShifter extends Effector {
   public param(params: 'state'): boolean;
   public param(params: 'pitch'): number;
   public param(params: 'speed'): number;
+  public param(params: 'dry'): number;
+  public param(params: 'wet'): number;
   public param(params: PitchShifterParams): PitchShifter;
   public param(params: keyof PitchShifterParams | PitchShifterParams): PitchShifterParams[keyof PitchShifterParams] | PitchShifter {
     if (typeof params === 'string') {
@@ -89,6 +96,14 @@ export class PitchShifter extends Effector {
 
         case 'speed': {
           return this.speed;
+        }
+
+        case 'dry': {
+          return this.dry;
+        }
+
+        case 'wet': {
+          return this.wet;
         }
       }
     }
@@ -134,6 +149,34 @@ export class PitchShifter extends Effector {
 
           break;
         }
+
+        case 'dry': {
+          if (typeof value === 'number') {
+            if ((value >= 0) && (value <= 1)) {
+              this.dry = value;
+
+              const message: PitchShifterParams = { dry: value };
+
+              this.processor.port.postMessage(message);
+            }
+          }
+
+          break;
+        }
+
+        case 'wet': {
+          if (typeof value === 'number') {
+            if ((value >= 0) && (value <= 1)) {
+              this.wet = value;
+
+              const message: PitchShifterParams = { wet: value };
+
+              this.processor.port.postMessage(message);
+            }
+          }
+
+          break;
+        }
       }
     }
 
@@ -145,7 +188,9 @@ export class PitchShifter extends Effector {
     return {
       state: this.isActive,
       pitch: this.pitch,
-      speed: this.speed
+      speed: this.speed,
+      dry  : this.dry,
+      wet  : this.wet
     };
   }
 }

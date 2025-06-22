@@ -10,10 +10,10 @@ export class Tree {
 
   private _operator: Token;
 
-  /* eslint-disable no-use-before-define */
+   
   private _left: Tree | null;
   private _right: Tree | null;
-  /* eslint-enable no-use-before-define */
+   
 
   /**
    * @param {string} id This argument is string that identifies syntax tree node.

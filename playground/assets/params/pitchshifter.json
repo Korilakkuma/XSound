@@ -1,4 +1,6 @@
 {
   "state": true,
-  "pitch": 1
+  "pitch": 1,
+  "dry"  : 0,
+  "wet"  : 1
 }

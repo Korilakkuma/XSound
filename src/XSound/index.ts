@@ -338,6 +338,15 @@ export function decode(
 }
 
 /**
+ * This class (static) method queries browser permission.
+ * @param {PermissionName} name This argument is string for `PermissionDescriptor`. For example, this argument is `'microphone'`.
+ * @return {Promise<PermissionStatus>} Return value is instance of `Promise` that has instance of `PermissionStatus`.
+ */
+export function permission(name: PermissionName): Promise<PermissionStatus> {
+  return navigator.permissions.query({ name });
+};
+
+/**
  * This class (static) method shows designated `Element` in full screen.
  * @param {Element} element This argument is instance of `Element` that is target of full screen.
  * @return {Promise} Return value is instance of `Promise`.

@@ -142,6 +142,7 @@ import {
   ajax,
   convertTime,
   decode,
+  permission,
   requestFullscreen,
   exitFullscreen,
   read,
@@ -294,6 +295,7 @@ XSound.ifft                = ifft;
 XSound.ajax                = ajax;
 XSound.convertTime         = convertTime;
 XSound.decode              = decode;
+XSound.permission          = permission;
 XSound.requestFullscreen   = requestFullscreen;
 XSound.exitFullscreen      = exitFullscreen;
 XSound.read                = read;

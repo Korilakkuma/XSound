@@ -22,6 +22,7 @@ import type {
   Shape,
   Font,
   GraphicsStyles,
+  SpectrumScale,
   TimeOverview,
   TimeOverviewParams,
   MouseEventTypes,
@@ -32,7 +33,8 @@ import type {
   TimeParams,
   FFT,
   FFTParams,
-  SpectrumScale
+  Spectrogram,
+  SpectrogramParams
 } from './SoundModule/Analyser';
 import type { RecorderParams, RecordType, QuantizationBit, WaveExportType, Frame, Channel, RecorderProcessorMessageEventData } from './SoundModule/Recorder';
 import type { AutopannerParams } from './SoundModule/Effectors/Autopanner';
@@ -593,6 +595,7 @@ export type {
   Shape,
   Font,
   GraphicsStyles,
+  SpectrumScale,
   TimeOverview,
   TimeOverviewParams,
   MouseEventTypes,
@@ -603,7 +606,8 @@ export type {
   TimeParams,
   FFT,
   FFTParams,
-  SpectrumScale,
+  Spectrogram,
+  SpectrogramParams,
   Recorder,
   RecorderParams,
   RecordType,

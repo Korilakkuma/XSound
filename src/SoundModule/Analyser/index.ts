@@ -1,15 +1,17 @@
 import type { Connectable } from '../../interfaces';
 import type { ChannelNumber } from '../../types';
-import type { Visualizer, VisualizerParams, Color, GraphicsApi, Gradient, Gradients, Shape, Font, GraphicsStyles } from './Visualizer';
+import type { Visualizer, VisualizerParams, Color, GraphicsApi, Gradient, Gradients, Shape, Font, GraphicsStyles, SpectrumScale } from './Visualizer';
 import type { TimeOverviewParams, CurrentTimeStyles, MouseEventTypes, DragMode, DragCallbackFunction } from './TimeOverview';
 import type { TimeParams } from './Time';
-import type { FFTParams, SpectrumScale } from './FFT';
+import type { FFTParams } from './FFT';
+import type { SpectrogramParams } from './Spectrogram';
 
 import { TimeOverview } from './TimeOverview';
 import { Time } from './Time';
 import { FFT } from './FFT';
+import { Spectrogram } from './Spectrogram';
 
-export type Domain   = 'timeoverview' | 'time' | 'fft';
+export type Domain   = 'timeoverview' | 'time' | 'fft' | 'spectrogram';
 export type DataType = 'uint' | 'float';  // unsigned int 8 bit (`Uint8Array`) or float 32 bit (`Float32Array`)
 export type FFTSize  = 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384 | 32768;
 
@@ -23,6 +25,7 @@ export type {
   Shape,
   Font,
   GraphicsStyles,
+  SpectrumScale,
   TimeOverview,
   TimeOverviewParams,
   CurrentTimeStyles,
@@ -33,7 +36,8 @@ export type {
   TimeParams,
   FFT,
   FFTParams,
-  SpectrumScale
+  Spectrogram,
+  SpectrogramParams
 };
 
 export type AnalyserParams = {
@@ -55,11 +59,15 @@ export class Analyser implements Connectable {
   private timeOverviewR: TimeOverview;
   private time: Time;
   private fft: FFT;
+  private spectrogramL: Spectrogram;
+  private spectrogramR: Spectrogram;
 
   private timeDomainAnimationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
   private timeDomainTimerId: number | null = null;
   private frequencyDomainAnimationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
   private frequencyDomainTimerId: number | null = null;
+  private spectrogramAnimationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
+  private spectrogramTimerId: number | null = null;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -75,6 +83,8 @@ export class Analyser implements Connectable {
     this.timeOverviewR = new TimeOverview(context.sampleRate, 1);
     this.time          = new Time(context.sampleRate, 0);
     this.fft           = new FFT(context.sampleRate, 0);
+    this.spectrogramL  = new Spectrogram(context.sampleRate, 0);
+    this.spectrogramR  = new Spectrogram(context.sampleRate, 1);
 
     // Set default value
     this.analyser.fftSize               = 2048;
@@ -201,6 +211,49 @@ export class Analyser implements Connectable {
 
         break;
       }
+
+      case 'spectrogram': {
+        const interval = this.spectrogramL.param('interval');
+
+        const data = new Uint8Array(this.analyser.frequencyBinCount);
+
+        this.analyser.getByteFrequencyData(data);
+        this.spectrogramL.start(data);
+
+        switch (channel) {
+          case 0: {
+            const data = new Uint8Array(this.analyser.frequencyBinCount);
+
+            this.analyser.getByteFrequencyData(data);
+            this.spectrogramL.start(data);
+
+            break;
+          }
+
+          case 1: {
+            const data = new Uint8Array(this.analyser.frequencyBinCount);
+
+            this.analyser.getByteFrequencyData(data);
+            this.spectrogramR.start(data);
+
+            break;
+          }
+        }
+
+        this.stop(domain);
+
+        if (interval < 0) {
+          this.spectrogramAnimationId = window.requestAnimationFrame(() => {
+            this.start(domain, channel);
+          });
+        } else {
+          this.spectrogramTimerId = window.setTimeout(() => {
+            this.start(domain, channel);
+          }, interval);
+        }
+
+        break;
+      }
     }
 
     return this;
@@ -208,7 +261,7 @@ export class Analyser implements Connectable {
 
   /**
    * This method stops visualizer.
-   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft'.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', `spectrogram`.
    * @return {Analyser} Return value is for method chain.
    */
   public stop(domain: Domain): Analyser {
@@ -243,6 +296,24 @@ export class Analyser implements Connectable {
             window.clearTimeout(this.frequencyDomainTimerId);
 
             this.frequencyDomainTimerId = null;
+          }
+        }
+
+        break;
+      }
+
+      case 'spectrogram': {
+        const interval = this.spectrogramL.param('interval');
+
+        if (typeof interval === 'number') {
+          if ((interval < 0) && this.spectrogramAnimationId) {
+            window.cancelAnimationFrame(this.spectrogramAnimationId);
+
+            this.spectrogramAnimationId = null;
+          } else if (this.spectrogramTimerId) {
+            window.clearTimeout(this.spectrogramTimerId);
+
+            this.spectrogramTimerId = null;
           }
         }
 
@@ -321,14 +392,15 @@ export class Analyser implements Connectable {
   /**
    * This method selects domain for visualization.
    * This method is overloaded for type interface and type check.
-   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft'.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', `spectrogram`.
    * @param {ChannelNumber} channel This argument is channel number (Left: 0, Right: 1 ...).
    * @return {TimeOverview|Time|FFT|Analyser} Return value is instance of selected `Visualizer` class.
    */
   public domain(domain: 'timeoverview', channel?: ChannelNumber): TimeOverview;
   public domain(domain: 'time', channel?: ChannelNumber): Time;
   public domain(domain: 'fft', channel?: ChannelNumber): FFT;
-  public domain(domain: Domain, channel?: ChannelNumber): TimeOverview | Time | FFT | Analyser {
+  public domain(domain: 'spectrogram', channel?: ChannelNumber): Spectrogram;
+  public domain(domain: Domain, channel?: ChannelNumber): TimeOverview | Time | FFT | Spectrogram | Analyser {
     switch (domain) {
       case 'timeoverview': {
         switch (channel) {
@@ -350,6 +422,20 @@ export class Analyser implements Connectable {
 
       case 'fft' : {
         return this.fft;
+      }
+
+      case 'spectrogram': {
+        switch (channel) {
+          case 0: {
+            return this.spectrogramL;
+          }
+
+          case 1: {
+            return this.spectrogramR;
+          }
+        }
+
+        return this;
       }
     }
 

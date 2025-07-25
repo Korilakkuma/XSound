@@ -1,10 +1,8 @@
 import type { ChannelNumber } from '../../types';
 import type { DataType } from '../Analyser';
-import type { VisualizerParams, GraphicsStyles } from './Visualizer';
+import type { VisualizerParams, GraphicsStyles, SpectrumScale } from './Visualizer';
 
 import { Visualizer } from './Visualizer';
-
-export type SpectrumScale = 'linear' | 'logarithmic';
 
 export type FFTParams = VisualizerParams & {
   type?: DataType,

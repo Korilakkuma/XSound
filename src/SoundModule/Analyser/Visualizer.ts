@@ -37,6 +37,8 @@ export type GraphicsStyles = {
   left?: number
 };
 
+export type SpectrumScale = 'linear' | 'logarithmic';
+
 export type VisualizerParams = {
   interval?: number,
   styles?: GraphicsStyles

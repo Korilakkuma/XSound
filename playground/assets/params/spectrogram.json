@@ -1,0 +1,17 @@
+{
+  "styles": {
+    "grid": "rgba(255, 0, 0, 1.0)",
+    "text": "rgba(255, 255, 255, 1.0)",
+    "font": {
+      "family": "Arial",
+      "size": "13px",
+      "style": "normal",
+      "weight": "normal"
+    },
+    "top": 15,
+    "right": 30,
+    "bottom": 15,
+    "left": 30
+  },
+  "size": 256
+}

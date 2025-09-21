@@ -186,22 +186,25 @@ export class Spectrogram extends Visualizer {
 
       switch (this.scale) {
         case 'linear': {
-          // TODO:
-          /*
           const length = Math.min(data.length, this.renderSize);
+
+          const h = innerHeight / length;
 
           for (let k = 0; k < length; k++) {
             const f = k * frequencyResolution;
             const x = left;
             const y = (top + innerHeight) - Math.trunc(f * (innerHeight / length));
 
+            if (((y - h) < top) || (y > (top + innerHeight))) {
+              continue;
+            }
+
             if (f >= 1000) {
               context.fillText(`${Math.trunc(f / 1000)} kHz`, x, y);
             } else {
-              context.fillText(`${f} Hz`, x, y);
+              context.fillText(`${Math.trunc(f)} Hz`, x, y);
             }
           }
-          */
 
           break;
         }
@@ -228,15 +231,13 @@ export class Spectrogram extends Visualizer {
     // Render spectrogram
     switch (this.scale) {
       case 'linear': {
-        // TODO:
-        /*
         const length = Math.min(data.length, this.renderSize);
 
-        const h = innerHeight / length;
+        const h = parseInt((this.styles.font?.size ?? '13'), 10);
 
         for (let k = 0; k < length; k++) {
           const f = k * frequencyResolution;
-          const x = k * (innerWidth / length) + left;
+          const x = left + this.timeOffset;
           const y = (top + innerHeight) - Math.trunc(f * (innerHeight / length));
 
           if (((y - h) < top) || (y > (top + innerHeight))) {
@@ -247,9 +248,8 @@ export class Spectrogram extends Visualizer {
           const alpha = Spectrogram.numberToAlpha(data[k]);
 
           context.fillStyle = `rgba(0 0 255 / ${alpha})`;
-          context.fillRect(x, y, 1, h);
+          context.fillRect(x, (y - h), 1, h);
         }
-        */
 
         break;
       }
@@ -350,9 +350,9 @@ export class Spectrogram extends Visualizer {
       // Render coordinate
       switch (this.scale) {
         case 'linear': {
-          // TODO:
-          /*
           const length = Math.min(data.length, this.renderSize);
+
+          const h = innerHeight / length;
 
           const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
@@ -361,12 +361,16 @@ export class Spectrogram extends Visualizer {
             const x = left;
             const y = (top + innerHeight) - Math.trunc(f * (innerHeight / length));
 
+            if (((y - h) < top) || (y > (top + innerHeight))) {
+              continue;
+            }
+
             const text = document.createElementNS(Spectrogram.XMLNS, 'text');
 
             if (f >= 1000) {
               text.textContent = `${Math.trunc(f / 1000)} kHz`;
             } else {
-              text.textContent = `${f} Hz`;
+              text.textContent = `${Math.trunc(f)} Hz`;
             }
 
             text.setAttribute('x', x.toString(10));
@@ -380,7 +384,6 @@ export class Spectrogram extends Visualizer {
           }
 
           svg.appendChild(g);
-          */
 
           break;
         }
@@ -420,17 +423,15 @@ export class Spectrogram extends Visualizer {
     // Render spectrogram
     switch (this.scale) {
       case 'linear': {
-        // TODO:
-        /*
         const length = Math.min(data.length, this.renderSize);
 
-        const h = innerHeight / length;
+        const h = parseInt((this.styles.font?.size ?? '13'), 10);
 
         const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
         for (let k = 0; k < length; k++) {
           const f = k * frequencyResolution;
-          const x = k * (innerWidth / length) + left;
+          const x = left + this.timeOffset;
           const y = (top + innerHeight) - Math.trunc(f * (innerHeight / length));
 
           if (((y - h) < top) || (y > (top + innerHeight))) {
@@ -443,7 +444,7 @@ export class Spectrogram extends Visualizer {
           const alpha = Spectrogram.numberToAlpha(data[k]);
 
           rect.setAttribute('x', x.toString(10));
-          rect.setAttribute('y', y.toString(10));
+          rect.setAttribute('y', (y - h).toString(10));
           rect.setAttribute('width', '1');
           rect.setAttribute('height', h.toString(10));
           rect.setAttribute('fill', `rgba(0 0 255 / ${alpha})`);
@@ -453,7 +454,6 @@ export class Spectrogram extends Visualizer {
         }
 
         svg.appendChild(g);
-        */
 
         break;
       }

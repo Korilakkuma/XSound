@@ -29,6 +29,8 @@ export class Spectrogram extends Visualizer {
 
   private imagedata: ImageData | null = null;
 
+  private colorFromNumber: ((data: Uint8Array[0]) => string) | null = null;
+
   /**
    * This function maps unsigned int 8 bits to alpha value.
    * @param {Uint8Array[0]} data This argument is converted to alpha value based on mapping algorithm.
@@ -144,6 +146,17 @@ export class Spectrogram extends Visualizer {
   }
 
   /**
+   * This method sets function that converts number to color string.
+   * @param {function} func This argument is function that converts number to color string;
+   * @return {Spectrogram} Return value is for method chain.
+   */
+  public setColorFromNumberFunction(func: ((data: Uint8Array[0]) => string) | null): Spectrogram {
+    this.colorFromNumber = func;
+
+    return this;
+  }
+
+  /**
    * This method visualizes spectrogram to Canvas.
    * @param {Uint8Array} data This argument is frequency domain data for spectrogram.
    * @override
@@ -244,11 +257,17 @@ export class Spectrogram extends Visualizer {
             continue;
           }
 
-          // TODO: Mapping function that maps uint 8 or float 32 to color value
-          const alpha = Spectrogram.numberToAlpha(data[k]);
+          if (this.colorFromNumber === null) {
+            const alpha = Spectrogram.numberToAlpha(data[k]);
 
-          context.fillStyle = `rgba(0 0 255 / ${alpha})`;
-          context.fillRect(x, (y - h), 1, h);
+            context.fillStyle = `rgba(0 0 255 / ${alpha})`;
+            context.fillRect(x, (y - h), 1, h);
+          } else {
+            const color = this.colorFromNumber(data[k]);
+
+            context.fillStyle = color;
+            context.fillRect(x, (y - h), 1, h);
+          }
         }
 
         break;
@@ -275,11 +294,17 @@ export class Spectrogram extends Visualizer {
             continue;
           }
 
-          // TODO: Mapping function that maps uint 8 or float 32 to color value
-          const alpha = Spectrogram.numberToAlpha(data[k]);
+          if (this.colorFromNumber === null) {
+            const alpha = Spectrogram.numberToAlpha(data[k]);
 
-          context.fillStyle = `rgba(0 0 255 / ${alpha})`;
-          context.fillRect(x, (y - h), 1, h);
+            context.fillStyle = `rgba(0 0 255 / ${alpha})`;
+            context.fillRect(x, (y - h), 1, h);
+          } else {
+            const color = this.colorFromNumber(data[k]);
+
+            context.fillStyle = color;
+            context.fillRect(x, (y - h), 1, h);
+          }
         }
 
         break;
@@ -440,14 +465,20 @@ export class Spectrogram extends Visualizer {
 
           const rect = document.createElementNS(Spectrogram.XMLNS, 'rect');
 
-          // TODO: Mapping function that maps uint 8 or float 32 to color value
-          const alpha = Spectrogram.numberToAlpha(data[k]);
+          if (this.colorFromNumber === null) {
+            const alpha = Spectrogram.numberToAlpha(data[k]);
+
+            rect.setAttribute('fill', `rgba(0 0 255 / ${alpha})`);
+          } else {
+            const color = this.colorFromNumber(data[k]);
+
+            rect.setAttribute('fill', color);
+          }
 
           rect.setAttribute('x', x.toString(10));
           rect.setAttribute('y', (y - h).toString(10));
           rect.setAttribute('width', '1');
           rect.setAttribute('height', h.toString(10));
-          rect.setAttribute('fill', `rgba(0 0 255 / ${alpha})`);
           rect.setAttribute('stroke', 'none');
 
           g.appendChild(rect);
@@ -483,14 +514,20 @@ export class Spectrogram extends Visualizer {
 
           const rect = document.createElementNS(Spectrogram.XMLNS, 'rect');
 
-          // TODO: Mapping function that maps uint 8 or float 32 to color value
-          const alpha = Spectrogram.numberToAlpha(data[k]);
+          if (this.colorFromNumber === null) {
+            const alpha = Spectrogram.numberToAlpha(data[k]);
+
+            rect.setAttribute('fill', `rgba(0 0 255 / ${alpha})`);
+          } else {
+            const color = this.colorFromNumber(data[k]);
+
+            rect.setAttribute('fill', color);
+          }
 
           rect.setAttribute('x', x.toString(10));
           rect.setAttribute('y', ((y - h) - 0).toString(10));
           rect.setAttribute('width', '1');
           rect.setAttribute('height', h.toString(10));
-          rect.setAttribute('fill', `rgba(0 0 255 / ${alpha})`);
           rect.setAttribute('stroke', 'none');
 
           g.appendChild(rect);

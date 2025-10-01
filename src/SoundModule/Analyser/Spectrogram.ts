@@ -16,9 +16,9 @@ export type SpectrogramParams = VisualizerParams & {
  */
 export class Spectrogram extends Visualizer {
   // for logarithmic
-  private static readonly MIN_FREQUENCY           = 62.5 as const;
-  private static readonly MAX_FREQUENCY           = 8000 as const;
-  private static readonly LOGARITHMIC_FREQUENCIES = [62.5, 125, 250, 500, 1000, 2000, 4000, 8000] as const;
+  private static readonly MIN_FREQUENCY           = 32 as const;
+  private static readonly MAX_FREQUENCY           = 16000 as const;
+  private static readonly LOGARITHMIC_FREQUENCIES = [32, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000] as const;
 
   private scale: SpectrumScale = 'logarithmic';
 
@@ -223,7 +223,7 @@ export class Spectrogram extends Visualizer {
         }
 
         case 'logarithmic': {
-          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((f: 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000, index: number) => {
+          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((f: 32 | 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 | 16000, index: number) => {
             const x = left;
             const y = (top + innerHeight) - ((index / Spectrogram.LOGARITHMIC_FREQUENCIES.length) * innerHeight);
 
@@ -416,7 +416,7 @@ export class Spectrogram extends Visualizer {
         case 'logarithmic': {
           const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
-          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((f: 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000, index: number) => {
+          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((f: 32 | 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 | 16000, index: number) => {
             const x = left;
             const y = (top + innerHeight) - ((index / Spectrogram.LOGARITHMIC_FREQUENCIES.length) * innerHeight);
 

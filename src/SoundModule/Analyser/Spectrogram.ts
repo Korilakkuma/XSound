@@ -6,6 +6,7 @@ import { Visualizer } from './Visualizer';
 export type SpectrogramParams = VisualizerParams & {
   size?: number,
   scale?: SpectrumScale,
+  duration?: number,
   plotInterval?: number,
   readonly minFrequency?: number,
   readonly maxFrequency?: number
@@ -22,8 +23,11 @@ export class Spectrogram extends Visualizer {
 
   private scale: SpectrumScale = 'logarithmic';
 
+  private duration = 10;
+
   private plotInterval = 4;
   private timeOffset = 1;
+  private numberOfSamples = 0;
 
   private renderSize = 256;
 
@@ -73,6 +77,7 @@ export class Spectrogram extends Visualizer {
   public override param(params: 'styles'): GraphicsStyles;
   public override param(params: 'size'): number;
   public override param(params: 'scale'): SpectrumScale;
+  public override param(params: 'duration'): number;
   public override param(params: 'plotInterval'): number;
   public override param(params: 'minFrequency'): number;
   public override param(params: 'maxFrequency'): number;
@@ -86,6 +91,10 @@ export class Spectrogram extends Visualizer {
 
         case 'scale': {
           return this.scale;
+        }
+
+        case 'duration': {
+          return this.duration;
         }
 
         case 'plotInterval': {
@@ -124,6 +133,16 @@ export class Spectrogram extends Visualizer {
           if (typeof value === 'string') {
             if ((value === 'linear') || (value === 'logarithmic')) {
               this.scale = value;
+            }
+          }
+
+          break;
+        }
+
+        case 'duration': {
+          if (typeof value === 'number') {
+            if (value > 0) {
+              this.duration = value;
             }
           }
 
@@ -182,6 +201,15 @@ export class Spectrogram extends Visualizer {
 
     // Frequency resolution (Sampling rate / FFT size)
     const frequencyResolution = this.sampleRate / (2 * data.length);
+
+    const samples = this.duration * this.sampleRate;
+
+    if (this.numberOfSamples >= samples) {
+      this.imagedata = null;
+
+      this.timeOffset = 1;
+      this.numberOfSamples = 0;
+    }
 
     if (this.imagedata === null) {
       // Erase previous wave
@@ -317,6 +345,7 @@ export class Spectrogram extends Visualizer {
     context.textAlign = 'center';
 
     this.timeOffset += 1;
+    this.numberOfSamples += (2 * data.length);
 
     this.imagedata = context.getImageData(0, 0, width, height);
   }
@@ -348,6 +377,15 @@ export class Spectrogram extends Visualizer {
 
     // Frequency resolution (Sampling rate / FFT size)
     const frequencyResolution = this.sampleRate / (2 * data.length);
+
+    const samples = this.duration * this.sampleRate;
+
+    if (this.numberOfSamples >= samples) {
+      svg.innerHTML = '';
+
+      this.timeOffset = 1;
+      this.numberOfSamples = 0;
+    }
 
     if (svg.innerHTML.length === 0) {
       // Render Graph
@@ -540,5 +578,6 @@ export class Spectrogram extends Visualizer {
     }
 
     this.timeOffset += 1;
+    this.numberOfSamples += (2 * data.length);
   }
 }

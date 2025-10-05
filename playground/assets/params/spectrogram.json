@@ -1,4 +1,9 @@
 {
+  "interval": 40,
+  "duration": 10,
+  "plotInterval": 4,
+  "timeTextInterval": 16,
+  "size": 256,
   "styles": {
     "grid": "rgba(255, 0, 0, 1.0)",
     "text": "rgba(255, 255, 255, 1.0)",
@@ -12,6 +17,5 @@
     "right": 30,
     "bottom": 15,
     "left": 30
-  },
-  "size": 256
+  }
 }

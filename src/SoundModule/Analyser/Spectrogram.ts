@@ -8,6 +8,7 @@ export type SpectrogramParams = VisualizerParams & {
   scale?: SpectrumScale,
   duration?: number,
   plotInterval?: number,
+  timeTextInterval?: number,
   readonly minFrequency?: number,
   readonly maxFrequency?: number
 };
@@ -26,6 +27,7 @@ export class Spectrogram extends Visualizer {
   private duration = 10;
 
   private plotInterval = 4;
+  private timeTextInterval = 16;
   private timeOffset = 1;
   private numberOfSamples = 0;
 
@@ -60,9 +62,10 @@ export class Spectrogram extends Visualizer {
    * @param {number} sampleRate This argument is sample rate.
    * @param {ChannelNumber} channel This argument is channel number (Left: 0, Right: 1 ...).
    */
-  // eslint-disable-next-line no-useless-constructor
   constructor(sampleRate: number, channel: ChannelNumber) {
     super(sampleRate, channel);
+
+    this.interval = 40;
   }
 
   /**
@@ -79,6 +82,7 @@ export class Spectrogram extends Visualizer {
   public override param(params: 'scale'): SpectrumScale;
   public override param(params: 'duration'): number;
   public override param(params: 'plotInterval'): number;
+  public override param(params: 'timeTextInterval'): number;
   public override param(params: 'minFrequency'): number;
   public override param(params: 'maxFrequency'): number;
   public override param(params: SpectrogramParams): Spectrogram;
@@ -99,6 +103,10 @@ export class Spectrogram extends Visualizer {
 
         case 'plotInterval': {
           return this.plotInterval;
+        }
+
+        case 'timeTextInterval': {
+          return this.timeTextInterval;
         }
 
         case 'minFrequency': {
@@ -156,6 +164,16 @@ export class Spectrogram extends Visualizer {
 
           break;
         }
+
+        case 'timeTextInterval': {
+          if (typeof value === 'number') {
+            if (value > 0) {
+              this.timeTextInterval = value;
+            }
+          }
+
+          break;
+        }
       }
     }
 
@@ -199,15 +217,18 @@ export class Spectrogram extends Visualizer {
     const gridColor = this.styles.grid ?? 'none';
     const textColor = this.styles.text ?? 'none';
 
+    const frequencyBinCount = data.length;
+    const fftSize           = 2 * frequencyBinCount;
+
     // Frequency resolution (Sampling rate / FFT size)
-    const frequencyResolution = this.sampleRate / (2 * data.length);
+    const frequencyResolution = this.sampleRate / fftSize;
 
     const samples = this.duration * this.sampleRate;
 
     if (this.numberOfSamples >= samples) {
       this.imagedata = null;
 
-      this.timeOffset = 1;
+      this.timeOffset      = 1;
       this.numberOfSamples = 0;
     }
 
@@ -223,11 +244,35 @@ export class Spectrogram extends Visualizer {
       // Render coordinate
       context.fillStyle = textColor;
       context.font      = this.createFontString();
+
+      // X axis (time)
+      context.textAlign = 'start';
+
+      const textInterval = samples / this.timeTextInterval;
+
+      for (let k = 0; k < samples; k++) {
+        if ((k % textInterval) !== 0) {
+          continue;
+        }
+
+        const x = k * (innerWidth / samples) + left;
+        const y = top + innerHeight + parseInt((this.styles.font?.size ?? '13'), 10);
+
+        const time = (k / samples) * this.duration;
+
+        if ((time !== 0) && (time < 0.0001)) {
+          context.fillText(`${(time * 1000).toFixed(1)} msec`, x, y);
+        } else {
+          context.fillText(`${time.toFixed(2)} sec`, x, y);
+        }
+      }
+
       context.textAlign = 'end';
 
+      // Y axis (frequency)
       switch (this.scale) {
         case 'linear': {
-          const length = Math.min(data.length, this.renderSize);
+          const length = Math.min(frequencyBinCount, this.renderSize);
 
           const h = innerHeight / length;
 
@@ -272,7 +317,7 @@ export class Spectrogram extends Visualizer {
     // Render spectrogram
     switch (this.scale) {
       case 'linear': {
-        const length = Math.min(data.length, this.renderSize);
+        const length = Math.min(frequencyBinCount, this.renderSize);
 
         const h = parseInt((this.styles.font?.size ?? '13'), 10);
 
@@ -306,7 +351,7 @@ export class Spectrogram extends Visualizer {
 
         const h = innerHeight / Spectrogram.LOGARITHMIC_FREQUENCIES.length;
 
-        for (let k = 0, len = data.length; k < len; k++) {
+        for (let k = 0; k < frequencyBinCount; k++) {
           if (k === 0) {
             continue;
           }
@@ -344,8 +389,9 @@ export class Spectrogram extends Visualizer {
     context.font      = this.createFontString();
     context.textAlign = 'center';
 
-    this.timeOffset += 1;
-    this.numberOfSamples += (2 * data.length);
+    this.numberOfSamples += frequencyBinCount;
+
+    this.timeOffset = (this.numberOfSamples * (1 / this.sampleRate)) * (innerWidth / this.duration);
 
     this.imagedata = context.getImageData(0, 0, width, height);
   }
@@ -375,15 +421,18 @@ export class Spectrogram extends Visualizer {
     const textColor = this.styles.text ?? 'none';
     const fontSize  = parseInt((this.styles.font?.size ?? '13px'), 10);
 
+    const frequencyBinCount = data.length;
+    const fftSize           = 2 * frequencyBinCount;
+
     // Frequency resolution (Sampling rate / FFT size)
-    const frequencyResolution = this.sampleRate / (2 * data.length);
+    const frequencyResolution = this.sampleRate / fftSize;
 
     const samples = this.duration * this.sampleRate;
 
     if (this.numberOfSamples >= samples) {
       svg.innerHTML = '';
 
-      this.timeOffset = 1;
+      this.timeOffset      = 1;
       this.numberOfSamples = 0;
     }
 
@@ -411,9 +460,46 @@ export class Spectrogram extends Visualizer {
       svg.appendChild(rectY);
 
       // Render coordinate
+
+      // X axis (time)
+      const g = document.createElementNS(Spectrogram.XMLNS, 'g');
+
+      const textInterval = samples / this.timeTextInterval;
+
+      for (let k = 0; k < samples; k++) {
+        if ((k % textInterval) !== 0) {
+          continue;
+        }
+
+        const x = k * (innerWidth / samples) + left;
+        const y = top + innerHeight + fontSize;
+
+        const text = document.createElementNS(Spectrogram.XMLNS, 'text');
+
+        const time = (k / samples) * this.duration;
+
+        if ((time !== 0) && (time < 0.0001)) {
+          text.textContent = `${(time * 1000).toFixed(1)} msec`;
+        } else {
+          text.textContent = `${time.toFixed(2)} sec`;
+        }
+
+        text.setAttribute('x', x.toString(10));
+        text.setAttribute('y', y.toString(10));
+        text.setAttribute('text-anchor', 'start');
+        text.setAttribute('stroke', 'none');
+        text.setAttribute('fill', textColor);
+        text.setAttribute('font-size', fontSize.toString(10));
+
+        g.appendChild(text);
+      }
+
+      svg.appendChild(g);
+
+      // Y axis (frequency)
       switch (this.scale) {
         case 'linear': {
-          const length = Math.min(data.length, this.renderSize);
+          const length = Math.min(frequencyBinCount, this.renderSize);
 
           const h = innerHeight / length;
 
@@ -486,7 +572,7 @@ export class Spectrogram extends Visualizer {
     // Render spectrogram
     switch (this.scale) {
       case 'linear': {
-        const length = Math.min(data.length, this.renderSize);
+        const length = Math.min(frequencyBinCount, this.renderSize);
 
         const h = parseInt((this.styles.font?.size ?? '13'), 10);
 
@@ -515,7 +601,7 @@ export class Spectrogram extends Visualizer {
 
           rect.setAttribute('x', x.toString(10));
           rect.setAttribute('y', (y - h).toString(10));
-          rect.setAttribute('width', '1');
+          rect.setAttribute('width', (this.styles.width ? this.styles.width.toString(10) : '1'));
           rect.setAttribute('height', h.toString(10));
           rect.setAttribute('stroke', 'none');
 
@@ -534,7 +620,7 @@ export class Spectrogram extends Visualizer {
 
         const h = innerHeight / Spectrogram.LOGARITHMIC_FREQUENCIES.length;
 
-        for (let k = 0, len = data.length; k < len; k++) {
+        for (let k = 0; k < frequencyBinCount; k++) {
           if (k === 0) {
             continue;
           }
@@ -564,7 +650,7 @@ export class Spectrogram extends Visualizer {
 
           rect.setAttribute('x', x.toString(10));
           rect.setAttribute('y', ((y - h) - 0).toString(10));
-          rect.setAttribute('width', '1');
+          rect.setAttribute('width', (this.styles.width ? this.styles.width.toString(10) : '1'));
           rect.setAttribute('height', h.toString(10));
           rect.setAttribute('stroke', 'none');
 
@@ -577,7 +663,9 @@ export class Spectrogram extends Visualizer {
       }
     }
 
-    this.timeOffset += 1;
-    this.numberOfSamples += (2 * data.length);
+
+    this.numberOfSamples += frequencyBinCount;
+
+    this.timeOffset = (this.numberOfSamples * (1 / this.sampleRate)) * (innerWidth / this.duration);
   }
 }

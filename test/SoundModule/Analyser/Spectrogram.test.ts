@@ -14,9 +14,10 @@ describe(Spectrogram.name, () => {
 
     describe(spectrogram.param.name, () => {
       const defaultParams: SpectrogramParams = {
-        interval   : 1000,
-        duration   : 10,
-        styles     : {
+        interval        : 40,
+        duration        : 10,
+        timeTextInterval: 16,
+        styles          : {
           shape    : 'line',
           gradients: [
             {
@@ -47,9 +48,10 @@ describe(Spectrogram.name, () => {
       };
 
       const params: SpectrogramParams = {
-        interval    : 0,
-        duration    : 600.25,
-        styles      : {
+        interval        : 2.5,
+        duration        : 600.25,
+        timeTextInterval: 24,
+        styles          : {
           shape     : 'rect',
           gradients : [
             {
@@ -92,11 +94,15 @@ describe(Spectrogram.name, () => {
       });
 
       test('should return `interval`', () => {
-        expect(spectrogram.param('interval')).toBeCloseTo(0, 1);
+        expect(spectrogram.param('interval')).toBeCloseTo(2.5, 1);
       });
 
       test('should return `duration`', () => {
         expect(spectrogram.param('duration')).toBeCloseTo(600.25, 2);
+      });
+
+      test('should return `timeTextInterval`', () => {
+        expect(spectrogram.param('timeTextInterval')).toBe(24);
       });
 
       test('should return `styles`', () => {
@@ -147,9 +153,10 @@ describe(Spectrogram.name, () => {
 
     describe(spectrogram.param.name, () => {
       const defaultParams: SpectrogramParams = {
-        interval   : 1000,
-        duration   : 10,
-        styles     : {
+        interval        : 40,
+        duration        : 10,
+        timeTextInterval: 16,
+        styles          : {
           shape    : 'line',
           gradients: [
             {
@@ -180,9 +187,10 @@ describe(Spectrogram.name, () => {
       };
 
       const params: SpectrogramParams = {
-        interval    : 0,
-        duration    : 600.25,
-        styles      : {
+        interval        : 2.5,
+        duration        : 600.25,
+        timeTextInterval: 24,
+        styles          : {
           shape     : 'rect',
           gradients : [
             {
@@ -225,11 +233,15 @@ describe(Spectrogram.name, () => {
       });
 
       test('should return `interval`', () => {
-        expect(spectrogram.param('interval')).toBeCloseTo(0, 1);
+        expect(spectrogram.param('interval')).toBeCloseTo(2.5, 1);
       });
 
       test('should return `duration`', () => {
         expect(spectrogram.param('duration')).toBeCloseTo(600.25, 2);
+      });
+
+      test('should return `timeTextInterval`', () => {
+        expect(spectrogram.param('timeTextInterval')).toBe(24);
       });
 
       test('should return `styles`', () => {

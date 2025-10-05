@@ -356,7 +356,7 @@ export class Spectrogram extends Visualizer {
             continue;
           }
 
-          if (k % this.plotInterval !== 0) {
+          if ((k % this.plotInterval) !== 0) {
             continue;
           }
 
@@ -625,7 +625,7 @@ export class Spectrogram extends Visualizer {
             continue;
           }
 
-          if (k % this.plotInterval !== 0) {
+          if ((k % this.plotInterval) !== 0) {
             continue;
           }
 

@@ -52,119 +52,107 @@ export type AnalyserParams = {
  * This private class manages 3 private classes (`TimeOverview`, `Time`, `FFT`) for visualizing sound wave.
  */
 export class Analyser implements Connectable {
-  private analyser: AnalyserNode;
+  private analysers: [AnalyserNode, AnalyserNode];
+  private splitter: ChannelSplitterNode;
   private input: GainNode;
 
-  private timeOverviewL: TimeOverview;
-  private timeOverviewR: TimeOverview;
-  private time: Time;
-  private fft: FFT;
-  private spectrogramL: Spectrogram;
-  private spectrogramR: Spectrogram;
+  private timeOverviews: [TimeOverview, TimeOverview];
+  private times: [Time, Time];
+  private ffts: [FFT, FFT];
+  private spectrograms: [Spectrogram, Spectrogram];
 
-  private timeDomainAnimationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
-  private timeDomainTimerId: number | null = null;
-  private frequencyDomainAnimationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
-  private frequencyDomainTimerId: number | null = null;
-  private spectrogramAnimationId: ReturnType<typeof window.requestAnimationFrame> | null = null;
-  private spectrogramTimerId: number | null = null;
+  private timeDomainAnimationIds: [ReturnType<typeof window.requestAnimationFrame> | null, ReturnType<typeof window.requestAnimationFrame> | null] = [null, null];
+  private timeDomainTimerIds: [number | null, number | null] = [null, null];
+  private frequencyDomainAnimationIds: [ReturnType<typeof window.requestAnimationFrame> | null, ReturnType<typeof window.requestAnimationFrame> | null] = [null, null];
+  private frequencyDomainTimerIds: [number | null, number | null] = [null, null];
+  private spectrogramAnimationIds: [ReturnType<typeof window.requestAnimationFrame> | null, ReturnType<typeof window.requestAnimationFrame> | null] = [null, null];
+  private spectrogramTimerIds: [number | null, number | null] = [null, null];
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
-    this.analyser = context.createAnalyser();
-    this.input    = context.createGain();
+    this.analysers = [context.createAnalyser(), context.createAnalyser()];
+    this.splitter  = context.createChannelSplitter(2);
+    this.input     = context.createGain();
 
-    // GainNode (Input) -> AnalyserNode
-    this.input.connect(this.analyser);
+    // GainNode (Input) -> ChannelSplitterNode (L / R) -> AnalyserNode
+    this.input.connect(this.splitter);
+    this.splitter.connect(this.analysers[0], 0, 0);
+    this.splitter.connect(this.analysers[1], 1, 0);
 
-    this.timeOverviewL = new TimeOverview(context.sampleRate, 0);
-    this.timeOverviewR = new TimeOverview(context.sampleRate, 1);
-    this.time          = new Time(context.sampleRate, 0);
-    this.fft           = new FFT(context.sampleRate, 0);
-    this.spectrogramL  = new Spectrogram(context.sampleRate, 0);
-    this.spectrogramR  = new Spectrogram(context.sampleRate, 1);
+    this.timeOverviews = [new TimeOverview(context.sampleRate, 0), new TimeOverview(context.sampleRate, 1)];
+    this.times         = [new Time(context.sampleRate, 0), new Time(context.sampleRate, 1)];
+    this.ffts          = [new FFT(context.sampleRate, 0), new FFT(context.sampleRate, 1)];
+    this.spectrograms  = [new Spectrogram(context.sampleRate, 0), new Spectrogram(context.sampleRate, 1)];
 
     // Set default value
-    this.analyser.fftSize               = 2048;
-    this.analyser.minDecibels           = -100;
-    this.analyser.maxDecibels           = -30;
-    this.analyser.smoothingTimeConstant = 0.8;
+    this.analysers.forEach((analyser: AnalyserNode) => {
+      analyser.fftSize               = 2048;
+      analyser.minDecibels           = -100;
+      analyser.maxDecibels           = -30;
+      analyser.smoothingTimeConstant = 0.8;
+    });
   }
 
   /**
    * This method visualizes sound wave.
-   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft'.
-   * @param {ChannelNumber} channel This argument is channel number (Left: 0, Right: 1 ...).
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', 'spectrogram'.
+   * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
    * @param {AudioBuffer} buffer This argument is instance of `AudioBuffer` (If domain is 'timeoverview', this argument is required).
    * @return {Analyser} Return value is for method chain.
    */
-  public start(domain: Domain, channel?: ChannelNumber, buffer?: AudioBuffer): Analyser {
+  public start(domain: Domain, channelNumber: ChannelNumber, buffer?: AudioBuffer): Analyser {
+    if (channelNumber === -1) {
+      return this;
+    }
+
     switch (domain) {
       case 'timeoverview': {
-        if (((channel === 0) || (channel === 1)) && buffer) {
-          switch (channel) {
-            case 0: {
-              if (buffer.numberOfChannels > channel) {
-                const data = new Float32Array(buffer.length);
+        if (buffer && (buffer.numberOfChannels > channelNumber)) {
+          const data = new Float32Array(buffer.length);
 
-                data.set(buffer.getChannelData(channel));
-                this.timeOverviewL.start(data);
-              }
+          data.set(buffer.getChannelData(channelNumber));
 
-              break;
-            }
-
-            case 1: {
-              if (buffer.numberOfChannels > channel) {
-                const data = new Float32Array(buffer.length);
-
-                data.set(buffer.getChannelData(channel));
-                this.timeOverviewR.start(data);
-              }
-
-              break;
-            }
-          }
+          this.timeOverviews[channelNumber].start(data);
         }
 
         break;
       }
 
       case 'time': {
-        const interval = this.time.param('interval');
+        const interval = this.times[channelNumber].param('interval');
 
-        switch (this.time.param('type')) {
+        switch (this.times[channelNumber].param('type')) {
           case 'uint': {
-            const data = new Uint8Array(this.analyser.fftSize);
+            const data = new Uint8Array(this.analysers[channelNumber].fftSize);
 
-            this.analyser.getByteTimeDomainData(data);
-            this.time.start(data);
+            this.analysers[channelNumber].getByteTimeDomainData(data);
+            this.times[channelNumber].start(data);
 
             break;
           }
 
           case 'float': {
-            const data = new Float32Array(this.analyser.fftSize);
+            const data = new Float32Array(this.analysers[channelNumber].fftSize);
 
-            this.analyser.getFloatTimeDomainData(data);
-            this.time.start(data);
+            this.analysers[channelNumber].getFloatTimeDomainData(data);
+            this.times[channelNumber].start(data);
 
             break;
           }
         }
 
         if (typeof interval === 'number') {
-          this.stop(domain);
+          this.stop(domain, channelNumber);
 
           if (interval < 0) {
-            this.timeDomainAnimationId = window.requestAnimationFrame(() => {
-              this.start(domain);
+            this.timeDomainAnimationIds[channelNumber] = window.requestAnimationFrame(() => {
+              this.start(domain, channelNumber);
             });
           } else {
-            this.timeDomainTimerId = window.setTimeout(() => {
-              this.start(domain);
+            this.timeDomainTimerIds[channelNumber] = window.setTimeout(() => {
+              this.start(domain, channelNumber);
             }, interval);
           }
         }
@@ -173,38 +161,38 @@ export class Analyser implements Connectable {
       }
 
       case 'fft': {
-        const interval = this.fft.param('interval');
+        const interval = this.ffts[channelNumber].param('interval');
 
-        switch (this.fft.param('type')) {
+        switch (this.ffts[channelNumber].param('type')) {
           case 'uint': {
-            const data = new Uint8Array(this.analyser.frequencyBinCount);
+            const data = new Uint8Array(this.analysers[channelNumber].frequencyBinCount);
 
-            this.analyser.getByteFrequencyData(data);
-            this.fft.start(data);
+            this.analysers[channelNumber].getByteFrequencyData(data);
+            this.ffts[channelNumber].start(data);
 
             break;
           }
 
           case 'float': {
-            const data = new Float32Array(this.analyser.frequencyBinCount);
+            const data = new Float32Array(this.analysers[channelNumber].frequencyBinCount);
 
-            this.analyser.getFloatFrequencyData(data);
-            this.fft.start(data, this.analyser.minDecibels, this.analyser.maxDecibels);
+            this.analysers[channelNumber].getFloatFrequencyData(data);
+            this.ffts[channelNumber].start(data, this.analysers[channelNumber].minDecibels, this.analysers[channelNumber].maxDecibels);
 
             break;
           }
         }
 
         if (typeof interval === 'number') {
-          this.stop(domain);
+          this.stop(domain, channelNumber);
 
           if (interval < 0) {
-            this.frequencyDomainAnimationId = window.requestAnimationFrame(() => {
-              this.start(domain);
+            this.frequencyDomainAnimationIds[channelNumber] = window.requestAnimationFrame(() => {
+              this.start(domain, channelNumber);
             });
           } else {
-            this.frequencyDomainTimerId = window.setTimeout(() => {
-              this.start(domain);
+            this.frequencyDomainTimerIds[channelNumber] = window.setTimeout(() => {
+              this.start(domain, channelNumber);
             }, interval);
           }
         }
@@ -213,43 +201,25 @@ export class Analyser implements Connectable {
       }
 
       case 'spectrogram': {
-        const interval = this.spectrogramL.param('interval');
+        const interval = this.spectrograms[channelNumber].param('interval');
 
-        const data = new Uint8Array(this.analyser.frequencyBinCount);
+        const data = new Uint8Array(this.analysers[channelNumber].frequencyBinCount);
 
-        this.analyser.getByteFrequencyData(data);
-        this.spectrogramL.start(data);
+        this.analysers[channelNumber].getByteFrequencyData(data);
+        this.spectrograms[channelNumber].start(data);
 
-        switch (channel) {
-          case 0: {
-            const data = new Uint8Array(this.analyser.frequencyBinCount);
+        if (typeof interval === 'number') {
+          this.stop(domain, channelNumber);
 
-            this.analyser.getByteFrequencyData(data);
-            this.spectrogramL.start(data);
-
-            break;
+          if (interval < 0) {
+            this.spectrogramAnimationIds[channelNumber] = window.requestAnimationFrame(() => {
+              this.start(domain, channelNumber);
+            });
+          } else {
+            this.spectrogramTimerIds[channelNumber] = window.setTimeout(() => {
+              this.start(domain, channelNumber);
+            }, interval);
           }
-
-          case 1: {
-            const data = new Uint8Array(this.analyser.frequencyBinCount);
-
-            this.analyser.getByteFrequencyData(data);
-            this.spectrogramR.start(data);
-
-            break;
-          }
-        }
-
-        this.stop(domain);
-
-        if (interval < 0) {
-          this.spectrogramAnimationId = window.requestAnimationFrame(() => {
-            this.start(domain, channel);
-          });
-        } else {
-          this.spectrogramTimerId = window.setTimeout(() => {
-            this.start(domain, channel);
-          }, interval);
         }
 
         break;
@@ -261,23 +231,28 @@ export class Analyser implements Connectable {
 
   /**
    * This method stops visualizer.
-   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', `spectrogram`.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', 'spectrogram'.
+   * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
    * @return {Analyser} Return value is for method chain.
    */
-  public stop(domain: Domain): Analyser {
+  public stop(domain: Domain, channelNumber: ChannelNumber): Analyser {
+    if (channelNumber === -1) {
+      return this;
+    }
+
     switch (domain) {
       case 'time': {
-        const interval = this.time.param('interval');
+        const interval = this.times[channelNumber].param('interval');
 
         if (typeof interval === 'number') {
-          if ((interval < 0) && this.timeDomainAnimationId) {
-            window.cancelAnimationFrame(this.timeDomainAnimationId);
+          if ((interval < 0) && this.timeDomainAnimationIds[channelNumber]) {
+            window.cancelAnimationFrame(this.timeDomainAnimationIds[channelNumber]);
 
-            this.timeDomainAnimationId = null;
-          } else if (this.timeDomainTimerId) {
-            window.clearTimeout(this.timeDomainTimerId);
+            this.timeDomainAnimationIds[channelNumber]= null;
+          } else if (this.timeDomainTimerIds[channelNumber]) {
+            window.clearTimeout(this.timeDomainTimerIds[channelNumber]);
 
-            this.timeDomainTimerId = null;
+            this.timeDomainTimerIds[channelNumber]= null;
           }
         }
 
@@ -285,17 +260,17 @@ export class Analyser implements Connectable {
       }
 
       case 'fft': {
-        const interval = this.fft.param('interval');
+        const interval = this.ffts[channelNumber].param('interval');
 
         if (typeof interval === 'number') {
-          if ((interval < 0) && this.frequencyDomainAnimationId) {
-            window.cancelAnimationFrame(this.frequencyDomainAnimationId);
+          if ((interval < 0) && this.frequencyDomainAnimationIds[channelNumber]) {
+            window.cancelAnimationFrame(this.frequencyDomainAnimationIds[channelNumber]);
 
-            this.frequencyDomainAnimationId = null;
-          } else if (this.frequencyDomainTimerId) {
-            window.clearTimeout(this.frequencyDomainTimerId);
+            this.frequencyDomainAnimationIds[channelNumber] = null;
+          } else if (this.frequencyDomainTimerIds[channelNumber]) {
+            window.clearTimeout(this.frequencyDomainTimerIds[channelNumber]);
 
-            this.frequencyDomainTimerId = null;
+            this.frequencyDomainTimerIds[channelNumber] = null;
           }
         }
 
@@ -303,17 +278,17 @@ export class Analyser implements Connectable {
       }
 
       case 'spectrogram': {
-        const interval = this.spectrogramL.param('interval');
+        const interval = this.spectrograms[channelNumber].param('interval');
 
         if (typeof interval === 'number') {
-          if ((interval < 0) && this.spectrogramAnimationId) {
-            window.cancelAnimationFrame(this.spectrogramAnimationId);
+          if ((interval < 0) && this.spectrogramAnimationIds[channelNumber]) {
+            window.cancelAnimationFrame(this.spectrogramAnimationIds[channelNumber]);
 
-            this.spectrogramAnimationId = null;
-          } else if (this.spectrogramTimerId) {
-            window.clearTimeout(this.spectrogramTimerId);
+            this.spectrogramAnimationIds[channelNumber] = null;
+          } else if (this.spectrogramTimerIds[channelNumber]) {
+            window.clearTimeout(this.spectrogramTimerIds[channelNumber]);
 
-            this.spectrogramTimerId = null;
+            this.spectrogramTimerIds[channelNumber] = null;
           }
         }
 
@@ -341,23 +316,23 @@ export class Analyser implements Connectable {
     if (typeof params === 'string') {
       switch (params) {
         case 'fftSize': {
-          return this.analyser.fftSize;
+          return this.analysers[0].fftSize;
         }
 
         case 'frequencyBinCount': {
-          return this.analyser.frequencyBinCount;
+          return this.analysers[0].frequencyBinCount;
         }
 
         case 'minDecibels': {
-          return this.analyser.minDecibels;
+          return this.analysers[0].minDecibels;
         }
 
         case 'maxDecibels': {
-          return this.analyser.maxDecibels;
+          return this.analysers[0].maxDecibels;
         }
 
         case 'smoothingTimeConstant': {
-          return this.analyser.smoothingTimeConstant;
+          return this.analysers[0].smoothingTimeConstant;
         }
       }
     }
@@ -365,22 +340,26 @@ export class Analyser implements Connectable {
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
         case 'fftSize': {
-          this.analyser.fftSize = value;
+          this.analysers[0].fftSize = value;
+          this.analysers[1].fftSize = value;
           break;
         }
 
         case 'minDecibels': {
-          this.analyser.minDecibels = value;
+          this.analysers[0].minDecibels = value;
+          this.analysers[1].minDecibels = value;
           break;
         }
 
         case 'maxDecibels': {
-          this.analyser.maxDecibels = value;
+          this.analysers[0].maxDecibels = value;
+          this.analysers[1].maxDecibels = value;
           break;
         }
 
         case 'smoothingTimeConstant': {
-          this.analyser.smoothingTimeConstant = value;
+          this.analysers[0].smoothingTimeConstant = value;
+          this.analysers[1].smoothingTimeConstant = value;
           break;
         }
       }
@@ -393,49 +372,33 @@ export class Analyser implements Connectable {
    * This method selects domain for visualization.
    * This method is overloaded for type interface and type check.
    * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', `spectrogram`.
-   * @param {ChannelNumber} channel This argument is channel number (Left: 0, Right: 1 ...).
+   * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
    * @return {TimeOverview|Time|FFT|Analyser} Return value is instance of selected `Visualizer` class.
    */
-  public domain(domain: 'timeoverview', channel?: ChannelNumber): TimeOverview;
-  public domain(domain: 'time', channel?: ChannelNumber): Time;
-  public domain(domain: 'fft', channel?: ChannelNumber): FFT;
-  public domain(domain: 'spectrogram', channel?: ChannelNumber): Spectrogram;
-  public domain(domain: Domain, channel?: ChannelNumber): TimeOverview | Time | FFT | Spectrogram | Analyser {
+  public domain(domain: 'timeoverview', channelNumber: ChannelNumber): TimeOverview;
+  public domain(domain: 'time', channelNumber: ChannelNumber): Time;
+  public domain(domain: 'fft', channelNumber: ChannelNumber): FFT;
+  public domain(domain: 'spectrogram', channelNumber: ChannelNumber): Spectrogram;
+  public domain(domain: Domain, channelNumber: ChannelNumber): TimeOverview | Time | FFT | Spectrogram | Analyser {
+    if (channelNumber === -1) {
+      return this;
+    }
+
     switch (domain) {
       case 'timeoverview': {
-        switch (channel) {
-          case 0: {
-            return this.timeOverviewL;
-          }
-
-          case 1: {
-            return this.timeOverviewR;
-          }
-        }
-
-        return this;
+        return this.timeOverviews[channelNumber];
       }
 
       case 'time': {
-        return this.time;
+        return this.times[channelNumber];
       }
 
-      case 'fft' : {
-        return this.fft;
+      case 'fft': {
+        return this.ffts[channelNumber];
       }
 
       case 'spectrogram': {
-        switch (channel) {
-          case 0: {
-            return this.spectrogramL;
-          }
-
-          case 1: {
-            return this.spectrogramR;
-          }
-        }
-
-        return this;
+        return this.spectrograms[channelNumber];
       }
     }
 
@@ -444,10 +407,15 @@ export class Analyser implements Connectable {
 
   /**
    * This method gets instance of `AnalyserNode`.
-   * @return {AnalyserNode}
+   * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
+   * @return {AnalyserNode|null}
    */
-  public get(): AnalyserNode {
-    return this.analyser;
+  public get(channelNumber: ChannelNumber): AnalyserNode | null {
+    if (channelNumber === -1) {
+      return null;
+    }
+
+    return this.analysers[channelNumber];
   }
 
   /** @override */

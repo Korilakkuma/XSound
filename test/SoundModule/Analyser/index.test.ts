@@ -1,3 +1,4 @@
+import type { ChannelNumber } from '/src/types';
 import type { AnalyserParams } from '/src/SoundModule/Analyser';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
@@ -6,8 +7,6 @@ import { Analyser } from '/src/SoundModule/Analyser';
 import { TimeOverview } from '/src/SoundModule/Analyser/TimeOverview';
 import { Time } from '/src/SoundModule/Analyser/Time';
 import { FFT } from '/src/SoundModule/Analyser/FFT';
-
-jest.useFakeTimers();
 
 describe(Analyser.name, () => {
   const context = new AudioContextMock();
@@ -18,8 +17,14 @@ describe(Analyser.name, () => {
   const channelL = 0;
   const channelR = 1;
 
+  const channels: ChannelNumber[] = [channelL, channelR];
+
+  beforeEach(() => {
+    jest.useFakeTimers({ advanceTimers: true });
+  });
+
   afterEach(() => {
-    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   describe(analyser.start.name, () => {
@@ -64,61 +69,67 @@ describe(Analyser.name, () => {
     });
 
     test('should call method for drawing time domain on real time', () => {
-      const originalStart = Time.prototype.start;
+      channels.forEach((channel) => {
+        const originalStart = Time.prototype.start;
 
-      const startMock = jest.fn();
+        const startMock = jest.fn();
 
-      Time.prototype.start = startMock;
+        Time.prototype.start = startMock;
 
-      analyser.start('time');
+        analyser.start('time', channel);
 
-      expect(startMock).toHaveBeenCalledTimes(1);
+        expect(startMock).toHaveBeenCalledTimes(1);
 
-      jest.advanceTimersByTime(1000);
+        jest.advanceTimersByTime(1000);
 
-      expect(startMock).toHaveBeenCalledTimes(2);
+        expect(startMock).toHaveBeenCalledTimes(2);
 
-      analyser.stop('time');
+        analyser.stop('time', channel);
 
-      Time.prototype.start = originalStart;
+        Time.prototype.start = originalStart;
+      });
     });
 
     test('should call method for drawing frequency domain (spectrum) on real time', () => {
-      const originalStart = FFT.prototype.start;
+      channels.forEach((channel) => {
+        const originalStart = FFT.prototype.start;
 
-      const startMock = jest.fn();
+        const startMock = jest.fn();
 
-      FFT.prototype.start = startMock;
+        FFT.prototype.start = startMock;
 
-      analyser.start('fft');
+        analyser.start('fft', channel);
 
-      expect(startMock).toHaveBeenCalledTimes(1);
+        expect(startMock).toHaveBeenCalledTimes(1);
 
-      analyser.stop('fft');
+        analyser.stop('fft', channel);
 
-      FFT.prototype.start = originalStart;
+        FFT.prototype.start = originalStart;
+      });
     });
 
     test('should call method for drawing frequency domain (spectrum) on real time (if interval is less than 0)', () => {
-      const originalStart = FFT.prototype.start;
+      channels.forEach((channel) => {
+        const originalStart = FFT.prototype.start;
 
-      const startMock = jest.fn();
+        const startMock = jest.fn();
 
-      FFT.prototype.start = startMock;
+        FFT.prototype.start = startMock;
 
-      analyser.domain('fft', channelL).param({ interval: -1 });
-      analyser.start('fft');
+        analyser.domain('fft', channel).param({ interval: -1 });
+        analyser.start('fft', channel);
 
-      expect(startMock).toHaveBeenCalledTimes(1);
+        expect(startMock).toHaveBeenCalledTimes(1);
 
-      jest.advanceTimersToNextTimer(1);
+        jest.advanceTimersToNextTimer(1);
 
-      expect(startMock).toHaveBeenCalledTimes(2);
+        expect(startMock).toHaveBeenCalledTimes(2);
 
-      analyser.stop('fft');
-      analyser.domain('fft', channelL).param({ interval: 1000 });
+        analyser.stop('fft', channel);
+        analyser.domain('fft', channel).param({ interval: 1000 });
 
-      FFT.prototype.start = originalStart;
+        FFT.prototype.start = originalStart;
+      });
     });
   });
 
@@ -135,103 +146,119 @@ describe(Analyser.name, () => {
 
     describe('Time domain', () => {
       test('should call method for stopping visualization in time domain', () => {
-        const originalClearTimeout = window.clearTimeout;
+        channels.forEach((channel) => {
+          const originalClearTimeout = window.clearTimeout;
 
-        const clearTimeoutMock = jest.fn();
+          const clearTimeoutMock = jest.fn();
 
-        Object.defineProperty(window, 'clearTimeout', {
-          configurable: true,
-          writable    : true,
-          value       : clearTimeoutMock
+          Object.defineProperty(window, 'clearTimeout', {
+            configurable: true,
+            writable    : true,
+            value       : clearTimeoutMock
+          });
+
+          analyser.start('time', channel);
+          analyser.stop('time', channel);
+
+          expect(clearTimeoutMock).toHaveBeenCalledTimes(1);
+
+          jest.advanceTimersByTime(1000);
+
+          expect(clearTimeoutMock).toHaveBeenCalledTimes(1);
+
+          window.clearTimeout = originalClearTimeout;
+
+          jest.clearAllTimers();
         });
-
-        analyser.start('time');
-        analyser.stop('time');
-
-        expect(clearTimeoutMock).toHaveBeenCalledTimes(1);
-
-        jest.advanceTimersByTime(1000);
-
-        expect(clearTimeoutMock).toHaveBeenCalledTimes(1);
-
-        window.clearTimeout = originalClearTimeout;
       });
 
       test('should call method for stopping visualization in time domain (if interval is less than 0)', () => {
-        const originalCancelAnimationFrame = window.cancelAnimationFrame;
+        channels.forEach((channel) => {
+          const originalCancelAnimationFrame = window.cancelAnimationFrame;
 
-        const cancelAnimationFrameMock = jest.fn();
+          const cancelAnimationFrameMock = jest.fn();
 
-        Object.defineProperty(window, 'cancelAnimationFrame', {
-          configurable: true,
-          writable    : true,
-          value       : cancelAnimationFrameMock
+          Object.defineProperty(window, 'cancelAnimationFrame', {
+            configurable: true,
+            writable    : true,
+            value       : cancelAnimationFrameMock
+          });
+
+          analyser.domain('time', channel).param({ interval: -1 });
+          analyser.start('time', channel);
+          analyser.stop('time', channel);
+
+          expect(cancelAnimationFrameMock).toHaveBeenCalledTimes(1);
+
+          jest.advanceTimersToNextTimer(1);
+
+          expect(cancelAnimationFrameMock).toHaveBeenCalledTimes(1);
+
+          analyser.domain('time', channel).param({ interval: 1000 });
+
+          window.cancelAnimationFrame = originalCancelAnimationFrame;
+
+          jest.clearAllTimers();
         });
-
-        analyser.domain('time', channelL).param({ interval: -1 });
-        analyser.start('time');
-        analyser.stop('time');
-
-        expect(cancelAnimationFrameMock).toHaveBeenCalledTimes(1);
-
-        jest.advanceTimersToNextTimer(1);
-
-        expect(cancelAnimationFrameMock).toHaveBeenCalledTimes(1);
-
-        analyser.domain('time', channelL).param({ interval: 1000 });
-
-        window.cancelAnimationFrame = originalCancelAnimationFrame;
       });
     });
 
     describe('Frequency domain (Spectrum)', () => {
       test('should call method for stopping visualization in frequency domain', () => {
-        const originalClearTimeout = window.clearTimeout;
+        channels.forEach((channel) => {
+          const originalClearTimeout = window.clearTimeout;
 
-        const clearTimeoutMock = jest.fn();
+          const clearTimeoutMock = jest.fn();
 
-        Object.defineProperty(window, 'clearTimeout', {
-          configurable: true,
-          writable    : true,
-          value       : clearTimeoutMock
+          Object.defineProperty(window, 'clearTimeout', {
+            configurable: true,
+            writable    : true,
+            value       : clearTimeoutMock
+          });
+
+          analyser.start('fft', channel);
+          analyser.stop('fft', channel);
+
+          expect(clearTimeoutMock).toHaveBeenCalledTimes(1);
+
+          jest.advanceTimersByTime(1000);
+
+          expect(clearTimeoutMock).toHaveBeenCalledTimes(1);
+
+          window.clearTimeout = originalClearTimeout;
+
+          jest.clearAllTimers();
         });
-
-        analyser.start('fft');
-        analyser.stop('fft');
-
-        expect(clearTimeoutMock).toHaveBeenCalledTimes(1);
-
-        jest.advanceTimersByTime(1000);
-
-        expect(clearTimeoutMock).toHaveBeenCalledTimes(1);
-
-        window.clearTimeout = originalClearTimeout;
       });
 
       test('should call method for stopping visualization in frequency domain (if interval is less than 0)', () => {
-        const originalCancelAnimationFrame = window.cancelAnimationFrame;
+        channels.forEach((channel) => {
+          const originalCancelAnimationFrame = window.cancelAnimationFrame;
 
-        const cancelAnimationFrameMock = jest.fn();
+          const cancelAnimationFrameMock = jest.fn();
 
-        Object.defineProperty(window, 'cancelAnimationFrame', {
-          configurable: true,
-          writable    : true,
-          value       : cancelAnimationFrameMock
+          Object.defineProperty(window, 'cancelAnimationFrame', {
+            configurable: true,
+            writable    : true,
+            value       : cancelAnimationFrameMock
+          });
+
+          analyser.domain('fft', channel).param({ interval: -1 });
+          analyser.start('fft', channel);
+          analyser.stop('fft', channel);
+
+          expect(cancelAnimationFrameMock).toHaveBeenCalledTimes(1);
+
+          jest.advanceTimersToNextTimer(1);
+
+          expect(cancelAnimationFrameMock).toHaveBeenCalledTimes(1);
+
+          analyser.domain('fft', channel).param({ interval: 1000 });
+
+          window.cancelAnimationFrame = originalCancelAnimationFrame;
+
+          jest.clearAllTimers();
         });
-
-        analyser.domain('fft', channelL).param({ interval: -1 });
-        analyser.start('fft');
-        analyser.stop('fft');
-
-        expect(cancelAnimationFrameMock).toHaveBeenCalledTimes(1);
-
-        jest.advanceTimersToNextTimer(1);
-
-        expect(cancelAnimationFrameMock).toHaveBeenCalledTimes(1);
-
-        analyser.domain('fft', channelL).param({ interval: 1000 });
-
-        window.cancelAnimationFrame = originalCancelAnimationFrame;
       });
     });
   });
@@ -289,16 +316,19 @@ describe(Analyser.name, () => {
 
     test('should return instance of `Time`', () => {
       expect(analyser.domain('time', channelL)).toBeInstanceOf(Time);
+      expect(analyser.domain('time', channelR)).toBeInstanceOf(Time);
     });
 
     test('should return instance of `FFT`', () => {
       expect(analyser.domain('fft', channelL)).toBeInstanceOf(FFT);
+      expect(analyser.domain('fft', channelR)).toBeInstanceOf(FFT);
     });
   });
 
   describe(analyser.get.name, () => {
     test('should return instance of `AnalyserNode`', () => {
-      expect(analyser.get()).toBeInstanceOf(AnalyserNodeMock);
+      expect(analyser.get(channelL)).toBeInstanceOf(AnalyserNodeMock);
+      expect(analyser.get(channelR)).toBeInstanceOf(AnalyserNodeMock);
     });
   });
 });

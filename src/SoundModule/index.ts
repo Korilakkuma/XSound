@@ -438,8 +438,13 @@ export abstract class SoundModule implements Connectable {
    * @return {SoundModule} Return value is for method chain.
    */
   public suspend() {
-    this.analyser.stop('time');
-    this.analyser.stop('fft');
+    this.analyser.stop('time', 0);
+    this.analyser.stop('time', 1);
+    this.analyser.stop('fft', 0);
+    this.analyser.stop('fft', 1);
+    this.analyser.stop('spectrogram', 0);
+    this.analyser.stop('spectrogram', 1);
+
     this.runningAnalyser = false;
 
     this.recorder.stop();

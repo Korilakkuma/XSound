@@ -101,8 +101,13 @@ export class ProcessorModule extends SoundModule {
     this.envelopegenerator.start(startTime);
 
     if (!this.runningAnalyser) {
-      this.analyser.start('time');
-      this.analyser.start('fft');
+      this.analyser.start('time', 0);
+      this.analyser.start('time', 1);
+      this.analyser.start('fft', 0);
+      this.analyser.start('fft', 1);
+      this.analyser.start('spectrogram', 0);
+      this.analyser.start('spectrogram', 1);
+
       this.runningAnalyser = true;
     }
 

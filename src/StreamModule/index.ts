@@ -167,8 +167,12 @@ export class StreamModule extends SoundModule {
 
     this.on(this.context.currentTime);
 
-    this.analyser.start('time');
-    this.analyser.start('fft');
+    this.analyser.start('time', 0);
+    this.analyser.start('time', 1);
+    this.analyser.start('fft', 0);
+    this.analyser.start('fft', 1);
+    this.analyser.start('spectrogram', 0);
+    this.analyser.start('spectrogram', 1);
 
     return this;
   }
@@ -182,8 +186,12 @@ export class StreamModule extends SoundModule {
 
     this.off(this.context.currentTime);
 
-    this.analyser.stop('time');
-    this.analyser.stop('fft');
+    this.analyser.stop('time', 0);
+    this.analyser.stop('time', 1);
+    this.analyser.stop('fft', 0);
+    this.analyser.stop('fft', 1);
+    this.analyser.stop('spectrogram', 0);
+    this.analyser.stop('spectrogram', 1);
 
     this.paused = true;
 

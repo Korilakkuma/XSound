@@ -90,7 +90,7 @@ describe(AudioModule.name, () => {
       audioModule.start();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
-      expect(analyserStartMock).toHaveBeenCalledTimes(2);
+      expect(analyserStartMock).toHaveBeenCalledTimes(6);
 
       /* eslint-disable dot-notation */
       audioModule['connect']        = originalConnect;
@@ -124,7 +124,7 @@ describe(AudioModule.name, () => {
       audioModule.stop();
 
       expect(sourceStopMock).toHaveBeenCalledTimes(1);
-      expect(analyserStopMock).toHaveBeenCalledTimes(2);
+      expect(analyserStopMock).toHaveBeenCalledTimes(6);
 
       /* eslint-disable dot-notation */
       audioModule['source'].stop   = originalSourceStop;

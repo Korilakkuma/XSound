@@ -100,6 +100,7 @@ export abstract class Visualizer implements Statable {
 
   /**
    * @param {number} sampleRate This argument is sample rate.
+   * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
    */
   constructor(sampleRate: number, channel: ChannelNumber) {
     this.sampleRate = sampleRate;

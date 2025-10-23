@@ -24,6 +24,7 @@ export default tseslint.config(
     rules: {
       'default-param-last': 'off',
       'dot-notation': 'error',
+      'eqeqeq': 'error',
       'indent': ['error', 2, {
         'ignoredNodes': ['TemplateLiteral'],
         'SwitchCase': 1

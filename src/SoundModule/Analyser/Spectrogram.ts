@@ -8,6 +8,7 @@ export type SpectrogramParams = VisualizerParams & {
   scale?: SpectrumScale,
   duration?: number,
   plotInterval?: number,
+  linearFrequencyTextInterval?: number,
   timeTextInterval?: number,
   readonly minFrequency?: number,
   readonly maxFrequency?: number
@@ -27,11 +28,12 @@ export class Spectrogram extends Visualizer {
   private duration = 10;
 
   private plotInterval = 4;
+  private linearFrequencyTextInterval = 8;
   private timeTextInterval = 16;
   private timeOffset = 1;
   private numberOfSamples = 0;
 
-  private renderSize = 256;
+  private renderSize = 64;
 
   private imagedata: ImageData | null = null;
 
@@ -76,6 +78,7 @@ export class Spectrogram extends Visualizer {
   public override param(params: 'scale'): SpectrumScale;
   public override param(params: 'duration'): number;
   public override param(params: 'plotInterval'): number;
+  public override param(params: 'linearFrequencyTextInterval'): number;
   public override param(params: 'timeTextInterval'): number;
   public override param(params: 'minFrequency'): number;
   public override param(params: 'maxFrequency'): number;
@@ -97,6 +100,10 @@ export class Spectrogram extends Visualizer {
 
         case 'plotInterval': {
           return this.plotInterval;
+        }
+
+        case 'linearFrequencyTextInterval': {
+          return this.linearFrequencyTextInterval;
         }
 
         case 'timeTextInterval': {
@@ -154,6 +161,16 @@ export class Spectrogram extends Visualizer {
         case 'plotInterval': {
           if (typeof value === 'number') {
             this.plotInterval = value;
+          }
+
+          break;
+        }
+
+        case 'linearFrequencyTextInterval': {
+          if (typeof value === 'number') {
+            if (value > 0) {
+              this.linearFrequencyTextInterval = value;
+            }
           }
 
           break;
@@ -268,36 +285,31 @@ export class Spectrogram extends Visualizer {
         case 'linear': {
           const length = Math.min(frequencyBinCount, this.renderSize);
 
-          const h = innerHeight / length;
-
-          for (let k = 0; k < length; k++) {
-            const f = k * frequencyResolution;
-            const x = left;
-            const y = (top + innerHeight) - Math.trunc(f * (innerHeight / length));
-
-            if (((y - h) < top) || (y > (top + innerHeight))) {
+          for (let k = 0; k <= length; k++) {
+            if ((k % this.linearFrequencyTextInterval) !== 0) {
               continue;
             }
 
-            if (f >= 1000) {
-              context.fillText(`${Math.trunc(f / 1000)} kHz`, x, y);
-            } else {
-              context.fillText(`${Math.trunc(f)} Hz`, x, y);
-            }
+            const x = left;
+            const y = ((1 - (k / length)) * innerHeight) + top;
+
+            const frequency = k * frequencyResolution;
+
+            context.fillText(`${Math.trunc(frequency)} Hz`, x, y);
           }
 
           break;
         }
 
         case 'logarithmic': {
-          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((f: 32 | 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 | 16000, index: number) => {
+          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((frequency: 32 | 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 | 16000, index: number) => {
             const x = left;
-            const y = (top + innerHeight) - ((index / Spectrogram.LOGARITHMIC_FREQUENCIES.length) * innerHeight);
+            const y = ((1 - (index / Spectrogram.LOGARITHMIC_FREQUENCIES.length)) * innerHeight) + top;
 
-            if (f >= 1000) {
-              context.fillText(`${Math.trunc(f / 1000)} kHz`, x, y);
+            if (frequency >= 1000) {
+              context.fillText(`${Math.trunc(frequency / 1000)} kHz`, x, y);
             } else {
-              context.fillText(`${f} Hz`, x, y);
+              context.fillText(`${frequency} Hz`, x, y);
             }
           });
 
@@ -316,13 +328,14 @@ export class Spectrogram extends Visualizer {
         const h = parseInt((this.styles.font?.size ?? '13'), 10);
 
         for (let k = 0; k < length; k++) {
-          const f = k * frequencyResolution;
-          const x = left + this.timeOffset;
-          const y = (top + innerHeight) - Math.trunc(f * (innerHeight / length));
+          const frequency = k * frequencyResolution;
 
-          if (((y - h) < top) || (y > (top + innerHeight))) {
+          if ((frequency < Spectrogram.MIN_FREQUENCY) || (frequency > Spectrogram.MAX_FREQUENCY)) {
             continue;
           }
+
+          const x = left + this.timeOffset;
+          const y = ((1 - (k / length)) * innerHeight) + top;
 
           if (this.colorFromNumber === null) {
             const color = Spectrogram.numberToJetColor(data[k]);
@@ -341,23 +354,33 @@ export class Spectrogram extends Visualizer {
       }
 
       case 'logarithmic': {
-        const ratio = Math.log10(Spectrogram.MAX_FREQUENCY / Spectrogram.MIN_FREQUENCY);
+        const ratio      = Spectrogram.MAX_FREQUENCY / Spectrogram.MIN_FREQUENCY;
+        const log10Ratio = Math.log10(ratio);
 
-        const h = innerHeight / Spectrogram.LOGARITHMIC_FREQUENCIES.length;
+        const h = innerHeight / (Spectrogram.LOGARITHMIC_FREQUENCIES.length - 1);
 
         for (let k = 0; k < frequencyBinCount; k++) {
           if (k === 0) {
             continue;
           }
 
-          if ((k % this.plotInterval) !== 0) {
+          if ((k !== 1) && ((k % this.plotInterval) !== 0)) {
             continue;
           }
 
-          const x = left + this.timeOffset;
-          const y = (top + innerHeight) - ((Math.log10((k * frequencyResolution) / Spectrogram.MIN_FREQUENCY) / ratio) * innerHeight);
+          const frequency = k * frequencyResolution;
 
-          if (((y - h) < top) || (y > (top + innerHeight))) {
+          if ((frequency < Spectrogram.MIN_FREQUENCY) || (frequency > Spectrogram.MAX_FREQUENCY)) {
+            continue;
+          }
+
+          const frequencyRatio      = frequency / Spectrogram.MIN_FREQUENCY;
+          const log10FrequencyRatio = Math.log10(frequencyRatio);
+
+          const x = left + this.timeOffset;
+          const y = ((1 - (log10FrequencyRatio / log10Ratio)) * innerHeight) + top;
+
+          if (y < top) {
             continue;
           }
 
@@ -365,12 +388,12 @@ export class Spectrogram extends Visualizer {
             const color = Spectrogram.numberToJetColor(data[k]);
 
             context.fillStyle = color;
-            context.fillRect(x, (y - h), 1, h);
+            context.fillRect(x, (y > (top + innerHeight - h) ? (top + innerHeight - h) : y), 1, h);
           } else {
             const color = this.colorFromNumber(data[k]);
 
             context.fillStyle = color;
-            context.fillRect(x, (y - h), 1, h);
+            context.fillRect(x, (y > (top + innerHeight - h) ? (top + innerHeight - h) : y), 1, h);
           }
         }
 
@@ -495,26 +518,21 @@ export class Spectrogram extends Visualizer {
         case 'linear': {
           const length = Math.min(frequencyBinCount, this.renderSize);
 
-          const h = innerHeight / length;
-
           const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
-          for (let k = 0; k < length; k++) {
-            const f = k * frequencyResolution;
-            const x = left;
-            const y = (top + innerHeight) - Math.trunc(f * (innerHeight / length));
-
-            if (((y - h) < top) || (y > (top + innerHeight))) {
+          for (let k = 0; k <= length; k++) {
+            if ((k % this.linearFrequencyTextInterval) !== 0) {
               continue;
             }
 
+            const x = left;
+            const y = ((1 - (k / length)) * innerHeight) + top;
+
+            const frequency = k * frequencyResolution;
+
             const text = document.createElementNS(Spectrogram.XMLNS, 'text');
 
-            if (f >= 1000) {
-              text.textContent = `${Math.trunc(f / 1000)} kHz`;
-            } else {
-              text.textContent = `${Math.trunc(f)} Hz`;
-            }
+            text.textContent = `${Math.trunc(frequency)} Hz`;
 
             text.setAttribute('x', x.toString(10));
             text.setAttribute('y', y.toString(10));
@@ -534,16 +552,16 @@ export class Spectrogram extends Visualizer {
         case 'logarithmic': {
           const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
-          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((f: 32 | 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 | 16000, index: number) => {
+          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((frequency: 32 | 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 | 16000, index: number) => {
             const x = left;
-            const y = (top + innerHeight) - ((index / Spectrogram.LOGARITHMIC_FREQUENCIES.length) * innerHeight);
+            const y = ((1 - (index / Spectrogram.LOGARITHMIC_FREQUENCIES.length)) * innerHeight) + top;
 
             const text = document.createElementNS(Spectrogram.XMLNS, 'text');
 
-            if (f >= 1000) {
-              text.textContent = `${Math.trunc(f / 1000)} kHz`;
+            if (frequency >= 1000) {
+              text.textContent = `${Math.trunc(frequency / 1000)} kHz`;
             } else {
-              text.textContent = `${f} Hz`;
+              text.textContent = `${frequency} Hz`;
             }
 
             text.setAttribute('x', x.toString(10));
@@ -573,13 +591,14 @@ export class Spectrogram extends Visualizer {
         const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
         for (let k = 0; k < length; k++) {
-          const f = k * frequencyResolution;
-          const x = left + this.timeOffset;
-          const y = (top + innerHeight) - Math.trunc(f * (innerHeight / length));
+          const frequency = k * frequencyResolution;
 
-          if (((y - h) < top) || (y > (top + innerHeight))) {
+          if ((frequency < Spectrogram.MIN_FREQUENCY) || (frequency > Spectrogram.MAX_FREQUENCY)) {
             continue;
           }
+
+          const x = left + this.timeOffset;
+          const y = ((1 - (k / length)) * innerHeight) + top;
 
           const rect = document.createElementNS(Spectrogram.XMLNS, 'rect');
 
@@ -610,23 +629,33 @@ export class Spectrogram extends Visualizer {
       case 'logarithmic': {
         const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
-        const ratio = Math.log10(Spectrogram.MAX_FREQUENCY / Spectrogram.MIN_FREQUENCY);
+        const ratio      = Spectrogram.MAX_FREQUENCY / Spectrogram.MIN_FREQUENCY;
+        const log10Ratio = Math.log10(ratio);
 
-        const h = innerHeight / Spectrogram.LOGARITHMIC_FREQUENCIES.length;
+        const h = innerHeight / (Spectrogram.LOGARITHMIC_FREQUENCIES.length - 1);
 
         for (let k = 0; k < frequencyBinCount; k++) {
           if (k === 0) {
             continue;
           }
 
-          if ((k % this.plotInterval) !== 0) {
+          if ((k !== 1) && ((k % this.plotInterval) !== 0)) {
             continue;
           }
 
-          const x = left + this.timeOffset;
-          const y = (top + innerHeight) - ((Math.log10((k * frequencyResolution) / Spectrogram.MIN_FREQUENCY) / ratio) * innerHeight);
+          const frequency = k * frequencyResolution;
 
-          if (((y - h) < top) || (y > (top + innerHeight))) {
+          if ((frequency < Spectrogram.MIN_FREQUENCY) || (frequency > Spectrogram.MAX_FREQUENCY)) {
+            continue;
+          }
+
+          const frequencyRatio      = frequency / Spectrogram.MIN_FREQUENCY;
+          const log10FrequencyRatio = Math.log10(frequencyRatio);
+
+          const x = left + this.timeOffset;
+          const y = ((1 - (log10FrequencyRatio / log10Ratio)) * innerHeight) + top;
+
+          if (y < top) {
             continue;
           }
 
@@ -643,7 +672,7 @@ export class Spectrogram extends Visualizer {
           }
 
           rect.setAttribute('x', x.toString(10));
-          rect.setAttribute('y', ((y - h) - 0).toString(10));
+          rect.setAttribute('y', (y > (top + innerHeight - h) ? (top + innerHeight - h) : y).toString(10));
           rect.setAttribute('width', (this.styles.width ? this.styles.width.toString(10) : '1'));
           rect.setAttribute('height', h.toString(10));
           rect.setAttribute('stroke', 'none');

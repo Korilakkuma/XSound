@@ -14,11 +14,12 @@ describe(Spectrogram.name, () => {
 
     describe(spectrogram.param.name, () => {
       const defaultParams: SpectrogramParams = {
-        interval        : 40,
-        duration        : 10,
-        plotInterval    : 4,
-        timeTextInterval: 16,
-        styles          : {
+        interval                   : 40,
+        duration                   : 10,
+        plotInterval               : 4,
+        linearFrequencyTextInterval: 8,
+        timeTextInterval           : 16,
+        styles                     : {
           shape    : 'line',
           gradients: [
             {
@@ -49,11 +50,12 @@ describe(Spectrogram.name, () => {
       };
 
       const params: SpectrogramParams = {
-        interval        : 2.5,
-        duration        : 600.25,
-        plotInterval    : 8,
-        timeTextInterval: 24,
-        styles          : {
+        interval                   : 2.5,
+        duration                   : 600.25,
+        plotInterval               : 8,
+        linearFrequencyTextInterval: 16,
+        timeTextInterval           : 24,
+        styles                     : {
           shape     : 'rect',
           gradients : [
             {
@@ -105,6 +107,10 @@ describe(Spectrogram.name, () => {
 
       test('should return `plotInterval`', () => {
         expect(spectrogram.param('plotInterval')).toBe(8);
+      });
+
+      test('should return `linearFrequencyTextInterval`', () => {
+        expect(spectrogram.param('linearFrequencyTextInterval')).toBe(16);
       });
 
       test('should return `timeTextInterval`', () => {
@@ -159,11 +165,12 @@ describe(Spectrogram.name, () => {
 
     describe(spectrogram.param.name, () => {
       const defaultParams: SpectrogramParams = {
-        interval        : 40,
-        duration        : 10,
-        plotInterval    : 4,
-        timeTextInterval: 16,
-        styles          : {
+        interval                   : 40,
+        duration                   : 10,
+        plotInterval               : 4,
+        linearFrequencyTextInterval: 8,
+        timeTextInterval           : 16,
+        styles                     : {
           shape    : 'line',
           gradients: [
             {
@@ -194,11 +201,12 @@ describe(Spectrogram.name, () => {
       };
 
       const params: SpectrogramParams = {
-        interval        : 2.5,
-        duration        : 600.25,
-        plotInterval    : 8,
-        timeTextInterval: 24,
-        styles          : {
+        interval                   : 2.5,
+        duration                   : 600.25,
+        plotInterval               : 8,
+        linearFrequencyTextInterval: 16,
+        timeTextInterval           : 24,
+        styles                     : {
           shape     : 'rect',
           gradients : [
             {
@@ -250,6 +258,10 @@ describe(Spectrogram.name, () => {
 
       test('should return `plotInterval`', () => {
         expect(spectrogram.param('plotInterval')).toBe(8);
+      });
+
+      test('should return `linearFrequencyTextInterval`', () => {
+        expect(spectrogram.param('linearFrequencyTextInterval')).toBe(16);
       });
 
       test('should return `timeTextInterval`', () => {

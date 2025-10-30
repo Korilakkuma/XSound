@@ -38,24 +38,18 @@ export class Spectrogram extends Visualizer {
   private colorFromNumber: ((data: Uint8Array[0]) => string) | null = null;
 
   /**
-   * This function maps unsigned int 8 bits to alpha value.
-   * @param {Uint8Array[0]} data This argument is converted to alpha value based on mapping algorithm.
-   * @return {string} Return value is alpha value between `0%` and `100%`.
+   * This function maps unsigned int 8 bits to color string by Jet colormap.
+   * @param {Uint8Array[0]} data This argument is converted to color string based on Jet colormap.
+   * @return {string} Return value is color string.
    */
-  static numberToAlpha(data: Uint8Array[0]): string {
-    if (data > 200) {
-      return '100%';
-    }
+  public static numberToJetColor(data: Uint8Array[0]): string {
+    const rgba = 4 * (data / 255);
 
-    if (data > 128) {
-      return '25%';
-    }
+    const r = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba - 1.5), (0 - rgba + 4.5)) * 255)));
+    const g = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba - 0.5), (0 - rgba + 3.5)) * 255)));
+    const b = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba + 0.5), (0 - rgba + 2.5)) * 255)));
 
-    if (data > 64) {
-      return '12%';
-    }
-
-    return '6%';
+    return `rgb(${r} ${g} ${b})`;
   };
 
   /**
@@ -331,9 +325,9 @@ export class Spectrogram extends Visualizer {
           }
 
           if (this.colorFromNumber === null) {
-            const alpha = Spectrogram.numberToAlpha(data[k]);
+            const color = Spectrogram.numberToJetColor(data[k]);
 
-            context.fillStyle = `rgba(0 0 255 / ${alpha})`;
+            context.fillStyle = color;
             context.fillRect(x, (y - h), 1, h);
           } else {
             const color = this.colorFromNumber(data[k]);
@@ -368,9 +362,9 @@ export class Spectrogram extends Visualizer {
           }
 
           if (this.colorFromNumber === null) {
-            const alpha = Spectrogram.numberToAlpha(data[k]);
+            const color = Spectrogram.numberToJetColor(data[k]);
 
-            context.fillStyle = `rgba(0 0 255 / ${alpha})`;
+            context.fillStyle = color;
             context.fillRect(x, (y - h), 1, h);
           } else {
             const color = this.colorFromNumber(data[k]);
@@ -590,9 +584,9 @@ export class Spectrogram extends Visualizer {
           const rect = document.createElementNS(Spectrogram.XMLNS, 'rect');
 
           if (this.colorFromNumber === null) {
-            const alpha = Spectrogram.numberToAlpha(data[k]);
+            const color = Spectrogram.numberToJetColor(data[k]);
 
-            rect.setAttribute('fill', `rgba(0 0 255 / ${alpha})`);
+            rect.setAttribute('fill', color);
           } else {
             const color = this.colorFromNumber(data[k]);
 
@@ -639,9 +633,9 @@ export class Spectrogram extends Visualizer {
           const rect = document.createElementNS(Spectrogram.XMLNS, 'rect');
 
           if (this.colorFromNumber === null) {
-            const alpha = Spectrogram.numberToAlpha(data[k]);
+            const color = Spectrogram.numberToJetColor(data[k]);
 
-            rect.setAttribute('fill', `rgba(0 0 255 / ${alpha})`);
+            rect.setAttribute('fill', color);
           } else {
             const color = this.colorFromNumber(data[k]);
 

@@ -71,11 +71,11 @@
     "README.md"
   ],
   "devDependencies": {
-    "@types/audioworklet": "^0.0.88",
+    "@types/audioworklet": "^0.0.91",
     "@types/jest": "^30.0.0",
     "cross-env": "^10.1.0",
     "dotenv-webpack": "^8.1.1",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.1",
     "eslint-plugin-jest-dom": "^5.5.0",
     "husky": "4.3.8",
     "jest": "^30.2.0",
@@ -86,8 +86,8 @@
     "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
     "typedoc": "^0.28.14",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.46.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4",
     "webpack": "^5.102.1",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"

@@ -9,7 +9,7 @@ import { Fender } from './Preamps/Fender';
 
 export type PreampType = 'marshall' | 'mesa/boogie' | 'fender';
 
-export type PreampCurve = Float32Array | null;
+export type PreampCurve = Float32Array<ArrayBuffer> | null;
 
 export type PreampParams = {
   state?: boolean,

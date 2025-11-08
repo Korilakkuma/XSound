@@ -128,7 +128,7 @@ class PreEqualizer extends Effector {
    * @return {PreEqualizerParams[keyof PreEqualizerParams]} Return value is parameter for pre-equalizer if getter.
    */
   public param(params: 'state'): boolean;
-  public param(params: 'curve'): Float32Array | null;
+  public param(params: 'curve'): PreampCurve;
   public param(params: 'oversample'): OverSampleType;
   public param(params: 'gain'): number;
   public param(params: 'lead'): number;
@@ -319,7 +319,7 @@ class PostEqualizer extends Effector {
    * @return {PostEqualizerParams[keyof PostEqualizerParams]} Return value is parameter for post-equalizer if getter.
    */
   public param(params: 'state'): boolean;
-  public param(params: 'curve'): Float32Array | null;
+  public param(params: 'curve'): PreampCurve;
   public param(params: 'oversample'): OverSampleType;
   public param(params: 'bass'): number;
   public param(params: 'middle'): number;

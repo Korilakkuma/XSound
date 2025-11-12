@@ -10,6 +10,7 @@ export type SpectrogramParams = VisualizerParams & {
   plotInterval?: number,
   linearFrequencyTextInterval?: number,
   timeTextInterval?: number,
+  logarithmicFrequencies?: number[],
   readonly minFrequency?: number,
   readonly maxFrequency?: number
 };
@@ -18,11 +19,6 @@ export type SpectrogramParams = VisualizerParams & {
  * This private class visualizes spectrogram.
  */
 export class Spectrogram extends Visualizer {
-  // for logarithmic
-  private static readonly MIN_FREQUENCY           = 32 as const;
-  private static readonly MAX_FREQUENCY           = 16000 as const;
-  private static readonly LOGARITHMIC_FREQUENCIES = [32, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000] as const;
-
   private scale: SpectrumScale = 'logarithmic';
 
   private duration = 10;
@@ -34,6 +30,12 @@ export class Spectrogram extends Visualizer {
   private numberOfSamples = 0;
 
   private renderSize = 64;
+
+  // for logarithmic
+  private logarithmicFrequencies: number[] = [32, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
+  private minFrequency = this.logarithmicFrequencies[0];
+  private maxFrequency = this.logarithmicFrequencies[this.logarithmicFrequencies.length - 1];
+  private ratio = this.maxFrequency / this.minFrequency;
 
   private imagedata: ImageData | null = null;
 
@@ -80,6 +82,7 @@ export class Spectrogram extends Visualizer {
   public override param(params: 'plotInterval'): number;
   public override param(params: 'linearFrequencyTextInterval'): number;
   public override param(params: 'timeTextInterval'): number;
+  public override param(params: 'logarithmicFrequencies'): number[];
   public override param(params: 'minFrequency'): number;
   public override param(params: 'maxFrequency'): number;
   public override param(params: SpectrogramParams): Spectrogram;
@@ -110,12 +113,16 @@ export class Spectrogram extends Visualizer {
           return this.timeTextInterval;
         }
 
+        case 'logarithmicFrequencies': {
+          return this.logarithmicFrequencies;
+        }
+
         case 'minFrequency': {
-          return Spectrogram.MIN_FREQUENCY;
+          return this.minFrequency;
         }
 
         case 'maxFrequency': {
-          return Spectrogram.MAX_FREQUENCY;
+          return this.maxFrequency;
         }
 
         case 'interval': {
@@ -181,6 +188,18 @@ export class Spectrogram extends Visualizer {
             if (value > 0) {
               this.timeTextInterval = value;
             }
+          }
+
+          break;
+        }
+
+        case 'logarithmicFrequencies': {
+          if (Array.isArray(value)) {
+            this.logarithmicFrequencies = value;
+
+            this.minFrequency = value[0];
+            this.maxFrequency = value[value.length - 1];
+            this.ratio        = this.maxFrequency / this.minFrequency;
           }
 
           break;
@@ -302,9 +321,9 @@ export class Spectrogram extends Visualizer {
         }
 
         case 'logarithmic': {
-          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((frequency: 32 | 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 | 16000, index: number) => {
+          this.logarithmicFrequencies.forEach((frequency: number, index: number) => {
             const x = left;
-            const y = ((1 - (index / Spectrogram.LOGARITHMIC_FREQUENCIES.length)) * innerHeight) + top;
+            const y = ((1 - (index / this.logarithmicFrequencies.length)) * innerHeight) + top;
 
             if (frequency >= 1000) {
               context.fillText(`${Math.trunc(frequency / 1000)} kHz`, x, y);
@@ -330,7 +349,7 @@ export class Spectrogram extends Visualizer {
         for (let k = 0; k < length; k++) {
           const frequency = k * frequencyResolution;
 
-          if ((frequency < Spectrogram.MIN_FREQUENCY) || (frequency > Spectrogram.MAX_FREQUENCY)) {
+          if ((frequency < this.minFrequency) || (frequency > this.maxFrequency)) {
             continue;
           }
 
@@ -354,10 +373,9 @@ export class Spectrogram extends Visualizer {
       }
 
       case 'logarithmic': {
-        const ratio      = Spectrogram.MAX_FREQUENCY / Spectrogram.MIN_FREQUENCY;
-        const log10Ratio = Math.log10(ratio);
+        const log10Ratio = Math.log10(this.ratio);
 
-        const h = innerHeight / (Spectrogram.LOGARITHMIC_FREQUENCIES.length - 1);
+        const h = innerHeight / (this.logarithmicFrequencies.length - 1);
 
         for (let k = 0; k < frequencyBinCount; k++) {
           if (k === 0) {
@@ -370,11 +388,11 @@ export class Spectrogram extends Visualizer {
 
           const frequency = k * frequencyResolution;
 
-          if ((frequency < Spectrogram.MIN_FREQUENCY) || (frequency > Spectrogram.MAX_FREQUENCY)) {
+          if ((frequency < this.minFrequency) || (frequency > this.maxFrequency)) {
             continue;
           }
 
-          const frequencyRatio      = frequency / Spectrogram.MIN_FREQUENCY;
+          const frequencyRatio      = frequency / this.minFrequency;
           const log10FrequencyRatio = Math.log10(frequencyRatio);
 
           const x = left + this.timeOffset;
@@ -552,9 +570,9 @@ export class Spectrogram extends Visualizer {
         case 'logarithmic': {
           const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
-          Spectrogram.LOGARITHMIC_FREQUENCIES.forEach((frequency: 32 | 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000 | 16000, index: number) => {
+          this.logarithmicFrequencies.forEach((frequency: number, index: number) => {
             const x = left;
-            const y = ((1 - (index / Spectrogram.LOGARITHMIC_FREQUENCIES.length)) * innerHeight) + top;
+            const y = ((1 - (index / this.logarithmicFrequencies.length)) * innerHeight) + top;
 
             const text = document.createElementNS(Spectrogram.XMLNS, 'text');
 
@@ -593,7 +611,7 @@ export class Spectrogram extends Visualizer {
         for (let k = 0; k < length; k++) {
           const frequency = k * frequencyResolution;
 
-          if ((frequency < Spectrogram.MIN_FREQUENCY) || (frequency > Spectrogram.MAX_FREQUENCY)) {
+          if ((frequency < this.minFrequency) || (frequency > this.maxFrequency)) {
             continue;
           }
 
@@ -629,10 +647,9 @@ export class Spectrogram extends Visualizer {
       case 'logarithmic': {
         const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 
-        const ratio      = Spectrogram.MAX_FREQUENCY / Spectrogram.MIN_FREQUENCY;
-        const log10Ratio = Math.log10(ratio);
+        const log10Ratio = Math.log10(this.ratio);
 
-        const h = innerHeight / (Spectrogram.LOGARITHMIC_FREQUENCIES.length - 1);
+        const h = innerHeight / (this.logarithmicFrequencies.length - 1);
 
         for (let k = 0; k < frequencyBinCount; k++) {
           if (k === 0) {
@@ -645,11 +662,11 @@ export class Spectrogram extends Visualizer {
 
           const frequency = k * frequencyResolution;
 
-          if ((frequency < Spectrogram.MIN_FREQUENCY) || (frequency > Spectrogram.MAX_FREQUENCY)) {
+          if ((frequency < this.minFrequency) || (frequency > this.maxFrequency)) {
             continue;
           }
 
-          const frequencyRatio      = frequency / Spectrogram.MIN_FREQUENCY;
+          const frequencyRatio      = frequency / this.minFrequency;
           const log10FrequencyRatio = Math.log10(frequencyRatio);
 
           const x = left + this.timeOffset;

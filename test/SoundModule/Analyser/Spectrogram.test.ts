@@ -19,6 +19,7 @@ describe(Spectrogram.name, () => {
         plotInterval               : 4,
         linearFrequencyTextInterval: 8,
         timeTextInterval           : 16,
+        logarithmicFrequencies     : [32, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
         styles                     : {
           shape    : 'line',
           gradients: [
@@ -55,6 +56,7 @@ describe(Spectrogram.name, () => {
         plotInterval               : 8,
         linearFrequencyTextInterval: 16,
         timeTextInterval           : 24,
+        logarithmicFrequencies     : [62.5, 125, 250, 500, 1000, 2000, 4000, 8000],
         styles                     : {
           shape     : 'rect',
           gradients : [
@@ -117,6 +119,10 @@ describe(Spectrogram.name, () => {
         expect(spectrogram.param('timeTextInterval')).toBe(24);
       });
 
+      test('should return `logarithmicFrequencies`', () => {
+        expect(spectrogram.param('logarithmicFrequencies')).toStrictEqual([62.5, 125, 250, 500, 1000, 2000, 4000, 8000]);
+      });
+
       test('should return `styles`', () => {
         expect(spectrogram.param('styles')).toStrictEqual({
           shape    : 'rect',
@@ -170,6 +176,7 @@ describe(Spectrogram.name, () => {
         plotInterval               : 4,
         linearFrequencyTextInterval: 8,
         timeTextInterval           : 16,
+        logarithmicFrequencies     : [32, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
         styles                     : {
           shape    : 'line',
           gradients: [
@@ -206,6 +213,7 @@ describe(Spectrogram.name, () => {
         plotInterval               : 8,
         linearFrequencyTextInterval: 16,
         timeTextInterval           : 24,
+        logarithmicFrequencies     : [62.5, 125, 250, 500, 1000, 2000, 4000, 8000],
         styles                     : {
           shape     : 'rect',
           gradients : [
@@ -262,6 +270,10 @@ describe(Spectrogram.name, () => {
 
       test('should return `linearFrequencyTextInterval`', () => {
         expect(spectrogram.param('linearFrequencyTextInterval')).toBe(16);
+      });
+
+      test('should return `logarithmicFrequencies`', () => {
+        expect(spectrogram.param('logarithmicFrequencies')).toStrictEqual([62.5, 125, 250, 500, 1000, 2000, 4000, 8000]);
       });
 
       test('should return `timeTextInterval`', () => {

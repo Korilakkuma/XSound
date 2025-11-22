@@ -14,12 +14,13 @@ describe(FFT.name, () => {
 
     describe(fft.param.name, () => {
       const defaultParams: FFTParams = {
-        type        : 'uint',
-        size        : 256,
-        textInterval: 1000,
-        scale       : 'linear',
-        interval    : 1000,
-        styles      : {
+        type                  : 'uint',
+        size                  : 256,
+        scale                 : 'linear',
+        logarithmicFrequencies: [32, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
+        interval              : 1000,
+        textInterval          : 1000,
+        styles                : {
           shape    : 'line',
           gradients: [
             {
@@ -50,12 +51,13 @@ describe(FFT.name, () => {
       };
 
       const params: FFTParams = {
-        type        : 'float',
-        size        : 128,
-        textInterval: 120,
-        scale       : 'logarithmic',
-        interval    : 0,
-        styles      : {
+        type                  : 'float',
+        size                  : 128,
+        scale                 : 'logarithmic',
+        logarithmicFrequencies: [62.5, 125, 250, 500, 1000, 2000, 4000, 8000],
+        interval              : 0,
+        textInterval          : 120,
+        styles                : {
           shape     : 'rect',
           gradients : [
             {
@@ -105,12 +107,12 @@ describe(FFT.name, () => {
         expect(fft.param('size')).toBe(128);
       });
 
-      test('should return `textInterval`', () => {
-        expect(fft.param('textInterval')).toBeCloseTo(120, 1);
-      });
-
       test('should return `scale`', () => {
         expect(fft.param('scale')).toBe('logarithmic');
+      });
+
+      test('should return `logarithmicFrequencies`', () => {
+        expect(fft.param('logarithmicFrequencies')).toStrictEqual([62.5, 125, 250, 500, 1000, 2000, 4000, 8000]);
       });
 
       test('should return `minFrequency`', () => {
@@ -123,6 +125,10 @@ describe(FFT.name, () => {
 
       test('should return `interval`', () => {
         expect(fft.param('interval')).toBeCloseTo(0, 1);
+      });
+
+      test('should return `textInterval`', () => {
+        expect(fft.param('textInterval')).toBeCloseTo(120, 1);
       });
 
       test('should return `styles`', () => {
@@ -173,12 +179,13 @@ describe(FFT.name, () => {
 
     describe(fft.param.name, () => {
       const defaultParams: FFTParams = {
-        type        : 'uint',
-        size        : 256,
-        textInterval: 1000,
-        scale       : 'linear',
-        interval    : 1000,
-        styles      : {
+        type                  : 'uint',
+        size                  : 256,
+        scale                 : 'linear',
+        logarithmicFrequencies: [32, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
+        interval              : 1000,
+        textInterval          : 1000,
+        styles                : {
           shape    : 'line',
           gradients: [
             {
@@ -209,11 +216,13 @@ describe(FFT.name, () => {
       };
 
       const params: FFTParams = {
-        type        : 'float',
-        size        : 128,
-        textInterval: 120,
-        interval    : 0,
-        styles      : {
+        type                  : 'float',
+        size                  : 128,
+        scale                 : 'logarithmic',
+        logarithmicFrequencies: [62.5, 125, 250, 500, 1000, 2000, 4000, 8000],
+        interval              : 0,
+        textInterval          : 120,
+        styles                : {
           shape     : 'rect',
           gradients : [
             {
@@ -263,12 +272,28 @@ describe(FFT.name, () => {
         expect(fft.param('size')).toBe(128);
       });
 
-      test('should return `textInterval`', () => {
-        expect(fft.param('textInterval')).toBeCloseTo(120, 1);
+      test('should return `scale`', () => {
+        expect(fft.param('scale')).toBe('logarithmic');
+      });
+
+      test('should return `logarithmicFrequencies`', () => {
+        expect(fft.param('logarithmicFrequencies')).toStrictEqual([62.5, 125, 250, 500, 1000, 2000, 4000, 8000]);
+      });
+
+      test('should return `minFrequency`', () => {
+        expect(fft.param('minFrequency')).toBeCloseTo(62.5, 1);
+      });
+
+      test('should return `maxFrequency`', () => {
+        expect(fft.param('maxFrequency')).toBeCloseTo(8000, 1);
       });
 
       test('should return `interval`', () => {
         expect(fft.param('interval')).toBeCloseTo(0, 1);
+      });
+
+      test('should return `textInterval`', () => {
+        expect(fft.param('textInterval')).toBeCloseTo(120, 1);
       });
 
       test('should return `styles`', () => {

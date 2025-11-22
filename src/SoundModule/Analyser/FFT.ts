@@ -9,6 +9,7 @@ export type FFTParams = VisualizerParams & {
   size?: number,
   textInterval?: number,
   scale?: SpectrumScale,
+  logarithmicFrequencies?: number[],
   readonly minFrequency?: number,
   readonly maxFrequency?: number
 };
@@ -17,11 +18,6 @@ export type FFTParams = VisualizerParams & {
  * This private class visualizes spectrum.
  */
 export class FFT extends Visualizer {
-  // for logarithmic
-  private static readonly MIN_FREQUENCY           = 62.5 as const;
-  private static readonly MAX_FREQUENCY           = 8000 as const;
-  private static readonly LOGARITHMIC_FREQUENCIES = [62.5, 125, 250, 500, 1000, 2000, 4000, 8000] as const;
-
   private type: DataType = 'uint';
 
   // Range for visualization
@@ -31,6 +27,12 @@ export class FFT extends Visualizer {
   private textInterval = 1000;
 
   private scale: SpectrumScale = 'linear';
+
+  // for logarithmic
+  private logarithmicFrequencies: number[] = [32, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
+  private minFrequency = this.logarithmicFrequencies[0];
+  private maxFrequency = this.logarithmicFrequencies[this.logarithmicFrequencies.length - 1];
+  private ratio = this.maxFrequency / this.minFrequency;
 
   /**
    * @param {number} sampleRate This argument is sample rate.
@@ -55,6 +57,7 @@ export class FFT extends Visualizer {
   public override param(params: 'size'): number;
   public override param(params: 'textInterval'): number;
   public override param(params: 'scale'): SpectrumScale;
+  public override param(params: 'logarithmicFrequencies'): number[];
   public override param(params: 'minFrequency'): number;
   public override param(params: 'maxFrequency'): number;
   public override param(params: FFTParams): FFT;
@@ -77,12 +80,16 @@ export class FFT extends Visualizer {
           return this.scale;
         }
 
+        case 'logarithmicFrequencies': {
+          return this.logarithmicFrequencies;
+        }
+
         case 'minFrequency': {
-          return FFT.MIN_FREQUENCY;
+          return this.minFrequency;
         }
 
         case 'maxFrequency': {
-          return FFT.MAX_FREQUENCY;
+          return this.maxFrequency;
         }
 
         case 'interval': {
@@ -131,6 +138,16 @@ export class FFT extends Visualizer {
           }
 
           break;
+        }
+
+        case 'logarithmicFrequencies': {
+          if (Array.isArray(value)) {
+            this.logarithmicFrequencies = value;
+
+            this.minFrequency = value[0];
+            this.maxFrequency = value[value.length - 1];
+            this.ratio        = this.maxFrequency / this.minFrequency;
+          }
         }
       }
     }
@@ -222,8 +239,13 @@ export class FFT extends Visualizer {
               }
 
               const f = i * frequencyResolution;
-              const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
+              const x = Math.trunc((Math.log10(f / this.minFrequency) / Math.log10(this.ratio)) * innerWidth) + left;
               const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+
+              // HACK: Because of infinity sometimes
+              if (!Number.isFinite(y)) {
+                continue;
+              }
 
               if ((x < left) || (x > (left + innerWidth))) {
                 continue;
@@ -329,9 +351,9 @@ export class FFT extends Visualizer {
           }
         }
       } else {
-        FFT.LOGARITHMIC_FREQUENCIES.forEach((f: 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000) => {
-          const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
-          const t = (f < 1000) ? `${f} Hz` : `${(f / 1000).toString(10).slice(0, 3)} kHz`;
+        this.logarithmicFrequencies.forEach((frequency: number) => {
+          const x = Math.trunc((Math.log10(frequency / this.minFrequency) / Math.log10(this.ratio)) * innerWidth) + left;
+          const t = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
 
           // Visualize grid
           if (gridColor !== 'none') {
@@ -481,11 +503,11 @@ export class FFT extends Visualizer {
               }
 
               const f = i * frequencyResolution;
-              const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
+              const x = Math.trunc((Math.log10(f / this.minFrequency) / Math.log10(this.ratio)) * innerWidth) + left;
               const y = Math.trunc(-1 * (data[i] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
               // HACK: Because of infinity sometimes
-              if (!Number.isFinite(x) || !Number.isFinite(y)) {
+              if (!Number.isFinite(y)) {
                 continue;
               }
 
@@ -641,9 +663,9 @@ export class FFT extends Visualizer {
           }
         }
       } else {
-        FFT.LOGARITHMIC_FREQUENCIES.forEach((f: 62.5 | 125 | 250 | 500 | 1000 | 2000 | 4000 | 8000) => {
-          const x = Math.trunc((Math.log10(f / FFT.MIN_FREQUENCY) / Math.log10(FFT.MAX_FREQUENCY / FFT.MIN_FREQUENCY)) * innerWidth) + left;
-          const t = (f < 1000) ? `${f} Hz` : `${(f / 1000).toString(10).slice(0, 3)} kHz`;
+        this.logarithmicFrequencies.forEach((frequency: number) => {
+          const x = Math.trunc((Math.log10(frequency / this.minFrequency) / Math.log10(this.ratio)) * innerWidth) + left;
+          const t = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
 
           // Visualize grid
           if (gridColor !== 'none') {

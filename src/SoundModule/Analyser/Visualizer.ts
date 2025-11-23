@@ -356,12 +356,12 @@ export abstract class Visualizer implements Statable {
         // Visualize wave
         context.beginPath();
 
-        for (let i = 0, len = data.length; i < len; i++) {
-          if (!numberOfPlots || ((i % numberOfPlots) === 0)) {
-            const x = ((i / len) * innerWidth) + left;
-            const y = ((1 - data[i]) * (innerHeight / 2)) + top;
+        for (let n = 0, len = data.length; n < len; n++) {
+          if (!numberOfPlots || ((n % numberOfPlots) === 0)) {
+            const x = ((n / len) * innerWidth) + left;
+            const y = ((1 - data[n]) * (innerHeight / 2)) + top;
 
-            if (i === 0) {
+            if (n === 0) {
               context.moveTo((x + (context.lineWidth / 2)),  y);
             } else {
               context.lineTo(x, y);
@@ -376,10 +376,10 @@ export abstract class Visualizer implements Statable {
 
       case 'rect': {
         // Visualize wave
-        for (let i = 0, len = data.length; i < len; i++) {
-          if (!numberOfPlots || ((i % numberOfPlots) === 0)) {
-            const x = ((i / len) * innerWidth) + left;
-            const y = -1 * (data[i] * (innerHeight / 2));
+        for (let n = 0, len = data.length; n < len; n++) {
+          if (!numberOfPlots || ((n % numberOfPlots) === 0)) {
+            const x = ((n / len) * innerWidth) + left;
+            const y = -1 * (data[n] * (innerHeight / 2));
 
             // Set style
             if (this.styles.gradients) {
@@ -431,12 +431,12 @@ export abstract class Visualizer implements Statable {
 
         let d = '';
 
-        for (let i = 0, len = data.length; i < len; i++) {
-          if ((i % numberOfPlots) === 0) {
-            const x = ((i / len) * innerWidth) + left;
-            const y = ((1 - data[i]) * (innerHeight / 2)) + top;
+        for (let n = 0, len = data.length; n < len; n++) {
+          if ((n % numberOfPlots) === 0) {
+            const x = ((n / len) * innerWidth) + left;
+            const y = ((1 - data[n]) * (innerHeight / 2)) + top;
 
-            if (i === 0) {
+            if (n === 0) {
               d += `M${x + ((this.styles.width ?? 1.5) / 2)} ${y}`;
             } else {
               d += ` L${x} ${y}`;
@@ -469,12 +469,12 @@ export abstract class Visualizer implements Statable {
           g.appendChild(defs);
         }
 
-        for (let i = 0, len = data.length; i < len; i++) {
-          if ((i % numberOfPlots) === 0) {
+        for (let n = 0, len = data.length; n < len; n++) {
+          if ((n % numberOfPlots) === 0) {
             const rect = document.createElementNS(Visualizer.XMLNS, 'rect');
 
-            const x = ((i / len) * innerWidth) + left;
-            const y = data[i] * (innerHeight / 2);
+            const x = ((n / len) * innerWidth) + left;
+            const y = data[n] * (innerHeight / 2);
 
             rect.setAttribute('x',     x.toString(10));
             rect.setAttribute('y',     middle.toString(10));

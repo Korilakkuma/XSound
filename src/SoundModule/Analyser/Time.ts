@@ -147,11 +147,11 @@ export class Time extends Visualizer {
             // Visualize wave
             context.beginPath();
 
-            for (let i = 0, len = data.length; i < len; i++) {
-              const x = ((i / len) * innerWidth) + left;
-              const y = ((1 - (data[i] / 255)) * innerHeight) + top;
+            for (let n = 0, len = data.length; n < len; n++) {
+              const x = ((n / len) * innerWidth) + left;
+              const y = ((1 - (data[n] / 255)) * innerHeight) + top;
 
-              if (i === 0) {
+              if (n === 0) {
                 context.moveTo((x + (lineWidth / 2)), y);
               } else {
                 context.lineTo(x, y);
@@ -165,9 +165,9 @@ export class Time extends Visualizer {
 
           case 'rect': {
             // Visualize wave
-            for (let i = 0, len = data.length; i < len; i++) {
-              const x = ((i / len) * innerWidth) + left;
-              const y = (0.5 - (data[i] / 255)) * innerHeight;
+            for (let n = 0, len = data.length; n < len; n++) {
+              const x = ((n / len) * innerWidth) + left;
+              const y = (0.5 - (data[n] / 255)) * innerHeight;
 
               // Set style
               if (this.styles.gradients) {
@@ -196,10 +196,11 @@ export class Time extends Visualizer {
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {
       // Visualize grid and text (X axis)
-      for (let i = 0, len = data.length; i < len; i++) {
-        if ((i % numberOfTexts) === 0) {
-          const x = Math.trunc((i / len) * innerWidth) + left;
-          const t = `${Math.ceil((i / this.sampleRate) * 1000)} ms`;
+      for (let n = 0, len = data.length; n < len; n++) {
+        if ((n % numberOfTexts) === 0) {
+          const x = Math.trunc((n / len) * innerWidth) + left;
+
+          const timeText = `${Math.ceil((n / this.sampleRate) * 1000)} ms`;
 
           // Visualize grid
           if (gridColor !== 'none') {
@@ -211,15 +212,15 @@ export class Time extends Visualizer {
           if (textColor !== 'none') {
             context.fillStyle = textColor;
             context.font      = this.createFontString();
-            context.fillText(t, (x - (context.measureText(t).width / 2)), (top + innerHeight + fontSize));
+            context.fillText(timeText, (x - (context.measureText(timeText).width / 2)), (top + innerHeight + fontSize));
           }
         }
       }
 
       // Visualize grid and text (Y axis)
-      for (const t of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
-        const x = Math.trunc(left - context.measureText(t).width);
-        const y = Math.trunc((1 - Number(t.trim())) * (innerHeight / 2)) + top;
+      for (const amplitudeText of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
+        const x = Math.trunc(left - context.measureText(amplitudeText).width);
+        const y = Math.trunc((1 - Number(amplitudeText.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -231,7 +232,7 @@ export class Time extends Visualizer {
         if (textColor !== 'none') {
           context.fillStyle = textColor;
           context.font      = this.createFontString();
-          context.fillText(t, x, (y - Math.trunc(fontSize / 4)));
+          context.fillText(amplitudeText, x, (y - Math.trunc(fontSize / 4)));
         }
       }
     }
@@ -295,11 +296,11 @@ export class Time extends Visualizer {
 
             let d = '';
 
-            for (let i = 0, len = data.length; i < len; i++) {
-              const x = ((i / len) * innerWidth) + left;
-              const y = ((1 - (data[i] / 255)) * innerHeight) + top;
+            for (let n = 0, len = data.length; n < len; n++) {
+              const x = ((n / len) * innerWidth) + left;
+              const y = ((1 - (data[n] / 255)) * innerHeight) + top;
 
-              if (i === 0) {
+              if (n === 0) {
                 d += `M${x + (lineWidth / 2)} ${y}`;
               } else {
                 d += ` L${x} ${y}`;
@@ -333,11 +334,11 @@ export class Time extends Visualizer {
               g.appendChild(defs);
             }
 
-            for (let i = 0, len = data.length; i < len; i++) {
+            for (let n = 0, len = data.length; n < len; n++) {
               const rect = document.createElementNS(Time.XMLNS, 'rect');
 
-              const x = ((i / len) * innerWidth) + left;
-              const y = ((data[i] / 255) - 0.5) * innerHeight;
+              const x = ((n / len) * innerWidth) + left;
+              const y = ((data[n] / 255) - 0.5) * innerHeight;
 
               rect.setAttribute('x',     x.toString(10));
               rect.setAttribute('y',     middle.toString(10));
@@ -366,10 +367,11 @@ export class Time extends Visualizer {
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {
       // Visualize grid and text (X axis)
-      for (let i = 0, len = data.length; i < len; i++) {
-        if ((i % numberOfTexts) === 0) {
-          const x = Math.trunc((i / len) * innerWidth) + left;
-          const t = `${Math.ceil((i / this.sampleRate) * 1000)} ms`;
+      for (let n = 0, len = data.length; n < len; n++) {
+        if ((n % numberOfTexts) === 0) {
+          const x = Math.trunc((n / len) * innerWidth) + left;
+
+          const timeText = `${Math.ceil((n / this.sampleRate) * 1000)} ms`;
 
           // Visualize grid
           if (gridColor !== 'none') {
@@ -390,7 +392,7 @@ export class Time extends Visualizer {
           if (textColor !== 'none') {
             const text = document.createElementNS(Time.XMLNS, 'text');
 
-            text.textContent = t;
+            text.textContent = timeText;
 
             text.setAttribute('x', x.toString(10));
             text.setAttribute('y', (top + innerHeight + fontSize).toString(10));
@@ -409,9 +411,9 @@ export class Time extends Visualizer {
       }
 
       // Visualize grid and text (Y axis)
-      for (const t of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
+      for (const amplitudeText of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
         const x = left;
-        const y = Math.trunc((1 - Number(t.trim())) * (innerHeight / 2)) + top;
+        const y = Math.trunc((1 - Number(amplitudeText.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -432,7 +434,7 @@ export class Time extends Visualizer {
         if (textColor !== 'none') {
           const text = document.createElementNS(Time.XMLNS, 'text');
 
-          text.textContent = t;
+          text.textContent = amplitudeText;
 
           text.setAttribute('x', x.toString(10));
           text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));

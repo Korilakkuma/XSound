@@ -7,6 +7,7 @@ import {
   computeFrequency,
   computeHz,
   computePlaybackRate,
+  windowFunction,
   fft,
   ifft,
   ajax,
@@ -88,6 +89,41 @@ describe(computePlaybackRate.name, () => {
   test('should return `1` (fallback playback rate)', () => {
     expect(computePlaybackRate(0, 0)).toBeCloseTo(1, 0);
     expect(computePlaybackRate(-0.0025, 0)).toBeCloseTo(1, 0);
+  });
+});
+
+describe(windowFunction.name, () => {
+  const size = 8;
+
+  test('should return rectangluar window function', () => {
+    const expected = new Float32Array([1, 1, 1, 1, 1, 1, 1, 1]);
+
+    expect(windowFunction(size, 'rect')).toStrictEqual(expected);
+    expect(windowFunction(size)).toStrictEqual(expected);
+  });
+
+  test('should return hanning window function', () => {
+    const expected = new Float32Array([0.000000, 0.188255, 0.611260, 0.950484, 0.950484, 0.611260, 0.188255, 0.000000]);
+
+    windowFunction(size, 'hanning').forEach((v, n) => {
+      expect(v).toBeCloseTo(expected[n], 5);
+    });
+  });
+
+  test('should return hamming window function', () => {
+    const expected = new Float32Array([0.0799999, 0.2531946, 0.6423596, 0.9544456, 0.9544456, 0.6423596, 0.2531946, 0.0799999]);
+
+    windowFunction(size, 'hamming').forEach((v, n) => {
+      expect(v).toBeCloseTo(expected[n], 5);
+    });
+  });
+
+  test('should return blackman window function', () => {
+    const expected = new Float32Array([0.000000, 0.090453, 0.459182, 0.920363, 0.920363, 0.459182, 0.090453, 0.000000]);
+
+    windowFunction(size, 'blackman').forEach((v, n) => {
+      expect(v).toBeCloseTo(expected[n], 5);
+    });
   });
 });
 

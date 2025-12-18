@@ -151,6 +151,64 @@ export interface FileEvent extends Event {
 export type FileReaderType      = 'arraybuffer' | 'dataURL' | 'text' | 'json';
 export type FileReaderErrorText = 'NOT_FOUND_ERR' | 'SECURITY_ERR' | 'ABORT_ERR' | 'NOT_READABLE_ERR' | 'ERR' | '';
 
+export type WindowFunction = 'rect' | 'hanning' | 'hamming' | 'blackman';
+
+/**
+ * This class (static) method applies window function
+ * @param {number} size This argument is size of window function.
+ * @param {WindowFunction} type This argument is type of window function. The default value is 'rect' (rectangular window).
+ * @return {Float32Array} Return value is instance of `Float32Array` as window function.
+ */
+export function windowFunction(size: number, type: WindowFunction = 'rect'): Float32Array {
+  if (size <= 0) {
+    return new Float32Array([]);
+  }
+
+  const w = new Float32Array(size);
+
+  switch (type) {
+    case 'rect': {
+      for (let n = 0; n < size; n++) {
+        w[n] = 1.0;
+      }
+
+      break;
+    }
+
+    case 'hanning': {
+      for (let n = 0; n < size; n++) {
+        w[n] = 0.5 - (0.5 * Math.cos((2.0 * Math.PI * n) / (size - 1)));
+      }
+
+      break;
+    }
+
+    case 'hamming': {
+      for (let n = 0; n < size; n++) {
+        w[n] = 0.54 - (0.46 * Math.cos((2.0 * Math.PI * n) / (size - 1)));
+      }
+
+      break;
+    }
+
+    case 'blackman': {
+      const alpha = 0.16;
+
+      const a0 = (1.0 - alpha) / 2.0;
+      const a1 = 1 / 2;
+      const a2 = alpha / 2.0;
+
+      for (let n = 0; n < size; n++) {
+        w[n] = a0 - (a1 * Math.cos((2.0 * Math.PI * n) / (size - 1))) + (a2 * Math.cos((4.0 * Math.PI * n) / (size - 1)));;
+      }
+
+      break;
+    }
+  }
+
+  return w;
+}
+
 export interface FFTWebAssemblyInstance extends WebAssembly.Exports {
   memory: WebAssembly.Memory;
   FFT: (size: number) => void;

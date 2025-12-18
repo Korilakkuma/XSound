@@ -81,7 +81,7 @@ import type { StereoParams } from './SoundModule/Effectors/Stereo';
 import type { TremoloParams } from './SoundModule/Effectors/Tremolo';
 import type { VocalCancelerParams, VocalCancelerAlgorithm } from './SoundModule/Effectors/VocalCanceler';
 import type { WahParams } from './SoundModule/Effectors/Wah';
-import type { PitchChar, ConvertedTime, FileEvent, FileReaderType, FileReaderErrorText } from './XSound';
+import type { PitchChar, ConvertedTime, FileEvent, FileReaderType, FileReaderErrorText, WindowFunction } from './XSound';
 import type { FrozenArray, Inputs, Outputs, Parameters } from './worklet';
 
 import './types';
@@ -139,6 +139,7 @@ import {
   computeFrequency,
   computeHz,
   computePlaybackRate,
+  windowFunction,
   fft,
   ifft,
   ajax,
@@ -299,6 +300,7 @@ XSound.computeIndex        = computeIndex;
 XSound.computeHz           = computeHz;
 XSound.computeFrequency    = computeFrequency;
 XSound.computePlaybackRate = computePlaybackRate;
+XSound.windowFunction      = windowFunction;
 XSound.fft                 = fft;
 XSound.ifft                = ifft;
 XSound.ajax                = ajax;
@@ -709,6 +711,7 @@ export type {
   FileEvent,
   FileReaderType,
   FileReaderErrorText,
+  WindowFunction,
   FrozenArray,
   Inputs,
   Outputs,

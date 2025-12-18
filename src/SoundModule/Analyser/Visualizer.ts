@@ -1,5 +1,6 @@
 import type { Statable } from '../../interfaces';
 import type { ChannelNumber } from '../../types';
+import type { SoundModule } from '../../SoundModule';
 
 export type Color = string;
 
@@ -57,6 +58,7 @@ export abstract class Visualizer implements Statable {
 
   protected sampleRate: number;
   protected channel: ChannelNumber;
+  protected analyser: AnalyserNode | null = null;
 
   protected isActive = false;
   protected graphics: GraphicsApi = '';
@@ -101,10 +103,12 @@ export abstract class Visualizer implements Statable {
   /**
    * @param {number} sampleRate This argument is sample rate.
    * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
+   * @param {AnalyserNode} analyser This argument is instance of `AnalyserNode`.
    */
-  constructor(sampleRate: number, channel: ChannelNumber) {
+  constructor(sampleRate: number, channel: ChannelNumber, analyser: AnalyserNode | null = null) {
     this.sampleRate = sampleRate;
     this.channel    = channel;
+    this.analyser   = analyser;
   }
 
   /**
@@ -123,6 +127,26 @@ export abstract class Visualizer implements Statable {
     }
 
     // Type inference every subclass
+    return this;
+  }
+
+  /**
+   * This method connects sound source to analyser node.
+   * @param {SoundModule|AudioNode} source This argument is either `SoundModule` or `AudioNode`.
+   * @return {Visualizer} Return value is for method chain.
+   */
+  public connect(source: SoundModule | AudioNode) {
+    if (this.analyser === null) {
+      return this;
+    }
+
+    if (source instanceof AudioNode) {
+      source.connect(this.analyser);
+      return;
+    }
+
+    source.OUTPUT.connect(this.analyser);
+
     return this;
   }
 

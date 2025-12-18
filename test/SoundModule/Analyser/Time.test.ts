@@ -1,16 +1,38 @@
 import type { TimeParams } from '/src/SoundModule/Analyser/Time';
 
+import { AnalyserNodeMock } from '/mock/AnalyserNodeMock';
+import { OscillatorNodeMock } from '/mock/OscillatorNodeMock';
 import { canvasMock } from '/mock/CanvasMock';
 import { Time } from '/src/SoundModule/Analyser/Time';
 
 describe(Time.name, () => {
   const sampleRate = 44100;
   const channel    = 0;
+  const analyser   = new AnalyserNodeMock();
+  const oscillator = new OscillatorNodeMock();
 
   describe('use `HTMLCanvasElement`', () => {
-    const time = new Time(sampleRate, channel);
+    // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+    const time = new Time(sampleRate, channel, analyser);
 
     time.setup(canvasMock);
+
+    describe(time.connect.name, () => {
+      test('should call `connect` method', () => {
+        const connectMock = jest.fn();
+
+        const originalConnect = time.connect;
+
+        time.connect = connectMock;
+
+        // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+        time.connect(oscillator);
+
+        expect(connectMock).toHaveBeenCalledTimes(1);
+
+        time.connect = originalConnect;
+      });
+    });
 
     describe(time.param.name, () => {
       const defaultParams: TimeParams = {
@@ -143,13 +165,31 @@ describe(Time.name, () => {
   });
 
   describe('use `SVGElement`', () => {
-    const time = new Time(sampleRate, channel);
+    // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+    const time = new Time(sampleRate, channel, analyser);
 
     const svg = document.createElementNS(Time.XMLNS, 'svg');
 
     svg.appendChild(document.createElementNS(Time.XMLNS, 'path'));
 
     time.setup(svg);
+
+    describe(time.connect.name, () => {
+      test('should call `connect` method', () => {
+        const connectMock = jest.fn();
+
+        const originalConnect = time.connect;
+
+        time.connect = connectMock;
+
+        // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+        time.connect(oscillator);
+
+        expect(connectMock).toHaveBeenCalledTimes(1);
+
+        time.connect = originalConnect;
+      });
+    });
 
     describe(time.param.name, () => {
       const defaultParams: TimeParams = {

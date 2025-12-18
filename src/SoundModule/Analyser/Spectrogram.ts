@@ -59,9 +59,10 @@ export class Spectrogram extends Visualizer {
   /**
    * @param {number} sampleRate This argument is sample rate.
    * @param {ChannelNumber} channel This argument is channel number (Left: 0, Right: 1 ...).
+   * @param {AnalyserNode} analyser This argument is instance of `AnalyserNode`.
    */
-  constructor(sampleRate: number, channel: ChannelNumber) {
-    super(sampleRate, channel);
+  constructor(sampleRate: number, channel: ChannelNumber, analyser: AnalyserNode) {
+    super(sampleRate, channel, analyser);
 
     this.interval = 40;
   }

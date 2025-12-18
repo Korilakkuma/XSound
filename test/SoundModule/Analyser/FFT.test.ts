@@ -1,16 +1,38 @@
 import type { FFTParams } from '/src/SoundModule/Analyser/FFT';
 
+import { AnalyserNodeMock } from '/mock/AnalyserNodeMock';
+import { OscillatorNodeMock } from '/mock/OscillatorNodeMock';
 import { canvasMock } from '/mock/CanvasMock';
 import { FFT } from '/src/SoundModule/Analyser/FFT';
 
 describe(FFT.name, () => {
   const sampleRate = 44100;
   const channel    = 0;
+  const analyser   = new AnalyserNodeMock();
+  const oscillator = new OscillatorNodeMock();
 
   describe('use `HTMLCanvasElement`', () => {
-    const fft = new FFT(sampleRate, channel);
+    // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+    const fft = new FFT(sampleRate, channel, analyser);
 
     fft.setup(canvasMock);
+
+    describe(fft.connect.name, () => {
+      test('should call `connect` method', () => {
+        const connectMock = jest.fn();
+
+        const originalConnect = fft.connect;
+
+        fft.connect = connectMock;
+
+        // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+        fft.connect(oscillator);
+
+        expect(connectMock).toHaveBeenCalledTimes(1);
+
+        fft.connect = originalConnect;
+      });
+    });
 
     describe(fft.param.name, () => {
       const defaultParams: FFTParams = {
@@ -169,13 +191,31 @@ describe(FFT.name, () => {
   });
 
   describe('use `SVGElement`', () => {
-    const fft = new FFT(sampleRate, channel);
+    // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+    const fft = new FFT(sampleRate, channel, analyser);
 
     const svg = document.createElementNS(FFT.XMLNS, 'svg');
 
     svg.appendChild(document.createElementNS(FFT.XMLNS, 'path'));
 
     fft.setup(svg);
+
+    describe(fft.connect.name, () => {
+      test('should call `connect` method', () => {
+        const connectMock = jest.fn();
+
+        const originalConnect = fft.connect;
+
+        fft.connect = connectMock;
+
+        // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+        fft.connect(oscillator);
+
+        expect(connectMock).toHaveBeenCalledTimes(1);
+
+        fft.connect = originalConnect;
+      });
+    });
 
     describe(fft.param.name, () => {
       const defaultParams: FFTParams = {

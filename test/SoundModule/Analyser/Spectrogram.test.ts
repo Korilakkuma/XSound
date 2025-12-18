@@ -1,16 +1,38 @@
 import type { SpectrogramParams } from '/src/SoundModule/Analyser/Spectrogram';
 
+import { AnalyserNodeMock } from '/mock/AnalyserNodeMock';
+import { OscillatorNodeMock } from '/mock/OscillatorNodeMock';
 import { canvasMock } from '/mock/CanvasMock';
 import { Spectrogram } from '/src/SoundModule/Analyser/Spectrogram';
 
 describe(Spectrogram.name, () => {
   const sampleRate = 44100;
   const channel    = 0;
+  const analyser   = new AnalyserNodeMock();
+  const oscillator = new OscillatorNodeMock();
 
   describe('use `HTMLCanvasElement`', () => {
-    const spectrogram = new Spectrogram(sampleRate, channel);
+    // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+    const spectrogram = new Spectrogram(sampleRate, channel, analyser);
 
     spectrogram.setup(canvasMock);
+
+    describe(spectrogram.connect.name, () => {
+      test('should call `connect` method', () => {
+        const connectMock = jest.fn();
+
+        const originalConnect = spectrogram.connect;
+
+        spectrogram.connect = connectMock;
+
+        // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+        spectrogram.connect(oscillator);
+
+        expect(connectMock).toHaveBeenCalledTimes(1);
+
+        spectrogram.connect = originalConnect;
+      });
+    });
 
     describe(spectrogram.param.name, () => {
       const defaultParams: SpectrogramParams = {
@@ -161,13 +183,31 @@ describe(Spectrogram.name, () => {
   });
 
   describe('use `SVGElement`', () => {
-    const spectrogram = new Spectrogram(sampleRate, channel);
+    // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+    const spectrogram = new Spectrogram(sampleRate, channel, analyser);
 
     const svg = document.createElementNS(Spectrogram.XMLNS, 'svg');
 
     svg.appendChild(document.createElementNS(Spectrogram.XMLNS, 'path'));
 
     spectrogram.setup(svg);
+
+    describe(spectrogram.connect.name, () => {
+      test('should call `connect` method', () => {
+        const connectMock = jest.fn();
+
+        const originalConnect = spectrogram.connect;
+
+        spectrogram.connect = connectMock;
+
+        // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
+        spectrogram.connect(oscillator);
+
+        expect(connectMock).toHaveBeenCalledTimes(1);
+
+        spectrogram.connect = originalConnect;
+      });
+    });
 
     describe(spectrogram.param.name, () => {
       const defaultParams: SpectrogramParams = {

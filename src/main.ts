@@ -155,8 +155,8 @@ import {
 } from './XSound';
 import { addAudioWorklet } from './worklet';
 
-export type Source     = OscillatorModule | OneshotModule | NoiseModule | AudioModule | MediaModule | StreamModule | ProcessorModule | MixerModule | MIDI | MML;
-export type SourceName = 'oscillator' | 'oneshot' | 'noise' | 'audio' | 'media' | 'stream' | 'processor' | 'mixer' | 'midi' | 'mml';
+export type Source     = OscillatorModule | OneshotModule | NoiseModule | AudioModule | MediaModule | StreamModule | ProcessorModule | MixerModule | Analyser | MIDI | MML;
+export type SourceName = 'oscillator' | 'oneshot' | 'noise' | 'audio' | 'media' | 'stream' | 'processor' | 'mixer' | 'analyser' | 'midi' | 'mml';
 
 // for legacy browsers
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -174,6 +174,7 @@ const sources: { [sourceName: string]: Source | null } = {
   stream    : null,
   processor : null,
   mixer     : null,
+  analyser  : null,
   midi      : null,
   mml       : null
 };
@@ -203,6 +204,7 @@ const promise = Promise
     sources.stream     = new StreamModule(audiocontext);
     sources.processor  = new ProcessorModule(audiocontext);
     sources.mixer      = new MixerModule(audiocontext);
+    sources.analyser   = new Analyser(audiocontext);
     sources.midi       = new MIDI();
     sources.mml        = new MML();
 
@@ -226,6 +228,7 @@ function XSound(sourceName: 'media'): MediaModule;
 function XSound(sourceName: 'stream'): StreamModule;
 function XSound(sourceName: 'processor'): ProcessorModule;
 function XSound(sourceName: 'mixer'): MixerModule;
+function XSound(sourceName: 'analyser'): Analyser;
 function XSound(sourceName: 'midi'): MIDI;
 function XSound(sourceName: 'mml'): MML;
 function XSound(sourecName: string): Source | null {
@@ -260,6 +263,10 @@ function XSound(sourecName: string): Source | null {
 
     case 'mixer': {
       return sources.mixer;
+    }
+
+    case 'analyser': {
+      return sources.analyser;
     }
 
     case 'midi': {
@@ -371,6 +378,7 @@ XSound.clone = (): typeof ClonedXSound => {
     stream    : null,
     processor : null,
     mixer     : null,
+    analyser  : null,
     midi      : null,
     mml       : null
   };
@@ -383,6 +391,7 @@ XSound.clone = (): typeof ClonedXSound => {
   function ClonedXSound(sourceName: 'stream'): StreamModule;
   function ClonedXSound(sourceName: 'processor'): ProcessorModule;
   function ClonedXSound(sourceName: 'mixer'): MixerModule;
+  function ClonedXSound(sourceName: 'analyser'): Analyser;
   function ClonedXSound(sourceName: 'midi'): MIDI;
   function ClonedXSound(sourceName: 'mml'): MML;
   function ClonedXSound(sourecName: string): Source | null {
@@ -417,6 +426,10 @@ XSound.clone = (): typeof ClonedXSound => {
 
       case 'mixer': {
         return clonedSources.mixer;
+      }
+
+      case 'analyser': {
+        return clonedSources.analyser;
       }
 
       case 'midi': {
@@ -456,6 +469,7 @@ XSound.clone = (): typeof ClonedXSound => {
   clonedSources.stream     = new StreamModule(audiocontext);
   clonedSources.processor  = new ProcessorModule(audiocontext);
   clonedSources.mixer      = new MixerModule(audiocontext);
+  clonedSources.analyser   = new Analyser(audiocontext);
   clonedSources.midi       = new MIDI();
   clonedSources.mml        = new MML();
 

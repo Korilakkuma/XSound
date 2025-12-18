@@ -82,9 +82,9 @@ export class Analyser implements Connectable {
     this.splitter.connect(this.analysers[1], 1, 0);
 
     this.timeOverviews = [new TimeOverview(context.sampleRate, 0), new TimeOverview(context.sampleRate, 1)];
-    this.times         = [new Time(context.sampleRate, 0), new Time(context.sampleRate, 1)];
-    this.ffts          = [new FFT(context.sampleRate, 0), new FFT(context.sampleRate, 1)];
-    this.spectrograms  = [new Spectrogram(context.sampleRate, 0), new Spectrogram(context.sampleRate, 1)];
+    this.times         = [new Time(context.sampleRate, 0, this.analysers[0]), new Time(context.sampleRate, 1, this.analysers[1])];
+    this.ffts          = [new FFT(context.sampleRate, 0, this.analysers[0]), new FFT(context.sampleRate, 1, this.analysers[1])];
+    this.spectrograms  = [new Spectrogram(context.sampleRate, 0, this.analysers[0]), new Spectrogram(context.sampleRate, 1, this.analysers[1])];
 
     // Set default value
     this.analysers.forEach((analyser: AnalyserNode) => {

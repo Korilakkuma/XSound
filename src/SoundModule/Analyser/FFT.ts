@@ -238,7 +238,7 @@ export class FFT extends Visualizer {
           }
 
           case 'logarithmic': {
-            for (let k = 0; k < data.length; k++) {
+            for (let k = 0, len = data.length; k < len; k++) {
               if (k === 0) {
                 continue;
               }

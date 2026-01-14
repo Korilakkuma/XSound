@@ -212,10 +212,25 @@ export class Analyser implements Connectable {
       case 'spectrogram': {
         const interval = this.spectrograms[channel].param('interval');
 
-        const data = new Uint8Array(this.analysers[channel].frequencyBinCount);
+        switch (this.spectrograms[channel].param('type')) {
+          case 'uint': {
+            const data = new Uint8Array(this.analysers[channel].frequencyBinCount);
 
-        this.analysers[channel].getByteFrequencyData(data);
-        this.spectrograms[channel].start(data);
+            this.analysers[channel].getByteFrequencyData(data);
+            this.spectrograms[channel].start(data);
+
+            break;
+          }
+
+          case 'float': {
+            const data = new Float32Array(this.analysers[channel].frequencyBinCount);
+
+            this.analysers[channel].getFloatFrequencyData(data);
+            this.spectrograms[channel].start(data);
+
+            break;
+          }
+        }
 
         if (typeof interval === 'number') {
           this.stop(domain, channelNumber);

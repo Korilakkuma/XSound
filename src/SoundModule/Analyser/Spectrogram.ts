@@ -1,9 +1,11 @@
 import type { ChannelNumber } from '../../types';
+import type { DataType } from '../Analyser';
 import type { VisualizerParams, GraphicsStyles, SpectrumScale } from './Visualizer';
 
 import { Visualizer } from './Visualizer';
 
 export type SpectrogramParams = VisualizerParams & {
+  type?: DataType,
   size?: number,
   scale?: SpectrumScale,
   duration?: number,
@@ -19,6 +21,8 @@ export type SpectrogramParams = VisualizerParams & {
  * This private class visualizes spectrogram.
  */
 export class Spectrogram extends Visualizer {
+  private type: DataType = 'uint';
+
   private scale: SpectrumScale = 'logarithmic';
 
   private duration = 10;
@@ -39,22 +43,42 @@ export class Spectrogram extends Visualizer {
 
   private imagedata: ImageData | null = null;
 
-  private colorFromNumber: ((data: Uint8Array[0]) => string) | null = null;
+  private colorFromNumber: ((data: Uint8Array[0] | Float32Array[0]) => string) | null = null;
 
   /**
    * This function maps unsigned int 8 bits to color string by Jet colormap.
-   * @param {Uint8Array[0]} data This argument is converted to color string based on Jet colormap.
+   * @param {Uint8Array[0]|Float32Array[0]} data This argument is converted to color string based on Jet colormap.
+   * @param {number} maxDecibels This argument is parameter for spectrogram from dB. The default value is -30 dB.
+   * @param {number} minDecibels This argument is parameter for spectrogram from dB. The default value is -100 dB.
    * @return {string} Return value is color string.
    */
-  public static numberToJetColor(data: Uint8Array[0]): string {
-    const rgba = 4 * (data / 255);
+  public static numberToJetColor(data: Uint8Array[0] | Float32Array[0], type: DataType, maxDecibels?: number, minDecibels?: number): string {
+    switch (type) {
+      case 'uint': {
+        const rgba = 4 * (data / 255);
 
-    const r = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba - 1.5), (0 - rgba + 4.5)) * 255)));
-    const g = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba - 0.5), (0 - rgba + 3.5)) * 255)));
-    const b = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba + 0.5), (0 - rgba + 2.5)) * 255)));
+        const r = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba - 1.5), (0 - rgba + 4.5)) * 255)));
+        const g = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba - 0.5), (0 - rgba + 3.5)) * 255)));
+        const b = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba + 0.5), (0 - rgba + 2.5)) * 255)));
 
-    return `rgb(${r} ${g} ${b})`;
-  };
+        return `rgb(${r} ${g} ${b})`;
+      }
+
+      case 'float': {
+        if ((typeof maxDecibels === 'number') && (typeof minDecibels === 'number')) {
+          const rgba = 4 * ((1 / (maxDecibels - minDecibels)) * Math.max(0, (data - minDecibels)));
+
+          const r = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba - 1.5), (0 - rgba + 4.5)) * 255)));
+          const g = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba - 0.5), (0 - rgba + 3.5)) * 255)));
+          const b = Math.max(0, Math.min(255, Math.trunc(Math.min((rgba + 0.5), (0 - rgba + 2.5)) * 255)));
+
+          return `rgb(${r} ${g} ${b})`;
+        }
+
+        return 'rgb(0 0 0)';
+      }
+    }
+  }
 
   /**
    * @param {number} sampleRate This argument is sample rate.
@@ -77,6 +101,7 @@ export class Spectrogram extends Visualizer {
    */
   public override param(params: 'interval'): number;
   public override param(params: 'styles'): GraphicsStyles;
+  public override param(params: 'type'): DataType;
   public override param(params: 'size'): number;
   public override param(params: 'scale'): SpectrumScale;
   public override param(params: 'duration'): number;
@@ -90,6 +115,10 @@ export class Spectrogram extends Visualizer {
   public override param(params: keyof SpectrogramParams | SpectrogramParams): SpectrogramParams[keyof SpectrogramParams] | Spectrogram {
     if (typeof params === 'string') {
       switch (params) {
+        case 'type': {
+          return this.type;
+        }
+
         case 'size': {
           return this.renderSize;
         }
@@ -138,6 +167,16 @@ export class Spectrogram extends Visualizer {
 
     for (const [key, value] of Object.entries(params)) {
       switch (key) {
+        case 'type': {
+          if (typeof value === 'string') {
+            if ((value === 'uint') || (value === 'float')) {
+              this.type = value;
+            }
+          }
+
+          break;
+        }
+
         case 'size': {
           if (typeof value === 'number') {
             this.renderSize = value;
@@ -218,7 +257,7 @@ export class Spectrogram extends Visualizer {
    * @param {function} func This argument is function that converts number to color string;
    * @return {Spectrogram} Return value is for method chain.
    */
-  public setColorFromNumberFunction(func: ((data: Uint8Array[0]) => string) | null): Spectrogram {
+  public setColorFromNumberFunction(func: ((data: Uint8Array[0] | Float32Array[0]) => string) | null): Spectrogram {
     this.colorFromNumber = func;
 
     return this;
@@ -226,10 +265,10 @@ export class Spectrogram extends Visualizer {
 
   /**
    * This method visualizes spectrogram to Canvas.
-   * @param {Uint8Array} data This argument is frequency domain data for spectrogram.
+   * @param {Uint8Array|Float32Array} data This argument is frequency domain data for spectrogram.
    * @override
    */
-  protected override visualizeOnCanvas(data: Uint8Array): void {
+  protected override visualizeOnCanvas(data: Uint8Array | Float32Array): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive) {
       return;
     }
@@ -358,7 +397,7 @@ export class Spectrogram extends Visualizer {
           const y = ((1 - (k / length)) * innerHeight) + top;
 
           if (this.colorFromNumber === null) {
-            const color = Spectrogram.numberToJetColor(data[k]);
+            const color = Spectrogram.numberToJetColor(data[k], this.type, this.analyser?.maxDecibels, this.analyser?.minDecibels);
 
             context.fillStyle = color;
             context.fillRect(x, (y - h), 1, h);
@@ -404,7 +443,7 @@ export class Spectrogram extends Visualizer {
           }
 
           if (this.colorFromNumber === null) {
-            const color = Spectrogram.numberToJetColor(data[k]);
+            const color = Spectrogram.numberToJetColor(data[k], this.type, this.analyser?.maxDecibels, this.analyser?.minDecibels);
 
             context.fillStyle = color;
             context.fillRect(x, (y > (top + innerHeight - h) ? (top + innerHeight - h) : y), 1, h);
@@ -434,10 +473,10 @@ export class Spectrogram extends Visualizer {
 
   /**
    * This method visualizes spectrogram to SVG.
-   * @param {Uint8Array} data This argument is frequency domain data for spectrogram.
+   * @param {Uint8Array|Float32Array} data This argument is frequency domain data for spectrogram.
    * @override
    */
-  protected override visualizeBySVG(data: Uint8Array): void {
+  protected override visualizeBySVG(data: Uint8Array | Float32Array): void {
     if ((this.svg === null) || !this.isActive) {
       return;
     }
@@ -622,7 +661,7 @@ export class Spectrogram extends Visualizer {
           const rect = document.createElementNS(Spectrogram.XMLNS, 'rect');
 
           if (this.colorFromNumber === null) {
-            const color = Spectrogram.numberToJetColor(data[k]);
+            const color = Spectrogram.numberToJetColor(data[k], this.type, this.analyser?.maxDecibels, this.analyser?.minDecibels);
 
             rect.setAttribute('fill', color);
           } else {
@@ -680,7 +719,7 @@ export class Spectrogram extends Visualizer {
           const rect = document.createElementNS(Spectrogram.XMLNS, 'rect');
 
           if (this.colorFromNumber === null) {
-            const color = Spectrogram.numberToJetColor(data[k]);
+            const color = Spectrogram.numberToJetColor(data[k], this.type, this.analyser?.maxDecibels, this.analyser?.minDecibels);
 
             rect.setAttribute('fill', color);
           } else {

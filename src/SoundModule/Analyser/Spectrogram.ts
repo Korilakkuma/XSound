@@ -326,7 +326,7 @@ export class Spectrogram extends Visualizer {
         }
 
         const x = k * (innerWidth / samples) + left;
-        const y = top + innerHeight + parseInt((this.styles.font?.size ?? '13'), 10);
+        const y = top + innerHeight + Number.parseInt((this.styles.font?.size ?? '13'), 10);
 
         const time = (k / samples) * this.duration;
 
@@ -384,7 +384,7 @@ export class Spectrogram extends Visualizer {
       case 'linear': {
         const length = Math.min(frequencyBinCount, this.renderSize);
 
-        const h = parseInt((this.styles.font?.size ?? '13'), 10);
+        const h = Number.parseInt((this.styles.font?.size ?? '13'), 10);
 
         for (let k = 0; k < length; k++) {
           const frequency = k * frequencyResolution;
@@ -494,7 +494,7 @@ export class Spectrogram extends Visualizer {
 
     const gridColor = this.styles.grid ?? 'none';
     const textColor = this.styles.text ?? 'none';
-    const fontSize  = parseInt((this.styles.font?.size ?? '13px'), 10);
+    const fontSize  = Number.parseInt((this.styles.font?.size ?? '13px'), 10);
 
     const frequencyBinCount = data.length;
     const fftSize           = 2 * frequencyBinCount;
@@ -644,7 +644,7 @@ export class Spectrogram extends Visualizer {
       case 'linear': {
         const length = Math.min(frequencyBinCount, this.renderSize);
 
-        const h = parseInt((this.styles.font?.size ?? '13'), 10);
+        const h = Number.parseInt((this.styles.font?.size ?? '13'), 10);
 
         const g = document.createElementNS(Spectrogram.XMLNS, 'g');
 

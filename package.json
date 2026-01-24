@@ -71,7 +71,7 @@
     "README.md"
   ],
   "devDependencies": {
-    "@types/audioworklet": "^0.0.92",
+    "@types/audioworklet": "^0.0.93",
     "@types/jest": "^30.0.0",
     "cross-env": "^10.1.0",
     "dotenv-webpack": "^8.1.1",
@@ -85,11 +85,11 @@
     "terser-webpack-plugin": "^5.3.16",
     "ts-jest": "^29.4.6",
     "ts-loader": "^9.5.4",
-    "typedoc": "^0.28.15",
+    "typedoc": "^0.28.16",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.50.0",
+    "typescript-eslint": "^8.53.1",
     "webpack": "^5.104.1",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2"
+    "webpack-dev-server": "^5.2.3"
   }
 }

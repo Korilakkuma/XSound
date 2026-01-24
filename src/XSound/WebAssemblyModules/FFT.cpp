@@ -20,7 +20,7 @@ static inline int pow2(const int n) {
   return 2 << (n - 1);
 }
 
-static inline void swap(float *const reals, float *const imags, const size_t i, const size_t k) {
+static inline void swap(float *const reals, float *const imags, const int i, const size_t k) {
   float tmp_real;
   float tmp_imag;
 
@@ -78,7 +78,7 @@ void FFT(const size_t size) {
     int rest = number_of_stages - stage;
 
     for (int i = 0; i < pow2(stage - 1); i++) {
-      index[pow2((size_t)(stage - 1) + i)] = index[i] + (size_t)pow2(rest);
+      index[(size_t)(pow2(stage - 1) + i)] = index[i] + (size_t)pow2(rest);
     }
   }
 
@@ -137,7 +137,7 @@ void IFFT(const size_t size) {
     int rest = number_of_stages - stage;
 
     for (int i = 0; i < pow2(stage - 1); i++) {
-      index[pow2((size_t)(stage - 1) + i)] = index[i] + (size_t)pow2(rest);
+      index[(size_t)(pow2(stage - 1) + i)] = index[i] + (size_t)pow2(rest);
     }
   }
 
@@ -149,7 +149,7 @@ void IFFT(const size_t size) {
     swap(reals, imags, index[k], k);
   }
 
-  for (int k = 0; k < size; k++) {
+  for (size_t k = 0; k < size; k++) {
     reals[k] /= size;
     imags[k] /= size;
   }

@@ -174,7 +174,7 @@ static void IFFT(float *const reals, float *const imags, const size_t size) {
     swap(reals, imags, index[k], k);
   }
 
-  for (int k = 0; k < size; k++) {
+  for (size_t k = 0; k < size; k++) {
     reals[k] /= size;
     imags[k] /= size;
   }

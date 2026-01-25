@@ -280,14 +280,18 @@ footer > p {
 }
 
 @keyframes translate-x {
+  /* stylelint-disable declaration-block-single-line-max-declarations */
     0% { opacity: 0; transform: translateX(var(--translate-x)); }
    50% { opacity: 1; transform: translateX(var(--translate-x)); }
   100% { opacity: 1; transform: translateX(0); }
+  /* stylelint-enable declaration-block-single-line-max-declarations */
 }
 
 @keyframes translate-y {
+  /* stylelint-disable declaration-block-single-line-max-declarations */
     0% { opacity: 0; transform: translateY(var(--translate-y)); }
   100% { opacity: 1; transform: translateY(0); }
+  /* stylelint-enable declaration-block-single-line-max-declarations */
 }
 
 @keyframes fade-in {

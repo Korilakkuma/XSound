@@ -268,7 +268,7 @@ export class Spectrogram extends Visualizer {
    * @param {Uint8Array|Float32Array} data This argument is frequency domain data for spectrogram.
    * @override
    */
-  protected override visualizeOnCanvas(data: Uint8Array | Float32Array): void {
+  protected override renderCanvas(data: Uint8Array | Float32Array): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive) {
       return;
     }
@@ -476,7 +476,7 @@ export class Spectrogram extends Visualizer {
    * @param {Uint8Array|Float32Array} data This argument is frequency domain data for spectrogram.
    * @override
    */
-  protected override visualizeBySVG(data: Uint8Array | Float32Array): void {
+  protected override renderSVG(data: Uint8Array | Float32Array): void {
     if ((this.svg === null) || !this.isActive) {
       return;
     }

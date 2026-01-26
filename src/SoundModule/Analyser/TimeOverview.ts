@@ -378,7 +378,7 @@ export class TimeOverview extends Visualizer {
    * @param {Float32Array} data This argument is audio data for visualization.
    * @override
    */
-  protected override visualizeOnCanvas(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  protected override renderCanvas(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive || (data instanceof Uint8Array)) {
       return;
     }
@@ -408,7 +408,7 @@ export class TimeOverview extends Visualizer {
     context.clearRect(0, 0, width, height);
 
     // Begin visualization
-    this.visualizeTimeDomainFloat32ArrayOnCanvas(context, data, innerWidth, innerHeight, middle, numberOfPlots);
+    this.renderTimeDomainFloat32ArrayCanvas(context, data, innerWidth, innerHeight, middle, numberOfPlots);
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {
       // Visualize grid and text (X axis)
@@ -466,7 +466,7 @@ export class TimeOverview extends Visualizer {
    * @param {Float32Array} data This argument is audio data for visualization.
    * @override
    */
-  protected override visualizeBySVG(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  protected override renderSVG(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.svg === null) || !this.isActive || (data instanceof Uint8Array)) {
       return;
     }
@@ -497,7 +497,7 @@ export class TimeOverview extends Visualizer {
     svg.innerHTML = '';
 
     // Begin visualization
-    const element = this.visualizeTimeDomainFloat32ArrayBySVG(data, innerWidth, innerHeight, middle, numberOfPlots, `${TimeOverview.SVG_LINEAR_GRADIENT_ID_TIME_OVERVIEW}-${this.channel}`);
+    const element = this.renderTimeDomainFloat32ArraySVG(data, innerWidth, innerHeight, middle, numberOfPlots, `${TimeOverview.SVG_LINEAR_GRADIENT_ID_TIME_OVERVIEW}-${this.channel}`);
 
     if (element) {
       svg.appendChild(element);

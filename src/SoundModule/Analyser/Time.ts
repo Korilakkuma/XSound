@@ -94,7 +94,7 @@ export class Time extends Visualizer {
    * @param {Uint8Array|Float32Array} data This argument is sound data for visualization.
    * @override
    */
-  protected override visualizeOnCanvas(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  protected override renderCanvas(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.canvas === null) || (this.context === null) || !this.isActive) {
       return;
     }
@@ -130,7 +130,7 @@ export class Time extends Visualizer {
     switch (this.type) {
       case 'float': {
         if (data instanceof Float32Array) {
-          this.visualizeTimeDomainFloat32ArrayOnCanvas(context, data, innerWidth, innerHeight, middle);
+          this.renderTimeDomainFloat32ArrayCanvas(context, data, innerWidth, innerHeight, middle);
         }
 
         break;
@@ -244,7 +244,7 @@ export class Time extends Visualizer {
    * @param {Uint8Array|Float32Array} data This argument is sound data for visualization.
    * @override
    */
-  protected override visualizeBySVG(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
+  protected override renderSVG(data: Uint8Array | Float32Array, _minDecibels?: number, _maxDecibels?: number): void {
     if ((this.svg === null) || !this.isActive) {
       return;
     }
@@ -280,7 +280,7 @@ export class Time extends Visualizer {
     switch (this.type) {
       case 'float': {
         if (data instanceof Float32Array) {
-          const element = this.visualizeTimeDomainFloat32ArrayBySVG(data, innerWidth, innerHeight, middle, 0, Time.SVG_LINEAR_GRADIENT_ID_TIME);
+          const element = this.renderTimeDomainFloat32ArraySVG(data, innerWidth, innerHeight, middle, 0, Time.SVG_LINEAR_GRADIENT_ID_TIME);
 
           if (element !== null) {
             svg.appendChild(element);

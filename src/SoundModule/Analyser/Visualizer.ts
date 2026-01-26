@@ -160,12 +160,12 @@ export abstract class Visualizer implements Statable {
   public start(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number) {
     switch (this.graphics) {
       case 'canvas': {
-        this.visualizeOnCanvas(data, minDecibels, maxDecibels);
+        this.renderCanvas(data, minDecibels, maxDecibels);
         break;
       }
 
       case 'svg': {
-        this.visualizeBySVG(data, minDecibels, maxDecibels);
+        this.renderSVG(data, minDecibels, maxDecibels);
         break;
       }
 
@@ -358,7 +358,7 @@ export abstract class Visualizer implements Statable {
    * @param {number} middle This argument is middle of visualization area.
    * @param {number} numberOfPlots This argument is interval for visualization.
    */
-  protected visualizeTimeDomainFloat32ArrayOnCanvas(context: CanvasRenderingContext2D, data: Float32Array, innerWidth: number, innerHeight: number, middle: number, numberOfPlots?: number): void {
+  protected renderTimeDomainFloat32ArrayCanvas(context: CanvasRenderingContext2D, data: Float32Array, innerWidth: number, innerHeight: number, middle: number, numberOfPlots?: number): void {
     const top  = this.styles.top ?? 15;
     const left = this.styles.left ?? 30;
 
@@ -438,7 +438,7 @@ export abstract class Visualizer implements Statable {
    * @param {string} linearGradientId This argument is `id` attribute for `SVGLinearGradientElement`.
    * @return {SVGPathElement|SVGGElement} This value is instance of `SVGPathElement` or `SVGGElement`.
    */
-  protected visualizeTimeDomainFloat32ArrayBySVG(data: Float32Array, innerWidth: number, innerHeight: number, middle: number, numberOfPlots: number, linearGradientId: string): SVGPathElement | SVGGElement | null {
+  protected renderTimeDomainFloat32ArraySVG(data: Float32Array, innerWidth: number, innerHeight: number, middle: number, numberOfPlots: number, linearGradientId: string): SVGPathElement | SVGGElement | null {
     const top  = this.styles.top ?? 15;
     const left = this.styles.left ?? 30;
 
@@ -568,6 +568,6 @@ export abstract class Visualizer implements Statable {
     return `${style ?? 'normal'} ${weight ?? 'normal'} ${size ?? '13px'} "${family ?? 'Arial'}"`;
   }
 
-  protected abstract visualizeOnCanvas(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void;
-  protected abstract visualizeBySVG(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void;
+  protected abstract renderCanvas(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void;
+  protected abstract renderSVG(data: Uint8Array | Float32Array, minDecibels?: number, maxDecibels?: number): void;
 }

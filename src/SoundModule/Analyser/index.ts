@@ -5,6 +5,7 @@ import type { TimeOverviewParams, CurrentTimeStyles, MouseEventTypes, DragMode, 
 import type { TimeParams } from './Time';
 import type { FFTParams } from './FFT';
 import type { SpectrogramParams } from './Spectrogram';
+import type { Spectrum, SpectrumParams } from './Spectrum';
 
 import { TimeOverview } from './TimeOverview';
 import { Time } from './Time';
@@ -37,7 +38,9 @@ export type {
   FFT,
   FFTParams,
   Spectrogram,
-  SpectrogramParams
+  SpectrogramParams,
+  Spectrum,
+  SpectrumParams
 };
 
 export type AnalyserParams = {

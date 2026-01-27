@@ -34,7 +34,9 @@ import type {
   FFT,
   FFTParams,
   Spectrogram,
-  SpectrogramParams
+  SpectrogramParams,
+  Spectrum,
+  SpectrumParams
 } from './SoundModule/Analyser';
 import type { RecorderParams, RecordType, QuantizationBit, WaveExportType, Frame, Channel, RecorderProcessorMessageEventData } from './SoundModule/Recorder';
 import type { AutopannerParams } from './SoundModule/Effectors/Autopanner';
@@ -624,6 +626,8 @@ export type {
   FFTParams,
   Spectrogram,
   SpectrogramParams,
+  Spectrum,
+  SpectrumParams,
   Recorder,
   RecorderParams,
   RecordType,

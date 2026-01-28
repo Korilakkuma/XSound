@@ -36,7 +36,10 @@ import type {
   Spectrogram,
   SpectrogramParams,
   Spectrum,
-  SpectrumParams
+  SpectrumParams,
+  AmplitudeSpectrum,
+  AmplitudeSpectrumParams,
+  AmplitudeSpectrumUnit
 } from './SoundModule/Analyser';
 import type { RecorderParams, RecordType, QuantizationBit, WaveExportType, Frame, Channel, RecorderProcessorMessageEventData } from './SoundModule/Recorder';
 import type { AutopannerParams } from './SoundModule/Effectors/Autopanner';
@@ -628,6 +631,9 @@ export type {
   SpectrogramParams,
   Spectrum,
   SpectrumParams,
+  AmplitudeSpectrum,
+  AmplitudeSpectrumParams,
+  AmplitudeSpectrumUnit,
   Recorder,
   RecorderParams,
   RecordType,

@@ -7,14 +7,16 @@ import type { FFTParams } from './FFT';
 import type { SpectrogramParams } from './Spectrogram';
 import type { Spectrum, SpectrumParams } from './Spectrum';
 import type { AmplitudeSpectrumParams, AmplitudeSpectrumUnit } from './AmplitudeSpectrum';
+import type { PhaseSpectrumParams, PhaseSpectrumUnit } from './PhaseSpectrum';
 
 import { TimeOverview } from './TimeOverview';
 import { Time } from './Time';
 import { FFT } from './FFT';
 import { Spectrogram } from './Spectrogram';
 import { AmplitudeSpectrum } from './AmplitudeSpectrum';
+import { PhaseSpectrum } from './PhaseSpectrum';
 
-export type Domain   = 'timeoverview' | 'time' | 'fft' | 'spectrogram' | 'offline-amplitude-spectrum';
+export type Domain   = 'timeoverview' | 'time' | 'fft' | 'spectrogram' | 'offline-amplitude-spectrum' | 'offline-phase-spectrum';
 export type DataType = 'uint' | 'float';  // unsigned int 8 bit (`Uint8Array`) or float 32 bit (`Float32Array`)
 export type FFTSize  = 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384 | 32768;
 
@@ -45,7 +47,10 @@ export type {
   SpectrumParams,
   AmplitudeSpectrum,
   AmplitudeSpectrumParams,
-  AmplitudeSpectrumUnit
+  AmplitudeSpectrumUnit,
+  PhaseSpectrum,
+  PhaseSpectrumParams,
+  PhaseSpectrumUnit
 };
 
 export type AnalyserParams = {
@@ -57,7 +62,7 @@ export type AnalyserParams = {
 };
 
 /**
- * This private class manages private classes (`TimeOverview`, `Time`, `FFT`, `AmplitudeSpectrum`) for visualizing sound wave.
+ * This private class manages private classes (`TimeOverview`, `Time`, `FFT`, `AmplitudeSpectrum`, `PhaseSpectrum`) for visualizing sound wave.
  */
 export class Analyser implements Connectable {
   private analysers: [AnalyserNode, AnalyserNode];
@@ -77,6 +82,7 @@ export class Analyser implements Connectable {
   private spectrogramTimerIds: [number | null, number | null] = [null, null];
 
   private amplitudeSpectrum: AmplitudeSpectrum;
+  private phaseSpectrum: PhaseSpectrum;
 
   private minDecibels = -100;
   private maxDecibels = -30;
@@ -100,6 +106,7 @@ export class Analyser implements Connectable {
     this.spectrograms  = [new Spectrogram(context.sampleRate, 0, this.analysers[0]), new Spectrogram(context.sampleRate, 1, this.analysers[1])];
 
     this.amplitudeSpectrum = new AmplitudeSpectrum(context.sampleRate, 0);
+    this.phaseSpectrum     = new PhaseSpectrum(context.sampleRate, 0);
 
     // Set default value
     this.analysers.forEach((analyser: AnalyserNode) => {
@@ -112,7 +119,7 @@ export class Analyser implements Connectable {
 
   /**
    * This method visualizes sound wave.
-   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', 'spectrogram', 'offline-amplitude-spectrum'.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', 'spectrogram', 'offline-amplitude-spectrum', 'offline-phase-spectrum'.
    * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
    * @param {AudioBuffer} buffer This argument is instance of `AudioBuffer` (If domain is 'timeoverview', this argument is required).
    * @param {Float32Array} offlineData This argument is amplitude spectrum or phase spectrum.
@@ -272,6 +279,14 @@ export class Analyser implements Connectable {
 
         break;
       }
+
+      case 'offline-phase-spectrum': {
+        if (offlineData) {
+          this.phaseSpectrum.start(offlineData, this.minDecibels, this.maxDecibels);
+        }
+
+        break;
+      }
     }
 
     return this;
@@ -357,6 +372,10 @@ export class Analyser implements Connectable {
       case 'offline-amplitude-spectrum': {
         break;
       }
+
+      case 'offline-phase-spectrum': {
+        break;
+      }
     }
 
     return this;
@@ -438,16 +457,17 @@ export class Analyser implements Connectable {
   /**
    * This method selects domain for visualization.
    * This method is overloaded for type interface and type check.
-   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', `spectrogram`, 'offline-amplitude-spectrum'.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', `spectrogram`, 'offline-amplitude-spectrum', 'offline-phase-spectrum'.
    * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
-   * @return {TimeOverview|Time|FFT|AmplitudeSpectrum|Analyser} Return value is instance of selected `Visualizer` class.
+   * @return {TimeOverview|Time|FFT|AmplitudeSpectrum|PhaseSpectrum|Analyser} Return value is instance of selected `Visualizer` class.
    */
   public domain(domain: 'timeoverview', channelNumber: ChannelNumber): TimeOverview;
   public domain(domain: 'time', channelNumber?: ChannelNumber): Time;
   public domain(domain: 'fft', channelNumber?: ChannelNumber): FFT;
   public domain(domain: 'spectrogram', channelNumber?: ChannelNumber): Spectrogram;
   public domain(domain: 'offline-amplitude-spectrum'): AmplitudeSpectrum;
-  public domain(domain: Domain, channelNumber?: ChannelNumber): TimeOverview | Time | FFT | Spectrogram | AmplitudeSpectrum | Analyser {
+  public domain(domain: 'offline-phase-spectrum'): PhaseSpectrum;
+  public domain(domain: Domain, channelNumber?: ChannelNumber): TimeOverview | Time | FFT | Spectrogram | AmplitudeSpectrum | PhaseSpectrum | Analyser {
     let channel = channelNumber;
 
     if ((channel === undefined) || (channel === -1)) {
@@ -473,6 +493,10 @@ export class Analyser implements Connectable {
 
       case 'offline-amplitude-spectrum': {
         return this.amplitudeSpectrum;
+      }
+
+      case 'offline-phase-spectrum': {
+        return this.phaseSpectrum;
       }
     }
 

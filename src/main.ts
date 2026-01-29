@@ -39,7 +39,10 @@ import type {
   SpectrumParams,
   AmplitudeSpectrum,
   AmplitudeSpectrumParams,
-  AmplitudeSpectrumUnit
+  AmplitudeSpectrumUnit,
+  PhaseSpectrum,
+  PhaseSpectrumParams,
+  PhaseSpectrumUnit
 } from './SoundModule/Analyser';
 import type { RecorderParams, RecordType, QuantizationBit, WaveExportType, Frame, Channel, RecorderProcessorMessageEventData } from './SoundModule/Recorder';
 import type { AutopannerParams } from './SoundModule/Effectors/Autopanner';
@@ -634,6 +637,9 @@ export type {
   AmplitudeSpectrum,
   AmplitudeSpectrumParams,
   AmplitudeSpectrumUnit,
+  PhaseSpectrum,
+  PhaseSpectrumParams,
+  PhaseSpectrumUnit,
   Recorder,
   RecorderParams,
   RecordType,

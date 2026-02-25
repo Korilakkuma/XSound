@@ -290,6 +290,59 @@ export function ifft(reals: Float32Array, imags: Float32Array, size: number): vo
 }
 
 /**
+ * This class (static) method gets amplitude spectrum or phase spectrum.
+ * @param {Float32Array} data This argument is instance of `Float32Array` as input audio data. This size must be power of 2.
+ * @param {'amplitude'|'phase'} domain This argument is domain for selecting either amplitude spectrum or phase spectrum. The default is 'amplitude'.
+ * @param {WindowFunction} windowFunctionType This argument is window function. The default value is 'hanning'.
+ * @param {number} threshold This argument is amplitude threshold for phase spectrum. The default value is `0.05`.
+ * @return {Float32Array} Return value is instance of `Float32Array` as amplitude spectrum or phase spectrum.
+ */
+export function spectrum(data: Float32Array, domain: 'amplitude' | 'phase' = 'amplitude', windowFunctionType: WindowFunction = 'hanning', threshold = 0.05): Float32Array {
+  const size = data.length;
+
+  const reals = new Float32Array(size);
+  const imags = new Float32Array(size);
+
+  const w = windowFunction(size, windowFunctionType);
+
+  for (let n = 0; n < size; n++) {
+    reals[n] = w[n] * data[n];
+  }
+
+  fft(reals, imags, size);
+
+  const frequencyBinCount = size / 2;
+
+  switch (domain) {
+    case 'amplitude': {
+      const amplitudes = new Float32Array(frequencyBinCount);
+
+      for (let k = 0; k < frequencyBinCount; k++) {
+        amplitudes[k] = Math.sqrt((reals[k] ** 2) + (imags[k] ** 2));
+      }
+
+      return amplitudes;
+    }
+
+    case 'phase': {
+      const phases = new Float32Array(frequencyBinCount);
+
+      for (let k = 0; k < frequencyBinCount; k++) {
+        const amplitude = Math.sqrt((reals[k] ** 2) + (imags[k] ** 2));
+
+        if (amplitude > threshold) {
+          phases[k] = Math.atan2(imags[k], reals[k]);
+        } else {
+          phases[k] = 0;
+        }
+      }
+
+      return phases;
+    }
+  }
+}
+
+/**
  * This class (static) method retrieves resource on web by Ajax.
  * @property {string} url This argument is URL for resource.
  * @property {XMLHttpRequestResponseType} type This argument is response type that is one of 'arraybuffer', 'blob', 'document', 'json', 'text'. The default value is 'arraybuffer'.

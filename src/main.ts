@@ -150,6 +150,7 @@ import {
   windowFunction,
   fft,
   ifft,
+  spectrum,
   ajax,
   convertTime,
   decode,
@@ -311,6 +312,7 @@ XSound.computePlaybackRate = computePlaybackRate;
 XSound.windowFunction      = windowFunction;
 XSound.fft                 = fft;
 XSound.ifft                = ifft;
+XSound.spectrum            = spectrum;
 XSound.ajax                = ajax;
 XSound.convertTime         = convertTime;
 XSound.decode              = decode;

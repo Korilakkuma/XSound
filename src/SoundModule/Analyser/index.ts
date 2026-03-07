@@ -62,7 +62,7 @@ export type AnalyserParams = {
 };
 
 /**
- * This private class manages private classes (`TimeOverview`, `Time`, `FFT`, `AmplitudeSpectrum`, `PhaseSpectrum`) for visualizing sound wave.
+ * This private class manages private classes (`TimeOverview`, `Time`, `FFT`, `Spectrogram`, `AmplitudeSpectrum`, `PhaseSpectrum`) for visualizing sound wave.
  */
 export class Analyser implements Connectable {
   private analysers: [AnalyserNode, AnalyserNode];
@@ -457,9 +457,9 @@ export class Analyser implements Connectable {
   /**
    * This method selects domain for visualization.
    * This method is overloaded for type interface and type check.
-   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', `spectrogram`, 'offline-amplitude-spectrum', 'offline-phase-spectrum'.
+   * @param {Domain} domain This argument is one of 'timeoverview', 'time', 'fft', 'spectrogram', 'offline-amplitude-spectrum', 'offline-phase-spectrum'.
    * @param {ChannelNumber} channelNumber This argument is channel number (Left: 0, Right: 1 ...).
-   * @return {TimeOverview|Time|FFT|AmplitudeSpectrum|PhaseSpectrum|Analyser} Return value is instance of selected `Visualizer` class.
+   * @return {TimeOverview|Time|FFT|Spectrogram|AmplitudeSpectrum|PhaseSpectrum|Analyser} Return value is instance of selected `Visualizer` class.
    */
   public domain(domain: 'timeoverview', channelNumber: ChannelNumber): TimeOverview;
   public domain(domain: 'time', channelNumber?: ChannelNumber): Time;

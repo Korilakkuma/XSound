@@ -343,6 +343,41 @@ export function spectrum(data: Float32Array, domain: 'amplitude' | 'phase' = 'am
 }
 
 /**
+ * This class (static) method converts amplitude array (`-1` - `1`) to amplitude array (decibel unit).
+ * @param {Float32Array} amplitudes This argument is instance of `Float32Array` which amplitude is no unit (`-1` - `1`).
+ * @return {Float32Array} Return value is instance of `Float32Array` as amplitude array (decibel unit).
+ */
+export function toDecibels(amplitudes: Float32Array): Float32Array {
+  const dBs = new Float32Array(amplitudes.length);
+
+  for (let n = 0, len = dBs.length; n < len; n++) {
+    if (amplitudes[n] === 0) {
+      dBs[n] = 20 * Math.log10(0.000001);  // 0.000001 is safe positive minimum on `float` (6 digits)
+      continue;
+    }
+
+    dBs[n] = 20 * Math.log10(Math.abs(amplitudes[n]));
+  }
+
+  return dBs;
+}
+
+/**
+ * This class (static) method converts amplitude array (decibel unit) to amplitude array (-1` - `1`).
+ * @param {Float32Array} dBs This argument is instance of `Float32Array` which amplitude is decibel unit.
+ * @return {Float32Array} Return value is instance of `Float32Array` as amplitude array (-1` - `1`).
+ */
+export function fromDecibels(dBs: Float32Array): Float32Array {
+  const amplitudes = new Float32Array(dBs.length);
+
+  for (let n = 0, len = amplitudes.length;  n < len; n++) {
+    amplitudes[n] = Math.pow(10, (dBs[n] / 20));
+  }
+
+  return amplitudes;
+}
+
+/**
  * This class (static) method retrieves resource on web by Ajax.
  * @property {string} url This argument is URL for resource.
  * @property {XMLHttpRequestResponseType} type This argument is response type that is one of 'arraybuffer', 'blob', 'document', 'json', 'text'. The default value is 'arraybuffer'.

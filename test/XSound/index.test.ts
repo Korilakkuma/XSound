@@ -10,6 +10,8 @@ import {
   windowFunction,
   fft,
   ifft,
+  toDecibels,
+  fromDecibels,
   ajax,
   convertTime,
   decode,
@@ -176,6 +178,26 @@ describe(`${fft.name} and ${ifft.name}`, () => {
 
     [0, 0, 0, 0].forEach((expected, index) => {
       expect(imags[index]).toBeCloseTo(expected, 7);
+    });
+  });
+});
+
+describe(`${toDecibels.name} and ${fromDecibels.name}`, () => {
+  test('should return amplitude array (decibel unit)', () => {
+    const amplitudes = new Float32Array([1,     0.7,     0.5,    0,    -0.5, -0.7,   -1]);
+    const expected   = new Float32Array([0, -3.0980, -6.0205, -120, -6.0205, -3.0980, 0]);
+
+    toDecibels(amplitudes).forEach((amplitude, index) => {
+      expect(amplitude).toBeCloseTo(expected[index], 3);
+    });
+  });
+
+  test('should return amplitude array (`-1` - `1`)', () => {
+    const dBs      = new Float32Array([20,      6,      3, 0,     -3,     -6,    -20]);
+    const expected = new Float32Array([10, 1.9952, 1.4125, 1, 0.7079, 0.5011, 0.1000]);
+
+    fromDecibels(dBs).forEach((amplitude, index) => {
+      expect(amplitude).toBeCloseTo(expected[index], 3);
     });
   });
 });

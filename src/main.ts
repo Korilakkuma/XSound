@@ -151,6 +151,8 @@ import {
   fft,
   ifft,
   spectrum,
+  toDecibels,
+  fromDecibels,
   ajax,
   convertTime,
   decode,
@@ -313,6 +315,8 @@ XSound.windowFunction      = windowFunction;
 XSound.fft                 = fft;
 XSound.ifft                = ifft;
 XSound.spectrum            = spectrum;
+XSound.toDecibels          = toDecibels;
+XSound.fromDecibels        = fromDecibels;
 XSound.ajax                = ajax;
 XSound.convertTime         = convertTime;
 XSound.decode              = decode;

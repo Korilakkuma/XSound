@@ -109,7 +109,7 @@ export class Time extends Visualizer {
     const right       = this.styles.right ?? 30;
     const innerWidth  = width  - (left + right);
     const innerHeight = height - (top  + bottom);
-    const middle      = Math.trunc(innerHeight / 2) + top;
+    const middle      = (innerHeight / 2) + top;
 
     const lineWidth = this.styles.width ?? 1.5;
     const lineCap   = this.styles.cap ?? 'round';
@@ -199,7 +199,7 @@ export class Time extends Visualizer {
       // Visualize grid and text (X axis)
       for (let n = 0, len = data.length; n < len; n++) {
         if ((n % numberOfTexts) === 0) {
-          const x = Math.trunc((n / len) * innerWidth) + left;
+          const x = ((n / len) * innerWidth) + left;
 
           const timeText = `${Math.ceil((n / this.sampleRate) * 1000)} ms`;
 
@@ -220,8 +220,8 @@ export class Time extends Visualizer {
 
       // Visualize grid and text (Y axis)
       for (const amplitudeText of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
-        const x = Math.trunc(left - context.measureText(amplitudeText).width);
-        const y = Math.trunc((1 - Number(amplitudeText.trim())) * (innerHeight / 2)) + top;
+        const x = (left - context.measureText(amplitudeText).width);
+        const y = ((1 - Number(amplitudeText.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -233,7 +233,7 @@ export class Time extends Visualizer {
         if (textColor !== 'none') {
           context.fillStyle = textColor;
           context.font      = this.createFontString();
-          context.fillText(amplitudeText, x, (y - Math.trunc(fontSize / 4)));
+          context.fillText(amplitudeText, x, (y - (fontSize / 4)));
         }
       }
     }
@@ -259,7 +259,7 @@ export class Time extends Visualizer {
     const right       = this.styles.right ?? 30;
     const innerWidth  = width  - (left + right);
     const innerHeight = height - (top  + bottom);
-    const middle      = Math.trunc(innerHeight / 2) + top;
+    const middle      = (innerHeight / 2) + top;
 
     const lineWidth = this.styles.width ?? 1.5;
     const lineCap   = this.styles.cap ?? 'round';
@@ -370,7 +370,7 @@ export class Time extends Visualizer {
       // Visualize grid and text (X axis)
       for (let n = 0, len = data.length; n < len; n++) {
         if ((n % numberOfTexts) === 0) {
-          const x = Math.trunc((n / len) * innerWidth) + left;
+          const x = ((n / len) * innerWidth) + left;
 
           const timeText = `${Math.ceil((n / this.sampleRate) * 1000)} ms`;
 
@@ -414,7 +414,7 @@ export class Time extends Visualizer {
       // Visualize grid and text (Y axis)
       for (const amplitudeText of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
         const x = left;
-        const y = Math.trunc((1 - Number(amplitudeText.trim())) * (innerHeight / 2)) + top;
+        const y = ((1 - Number(amplitudeText.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -438,7 +438,7 @@ export class Time extends Visualizer {
           text.textContent = amplitudeText;
 
           text.setAttribute('x', x.toString(10));
-          text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
+          text.setAttribute('y', (y - (fontSize / 4)).toString(10));
 
           text.setAttribute('text-anchor', 'end');
           text.setAttribute('stroke',      'none');

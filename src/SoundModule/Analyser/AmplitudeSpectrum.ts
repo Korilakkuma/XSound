@@ -583,7 +583,7 @@ export class AmplitudeSpectrum extends Spectrum {
                 text.textContent = amplitudeText;
 
                 text.setAttribute('x', x.toString(10));
-                text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
+                text.setAttribute('y', (y - (fontSize / 4)).toString(10));
 
                 text.setAttribute('text-anchor', 'end');
                 text.setAttribute('stroke',      'none');
@@ -630,7 +630,7 @@ export class AmplitudeSpectrum extends Spectrum {
                 text.textContent = amplitudeText;
 
                 text.setAttribute('x', x.toString(10));
-                text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
+                text.setAttribute('y', (y - (fontSize / 4)).toString(10));
 
                 text.setAttribute('text-anchor', 'end');
                 text.setAttribute('stroke',      'none');

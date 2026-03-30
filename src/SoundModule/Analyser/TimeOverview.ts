@@ -212,7 +212,7 @@ export class TimeOverview extends Visualizer {
 
           case 'sprite': {
             if (this.endTime !== 0) {
-              const baseX = Math.trunc(((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.currentDataSize) * innerWidth);
+              const baseX = (((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.currentDataSize) * innerWidth);
 
               context.fillStyle = this.sprite;
 
@@ -280,7 +280,7 @@ export class TimeOverview extends Visualizer {
 
               baseRect.classList.add(SVG_SPRITE_CLASS_NAME);
 
-              const baseX = Math.trunc(((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.currentDataSize) * innerWidth);
+              const baseX = (((Math.abs(this.endTime - this.startTime) * this.sampleRate) / this.currentDataSize) * innerWidth);
 
               baseRect.setAttribute('y', (top + 1).toString(10));
               baseRect.setAttribute('height', (rect.getAttribute('height') ?? '0'));
@@ -392,7 +392,7 @@ export class TimeOverview extends Visualizer {
     const right       = this.styles.right ?? 30;
     const innerWidth  = width  - (left + right);
     const innerHeight = height - (top  + bottom);
-    const middle      = Math.trunc(innerHeight / 2) + top;
+    const middle      = (innerHeight / 2) + top;
 
     const gridColor = this.styles.grid ?? 'none';
     const textColor = this.styles.text ?? 'none';
@@ -414,7 +414,7 @@ export class TimeOverview extends Visualizer {
       // Visualize grid and text (X axis)
       for (let i = 0, len = data.length; i < len; i++) {
         if ((i % numberOfTexts) === 0) {
-          const x = Math.trunc((i / len) * innerWidth) + left;
+          const x = ((i / len) * innerWidth) + left;
           const t = `${Math.trunc((i / this.sampleRate) / 60)} min`;
 
           // Visualize grid
@@ -434,8 +434,8 @@ export class TimeOverview extends Visualizer {
 
       // Visualize grid and text (Y axis)
       for (const t of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
-        const x = Math.trunc(left - context.measureText(t).width);
-        const y = Math.trunc((1 - Number(t.trim())) * (innerHeight / 2)) + top;
+        const x = (left - context.measureText(t).width);
+        const y = ((1 - Number(t.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -447,7 +447,7 @@ export class TimeOverview extends Visualizer {
         if (textColor !== 'none') {
           context.fillStyle = textColor;
           context.font      = this.createFontString();
-          context.fillText(t, x, (y - Math.trunc(fontSize / 4)));
+          context.fillText(t, x, (y - (fontSize / 4)));
         }
       }
     }
@@ -481,7 +481,7 @@ export class TimeOverview extends Visualizer {
     const right       = this.styles.right ?? 30;
     const innerWidth  = width  - (left + right);
     const innerHeight = height - (top  + bottom);
-    const middle      = Math.trunc(innerHeight / 2) + top;
+    const middle      = (innerHeight / 2) + top;
 
     const gridColor = this.styles.grid ?? 'none';
     const textColor = this.styles.text ?? 'none';
@@ -507,7 +507,7 @@ export class TimeOverview extends Visualizer {
       // Visualize grid and text (X axis)
       for (let i = 0, len = data.length; i < len; i++) {
         if ((i % numberOfTexts) === 0) {
-          const x = Math.trunc((i / len) * innerWidth) + left;
+          const x = ((i / len) * innerWidth) + left;
           const t = `${Math.trunc((i / this.sampleRate) / 60)} min`;
 
           // Visualize grid
@@ -550,7 +550,7 @@ export class TimeOverview extends Visualizer {
       // Visualize grid and text (Y axis)
       for (const t of ['-1.00', '-0.50', ' 0.00', ' 0.50', ' 1.00']) {
         const x = left;
-        const y = Math.trunc((1 - Number(t.trim())) * (innerHeight / 2)) + top;
+        const y = ((1 - Number(t.trim())) * (innerHeight / 2)) + top;
 
         // Visualize grid
         if (gridColor !== 'none') {
@@ -574,7 +574,7 @@ export class TimeOverview extends Visualizer {
           text.textContent = t;
 
           text.setAttribute('x', x.toString(10));
-          text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
+          text.setAttribute('y', (y - (fontSize / 4)).toString(10));
 
           text.setAttribute('text-anchor', 'end');
           text.setAttribute('stroke',      'none');

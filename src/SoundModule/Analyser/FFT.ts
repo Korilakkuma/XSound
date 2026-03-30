@@ -225,7 +225,7 @@ export class FFT extends Visualizer {
           case 'linear': {
             for (let k = 0; k < actualSize; k++) {
               const x = ((k / actualSize) * innerWidth) + left;
-              const y = Math.trunc(-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+              const y = (-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
               if (k === 0) {
                 context.moveTo((x + (lineWidth / 2)), y);
@@ -247,8 +247,8 @@ export class FFT extends Visualizer {
               const frequencyRatio      = frequency / this.minFrequency;
               const log10FrequencyRatio = Math.log10(frequencyRatio);
 
-              const x = Math.trunc((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
-              const y = Math.trunc(-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+              const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
+              const y = (-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
               // HACK: Because of infinity sometimes
               if (!Number.isFinite(y)) {
@@ -339,9 +339,9 @@ export class FFT extends Visualizer {
       if ((this.type === 'uint') || ((this.type === 'float') && (this.scale === 'linear'))) {
         for (let k = 0; k < actualSize; k++) {
           if ((k % numberOfTexts) === 0) {
-            const x = Math.trunc((k / actualSize) * innerWidth) + left;
+            const x = ((k / actualSize) * innerWidth) + left;
 
-            const frequency     = Math.trunc(this.textInterval * (k / numberOfTexts));
+            const frequency     = k * frequencyResolution;
             const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
 
             // Visualize grid
@@ -363,7 +363,7 @@ export class FFT extends Visualizer {
           const frequencyRatio      = frequency / this.minFrequency;
           const log10FrequencyRatio = Math.log10(frequencyRatio);
 
-          const x = Math.trunc((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
+          const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
 
           const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
 
@@ -388,8 +388,8 @@ export class FFT extends Visualizer {
           for (let amplitude = mindB; amplitude <= maxdB; amplitude += 10) {
             const amplitudeText = `${amplitude} dB`;
 
-            const x = Math.trunc(left - context.measureText(amplitudeText).width);
-            const y = Math.trunc(((-1 * (amplitude - maxdB)) / range) * innerHeight) + top;
+            const x = (left - context.measureText(amplitudeText).width);
+            const y = (((-1 * (amplitude - maxdB)) / range) * innerHeight) + top;
 
             // Visualize grid
             if (gridColor !== 'none') {
@@ -410,7 +410,7 @@ export class FFT extends Visualizer {
 
         case 'uint': {
           for (const amplitudeText of ['0.00', '0.25', '0.50', '0.75', '1.00']) {
-            const x = Math.trunc(left - context.measureText(amplitudeText).width);
+            const x = (left - context.measureText(amplitudeText).width);
             const y = ((1 - Number(amplitudeText)) * innerHeight) + top;
 
             // Visualize grid
@@ -491,8 +491,8 @@ export class FFT extends Visualizer {
         switch (this.scale) {
           case 'linear': {
             for (let k = 0; k < actualSize; k++) {
-              const x = Math.trunc((k / actualSize) * innerWidth) + left;
-              const y = Math.trunc(-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+              const x = ((k / actualSize) * innerWidth) + left;
+              const y = (-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
               // HACK: Because of infinity sometimes
               if (!Number.isFinite(x) || !Number.isFinite(y)) {
@@ -519,8 +519,8 @@ export class FFT extends Visualizer {
               const frequencyRatio      = frequency / this.minFrequency;
               const log10FrequencyRatio = Math.log10(frequencyRatio);
 
-              const x = Math.trunc((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
-              const y = Math.trunc(-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+              const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
+              const y = (-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
 
               // HACK: Because of infinity sometimes
               if (!Number.isFinite(y)) {
@@ -564,8 +564,8 @@ export class FFT extends Visualizer {
             let d = '';
 
             for (let k = 0; k < actualSize; k++) {
-              const x = Math.trunc((k / actualSize) * innerWidth) + left;
-              const y = Math.trunc((1 - (data[k] / 255)) * innerHeight) + top;
+              const x = ((k / actualSize) * innerWidth) + left;
+              const y = ((1 - (data[k] / 255)) * innerHeight) + top;
 
               if (k === 0) {
                 d += `M${x + (lineWidth / 2)} ${y}`;
@@ -605,8 +605,8 @@ export class FFT extends Visualizer {
             for (let k = 0; k < actualSize; k++) {
               const rect = document.createElementNS(FFT.XMLNS, 'rect');
 
-              const x = Math.trunc((k / actualSize) * innerWidth) + left;
-              const y = Math.trunc((data[k] / 255) * innerHeight);
+              const x = ((k / actualSize) * innerWidth) + left;
+              const y = ((data[k] / 255) * innerHeight);
 
               rect.setAttribute('x',     x.toString(10));
               rect.setAttribute('y',     (top + innerHeight).toString(10));
@@ -638,9 +638,9 @@ export class FFT extends Visualizer {
       if ((this.type === 'uint') || ((this.type === 'float') && (this.scale === 'linear'))) {
         for (let k = 0; k < actualSize; k++) {
           if ((k % numberOfTexts) === 0) {
-            const x = Math.trunc((k / actualSize) * innerWidth) + left;
+            const x = ((k / actualSize) * innerWidth) + left;
 
-            const frequency     = Math.trunc(this.textInterval * (k / numberOfTexts));
+            const frequency     = k * frequencyResolution;
             const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
 
             // Visualize grid
@@ -683,7 +683,7 @@ export class FFT extends Visualizer {
           const frequencyRatio      = frequency / this.minFrequency;
           const log10FrequencyRatio = Math.log10(frequencyRatio);
 
-          const x = Math.trunc((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
+          const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
 
           const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
 
@@ -730,7 +730,7 @@ export class FFT extends Visualizer {
             const amplitudeText = `${amplitude} dB`;
 
             const x = left;
-            const y = Math.trunc(((-1 * (amplitude - maxdB)) / range) * innerHeight) + top;
+            const y = (((-1 * (amplitude - maxdB)) / range) * innerHeight) + top;
 
             // Visualize grid
             if (gridColor !== 'none') {
@@ -754,7 +754,7 @@ export class FFT extends Visualizer {
               text.textContent = amplitudeText;
 
               text.setAttribute('x', x.toString(10));
-              text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
+              text.setAttribute('y', (y - (fontSize / 4)).toString(10));
 
               text.setAttribute('text-anchor', 'end');
               text.setAttribute('stroke',      'none');
@@ -798,7 +798,7 @@ export class FFT extends Visualizer {
               text.textContent = amplitudeText;
 
               text.setAttribute('x', x.toString(10));
-              text.setAttribute('y', (y - Math.trunc(fontSize / 4)).toString(10));
+              text.setAttribute('y', (y - (fontSize / 4)).toString(10));
 
               text.setAttribute('text-anchor', 'end');
               text.setAttribute('stroke',      'none');

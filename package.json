@@ -86,7 +86,7 @@
     "terser-webpack-plugin": "^5.4.0",
     "ts-jest": "^29.4.6",
     "ts-loader": "^9.5.4",
-    "typedoc": "^0.28.17",
+    "typedoc": "^0.28.18",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.58.0",
     "webpack": "^5.105.4",

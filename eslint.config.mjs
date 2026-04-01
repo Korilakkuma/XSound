@@ -1,26 +1,22 @@
-// @ts-check
-
-import eslint from '@eslint/js';
+import js from '@eslint/js';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import jestDomPlugin from 'eslint-plugin-jest-dom';
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+export default defineConfig([
   {
-    files: ['src/**/*.ts', 'test/**/*.ts', 'mock/**/*.ts'],
-    languageOptions: {
-      'parser': tseslint.parser
-    },
-    linterOptions: {
-      'reportUnusedDisableDirectives': 'error'
-    },
+    files: [
+      '**/*.{js,mjs,cjs,ts,mts,cts}'
+    ],
     plugins: {
-      'jest-dom': jestDomPlugin
+      js
     },
     extends: [
-      ...tseslint.configs.recommended
+      'js/recommended'
     ],
+    languageOptions: {
+      globals: globals.browser
+    },
     rules: {
       'default-param-last': 'off',
       'dot-notation': 'error',
@@ -38,7 +34,8 @@ export default tseslint.config(
       'no-unneeded-ternary': 'off',
       'no-unused-vars': ['off', { 'vars': 'all', 'args': 'after-used' }],
       'no-use-before-define': 'error',
-      'no-useless-constructor': 'error',
+      'no-useless-assignment': 'off',
+      'no-useless-constructor': 'warn',
       'no-var': 'warn',
       'prefer-promise-reject-errors': 'off',
       'quote-props': 'off',
@@ -52,11 +49,7 @@ export default tseslint.config(
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
       '@typescript-eslint/no-use-before-define': 'error'
-    },
-    settings: {
-      'import/resolver': {
-        'typescript': {}
-      }
     }
-  }
-);
+  },
+  tseslint.configs.recommended
+]);

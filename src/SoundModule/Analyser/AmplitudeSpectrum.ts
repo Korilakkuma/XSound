@@ -7,7 +7,7 @@ import { Spectrum } from './Spectrum';
 export type AmplitudeSpectrumUnit = 'none' | 'decibel';
 
 export type AmplitudeSpectrumParams = SpectrumParams & {
-  unit: AmplitudeSpectrumUnit
+  unit?: AmplitudeSpectrumUnit
 };
 
 /**

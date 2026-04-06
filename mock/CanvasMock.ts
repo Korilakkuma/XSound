@@ -5,7 +5,11 @@ Object.defineProperty(canvasMock, 'getContext', {
   writable    : false,
   value       : () => {
     return {
-      clearRect: () => {}
+      beginPath: () => {},
+      clearRect: () => {},
+      lineTo   : () => {},
+      moveTo   : () => {},
+      stroke   : () => {}
     };
   }
 });

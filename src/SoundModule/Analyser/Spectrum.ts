@@ -44,7 +44,7 @@ export abstract class Spectrum extends Visualizer {
    *     Otherwise, return value is for method chain.
    * @override
    */
-  public override param(params: 'interval'): number;
+  public override param(params: 'interval'): number;  // HACK: Not used
   public override param(params: 'styles'): GraphicsStyles;
   public override param(params: 'scale'): SpectrumScale;
   public override param(params: 'logarithmicFrequencies'): number[];

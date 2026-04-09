@@ -172,7 +172,7 @@ export class AmplitudeSpectrum extends Spectrum {
       case 'linear': {
         for (let k = 0; k < renderSize; k++) {
           const x = ((k / renderSize) * innerWidth) + left;
-          const y = this.unit === 'none' ? (((1 - data[k]) * innerHeight) + top) : ((0 - (data[k] - maxdB) * (innerHeight / range)) + top);
+          const y = this.unit === 'none' ? (((1 - data[k]) * innerHeight) + top) : (((0 - (data[k] - maxdB)) * (innerHeight / range)) + top);
 
           if (k === 0) {
             context.moveTo((x + (lineWidth / 2)), y);
@@ -195,7 +195,7 @@ export class AmplitudeSpectrum extends Spectrum {
           const log10FrequencyRatio = Math.log10(frequencyRatio);
 
           const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
-          const y = this.unit === 'none' ? (((1 - data[k]) * innerHeight) + top) : ((0 - (data[k] - maxdB) * (innerHeight / range)) + top);
+          const y = this.unit === 'none' ? (((1 - data[k]) * innerHeight) + top) : (((0 - (data[k] - maxdB)) * (innerHeight / range)) + top);
 
           // HACK: Because of infinity sometimes
           if (!Number.isFinite(y)) {
@@ -310,7 +310,7 @@ export class AmplitudeSpectrum extends Spectrum {
               const amplitudeText = `${amplitude} dB`;
 
               const x = (left - context.measureText(amplitudeText).width);
-              const y = (((-1 * (amplitude - maxdB)) / range) * innerHeight) + top;
+              const y = ((0 - (amplitude - maxdB)) * (innerHeight / range)) + top;
 
               // Visualize grid
               if (gridColor !== 'none') {
@@ -606,7 +606,7 @@ export class AmplitudeSpectrum extends Spectrum {
               const amplitudeText = `${amplitude} dB`;
 
               const x = left;
-              const y = (((-1 * (amplitude - maxdB)) / range) * innerHeight) + top;
+              const y = ((0 - (amplitude - maxdB)) * (innerHeight / range)) + top;
 
               // Visualize grid
               if (gridColor !== 'none') {

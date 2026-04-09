@@ -225,7 +225,7 @@ export class FFT extends Visualizer {
           case 'linear': {
             for (let k = 0; k < actualSize; k++) {
               const x = ((k / actualSize) * innerWidth) + left;
-              const y = (-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+              const y = ((0 - (data[k] - maxdB)) * (innerHeight / range)) + top;
 
               if (k === 0) {
                 context.moveTo((x + (lineWidth / 2)), y);
@@ -248,7 +248,7 @@ export class FFT extends Visualizer {
               const log10FrequencyRatio = Math.log10(frequencyRatio);
 
               const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
-              const y = (-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+              const y = ((0 - (data[k] - maxdB)) * (innerHeight / range)) + top;
 
               // HACK: Because of infinity sometimes
               if (!Number.isFinite(y)) {
@@ -307,7 +307,7 @@ export class FFT extends Visualizer {
             // Visualize wave
             for (let k = 0; k < actualSize; k++) {
               const x = ((k / actualSize) * innerWidth) + left;
-              const y = -1 * ((data[k] / 255) * innerHeight);
+              const y = (0 - (data[k] / 255)) * innerHeight;
 
               // Set style
               if (this.styles.gradients) {
@@ -389,7 +389,7 @@ export class FFT extends Visualizer {
             const amplitudeText = `${amplitude} dB`;
 
             const x = (left - context.measureText(amplitudeText).width);
-            const y = (((-1 * (amplitude - maxdB)) / range) * innerHeight) + top;
+            const y = ((0 - (amplitude - maxdB)) * (innerHeight / range)) + top;
 
             // Visualize grid
             if (gridColor !== 'none') {
@@ -409,9 +409,14 @@ export class FFT extends Visualizer {
         }
 
         case 'uint': {
-          for (const amplitudeText of ['0.00', '0.25', '0.50', '0.75', '1.00']) {
+          const amplitudes      = [1, 0.5, 0];
+          const numberOfDivides = amplitudes.length - 1;
+
+          amplitudes.forEach((amplitude, index) => {
+            const amplitudeText = amplitude.toFixed(1);
+
             const x = (left - context.measureText(amplitudeText).width);
-            const y = ((1 - Number(amplitudeText)) * innerHeight) + top;
+            const y = ((innerHeight / numberOfDivides) * index) + top;
 
             // Visualize grid
             if (gridColor !== 'none') {
@@ -425,7 +430,7 @@ export class FFT extends Visualizer {
               context.font      = this.createFontString();
               context.fillText(amplitudeText, x, y);
             }
-          }
+          });
 
           break;
         }
@@ -492,7 +497,7 @@ export class FFT extends Visualizer {
           case 'linear': {
             for (let k = 0; k < actualSize; k++) {
               const x = ((k / actualSize) * innerWidth) + left;
-              const y = (-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+              const y = ((0 - (data[k] - maxdB)) * (innerHeight / range)) + top;
 
               // HACK: Because of infinity sometimes
               if (!Number.isFinite(x) || !Number.isFinite(y)) {
@@ -520,7 +525,7 @@ export class FFT extends Visualizer {
               const log10FrequencyRatio = Math.log10(frequencyRatio);
 
               const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
-              const y = (-1 * (data[k] - maxdB) * (innerHeight / range)) + top;  // [dB] * [px / dB] = [px]
+              const y = ((0 - (data[k] - maxdB)) * (innerHeight / range)) + top;
 
               // HACK: Because of infinity sometimes
               if (!Number.isFinite(y)) {
@@ -606,7 +611,7 @@ export class FFT extends Visualizer {
               const rect = document.createElementNS(FFT.XMLNS, 'rect');
 
               const x = ((k / actualSize) * innerWidth) + left;
-              const y = ((data[k] / 255) * innerHeight);
+              const y = (data[k] / 255) * innerHeight;
 
               rect.setAttribute('x',     x.toString(10));
               rect.setAttribute('y',     (top + innerHeight).toString(10));
@@ -730,7 +735,7 @@ export class FFT extends Visualizer {
             const amplitudeText = `${amplitude} dB`;
 
             const x = left;
-            const y = (((-1 * (amplitude - maxdB)) / range) * innerHeight) + top;
+            const y = ((0 - (amplitude - maxdB)) * (innerHeight / range)) + top;
 
             // Visualize grid
             if (gridColor !== 'none') {
@@ -772,9 +777,14 @@ export class FFT extends Visualizer {
         }
 
         case 'uint': {
-          for (const amplitudeText of ['0.00', '0.25', '0.50', '0.75', '1.00']) {
+          const amplitudes      = [1, 0.5, 0];
+          const numberOfDivides = amplitudes.length - 1;
+
+          amplitudes.forEach((amplitude, index) => {
+            const amplitudeText = amplitude.toFixed(1);
+
             const x = left;
-            const y = ((1 - Number(amplitudeText)) * innerHeight) + top;
+            const y = ((innerHeight / numberOfDivides) * index) + top;
 
             // Visualize grid
             if (gridColor !== 'none') {
@@ -810,7 +820,7 @@ export class FFT extends Visualizer {
 
               svg.appendChild(text);
             }
-          }
+          });
 
           break;
         }

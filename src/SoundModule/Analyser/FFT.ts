@@ -336,12 +336,40 @@ export class FFT extends Visualizer {
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {
       // Visualize grid and text (X axis)
-      if ((this.type === 'uint') || ((this.type === 'float') && (this.scale === 'linear'))) {
-        for (let k = 0; k < actualSize; k++) {
-          if ((k % numberOfTexts) === 0) {
-            const x = ((k / actualSize) * innerWidth) + left;
+      switch (this.scale) {
+        case 'linear': {
+          for (let k = 0; k < actualSize; k++) {
+            if ((k % numberOfTexts) === 0) {
+              const x = ((k / actualSize) * innerWidth) + left;
 
-            const frequency     = k * frequencyResolution;
+              const frequency     = k * frequencyResolution;
+              const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
+
+              // Visualize grid
+              if (gridColor !== 'none') {
+                context.fillStyle = gridColor;
+                context.fillRect(x, top, 1, innerHeight);
+              }
+
+              // Visualize text
+              if (textColor !== 'none') {
+                context.fillStyle = textColor;
+                context.font      = this.createFontString();
+                context.fillText(frequencyText, (x - (context.measureText(frequencyText).width / 2)), (top + innerHeight + fontSize));
+              }
+            }
+          }
+
+          break;
+        }
+
+        case 'logarithmic': {
+          this.logarithmicFrequencies.forEach((frequency: number) => {
+            const frequencyRatio      = frequency / this.minFrequency;
+            const log10FrequencyRatio = Math.log10(frequencyRatio);
+
+            const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
+
             const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
 
             // Visualize grid
@@ -356,30 +384,8 @@ export class FFT extends Visualizer {
               context.font      = this.createFontString();
               context.fillText(frequencyText, (x - (context.measureText(frequencyText).width / 2)), (top + innerHeight + fontSize));
             }
-          }
+          });
         }
-      } else {
-        this.logarithmicFrequencies.forEach((frequency: number) => {
-          const frequencyRatio      = frequency / this.minFrequency;
-          const log10FrequencyRatio = Math.log10(frequencyRatio);
-
-          const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
-
-          const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
-
-          // Visualize grid
-          if (gridColor !== 'none') {
-            context.fillStyle = gridColor;
-            context.fillRect(x, top, 1, innerHeight);
-          }
-
-          // Visualize text
-          if (textColor !== 'none') {
-            context.fillStyle = textColor;
-            context.font      = this.createFontString();
-            context.fillText(frequencyText, (x - (context.measureText(frequencyText).width / 2)), (top + innerHeight + fontSize));
-          }
-        });
       }
 
       // Visualize grid and text (Y axis)
@@ -640,12 +646,61 @@ export class FFT extends Visualizer {
 
     if ((gridColor !== 'none') || (textColor !== 'none')) {
       // Visualize grid and text (X axis)
-      if ((this.type === 'uint') || ((this.type === 'float') && (this.scale === 'linear'))) {
-        for (let k = 0; k < actualSize; k++) {
-          if ((k % numberOfTexts) === 0) {
-            const x = ((k / actualSize) * innerWidth) + left;
+      switch (this.scale) {
+        case 'linear': {
+          for (let k = 0; k < actualSize; k++) {
+            if ((k % numberOfTexts) === 0) {
+              const x = ((k / actualSize) * innerWidth) + left;
 
-            const frequency     = k * frequencyResolution;
+              const frequency     = k * frequencyResolution;
+              const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
+
+              // Visualize grid
+              if (gridColor !== 'none') {
+                const rect = document.createElementNS(FFT.XMLNS, 'rect');
+
+                rect.setAttribute('x',      x.toString(10));
+                rect.setAttribute('y',      top.toString(10));
+                rect.setAttribute('width',  '1');
+                rect.setAttribute('height', innerHeight.toString(10));
+                rect.setAttribute('stroke', 'none');
+                rect.setAttribute('fill',   gridColor);
+
+                svg.appendChild(rect);
+              }
+
+              // Visualize text
+              if (textColor !== 'none') {
+                const text = document.createElementNS(FFT.XMLNS, 'text');
+
+                text.textContent = frequencyText;
+
+                text.setAttribute('x', x.toString(10));
+                text.setAttribute('y', (top + innerHeight + bottom).toString(10));
+
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('stroke',      'none');
+                text.setAttribute('fill',        textColor);
+                text.setAttribute('font-family', (this.styles.font?.family ?? 'Arial'));
+                text.setAttribute('font-size',   fontSize.toString(10));
+                text.setAttribute('font-style',  this.styles.font?.style ?? 'normal');
+                text.setAttribute('font-weight', this.styles.font?.weight ?? 'normal');
+
+                svg.appendChild(text);
+              }
+            }
+          }
+
+          break;
+        }
+
+        case 'logarithmic': {
+          this.logarithmicFrequencies.forEach((frequency: number) => {
+            const frequencyRatio      = frequency / this.minFrequency;
+            const log10FrequencyRatio = Math.log10(frequencyRatio);
+
+            const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
+
             const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
 
             // Visualize grid
@@ -681,51 +736,10 @@ export class FFT extends Visualizer {
 
               svg.appendChild(text);
             }
-          }
+          });
+
+          break;
         }
-      } else {
-        this.logarithmicFrequencies.forEach((frequency: number) => {
-          const frequencyRatio      = frequency / this.minFrequency;
-          const log10FrequencyRatio = Math.log10(frequencyRatio);
-
-          const x = ((log10FrequencyRatio / this.log10Ratio) * innerWidth) + left;
-
-          const frequencyText = (frequency < 1000) ? `${frequency} Hz` : `${(frequency / 1000).toString(10).slice(0, 3)} kHz`;
-
-          // Visualize grid
-          if (gridColor !== 'none') {
-            const rect = document.createElementNS(FFT.XMLNS, 'rect');
-
-            rect.setAttribute('x',      x.toString(10));
-            rect.setAttribute('y',      top.toString(10));
-            rect.setAttribute('width',  '1');
-            rect.setAttribute('height', innerHeight.toString(10));
-            rect.setAttribute('stroke', 'none');
-            rect.setAttribute('fill',   gridColor);
-
-            svg.appendChild(rect);
-          }
-
-          // Visualize text
-          if (textColor !== 'none') {
-            const text = document.createElementNS(FFT.XMLNS, 'text');
-
-            text.textContent = frequencyText;
-
-            text.setAttribute('x', x.toString(10));
-            text.setAttribute('y', (top + innerHeight + bottom).toString(10));
-
-            text.setAttribute('text-anchor', 'middle');
-            text.setAttribute('stroke',      'none');
-            text.setAttribute('fill',        textColor);
-            text.setAttribute('font-family', (this.styles.font?.family ?? 'Arial'));
-            text.setAttribute('font-size',   fontSize.toString(10));
-            text.setAttribute('font-style',  this.styles.font?.style ?? 'normal');
-            text.setAttribute('font-weight', this.styles.font?.weight ?? 'normal');
-
-            svg.appendChild(text);
-          }
-        });
       }
 
       // Visualize grid and text (Y axis)

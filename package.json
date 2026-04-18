@@ -6,7 +6,7 @@
   },
   "description": "XSound gives Web Developers Powerful Audio Features Easily !",
   "main": "build/xsound.js",
-  "types": "build/types/main.d.ts",
+  "types": "build/types/src/main.d.ts",
   "scripts": {
     "clean": "rm -rf build",
     "lint": "eslint 'src/**/*.ts' 'test/**/*.ts' 'mock/**/*.ts' jest.config.mjs webpack.config.mjs",
@@ -87,7 +87,7 @@
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "typedoc": "^0.28.18",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.58.1",
     "webpack": "^5.106.1",
     "webpack-cli": "^7.0.2",

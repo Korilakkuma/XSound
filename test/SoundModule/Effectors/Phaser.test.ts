@@ -65,7 +65,7 @@ describe(Phaser.name, () => {
     const originalDisconnect = BiquadFilterNode.prototype.disconnect;
     /* eslint-enable dot-notation */
 
-    afterAll(() => {
+    afterEach(() => {
       /* eslint-disable dot-notation */
       phaser['input']                       = originalInput;
       phaser['dry']                         = originalDry;
@@ -74,10 +74,13 @@ describe(Phaser.name, () => {
       BiquadFilterNode.prototype.disconnect = originalDisconnect;
       /* eslint-enable dot-notation */
 
+      phaser.param({ type: 'serial' });
       phaser.deactivate();
     });
 
-    test('should call `connect` method', () => {
+    test('should call `connect` method (if connection type is `serial`)', () => {
+      phaser.param({ type: 'serial' });
+
       const inputConnectMock       = jest.fn();
       const inputDisconnectMock    = jest.fn();
       const filterConnectMock      = jest.fn();
@@ -117,11 +120,55 @@ describe(Phaser.name, () => {
       expect(filterDisconnectMock).toHaveBeenCalledTimes(48);
       expect(wetDisconnectMock).toHaveBeenCalledTimes(2);
     });
+
+    test('should call `connect` method (if connection type is `parallel`)', () => {
+      phaser.param({ type: 'parallel' });
+
+      const inputConnectMock       = jest.fn();
+      const inputDisconnectMock    = jest.fn();
+      const filterConnectMock      = jest.fn();
+      const filterDisconnectMock   = jest.fn();
+      const dryConnectMock         = jest.fn();
+      const dryDisconnectMock      = jest.fn();
+      const wetConnectMock         = jest.fn();
+      const wetDisconnectMock      = jest.fn();
+
+      /* eslint-disable dot-notation */
+      phaser['input'].connect               = inputConnectMock;
+      phaser['input'].disconnect            = inputDisconnectMock;
+      phaser['dry'].connect                 = dryConnectMock;
+      phaser['dry'].disconnect              = dryDisconnectMock;
+      phaser['wet'].connect                 = wetConnectMock;
+      phaser['wet'].disconnect              = wetDisconnectMock;
+      BiquadFilterNode.prototype.connect    = filterConnectMock;
+      BiquadFilterNode.prototype.disconnect = filterDisconnectMock;
+      /* eslint-enable dot-notation */
+
+      phaser.connect();
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(1);
+      expect(filterConnectMock).toHaveBeenCalledTimes(0);
+      expect(dryConnectMock).toHaveBeenCalledTimes(0);
+      expect(wetConnectMock).toHaveBeenCalledTimes(0);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(filterDisconnectMock).toHaveBeenCalledTimes(24);
+      expect(dryDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(wetDisconnectMock).toHaveBeenCalledTimes(1);
+
+      phaser.activate();
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(14);
+      expect(filterConnectMock).toHaveBeenCalledTimes(12);
+      expect(dryConnectMock).toHaveBeenCalledTimes(1);
+      expect(filterDisconnectMock).toHaveBeenCalledTimes(48);
+      expect(wetDisconnectMock).toHaveBeenCalledTimes(2);
+    });
   });
 
   describe(phaser.param.name, () => {
     const defaultParams: PhaserParams = {
       stage    : 12,
+      type     : 'serial',
       frequency: 350,
       resonance: 1,
       depth    : 0,
@@ -133,6 +180,7 @@ describe(Phaser.name, () => {
 
     const params: PhaserParams = {
       stage    : 8,
+      type     : 'parallel',
       frequency: 1000,
       resonance: 10,
       depth    : 0.5,
@@ -158,6 +206,10 @@ describe(Phaser.name, () => {
     // Getter
     test('should return `stage`', () => {
       expect(phaser.param('stage')).toBe(8);
+    });
+
+    test('should return `type`', () => {
+      expect(phaser.param('type')).toBe('parallel');
     });
 
     test('should return `frequency`', () => {
@@ -194,6 +246,7 @@ describe(Phaser.name, () => {
       expect(phaser.params()).toStrictEqual({
         state    : false,
         stage    : 12,
+        type     : 'serial',
         frequency: 350,
         resonance: 1,
         depth    : 0,

@@ -60,7 +60,7 @@ import type { NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
 import type { NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
 import type { OverDriveParams } from './SoundModule/Effectors/OverDrive';
 import type { PannerParams, Position3D } from './SoundModule/Effectors/Panner';
-import type { PhaserParams, PhaserNumberOfStages } from './SoundModule/Effectors/Phaser';
+import type { PhaserParams, PhaserNumberOfStages, PhaserFilterConnectionType } from './SoundModule/Effectors/Phaser';
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
 import type { PreampParams, PreampType, PreampCurve } from './SoundModule/Effectors/Preamp';
 import type {
@@ -692,6 +692,7 @@ export type {
   Phaser,
   PhaserParams,
   PhaserNumberOfStages,
+  PhaserFilterConnectionType,
   PitchShifter,
   PitchShifterParams,
   PitchShifterProcessor,

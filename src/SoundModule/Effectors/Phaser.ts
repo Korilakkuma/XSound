@@ -2,9 +2,12 @@ import { Effector } from './Effector';
 
 export type PhaserNumberOfStages = 0 | 2 | 4 | 8 | 12 | 24;
 
+export type PhaserFilterConnectionType = 'serial' | 'parallel';
+
 export type PhaserParams = {
   state?: boolean,
   stage?: PhaserNumberOfStages,
+  type?: PhaserFilterConnectionType,
   frequency?: number,
   resonance?: number,
   depth?: number,
@@ -21,6 +24,7 @@ export class Phaser extends Effector {
   public static MAX_STAGES = 24;  // The max number of All-pass Filters
 
   private numberOfStages: PhaserNumberOfStages = 12;  // The default number of All-pass Filters
+  private connectionType: PhaserFilterConnectionType = 'serial';
   private filters: BiquadFilterNode[] = [];
   private dry: GainNode;
   private wet: GainNode;
@@ -97,15 +101,32 @@ export class Phaser extends Effector {
       this.input.connect(this.dry);
       this.dry.connect(this.output);
 
-      // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Wet) -> GainNode (Output)
-      this.input.connect(this.filters[0]);
+      switch (this.connectionType) {
+        case 'serial': {
+          // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Wet) -> GainNode (Output)
+          this.input.connect(this.filters[0]);
 
-      for (let i = 0; i < this.numberOfStages; i++) {
-        if (i < (this.numberOfStages - 1)) {
-          this.filters[i].connect(this.filters[i + 1]);
-        } else {
-          this.filters[i].connect(this.wet);
+          for (let i = 0; i < this.numberOfStages; i++) {
+            if (i < (this.numberOfStages - 1)) {
+              this.filters[i].connect(this.filters[i + 1]);
+            } else {
+              this.filters[i].connect(this.wet);
+              this.wet.connect(this.output);
+            }
+          }
+
+          break;
+        }
+
+        case 'parallel': {
+          for (let i = 0; i < this.numberOfStages; i++) {
+            this.input.connect(this.filters[i]);
+            this.filters[i].connect(this.wet);
+          }
+
           this.wet.connect(this.output);
+
+          break;
         }
       }
 
@@ -130,6 +151,7 @@ export class Phaser extends Effector {
    */
   public param(params: 'state'): boolean;
   public param(params: 'stage'): PhaserNumberOfStages;
+  public param(params: 'type'): PhaserFilterConnectionType;
   public param(params: 'frequency'): number;
   public param(params: 'resonance'): number;
   public param(params: 'depth'): number;
@@ -147,6 +169,10 @@ export class Phaser extends Effector {
 
         case 'stage': {
           return this.numberOfStages;
+        }
+
+        case 'type': {
+          return this.connectionType;
         }
 
         case 'frequency': {
@@ -202,6 +228,19 @@ export class Phaser extends Effector {
               // Update connection
               this.connect();
               break;
+            }
+          }
+
+          break;
+        }
+
+        case 'type': {
+          if (typeof value === 'string') {
+            if ((value === 'serial') || (value === 'parallel')) {
+              this.connectionType = value;
+
+              // Update connection
+              this.connect();
             }
           }
 
@@ -282,6 +321,7 @@ export class Phaser extends Effector {
     return {
       state    : this.isActive,
       stage    : this.numberOfStages,
+      type     : this.connectionType,
       frequency: this.filters[0].frequency.value,
       resonance: this.filters[0].Q.value,
       depth    : this.depthRate,

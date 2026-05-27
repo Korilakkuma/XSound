@@ -1,0 +1,8 @@
+{
+  "state": false,
+  "type": "harmony",
+  "mode": "major",
+  "shifts": [1, 1],
+  "dry": 1,
+  "wets": [0, 0]
+}

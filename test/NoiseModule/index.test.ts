@@ -168,6 +168,7 @@ describe(NoiseModule.name, () => {
         filter           : noiseModule['filter'].params(),
         flanger          : noiseModule['flanger'].params(),
         fuzz             : noiseModule['fuzz'].params(),
+        harmonizer       : noiseModule['harmonizer'].params(),
         listener         : noiseModule['listener'].params(),
         noisegate        : noiseModule['noisegate'].params(),
         noisesuppressor  : noiseModule['noisesuppressor'].params(),

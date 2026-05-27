@@ -10,6 +10,7 @@ import type { EqualizerParams } from './Effectors/Equalizer';
 import type { FilterParams } from './Effectors/Filter';
 import type { FlangerParams } from './Effectors/Flanger';
 import type { FuzzParams } from './Effectors/Fuzz';
+import type { HarmonizerParams } from './Effectors/Harmonizer';
 import type { ListenerParams } from './Effectors/Listener';
 import type { NoiseGateParams } from '../SoundModule/Effectors/NoiseGate';
 import type { NoiseSuppressorParams } from '../SoundModule/Effectors/NoiseSuppressor';
@@ -38,6 +39,7 @@ import { Equalizer } from './Effectors/Equalizer';
 import { Filter } from './Effectors/Filter';
 import { Flanger } from './Effectors/Flanger';
 import { Fuzz } from './Effectors/Fuzz';
+import { Harmonizer } from './Effectors/Harmonizer';
 import { Listener } from './Effectors/Listener';
 import { NoiseGate }  from '../SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor }  from '../SoundModule/Effectors/NoiseSuppressor';
@@ -66,6 +68,7 @@ export type Module =
   Filter            |
   Flanger           |
   Fuzz              |
+  Harmonizer        |
   Listener          |
   NoiseGate         |
   NoiseSuppressor   |
@@ -94,6 +97,7 @@ export type ModuleName =
   'filter'            |
   'flanger'           |
   'fuzz'              |
+  'harmonizer'        |
   'listener'          |
   'noisegate'         |
   'noisesuppressor'   |
@@ -121,6 +125,7 @@ export type SoundModuleParams = {
   filter?: FilterParams,
   flanger?: FlangerParams,
   fuzz?: FuzzParams,
+  harmonizer?: HarmonizerParams,
   listener?: ListenerParams,
   noisegate?: NoiseGateParams,
   noisesuppressor?: NoiseSuppressorParams,
@@ -168,6 +173,7 @@ export abstract class SoundModule implements Connectable {
   protected filter: Filter;
   protected flanger: Flanger;
   protected fuzz: Fuzz;
+  protected harmonizer: Harmonizer;
   protected listener: Listener;
   protected noisegate: NoiseGate;
   protected noisesuppressor: NoiseSuppressor;
@@ -209,6 +215,7 @@ export abstract class SoundModule implements Connectable {
     this.filter            = new Filter(context);
     this.flanger           = new Flanger(context);
     this.fuzz              = new Fuzz(context);
+    this.harmonizer        = new Harmonizer(context);
     this.listener          = new Listener(context);
     this.noisegate         = new NoiseGate(context);
     this.noisesuppressor   = new NoiseSuppressor(context);
@@ -240,6 +247,7 @@ export abstract class SoundModule implements Connectable {
       this.phaser,
       this.flanger,
       this.chorus,
+      this.harmonizer,
       this.delay,
       this.reverb,
       this.panner,
@@ -498,6 +506,7 @@ export abstract class SoundModule implements Connectable {
       phaser           : this.phaser.params(),
       flanger          : this.flanger.params(),
       chorus           : this.chorus.params(),
+      harmonizer       : this.harmonizer.params(),
       delay            : this.delay.params(),
       reverb           : this.reverb.params(),
       panner           : this.panner.params(),
@@ -574,6 +583,7 @@ export abstract class SoundModule implements Connectable {
     this.filter            = new Filter(context);
     this.flanger           = new Flanger(context);
     this.fuzz              = new Fuzz(context);
+    this.harmonizer        = new Harmonizer(context);
     this.listener          = new Listener(context);
     this.noisegate         = new NoiseGate(context);
     this.noisesuppressor   = new NoiseSuppressor(context);
@@ -605,6 +615,7 @@ export abstract class SoundModule implements Connectable {
       this.phaser,
       this.flanger,
       this.chorus,
+      this.harmonizer,
       this.delay,
       this.reverb,
       this.panner,

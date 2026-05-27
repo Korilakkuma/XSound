@@ -245,6 +245,7 @@ describe(OscillatorNode.name, () => {
         filter           : oscillatorModule['filter'].params(),
         flanger          : oscillatorModule['flanger'].params(),
         fuzz             : oscillatorModule['fuzz'].params(),
+        harmonizer       : oscillatorModule['harmonizer'].params(),
         listener         : oscillatorModule['listener'].params(),
         noisegate        : oscillatorModule['noisegate'].params(),
         noisesuppressor  : oscillatorModule['noisesuppressor'].params(),

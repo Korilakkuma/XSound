@@ -471,6 +471,7 @@ describe(StreamModule.name, () => {
         filter           : streamModule['filter'].params(),
         flanger          : streamModule['flanger'].params(),
         fuzz             : streamModule['fuzz'].params(),
+        harmonizer       : streamModule['harmonizer'].params(),
         listener         : streamModule['listener'].params(),
         noisegate        : streamModule['noisegate'].params(),
         noisesuppressor  : streamModule['noisesuppressor'].params(),

@@ -324,6 +324,7 @@ describe(MediaModule.name, () => {
         filter           : mediaModule['filter'].params(),
         flanger          : mediaModule['flanger'].params(),
         fuzz             : mediaModule['fuzz'].params(),
+        harmonizer       : mediaModule['harmonizer'].params(),
         listener         : mediaModule['listener'].params(),
         noisegate        : mediaModule['noisegate'].params(),
         noisesuppressor  : mediaModule['noisesuppressor'].params(),

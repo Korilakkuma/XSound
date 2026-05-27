@@ -314,6 +314,7 @@ describe(OneshotModule.name, () => {
         filter           : oneshotModule['filter'].params(),
         flanger          : oneshotModule['flanger'].params(),
         fuzz             : oneshotModule['fuzz'].params(),
+        harmonizer       : oneshotModule['harmonizer'].params(),
         listener         : oneshotModule['listener'].params(),
         noisegate        : oneshotModule['noisegate'].params(),
         noisesuppressor  : oneshotModule['noisesuppressor'].params(),

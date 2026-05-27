@@ -12,6 +12,7 @@ import type { Equalizer } from '../SoundModule/Effectors/Equalizer';
 import type { Filter } from '../SoundModule/Effectors/Filter';
 import type { Flanger } from '../SoundModule/Effectors/Flanger';
 import type { Fuzz } from '../SoundModule/Effectors/Fuzz';
+import type { Harmonizer } from '../SoundModule/Effectors/Harmonizer';
 import type { Listener } from '../SoundModule/Effectors/Listener';
 import type { NoiseGate } from '../SoundModule/Effectors/NoiseGate';
 import type { NoiseSuppressor } from '../SoundModule/Effectors/NoiseSuppressor';
@@ -211,6 +212,7 @@ export class NoiseModule extends SoundModule {
   public module(moduleName: 'filter'): Filter;
   public module(moduleName: 'flanger'): Flanger;
   public module(moduleName: 'fuzz'): Fuzz;
+  public module(moduleName: 'harmonizer'): Harmonizer;
   public module(moduleName: 'listener'): Listener;
   public module(moduleName: 'noisegate'): NoiseGate;
   public module(moduleName: 'noisesuppressor'): NoiseSuppressor;
@@ -273,6 +275,10 @@ export class NoiseModule extends SoundModule {
 
       case 'fuzz': {
         return this.fuzz;
+      }
+
+      case 'harmonizer': {
+        return this.harmonizer;
       }
 
       case 'listener': {

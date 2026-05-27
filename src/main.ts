@@ -55,6 +55,7 @@ import type { EqualizerParams } from './SoundModule/Effectors/Equalizer';
 import type { FilterParams } from './SoundModule/Effectors/Filter';
 import type { FlangerParams } from './SoundModule/Effectors/Flanger';
 import type { FuzzParams } from './SoundModule/Effectors/Fuzz';
+import type { HarmonizerParams, HarmonizerType, HarmonizerMode } from './SoundModule/Effectors/Harmonizer';
 import type { ListenerParams } from './SoundModule/Effectors/Listener';
 import type { NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
 import type { NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
@@ -116,6 +117,7 @@ import { Equalizer } from './SoundModule/Effectors/Equalizer';
 import { Filter } from './SoundModule/Effectors/Filter';
 import { Flanger } from './SoundModule/Effectors/Flanger';
 import { Fuzz } from './SoundModule/Effectors/Fuzz';
+import { Harmonizer } from './SoundModule/Effectors/Harmonizer';
 import { Listener } from './SoundModule/Effectors/Listener';
 import { NoiseGate } from './SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from './SoundModule/Effectors/NoiseSuppressor';
@@ -343,6 +345,7 @@ XSound.Equalizer       = Equalizer;
 XSound.Filter          = Filter;
 XSound.Flanger         = Flanger;
 XSound.Fuzz            = Fuzz;
+XSound.Harmonizer      = Harmonizer;
 XSound.Listener        = Listener;
 XSound.NoiseGate       = NoiseGate;
 XSound.NoiseSuppressor = NoiseSuppressor;
@@ -676,6 +679,10 @@ export type {
   FlangerParams,
   Fuzz,
   FuzzParams,
+  Harmonizer,
+  HarmonizerParams,
+  HarmonizerType,
+  HarmonizerMode,
   Listener,
   ListenerParams,
   NoiseGate,

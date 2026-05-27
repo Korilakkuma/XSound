@@ -376,6 +376,7 @@ describe(AudioModule.name, () => {
         filter           : audioModule['filter'].params(),
         flanger          : audioModule['flanger'].params(),
         fuzz             : audioModule['fuzz'].params(),
+        harmonizer       : audioModule['harmonizer'].params(),
         listener         : audioModule['listener'].params(),
         noisegate        : audioModule['noisegate'].params(),
         noisesuppressor  : audioModule['noisesuppressor'].params(),

@@ -1,7 +1,10 @@
 import { Effector } from './Effector';
 
+export type DelayType = 'standard' | 'pingpong';
+
 export type DelayParams = {
   state?: boolean,
+  type?: DelayType,
   time?: number,
   dry?: number,
   wet?: number,
@@ -15,11 +18,16 @@ export type DelayParams = {
 export class Delay extends Effector {
   public static MAX_DELAY_TIME = 5;  // Max delay time is 5000 [ms]
 
+  private type: DelayType = 'standard';
+
   private delay: DelayNode;
+  private postDelay: DelayNode;
   private dry: GainNode;
   private wet: GainNode;
   private tone: BiquadFilterNode;
   private feedback: GainNode;
+  private splitter: ChannelSplitterNode;
+  private merger: ChannelMergerNode;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -27,21 +35,25 @@ export class Delay extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.delay    = context.createDelay(Delay.MAX_DELAY_TIME);
-    this.dry      = context.createGain();
-    this.wet      = context.createGain();
-    this.tone     = context.createBiquadFilter();
-    this.feedback = context.createGain();
+    this.delay     = context.createDelay(Delay.MAX_DELAY_TIME);
+    this.postDelay = context.createDelay(Delay.MAX_DELAY_TIME);
+    this.dry       = context.createGain();
+    this.wet       = context.createGain();
+    this.tone      = context.createBiquadFilter();
+    this.feedback  = context.createGain();
+    this.splitter  = context.createChannelSplitter(2);
+    this.merger    = context.createChannelMerger(2);
 
     // Initialize parameters
-    this.delay.delayTime.value = 0;
-    this.dry.gain.value        = 1;
-    this.wet.gain.value        = 0;
-    this.tone.type             = 'lowpass';
-    this.tone.frequency.value  = 350;
-    this.tone.Q.value          = Math.SQRT1_2;
-    this.tone.gain.value       = 0;  // Not used
-    this.feedback.gain.value   = 0;
+    this.delay.delayTime.value     = 0;
+    this.postDelay.delayTime.value = 0;
+    this.dry.gain.value            = 1;
+    this.wet.gain.value            = 0;
+    this.tone.type                 = 'lowpass';
+    this.tone.frequency.value      = 350;
+    this.tone.Q.value              = Math.SQRT1_2;
+    this.tone.gain.value           = 0;  // Not used
+    this.feedback.gain.value       = 0;
 
     // `Delay` is not connected by default
     this.deactivate();
@@ -52,10 +64,13 @@ export class Delay extends Effector {
     // Clear connection
     this.input.disconnect(0);
     this.delay.disconnect(0);
+    this.postDelay.disconnect(0);
     this.dry.disconnect(0);
     this.wet.disconnect(0);
     this.tone.disconnect(0);
     this.feedback.disconnect(0);
+    this.splitter.disconnect(0);
+    this.merger.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
@@ -64,16 +79,52 @@ export class Delay extends Effector {
       this.input.connect(this.dry);
       this.dry.connect(this.output);
 
-      // GainNode (Input) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
-      this.input.connect(this.tone);
-      this.tone.connect(this.delay);
-      this.delay.connect(this.wet);
-      this.wet.connect(this.output);
+      switch (this.type) {
+        case 'standard': {
+          // GainNode (Input) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
+          this.input.connect(this.tone);
+          this.tone.connect(this.delay);
+          this.delay.connect(this.wet);
+          this.wet.connect(this.output);
 
-      // Feedback
-      // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
-      this.delay.connect(this.feedback);
-      this.feedback.connect(this.delay);
+          // Feedback
+          // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
+          this.delay.connect(this.feedback);
+          this.feedback.connect(this.delay);
+
+          break;
+        }
+
+        case 'pingpong': {
+          //                                                                       |-> DelayNode (Pre Delay) --------------------------->|
+          // GainNode (Input) -> BiquadFilterNode (Tone) -> ChannelSplitterNode -> |                                                     | -> ChannelMergerNode
+          //                                                                       |-> DelayNode (Pre Delay) -> DelayNode (Post Delay) ->|
+          this.input.connect(this.tone);
+          this.tone.connect(this.splitter);
+
+          // Left Channel
+          // ChannelMergerNode -> DelayNode (Pre Delay) -> ChannelMergerNode
+          this.splitter.connect(this.delay, 0, 0);
+          this.delay.connect(this.merger, 0, 0);
+
+          // Right Channel
+          // ChannelMergerNode -> DelayNode (Pre Delay) -> DelayNode (Post DelayNode) -> ChannelMergerNode
+          this.splitter.connect(this.delay, 1, 0);
+          this.delay.connect(this.postDelay);
+          this.postDelay.connect(this.merger, 0, 1);
+
+          // ChannelMergerNode -> GainNode (Wet) -> GainNode (Output)
+          this.merger.connect(this.wet);
+          this.wet.connect(this.output);
+
+          // Feedback
+          // (DelayNode (Pre Delay) ->) DelayNode (Post Delay) -> GainNode (Feedback) -> DelayNode (Pre Delay) -> DelayNode (Post Delay) -> GainNode (Feedback) ->  ...
+          this.postDelay.connect(this.feedback);
+          this.feedback.connect(this.delay);
+
+          break;
+        }
+      }
     } else {
       // Effect OFF
 
@@ -92,6 +143,7 @@ export class Delay extends Effector {
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
+  public param(params: 'type'): DelayType;
   public param(params: 'time'): number;
   public param(params: 'dry'): number;
   public param(params: 'wet'): number;
@@ -103,6 +155,10 @@ export class Delay extends Effector {
       switch (params) {
         case 'state': {
           return this.isActive;
+        }
+
+        case 'type': {
+          return this.type;
         }
 
         case 'time': {
@@ -137,9 +193,22 @@ export class Delay extends Effector {
           break;
         }
 
+        case 'type': {
+          if (typeof value === 'string') {
+            if ((value === 'standard') || (value === 'pingpong')) {
+              this.type = value;
+
+              this.connect();
+            }
+          }
+
+          break;
+        }
+
         case 'time': {
           if (typeof value === 'number') {
-            this.delay.delayTime.value = value;
+            this.delay.delayTime.value     = value;
+            this.postDelay.delayTime.value = value;
           }
 
           break;
@@ -186,6 +255,7 @@ export class Delay extends Effector {
   public override params(): Required<DelayParams> {
     return {
       state   : this.isActive,
+      type    : this.type,
       time    : this.delay.delayTime.value,
       dry     : this.dry.gain.value,
       wet     : this.wet.gain.value,

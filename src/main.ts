@@ -49,7 +49,7 @@ import type { AutopannerParams } from './SoundModule/Effectors/Autopanner';
 import type { BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
 import type { ChorusParams } from './SoundModule/Effectors/Chorus';
 import type { CompressorParams } from './SoundModule/Effectors/Compressor';
-import type { DelayParams } from './SoundModule/Effectors/Delay';
+import type { DelayParams, DelayType } from './SoundModule/Effectors/Delay';
 import type { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effectors/EnvelopeGenerator';
 import type { EqualizerParams } from './SoundModule/Effectors/Equalizer';
 import type { FilterParams } from './SoundModule/Effectors/Filter';
@@ -669,6 +669,7 @@ export type {
   CompressorParams,
   Delay,
   DelayParams,
+  DelayType,
   EnvelopeGenerator,
   EnvelopeGeneratorParams,
   Equalizer,

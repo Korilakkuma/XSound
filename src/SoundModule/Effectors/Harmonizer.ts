@@ -200,7 +200,7 @@ export class Harmonizer extends Effector {
   }
 
   /**
-   * This method
+   * This method sets pitch according to harmonizer type.
    * @return {Harmonizer}
    */
   private setPitch(): Harmonizer {

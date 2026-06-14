@@ -14,6 +14,7 @@ import { Equalizer } from '/src/SoundModule/Effectors/Equalizer';
 import { Filter } from '/src/SoundModule/Effectors/Filter';
 import { Flanger } from '/src/SoundModule/Effectors/Flanger';
 import { Fuzz } from '/src/SoundModule/Effectors/Fuzz';
+import { Harmonizer } from '/src/SoundModule/Effectors/Harmonizer';
 import { Listener } from '/src/SoundModule/Effectors/Listener';
 import { NoiseGate } from '/src/SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from '/src/SoundModule/Effectors/NoiseSuppressor';
@@ -292,6 +293,7 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(oneshotModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(oneshotModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
+      expect(oneshotModule.module('harmonizer')).toBeInstanceOf(Harmonizer);
       expect(oneshotModule.module('slicer')).toBeInstanceOf(Slicer);
       expect(oneshotModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(oneshotModule.module('tremolo')).toBeInstanceOf(Tremolo);

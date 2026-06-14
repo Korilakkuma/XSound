@@ -13,6 +13,7 @@ import { Equalizer } from '/src/SoundModule/Effectors/Equalizer';
 import { Filter } from '/src/SoundModule/Effectors/Filter';
 import { Flanger } from '/src/SoundModule/Effectors/Flanger';
 import { Fuzz } from '/src/SoundModule/Effectors/Fuzz';
+import { Harmonizer } from '/src/SoundModule/Effectors/Harmonizer';
 import { Listener } from '/src/SoundModule/Effectors/Listener';
 import { NoiseGate } from '/src/SoundModule/Effectors/NoiseGate';
 import { NoiseSuppressor } from '/src/SoundModule/Effectors/NoiseSuppressor';
@@ -211,6 +212,7 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('filter')).toBeInstanceOf(Filter);
       expect(oscillatorModule.module('flanger')).toBeInstanceOf(Flanger);
       expect(oscillatorModule.module('fuzz')).toBeInstanceOf(Fuzz);
+      expect(oscillatorModule.module('harmonizer')).toBeInstanceOf(Harmonizer);
       expect(oscillatorModule.module('listener')).toBeInstanceOf(Listener);
       expect(oscillatorModule.module('noisegate')).toBeInstanceOf(NoiseGate);
       expect(oscillatorModule.module('noisesuppressor')).toBeInstanceOf(NoiseSuppressor);

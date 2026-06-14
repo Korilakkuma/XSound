@@ -22,6 +22,7 @@ import type { PitchShifter } from '../SoundModule/Effectors/PitchShifter';
 import type { Preamp } from '../SoundModule/Effectors/Preamp';
 import type { Reverb } from '../SoundModule/Effectors/Reverb';
 import type { Ringmodulator } from '../SoundModule/Effectors/Ringmodulator';
+import type { Slicer } from '../SoundModule/Effectors/Slicer';
 import type { Stereo } from '../SoundModule/Effectors/Stereo';
 import type { Tremolo } from '../SoundModule/Effectors/Tremolo';
 import type { VocalCanceler } from '../SoundModule/Effectors/VocalCanceler';
@@ -653,6 +654,7 @@ export class MediaModule extends SoundModule {
   public module(moduleName: 'preamp'): Preamp;
   public module(moduleName: 'reverb'): Reverb;
   public module(moduleName: 'ringmodulator'): Ringmodulator;
+  public module(moduleName: 'slicer'): Slicer;
   public module(moduleName: 'stereo'): Stereo;
   public module(moduleName: 'tremolo'): Tremolo;
   public module(moduleName: 'vocalcanceler'): VocalCanceler;
@@ -749,6 +751,10 @@ export class MediaModule extends SoundModule {
 
       case 'ringmodulator': {
         return this.ringmodulator;
+      }
+
+      case 'slicer': {
+        return this.slicer;
       }
 
       case 'stereo': {

@@ -23,6 +23,7 @@ import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
 import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
+import { Slicer } from '/src/SoundModule/Effectors/Slicer';
 import { Stereo } from '/src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '/src/SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
@@ -447,6 +448,7 @@ describe(StreamModule.name, () => {
       expect(streamModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(streamModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(streamModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
+      expect(streamModule.module('slicer')).toBeInstanceOf(Slicer);
       expect(streamModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(streamModule.module('tremolo')).toBeInstanceOf(Tremolo);
       expect(streamModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);
@@ -482,6 +484,7 @@ describe(StreamModule.name, () => {
         preamp           : streamModule['preamp'].params(),
         reverb           : streamModule['reverb'].params(),
         ringmodulator    : streamModule['ringmodulator'].params(),
+        slicer           : streamModule['slicer'].params(),
         stereo           : streamModule['stereo'].params(),
         tremolo          : streamModule['tremolo'].params(),
         vocalcanceler    : streamModule['vocalcanceler'].params(),

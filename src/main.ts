@@ -86,6 +86,7 @@ import type {
 import type { CabinetParams } from './SoundModule/Effectors/Preamps/Cabinet';
 import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
 import type { RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
+import type { SlicerParams } from './SoundModule/Effectors/Slicer';
 import type { StereoParams } from './SoundModule/Effectors/Stereo';
 import type { TremoloParams } from './SoundModule/Effectors/Tremolo';
 import type { VocalCancelerParams, VocalCancelerAlgorithm } from './SoundModule/Effectors/VocalCanceler';
@@ -128,6 +129,7 @@ import { PitchShifter } from './SoundModule/Effectors/PitchShifter';
 import { Preamp } from './SoundModule/Effectors/Preamp';
 import { Reverb } from './SoundModule/Effectors/Reverb';
 import { Ringmodulator } from './SoundModule/Effectors/Ringmodulator';
+import { Slicer } from './SoundModule/Effectors/Slicer';
 import { Stereo } from './SoundModule/Effectors/Stereo';
 import { Tremolo } from './SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from './SoundModule/Effectors/VocalCanceler';
@@ -356,6 +358,7 @@ XSound.PitchShifter    = PitchShifter;
 XSound.Preamp          = Preamp;
 XSound.Reverb          = Reverb;
 XSound.Ringmodulator   = Ringmodulator;
+XSound.Slicer          = Slicer;
 XSound.Stereo          = Stereo;
 XSound.Tremolo         = Tremolo;
 XSound.VocalCanceler   = VocalCanceler;
@@ -727,6 +730,8 @@ export type {
   ReverbErrorText,
   Ringmodulator,
   RingmodulatorParams,
+  Slicer,
+  SlicerParams,
   Stereo,
   StereoParams,
   Tremolo,

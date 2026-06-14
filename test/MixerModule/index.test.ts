@@ -23,6 +23,7 @@ import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
 import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
+import { Slicer } from '/src/SoundModule/Effectors/Slicer';
 import { Stereo } from '/src/SoundModule/Effectors/Stereo';
 import { Tremolo } from '/src/SoundModule/Effectors/Tremolo';
 import { VocalCanceler } from '/src/SoundModule/Effectors/VocalCanceler';
@@ -290,6 +291,7 @@ describe(MixerModule.name, () => {
       expect(mixerModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(mixerModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(mixerModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
+      expect(mixerModule.module('slicer')).toBeInstanceOf(Slicer);
       expect(mixerModule.module('stereo')).toBeInstanceOf(Stereo);
       expect(mixerModule.module('tremolo')).toBeInstanceOf(Tremolo);
       expect(mixerModule.module('vocalcanceler')).toBeInstanceOf(VocalCanceler);

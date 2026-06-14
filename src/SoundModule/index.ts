@@ -21,6 +21,7 @@ import type { PitchShifterParams } from './Effectors/PitchShifter';
 import type { PreampParams } from './Effectors/Preamp';
 import type { ReverbParams } from './Effectors/Reverb';
 import type { RingmodulatorParams } from './Effectors/Ringmodulator';
+import type { SlicerParams } from './Effectors/Slicer';
 import type { StereoParams } from './Effectors/Stereo';
 import type { TremoloParams } from './Effectors/Tremolo';
 import type { VocalCancelerParams } from './Effectors/VocalCanceler';
@@ -50,6 +51,7 @@ import { PitchShifter } from './Effectors/PitchShifter';
 import { Preamp } from './Effectors/Preamp';
 import { Reverb } from './Effectors/Reverb';
 import { Ringmodulator } from './Effectors/Ringmodulator';
+import { Slicer } from './Effectors/Slicer';
 import { Stereo } from './Effectors/Stereo';
 import { Tremolo } from './Effectors/Tremolo';
 import { VocalCanceler } from './Effectors/VocalCanceler';
@@ -79,6 +81,7 @@ export type Module =
   Preamp            |
   Reverb            |
   Ringmodulator     |
+  Slicer            |
   Stereo            |
   Tremolo           |
   VocalCanceler     |
@@ -108,6 +111,7 @@ export type ModuleName =
   'preamp'            |
   'reverb'            |
   'ringmodulator'     |
+  'slicer'            |
   'stereo'            |
   'tremolo'           |
   'vocalcanceler'     |
@@ -136,6 +140,7 @@ export type SoundModuleParams = {
   preamp?: PreampParams,
   reverb?: ReverbParams,
   ringmodulator?: RingmodulatorParams,
+  slicer?: SlicerParams,
   stereo?: StereoParams,
   tremolo?: TremoloParams,
   vocalcanceler?: VocalCancelerParams,
@@ -184,6 +189,7 @@ export abstract class SoundModule implements Connectable {
   protected preamp: Preamp;
   protected reverb: Reverb;
   protected ringmodulator: Ringmodulator;
+  protected slicer: Slicer;
   protected stereo: Stereo;
   protected tremolo: Tremolo;
   protected vocalcanceler: VocalCanceler;
@@ -226,6 +232,7 @@ export abstract class SoundModule implements Connectable {
     this.preamp            = new Preamp(context);
     this.reverb            = new Reverb(context);
     this.ringmodulator     = new Ringmodulator(context);
+    this.slicer            = new Slicer(context);
     this.stereo            = new Stereo(context);
     this.tremolo           = new Tremolo(context);
     this.vocalcanceler     = new VocalCanceler(context);
@@ -235,6 +242,7 @@ export abstract class SoundModule implements Connectable {
     this.modules = [
       this.compressor,
       this.wah,
+      this.slicer,
       this.bitcrusher,
       this.overdrive,
       this.fuzz,
@@ -410,6 +418,7 @@ export abstract class SoundModule implements Connectable {
     this.overdrive.start(s);
     this.phaser.start(s);
     this.ringmodulator.start(s);
+    this.slicer.start(s);
     this.tremolo.start(s);
     this.wah.start(s);
 
@@ -434,6 +443,7 @@ export abstract class SoundModule implements Connectable {
     this.overdrive.stop(s);
     this.phaser.stop(s);
     this.ringmodulator.stop(s);
+    this.slicer.stop(s);
     this.tremolo.stop(s);
     this.wah.stop(s);
 
@@ -492,6 +502,7 @@ export abstract class SoundModule implements Connectable {
       mastervolume     : this.mastervolume.gain.value,
       stereo           : this.stereo.params(),
       compressor       : this.compressor.params(),
+      slicer           : this.slicer.params(),
       bitcrusher       : this.bitcrusher.params(),
       overdrive        : this.overdrive.params(),
       fuzz             : this.fuzz.params(),
@@ -594,6 +605,7 @@ export abstract class SoundModule implements Connectable {
     this.preamp            = new Preamp(context);
     this.reverb            = new Reverb(context);
     this.ringmodulator     = new Ringmodulator(context);
+    this.slicer            = new Slicer(context);
     this.stereo            = new Stereo(context);
     this.tremolo           = new Tremolo(context);
     this.vocalcanceler     = new VocalCanceler(context);
@@ -603,6 +615,7 @@ export abstract class SoundModule implements Connectable {
     this.modules = [
       this.compressor,
       this.wah,
+      this.slicer,
       this.bitcrusher,
       this.overdrive,
       this.fuzz,

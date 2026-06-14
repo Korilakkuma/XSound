@@ -88,7 +88,7 @@ export class Delay extends Effector {
           this.wet.connect(this.output);
 
           // Feedback
-          // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
+          // DelayNode -> GainNode (Feedback) -> DelayNode -> GainNode (Feedback) -> ...
           this.delay.connect(this.feedback);
           this.feedback.connect(this.delay);
 
@@ -118,7 +118,7 @@ export class Delay extends Effector {
           this.wet.connect(this.output);
 
           // Feedback
-          // (DelayNode (Pre Delay) ->) DelayNode (Post Delay) -> GainNode (Feedback) -> DelayNode (Pre Delay) -> DelayNode (Post Delay) -> GainNode (Feedback) ->  ...
+          // (DelayNode (Pre Delay) ->) DelayNode (Post Delay) -> GainNode (Feedback) -> DelayNode (Pre Delay) -> DelayNode (Post Delay) -> GainNode (Feedback) -> ...
           this.postDelay.connect(this.feedback);
           this.feedback.connect(this.delay);
 

@@ -1,15 +1,15 @@
 import { Effector } from './Effector';
 
-export type DelayType = 'standard' | 'pingpong';
+export type DelayType = 'standard' | 'pingpong' | 'stereo';
 
 export type DelayParams = {
   state?: boolean,
   type?: DelayType,
-  time?: number,
+  time?: number | [number, number],
   dry?: number,
-  wet?: number,
-  tone?: number,
-  feedback?: number
+  wet?: number | [number, number],
+  tone?: number | [number, number],
+  feedback?: number | [number, number]
 };
 
 /**
@@ -20,12 +20,11 @@ export class Delay extends Effector {
 
   private type: DelayType = 'standard';
 
-  private delay: DelayNode;
-  private postDelay: DelayNode;
+  private delays: [DelayNode, DelayNode];
   private dry: GainNode;
-  private wet: GainNode;
-  private tone: BiquadFilterNode;
-  private feedback: GainNode;
+  private wets: [GainNode, GainNode];
+  private tones: [BiquadFilterNode, BiquadFilterNode];
+  private feedbacks: [GainNode, GainNode];
   private splitter: ChannelSplitterNode;
   private merger: ChannelMergerNode;
 
@@ -35,25 +34,32 @@ export class Delay extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.delay     = context.createDelay(Delay.MAX_DELAY_TIME);
-    this.postDelay = context.createDelay(Delay.MAX_DELAY_TIME);
+    this.delays    = [context.createDelay(Delay.MAX_DELAY_TIME), context.createDelay(Delay.MAX_DELAY_TIME)];
     this.dry       = context.createGain();
-    this.wet       = context.createGain();
-    this.tone      = context.createBiquadFilter();
-    this.feedback  = context.createGain();
+    this.wets      = [context.createGain(), context.createGain()];
+    this.tones     = [context.createBiquadFilter(), context.createBiquadFilter()];
+    this.feedbacks = [context.createGain(), context.createGain()];
     this.splitter  = context.createChannelSplitter(2);
     this.merger    = context.createChannelMerger(2);
 
     // Initialize parameters
-    this.delay.delayTime.value     = 0;
-    this.postDelay.delayTime.value = 0;
+    this.delays[0].delayTime.value = 0;
+    this.delays[1].delayTime.value = 0;
     this.dry.gain.value            = 1;
-    this.wet.gain.value            = 0;
-    this.tone.type                 = 'lowpass';
-    this.tone.frequency.value      = 350;
-    this.tone.Q.value              = Math.SQRT1_2;
-    this.tone.gain.value           = 0;  // Not used
-    this.feedback.gain.value       = 0;
+    this.wets[0].gain.value        = 0;
+    this.wets[1].gain.value        = 0;
+    this.tones[0].type             = 'lowpass';
+    this.tones[0].frequency.value  = 350;
+    this.tones[0].Q.value          = Math.SQRT1_2;
+    this.tones[0].gain.value       = 0;  // Not used
+    this.tones[1].type             = 'lowpass';
+    this.tones[1].frequency.value  = 350;
+    this.tones[1].Q.value          = Math.SQRT1_2;
+    this.tones[1].gain.value       = 0;  // Not used
+    this.feedbacks[0].gain.value   = 0;
+    this.feedbacks[0].gain.value   = 0;
+    this.feedbacks[1].gain.value   = 0;
+    this.feedbacks[1].gain.value   = 0;
 
     // `Delay` is not connected by default
     this.deactivate();
@@ -63,12 +69,15 @@ export class Delay extends Effector {
   public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
-    this.delay.disconnect(0);
-    this.postDelay.disconnect(0);
+    this.delays[0].disconnect(0);
+    this.delays[1].disconnect(0);
     this.dry.disconnect(0);
-    this.wet.disconnect(0);
-    this.tone.disconnect(0);
-    this.feedback.disconnect(0);
+    this.wets[0].disconnect(0);
+    this.wets[1].disconnect(0);
+    this.tones[0].disconnect(0);
+    this.tones[1].disconnect(0);
+    this.feedbacks[0].disconnect(0);
+    this.feedbacks[1].disconnect(0);
     this.splitter.disconnect(0);
     this.merger.disconnect(0);
 
@@ -82,15 +91,15 @@ export class Delay extends Effector {
       switch (this.type) {
         case 'standard': {
           // GainNode (Input) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
-          this.input.connect(this.tone);
-          this.tone.connect(this.delay);
-          this.delay.connect(this.wet);
-          this.wet.connect(this.output);
+          this.input.connect(this.tones[0]);
+          this.tones[0].connect(this.delays[0]);
+          this.delays[0].connect(this.wets[0]);
+          this.wets[0].connect(this.output);
 
           // Feedback
           // DelayNode -> GainNode (Feedback) -> DelayNode -> GainNode (Feedback) -> ...
-          this.delay.connect(this.feedback);
-          this.feedback.connect(this.delay);
+          this.delays[0].connect(this.feedbacks[0]);
+          this.feedbacks[0].connect(this.delays[0]);
 
           break;
         }
@@ -99,28 +108,64 @@ export class Delay extends Effector {
           //                                                                       |-> DelayNode (Pre Delay) --------------------------->|
           // GainNode (Input) -> BiquadFilterNode (Tone) -> ChannelSplitterNode -> |                                                     | -> ChannelMergerNode
           //                                                                       |-> DelayNode (Pre Delay) -> DelayNode (Post Delay) ->|
-          this.input.connect(this.tone);
-          this.tone.connect(this.splitter);
+          this.input.connect(this.tones[0]);
+          this.tones[0].connect(this.splitter);
 
           // Left Channel
           // ChannelMergerNode -> DelayNode (Pre Delay) -> ChannelMergerNode
-          this.splitter.connect(this.delay, 0, 0);
-          this.delay.connect(this.merger, 0, 0);
+          this.splitter.connect(this.delays[0], 0, 0);
+          this.delays[0].connect(this.merger, 0, 0);
 
           // Right Channel
           // ChannelMergerNode -> DelayNode (Pre Delay) -> DelayNode (Post DelayNode) -> ChannelMergerNode
-          this.splitter.connect(this.delay, 1, 0);
-          this.delay.connect(this.postDelay);
-          this.postDelay.connect(this.merger, 0, 1);
+          this.splitter.connect(this.delays[0], 1, 0);
+          this.delays[0].connect(this.delays[1]);
+          this.delays[1].connect(this.merger, 0, 1);
 
           // ChannelMergerNode -> GainNode (Wet) -> GainNode (Output)
-          this.merger.connect(this.wet);
-          this.wet.connect(this.output);
+          this.merger.connect(this.wets[0]);
+          this.wets[0].connect(this.output);
 
           // Feedback
           // (DelayNode (Pre Delay) ->) DelayNode (Post Delay) -> GainNode (Feedback) -> DelayNode (Pre Delay) -> DelayNode (Post Delay) -> GainNode (Feedback) -> ...
-          this.postDelay.connect(this.feedback);
-          this.feedback.connect(this.delay);
+          this.delays[1].connect(this.feedbacks[0]);
+          this.feedbacks[0].connect(this.delays[0]);
+
+          break;
+        }
+
+        case 'stereo': {
+          //                                            |-> Left Channel Delay  (BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet)) ->|
+          // GainNode (Input) -> ChannelSplitterNode -> |                                                                                          | -> ChannelMergerNode
+          //                                            |-> Right Channel Delay (BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet)) ->|
+          this.input.connect(this.splitter);
+
+          // Left Channel
+          // ChannelSplitterNode (Left Channel) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
+          this.splitter.connect(this.tones[0], 0, 0);
+          this.tones[0].connect(this.delays[0]);
+          this.delays[0].connect(this.wets[0]);
+          this.wets[0].connect(this.merger, 0, 0);
+
+          // Feedback
+          // DelayNode -> GainNode (Feedback) -> DelayNode -> GainNode (Feedback) -> ...
+          this.delays[0].connect(this.feedbacks[0]);
+          this.feedbacks[0].connect(this.delays[0]);
+
+          // Right Channel
+          // ChannelSplitterNode (Right Channel) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
+          this.splitter.connect(this.tones[1], 1, 0);
+          this.tones[1].connect(this.delays[1]);
+          this.delays[1].connect(this.wets[1]);
+          this.wets[1].connect(this.merger, 0, 1);
+
+          // Feedback
+          // DelayNode -> GainNode (Feedback) -> DelayNode -> GainNode (Feedback) -> ...
+          this.delays[1].connect(this.feedbacks[1]);
+          this.feedbacks[1].connect(this.delays[1]);
+
+          // ChannelMergerNode -> GainNode (Output)
+          this.merger.connect(this.output);
 
           break;
         }
@@ -144,11 +189,11 @@ export class Delay extends Effector {
    */
   public param(params: 'state'): boolean;
   public param(params: 'type'): DelayType;
-  public param(params: 'time'): number;
+  public param(params: 'time'): number | [number, number];
   public param(params: 'dry'): number;
-  public param(params: 'wet'): number;
-  public param(params: 'tone'): number;
-  public param(params: 'feedback'): number;
+  public param(params: 'wet'): number | [number, number];
+  public param(params: 'tone'): number | [number, number];
+  public param(params: 'feedback'): number | [number, number];
   public param(params: DelayParams): Delay;
   public param(params: keyof DelayParams | DelayParams): DelayParams[keyof DelayParams] | Delay {
     if (typeof params === 'string') {
@@ -162,7 +207,21 @@ export class Delay extends Effector {
         }
 
         case 'time': {
-          return this.delay.delayTime.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.delays[0].delayTime.value;
+            }
+
+            case 'pingpong': {
+              return this.delays[0].delayTime.value;
+            }
+
+            case 'stereo': {
+              return [this.delays[0].delayTime.value, this.delays[1].delayTime.value];
+            }
+          }
+
+          break;
         }
 
         case 'dry': {
@@ -170,15 +229,57 @@ export class Delay extends Effector {
         }
 
         case 'wet': {
-          return this.wet.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.wets[0].gain.value;
+            }
+
+            case 'pingpong': {
+              return this.wets[0].gain.value;
+            }
+
+            case 'stereo': {
+              return [this.wets[0].gain.value, this.wets[1].gain.value];
+            }
+          }
+
+          break;
         }
 
         case 'tone': {
-          return this.tone.frequency.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.tones[0].frequency.value;
+            }
+
+            case 'pingpong': {
+              return this.tones[0].frequency.value;
+            }
+
+            case 'stereo': {
+              return [this.tones[0].frequency.value, this.tones[1].frequency.value];
+            }
+          }
+
+          break;
         }
 
         case 'feedback': {
-          return this.feedback.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.feedbacks[0].gain.value;
+            }
+
+            case 'pingpong': {
+              return this.feedbacks[0].gain.value;
+            }
+
+            case 'stereo': {
+              return [this.feedbacks[0].gain.value, this.feedbacks[1].gain.value];
+            }
+          }
+
+          break;
         }
       }
     }
@@ -195,7 +296,7 @@ export class Delay extends Effector {
 
         case 'type': {
           if (typeof value === 'string') {
-            if ((value === 'standard') || (value === 'pingpong')) {
+            if ((value === 'standard') || (value === 'pingpong') || (value === 'stereo')) {
               this.type = value;
 
               this.connect();
@@ -207,8 +308,11 @@ export class Delay extends Effector {
 
         case 'time': {
           if (typeof value === 'number') {
-            this.delay.delayTime.value     = value;
-            this.postDelay.delayTime.value = value;
+            this.delays[0].delayTime.value = value;
+            this.delays[1].delayTime.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.delays[0].delayTime.value = value[0];
+            this.delays[1].delayTime.value = value[1];
           }
 
           break;
@@ -224,7 +328,10 @@ export class Delay extends Effector {
 
         case 'wet': {
           if (typeof value === 'number') {
-            this.wet.gain.value = value;
+            this.wets[0].gain.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.wets[0].gain.value = value[0];
+            this.wets[1].gain.value = value[1];
           }
 
           break;
@@ -232,7 +339,10 @@ export class Delay extends Effector {
 
         case 'tone': {
           if (typeof value === 'number') {
-            this.tone.frequency.value = value;
+            this.tones[0].frequency.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.tones[0].frequency.value = value[0];
+            this.tones[1].frequency.value = value[1];
           }
 
           break;
@@ -240,7 +350,10 @@ export class Delay extends Effector {
 
         case 'feedback': {
           if (typeof value === 'number') {
-            this.feedback.gain.value = value;
+            this.feedbacks[0].gain.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.feedbacks[0].gain.value = value[0];
+            this.feedbacks[1].gain.value = value[1];
           }
 
           break;
@@ -253,14 +366,42 @@ export class Delay extends Effector {
 
   /** @override */
   public override params(): Required<DelayParams> {
-    return {
-      state   : this.isActive,
-      type    : this.type,
-      time    : this.delay.delayTime.value,
-      dry     : this.dry.gain.value,
-      wet     : this.wet.gain.value,
-      tone    : this.tone.frequency.value,
-      feedback: this.feedback.gain.value
-    };
+    switch (this.type) {
+      case 'standard': {
+        return {
+          state   : this.isActive,
+          type    : this.type,
+          time    : this.delays[0].delayTime.value,
+          dry     : this.dry.gain.value,
+          wet     : this.wets[0].gain.value,
+          tone    : this.tones[0].frequency.value,
+          feedback: this.feedbacks[0].gain.value
+        };
+      }
+
+      case 'pingpong': {
+        return {
+          state   : this.isActive,
+          type    : this.type,
+          time    : this.delays[0].delayTime.value,
+          dry     : this.dry.gain.value,
+          wet     : this.wets[0].gain.value,
+          tone    : this.tones[0].frequency.value,
+          feedback: this.feedbacks[0].gain.value
+        };
+      }
+
+      case 'stereo': {
+        return {
+          state   : this.isActive,
+          type    : this.type,
+          time    : [this.delays[0].delayTime.value, this.delays[1].delayTime.value],
+          dry     : this.dry.gain.value,
+          wet     : [this.wets[0].gain.value, this.wets[1].gain.value],
+          tone    : [this.tones[0].frequency.value, this.tones[1].frequency.value],
+          feedback: [this.feedbacks[0].gain.value, this.feedbacks[1].gain.value]
+        };
+      }
+    }
   }
 }

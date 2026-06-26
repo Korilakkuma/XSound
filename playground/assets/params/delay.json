@@ -1,9 +1,9 @@
 {
   "state": false,
   "type": "standard",
-  "time": 0,
+  "time": [0, 0],
   "dry": 1,
-  "wet": 0,
-  "tone": 350,
-  "feedback": 0
+  "wet": [0, 0],
+  "tone": [350, 350],
+  "feedback": [0, 0]
 }

@@ -2,7 +2,7 @@
   "name": "xsound",
   "version": "4.3.3",
   "engines": {
-    "node": ">=22.0.0 <=24.17.x"
+    "node": ">=22.0.0 <=24.18.x"
   },
   "description": "XSound gives Web Developers Powerful Audio Features Easily !",
   "main": "build/xsound.js",

@@ -1,27 +1,34 @@
-import { Effector } from './Effector';
+import { StereoEffector } from './StereoEffector';
+
+export type ChorusType = 'standard' | 'stereo';
 
 export type ChorusParams = {
   state?: boolean,
-  time?: number,
-  depth?: number,
-  rate?: number,
-  mix?: number,
+  type?: ChorusType,
+  time?: number | [number, number],
+  depth?: number | [number, number],
+  rate?: number | [number, number],
+  mix?: number | [number, number],
   dry?: number,
-  wet?: number,
-  tone?: number,
-  feedback?: number
+  wet?: number | [number, number],
+  tone?: number | [number, number],
+  feedback?: number | [number, number]
 };
 
 /**
  * Effector's subclass for Chorus.
  */
-export class Chorus extends Effector {
-  private delay: DelayNode;
-  private tone: BiquadFilterNode;
+export class Chorus extends StereoEffector {
+  private type: ChorusType = 'standard';
+
+  private delays: [DelayNode, DelayNode];
+  private tones: [BiquadFilterNode, BiquadFilterNode];
   private dry: GainNode;
-  private wet: GainNode;
-  private feedback: GainNode;
-  private depthRate = 0;
+  private wets: [GainNode, GainNode];
+  private feedbacks: [GainNode, GainNode];
+  private splitter: ChannelSplitterNode;
+  private merger: ChannelMergerNode;
+  private depthRates: [number, number] = [0, 0];
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -29,32 +36,49 @@ export class Chorus extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.delay    = context.createDelay();
-    this.dry      = context.createGain();
-    this.wet      = context.createGain();
-    this.tone     = context.createBiquadFilter();
-    this.feedback = context.createGain();
+    this.delays    = [context.createDelay(), context.createDelay()];
+    this.dry       = context.createGain();
+    this.wets      = [context.createGain(), context.createGain()];
+    this.tones     = [context.createBiquadFilter(), context.createBiquadFilter()];
+    this.feedbacks = [context.createGain(), context.createGain()];
+    this.splitter  = context.createChannelSplitter(2);
+    this.merger    = context.createChannelMerger(2);
 
     // Initialize parameters
-    this.delay.delayTime.value = 0;
-    this.depth.gain.value      = 0;
-    this.rate.value            = 0;
-    this.dry.gain.value        = 1;
-    this.wet.gain.value        = 0;
-    this.tone.type             = 'lowpass';
-    this.tone.frequency.value  = 350;
-    this.tone.Q.value          = Math.SQRT1_2;
-    this.tone.gain.value       = 0;  // Not used
-    this.feedback.gain.value   = 0;
-    this.depthRate             = 0;
+    this.delays[0].delayTime.value = 0;
+    this.delays[1].delayTime.value = 0;
+    this.dry.gain.value            = 1;
+    this.wets[0].gain.value        = 0;
+    this.wets[1].gain.value        = 0;
+    this.tones[0].type             = 'lowpass';
+    this.tones[0].frequency.value  = 350;
+    this.tones[0].Q.value          = Math.SQRT1_2;
+    this.tones[0].gain.value       = 0;  // Not used
+    this.tones[1].type             = 'lowpass';
+    this.tones[1].frequency.value  = 350;
+    this.tones[1].Q.value          = Math.SQRT1_2;
+    this.tones[1].gain.value       = 0;  // Not used
+    this.feedbacks[0].gain.value   = 0;
+    this.feedbacks[0].gain.value   = 0;
+    this.depths[0].gain.value      = 0;
+    this.depths[1].gain.value      = 0;
+    this.rates[0].value            = 0;
+    this.rates[1].value            = 0;
 
     // `Chorus` is not connected by default
     this.deactivate();
 
     // LFO
+
+    // Left Channel
     // OscillatorNode (LFO) -> GainNode (Depth) -> AudioParam (delayTime)
-    this.lfo.connect(this.depth);
-    this.depth.connect(this.delay.delayTime);
+    this.lfos[0].connect(this.depths[0]);
+    this.depths[0].connect(this.delays[0].delayTime);
+
+    // Right Channel
+    // OscillatorNode (LFO) -> GainNode (Depth) -> AudioParam (delayTime)
+    this.lfos[0].connect(this.depths[0]);
+    this.depths[0].connect(this.delays[1].delayTime);
   }
 
   /** @override */
@@ -63,8 +87,11 @@ export class Chorus extends Effector {
 
     if (this.isActive) {
       // Connect `AudioNode's again
-      this.lfo.connect(this.depth);
-      this.depth.connect(this.delay.delayTime);
+      this.lfos[0].connect(this.depths[0]);
+      this.depths[0].connect(this.delays[0].delayTime);
+
+      this.lfos[1].connect(this.depths[1]);
+      this.depths[1].connect(this.delays[1].delayTime);
     }
   }
 
@@ -72,11 +99,20 @@ export class Chorus extends Effector {
   public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
-    this.delay.disconnect(0);
+    this.delays[0].disconnect(0);
+    this.delays[1].disconnect(0);
     this.dry.disconnect(0);
-    this.wet.disconnect(0);
-    this.tone.disconnect(0);
-    this.feedback.disconnect(0);
+    this.wets[0].disconnect(0);
+    // this.wets[0].disconnect(1);
+    this.wets[1].disconnect(0);
+    // this.wets[1].disconnect(1);
+    this.tones[0].disconnect(0);
+    this.tones[1].disconnect(0);
+    this.feedbacks[0].disconnect(0);
+    this.feedbacks[1].disconnect(0);
+    this.splitter.disconnect(0);
+    this.splitter.disconnect(1);
+    this.merger.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
@@ -85,16 +121,58 @@ export class Chorus extends Effector {
       this.input.connect(this.dry);
       this.dry.connect(this.output);
 
-      // GainNode (Input) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
-      this.input.connect(this.tone);
-      this.tone.connect(this.delay);
-      this.delay.connect(this.wet);
-      this.wet.connect(this.output);
+      switch (this.type) {
+        case 'standard': {
+          // GainNode (Input) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
+          this.input.connect(this.tones[0]);
+          this.tones[0].connect(this.delays[0]);
+          this.delays[0].connect(this.wets[0]);
+          this.wets[0].connect(this.output);
 
-      // Feedback
-      // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
-      this.delay.connect(this.feedback);
-      this.feedback.connect(this.delay);
+          // Feedback
+          // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
+          this.delays[0].connect(this.feedbacks[0]);
+          this.feedbacks[0].connect(this.delays[0]);
+
+          break;
+        }
+
+        case 'stereo': {
+          //                                            |-> Left Channel Chorus  (BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet)) ->|
+          // GainNode (Input) -> ChannelSplitterNode -> |                                                                                           | -> ChannelMergerNode
+          //                                            |-> Right Channel Chorus (BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet)) ->|
+          this.input.connect(this.splitter);
+
+          // Left Channel
+          // ChannelSplitterNode (Left Channel) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
+          this.splitter.connect(this.tones[0], 0, 0);
+          this.tones[0].connect(this.delays[0]);
+          this.delays[0].connect(this.wets[0]);
+          this.wets[0].connect(this.merger, 0, 0);
+
+          // Feedback
+          // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
+          this.delays[0].connect(this.feedbacks[0]);
+          this.feedbacks[0].connect(this.delays[0]);
+
+          // Right Channel
+          // ChannelSplitterNode (Right Channel) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
+          this.splitter.connect(this.tones[1], 1, 0);
+          this.tones[1].connect(this.delays[1]);
+          this.delays[1].connect(this.wets[1]);
+          this.wets[1].connect(this.merger, 0, 1);
+
+          // Feedback
+          // GainNode (Input) -> DelayNode -> GainNode (Feedback) -> DelayNode ...
+          this.delays[1].connect(this.feedbacks[1]);
+          this.feedbacks[1].connect(this.delays[1]);
+
+          // ChannelMergerNode -> GainNode (Output)
+          this.merger.connect(this.output);
+
+          break;
+        }
+      }
     } else {
       // Effect OFF
 
@@ -113,14 +191,15 @@ export class Chorus extends Effector {
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
-  public param(params: 'time'): number;
-  public param(params: 'depth'): number;
-  public param(params: 'rate'): number;
-  public param(params: 'mix'): number;
+  public param(params: 'type'): ChorusType;
+  public param(params: 'time'): number | [number, number];
+  public param(params: 'depth'): number | [number, number];
+  public param(params: 'rate'): number | [number, number];
+  public param(params: 'mix'): number | [number, number];
   public param(params: 'dry'): number;
-  public param(params: 'wet'): number;
-  public param(params: 'tone'): number;
-  public param(params: 'feedback'): number;
+  public param(params: 'wet'): number | [number, number];
+  public param(params: 'tone'): number | [number, number];
+  public param(params: 'feedback'): number | [number, number];
   public param(params: ChorusParams): Chorus;
   public param(params: keyof ChorusParams | ChorusParams): ChorusParams[keyof ChorusParams] | Chorus {
     if (typeof params === 'string') {
@@ -129,20 +208,64 @@ export class Chorus extends Effector {
           return this.isActive;
         }
 
+        case 'type': {
+          return this.type;
+        }
+
         case 'time': {
-          return this.delay.delayTime.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.delays[0].delayTime.value;
+            }
+
+            case 'stereo': {
+              return [this.delays[0].delayTime.value, this.delays[1].delayTime.value];
+            }
+          }
+
+          break;
         }
 
         case 'depth': {
-          return this.depthRate;
+          switch (this.type) {
+            case 'standard': {
+              return this.depthRates[0];
+            }
+
+            case 'stereo': {
+              return this.depthRates;
+            }
+          }
+
+          break;
         }
 
         case 'rate': {
-          return this.rate.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.rates[0].value;
+            }
+
+            case 'stereo': {
+              return this.rates[1].value;
+            }
+          }
+
+          break;
         }
 
         case 'mix': {
-          return this.wet.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.wets[0].gain.value;
+            }
+
+            case 'stereo': {
+              return [this.wets[0].gain.value, this.wets[1].gain.value];
+            }
+          }
+
+          break;
         }
 
         case 'dry': {
@@ -150,15 +273,43 @@ export class Chorus extends Effector {
         }
 
         case 'wet': {
-          return this.wet.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.wets[0].gain.value;
+            }
+
+            case 'stereo': {
+              return [this.wets[0].gain.value, this.wets[1].gain.value];
+            }
+          }
+
+          break;
         }
 
         case 'tone': {
-          return this.tone.frequency.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.tones[0].frequency.value;
+            }
+
+            case 'stereo': {
+              return this.tones[1].frequency.value;
+            }
+          }
+
+          break;
         }
 
         case 'feedback': {
-          return this.feedback.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.feedbacks[0].gain.value;
+            }
+
+            case 'stereo': {
+              return this.feedbacks[1].gain.value;
+            }
+          }
         }
       }
     }
@@ -173,10 +324,28 @@ export class Chorus extends Effector {
           break;
         }
 
+        case 'type': {
+          if (typeof value === 'string') {
+            if ((value === 'standard') || (value === 'stereo')) {
+              this.type = value;
+
+              this.connect();
+            }
+          }
+
+          break;
+        }
+
         case 'time': {
           if (typeof value === 'number') {
-            this.delay.delayTime.value = value;
-            this.depth.gain.value      = this.delay.delayTime.value * this.depthRate;
+            this.delays[0].delayTime.value = value;
+            this.depths[0].gain.value      = this.delays[0].delayTime.value * this.depthRates[0];
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.delays[0].delayTime.value = value[0];
+            this.delays[1].delayTime.value = value[1];
+
+            this.depths[0].gain.value = this.delays[0].delayTime.value * this.depthRates[0];
+            this.depths[1].gain.value = this.delays[1].delayTime.value * this.depthRates[1];
           }
 
           break;
@@ -184,8 +353,14 @@ export class Chorus extends Effector {
 
         case 'depth': {
           if (typeof value === 'number') {
-            this.depthRate        = value;
-            this.depth.gain.value = this.delay.delayTime.value * value;
+            this.depthRates[0]        = value;
+            this.depths[0].gain.value = this.delays[0].delayTime.value * value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.depthRates[0] = value[0];
+            this.depthRates[1] = value[1];
+
+            this.depths[0].gain.value = this.delays[0].delayTime.value * value[0];
+            this.depths[1].gain.value = this.delays[1].delayTime.value * value[1];
           }
 
           break;
@@ -193,7 +368,10 @@ export class Chorus extends Effector {
 
         case 'rate': {
           if (typeof value === 'number') {
-            this.rate.value = value;
+            this.rates[0].value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.rates[0].value = value[0];
+            this.rates[1].value = value[1];
           }
 
           break;
@@ -201,8 +379,13 @@ export class Chorus extends Effector {
 
         case 'mix': {
           if (typeof value === 'number') {
-            this.wet.gain.value = value;
-            this.dry.gain.value = 1 - this.wet.gain.value;
+            this.wets[0].gain.value = value;
+            this.dry.gain.value = 1 - this.wets[0].gain.value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.wets[0].gain.value = value[0];
+            this.wets[1].gain.value = value[1];
+
+            this.dry.gain.value = 1 - this.wets[0].gain.value;
           }
 
           break;
@@ -218,7 +401,10 @@ export class Chorus extends Effector {
 
         case 'wet': {
           if (typeof value === 'number') {
-            this.wet.gain.value = value;
+            this.wets[0].gain.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.wets[0].gain.value = value[0];
+            this.wets[1].gain.value = value[1];
           }
 
           break;
@@ -226,7 +412,10 @@ export class Chorus extends Effector {
 
         case 'tone': {
           if (typeof value === 'number') {
-            this.tone.frequency.value = value;
+            this.tones[0].frequency.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.tones[0].frequency.value = value[0];
+            this.tones[1].frequency.value = value[1];
           }
 
           break;
@@ -234,7 +423,10 @@ export class Chorus extends Effector {
 
         case 'feedback': {
           if (typeof value === 'number') {
-            this.feedback.gain.value = value;
+            this.feedbacks[0].gain.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.feedbacks[0].gain.value = value[0];
+            this.feedbacks[1].gain.value = value[1];
           }
 
           break;
@@ -247,16 +439,36 @@ export class Chorus extends Effector {
 
   /** @override */
   public override params(): Required<ChorusParams> {
-    return {
-      state   : this.isActive,
-      time    : this.delay.delayTime.value,
-      depth   : this.depthRate,
-      rate    : this.rate.value,
-      mix     : this.wet.gain.value,
-      dry     : this.dry.gain.value,
-      wet     : this.wet.gain.value,
-      tone    : this.tone.frequency.value,
-      feedback: this.feedback.gain.value
-    };
+    switch (this.type) {
+      case 'standard': {
+        return {
+          state   : this.isActive,
+          type    : this.type,
+          time    : this.delays[0].delayTime.value,
+          depth   : this.depthRates[0],
+          rate    : this.rates[0].value,
+          mix     : this.wets[0].gain.value,
+          dry     : this.dry.gain.value,
+          wet     : this.wets[0].gain.value,
+          tone    : this.tones[0].frequency.value,
+          feedback: this.feedbacks[0].gain.value
+        };
+      }
+
+      case 'stereo': {
+        return {
+          state   : this.isActive,
+          type    : this.type,
+          time    : [this.delays[0].delayTime.value, this.delays[1].delayTime.value],
+          depth   : [this.depthRates[0], this.depthRates[1]],
+          rate    : [this.rates[0].value, this.rates[1].value],
+          mix     : [this.wets[0].gain.value, this.wets[1].gain.value],
+          dry     : this.dry.gain.value,
+          wet     : [this.wets[0].gain.value, this.wets[1].gain.value],
+          tone    : [this.tones[0].frequency.value, this.tones[1].frequency.value],
+          feedback: [this.feedbacks[0].gain.value, this.feedbacks[1].gain.value]
+        };
+      }
+    }
   }
 }

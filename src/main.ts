@@ -109,6 +109,7 @@ import { MML } from './MML';
 import { Analyser } from './SoundModule/Analyser';
 import { Recorder, RecorderProcessor } from './SoundModule/Recorder';
 import { Effector } from './SoundModule/Effectors/Effector';
+import { StereoEffector } from './SoundModule/Effectors/StereoEffector';
 import { Autopanner } from './SoundModule/Effectors/Autopanner';
 import { BitCrusher } from './SoundModule/Effectors/BitCrusher';
 import { Chorus } from './SoundModule/Effectors/Chorus';
@@ -338,6 +339,7 @@ XSound.Analyser = Analyser;
 XSound.Recorder = Recorder;
 
 XSound.Effector        = Effector;
+XSound.StereoEffector  = StereoEffector;
 XSound.Autopanner      = Autopanner;
 XSound.BitCrusher      = BitCrusher;
 XSound.Chorus          = Chorus;
@@ -662,6 +664,7 @@ export type {
   RecorderProcessor,
   RecorderProcessorMessageEventData,
   Effector,
+  StereoEffector,
   Autopanner,
   AutopannerParams,
   BitCrusher,

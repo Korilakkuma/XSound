@@ -165,7 +165,7 @@ describe(Delay.name, () => {
       expect(wetDisconnectMock).toHaveBeenCalledTimes(1);
       expect(toneDisconnectMock).toHaveBeenCalledTimes(1);
       expect(feedbackDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(splitterDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(splitterDisconnectMock).toHaveBeenCalledTimes(2);
       expect(mergerDisconnectMock).toHaveBeenCalledTimes(1);
 
       delay.activate();
@@ -186,7 +186,7 @@ describe(Delay.name, () => {
       expect(wetDisconnectMock).toHaveBeenCalledTimes(2);
       expect(toneDisconnectMock).toHaveBeenCalledTimes(2);
       expect(feedbackDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(splitterDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(splitterDisconnectMock).toHaveBeenCalledTimes(4);
       expect(mergerDisconnectMock).toHaveBeenCalledTimes(2);
     });
 
@@ -267,7 +267,7 @@ describe(Delay.name, () => {
       expect(tone1DisconnectMock).toHaveBeenCalledTimes(1);
       expect(feedback0DisconnectMock).toHaveBeenCalledTimes(1);
       expect(feedback1DisconnectMock).toHaveBeenCalledTimes(1);
-      expect(splitterDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(splitterDisconnectMock).toHaveBeenCalledTimes(2);
       expect(mergerDisconnectMock).toHaveBeenCalledTimes(1);
 
       delay.activate();
@@ -294,7 +294,7 @@ describe(Delay.name, () => {
       expect(tone1DisconnectMock).toHaveBeenCalledTimes(2);
       expect(feedback0DisconnectMock).toHaveBeenCalledTimes(2);
       expect(feedback1DisconnectMock).toHaveBeenCalledTimes(2);
-      expect(splitterDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(splitterDisconnectMock).toHaveBeenCalledTimes(4);
       expect(mergerDisconnectMock).toHaveBeenCalledTimes(2);
     });
   });

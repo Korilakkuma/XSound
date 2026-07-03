@@ -70,15 +70,20 @@ export class Delay extends Effector {
     // Clear connection
     this.input.disconnect(0);
     this.delays[0].disconnect(0);
+    // this.delays[0].disconnect(1);
     this.delays[1].disconnect(0);
+    // this.delays[1].disconnect(1);
     this.dry.disconnect(0);
     this.wets[0].disconnect(0);
+    // this.wets[0].disconnect(1);
     this.wets[1].disconnect(0);
+    // this.wets[1].disconnect(1);
     this.tones[0].disconnect(0);
     this.tones[1].disconnect(0);
     this.feedbacks[0].disconnect(0);
     this.feedbacks[1].disconnect(0);
     this.splitter.disconnect(0);
+    this.splitter.disconnect(1);
     this.merger.disconnect(0);
 
     if (this.isActive) {

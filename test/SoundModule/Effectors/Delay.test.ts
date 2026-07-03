@@ -309,6 +309,53 @@ describe(Delay.name, () => {
       feedback: [0, 0]
     };
 
+    describe('`type` is `standard`', () => {
+      const params: DelayParams = {
+        type    : 'standard',
+        time    : 5,
+        dry     : 0.25,
+        wet     : 0.75,
+        tone    : 4000,
+        feedback: 0.5
+      };
+
+      delay.param(params);
+
+      afterAll(() => {
+        delay.param(defaultParams);
+      });
+
+      // Setter
+      test('should return instance of `Delay`', () => {
+        expect(delay.param(params)).toBeInstanceOf(Delay);
+      });
+
+      // Getter
+      test('should return `type`', () => {
+        expect(delay.param('type')).toBe('standard');
+      });
+
+      test('should return `time`', () => {
+        expect(delay.param('time')).toBeCloseTo(5, 1);
+      });
+
+      test('should return `dry`', () => {
+        expect(delay.param('dry')).toBeCloseTo(0.25, 2);
+      });
+
+      test('should return `wet`', () => {
+        expect(delay.param('wet')).toBeCloseTo(0.75, 2);
+      });
+
+      test('should return `tone`', () => {
+        expect(delay.param('tone')).toBeCloseTo(4000, 1);
+      });
+
+      test('should return `feedback`', () => {
+        expect(delay.param('feedback')).toBeCloseTo(0.5, 1);
+      });
+    });
+
     describe('`type` is `pingpong`', () => {
       const params: DelayParams = {
         type    : 'pingpong',

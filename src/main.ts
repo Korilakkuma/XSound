@@ -248,8 +248,8 @@ function XSound(sourceName: 'mixer'): MixerModule;
 function XSound(sourceName: 'analyser'): Analyser;
 function XSound(sourceName: 'midi'): MIDI;
 function XSound(sourceName: 'mml'): MML;
-function XSound(sourecName: string): Source | null {
-  switch (sourecName) {
+function XSound(sourceName: string): Source | null {
+  switch (sourceName) {
     case 'oscillator': {
       return sources.oscillator;
     }
@@ -418,8 +418,8 @@ XSound.clone = (): typeof ClonedXSound => {
   function ClonedXSound(sourceName: 'analyser'): Analyser;
   function ClonedXSound(sourceName: 'midi'): MIDI;
   function ClonedXSound(sourceName: 'mml'): MML;
-  function ClonedXSound(sourecName: string): Source | null {
-    switch (sourecName) {
+  function ClonedXSound(sourceName: string): Source | null {
+    switch (sourceName) {
       case 'oscillator': {
         return clonedSources.oscillator;
       }

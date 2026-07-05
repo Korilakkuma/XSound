@@ -1,9 +1,12 @@
 {
   "state": false,
-  "time": 0,
-  "depth": 0,
-  "rate": 0,
-  "mix": 0,
-  "tone": 350,
-  "feedback": 0
+  "type": "standard",
+  "time": [0, 0],
+  "depth": [0, 0],
+  "rate": [0, 0],
+  "mix": [0, 0],
+  "dry": 1,
+  "wet": [0, 0],
+  "tone": [350, 350],
+  "feedback": [0, 0]
 }

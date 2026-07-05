@@ -233,7 +233,7 @@ export class Chorus extends StereoEffector {
             }
 
             case 'stereo': {
-              return this.depthRates;
+              return [this.depthRates[0], this.depthRates[1]];
             }
           }
 
@@ -247,7 +247,7 @@ export class Chorus extends StereoEffector {
             }
 
             case 'stereo': {
-              return this.rates[1].value;
+              return [this.rates[0].value, this.rates[1].value];
             }
           }
 
@@ -293,7 +293,7 @@ export class Chorus extends StereoEffector {
             }
 
             case 'stereo': {
-              return this.tones[1].frequency.value;
+              return [this.tones[0].frequency.value, this.tones[1].frequency.value];
             }
           }
 
@@ -307,7 +307,7 @@ export class Chorus extends StereoEffector {
             }
 
             case 'stereo': {
-              return this.feedbacks[1].gain.value;
+              return [this.feedbacks[0].gain.value, this.feedbacks[1].gain.value];
             }
           }
         }

@@ -372,6 +372,39 @@ describe(Chorus.name, () => {
       test('should return instance of `Chorus`', () => {
         expect(chorus.param(params)).toBeInstanceOf(Chorus);
       });
+
+      // Getter
+      test('should return `time`', () => {
+        expect(chorus.param('time')).toStrictEqual([0.25, 0.50]);
+      });
+
+      test('should return `depth`', () => {
+        expect(chorus.param('depth')).toStrictEqual([0.50, 0.75]);
+      });
+
+      test('should return `rate`', () => {
+        expect(chorus.param('rate')).toStrictEqual([0.25, 0.50]);
+      });
+
+      test('should return `mix`', () => {
+        expect(chorus.param('mix')).toStrictEqual([0.50, 0.75]);
+      });
+
+      test('should return `dry`', () => {
+        expect(chorus.param('dry')).toBeCloseTo(0.5, 1);
+      });
+
+      test('should return `wet`', () => {
+        expect(chorus.param('wet')).toStrictEqual([0.50, 0.75]);
+      });
+
+      test('should return `tone`', () => {
+        expect(chorus.param('tone')).toStrictEqual([4000, 8000]);
+      });
+
+      test('should return `feedback`', () => {
+        expect(chorus.param('feedback')).toStrictEqual([0.25, 0.50]);
+      });
     });
   });
 

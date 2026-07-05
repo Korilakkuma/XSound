@@ -53,7 +53,7 @@ import type { DelayParams, DelayType } from './SoundModule/Effectors/Delay';
 import type { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effectors/EnvelopeGenerator';
 import type { EqualizerParams } from './SoundModule/Effectors/Equalizer';
 import type { FilterParams } from './SoundModule/Effectors/Filter';
-import type { FlangerParams } from './SoundModule/Effectors/Flanger';
+import type { FlangerParams, FlangerType } from './SoundModule/Effectors/Flanger';
 import type { FuzzParams } from './SoundModule/Effectors/Fuzz';
 import type { HarmonizerParams, HarmonizerType, HarmonizerMode } from './SoundModule/Effectors/Harmonizer';
 import type { ListenerParams } from './SoundModule/Effectors/Listener';
@@ -684,6 +684,7 @@ export type {
   FilterParams,
   Flanger,
   FlangerParams,
+  FlangerType,
   Fuzz,
   FuzzParams,
   Harmonizer,

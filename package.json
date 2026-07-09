@@ -86,11 +86,11 @@
     "terser-webpack-plugin": "^5.6.1",
     "ts-jest": "^29.4.11",
     "ts-loader": "^9.6.2",
-    "typedoc": "^0.28.19",
+    "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.62.1",
-    "webpack": "^5.108.3",
-    "webpack-cli": "^7.1.0",
+    "typescript-eslint": "^8.63.0",
+    "webpack": "^5.108.4",
+    "webpack-cli": "^7.2.1",
     "webpack-dev-server": "^5.2.5"
   }
 }

@@ -1,4 +1,6 @@
-import { Effector } from './Effector';
+import { StereoEffector } from './StereoEffector';
+
+export type PhaserType = 'standard' | 'stereo';
 
 export type PhaserNumberOfStages = 0 | 2 | 4 | 8 | 12 | 24;
 
@@ -6,29 +8,34 @@ export type PhaserFilterConnectionType = 'serial' | 'parallel';
 
 export type PhaserParams = {
   state?: boolean,
+  type?: PhaserType,
   stage?: PhaserNumberOfStages,
   connectionType?: PhaserFilterConnectionType,
-  frequency?: number,
-  resonance?: number,
-  depth?: number,
-  rate?: number,
-  mix?: number,
+  frequency?: number | [number, number],
+  resonance?: number | [number, number],
+  depth?: number | [number, number],
+  rate?: number | [number, number],
+  mix?: number | [number, number],
   dry?: number,
-  wet?: number
+  wet?: number | [number, number]
 };
 
 /**
  * Effector's subclass for Phaser.
  */
-export class Phaser extends Effector {
-  public static MAX_STAGES = 24;  // The max number of All-pass Filters
+export class Phaser extends StereoEffector {
+  public static MAX_STAGES = 24;  // The max number of All-Pass Filters
 
-  private numberOfStages: PhaserNumberOfStages = 12;  // The default number of All-pass Filters
+  private type: PhaserType = 'standard';
+
+  private numberOfStages: PhaserNumberOfStages = 12;  // The default number of All-Pass Filters
   private connectionType: PhaserFilterConnectionType = 'serial';
-  private filters: BiquadFilterNode[] = [];
+  private filters: [BiquadFilterNode[], BiquadFilterNode[]] = [[], []];
   private dry: GainNode;
-  private wet: GainNode;
-  private depthRate = 0;
+  private wets: [GainNode, GainNode];
+  private splitter: ChannelSplitterNode;
+  private merger: ChannelMergerNode;
+  private depthRates: [number, number] = [0, 0];
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -36,35 +43,64 @@ export class Phaser extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
+    const filter0s: BiquadFilterNode[] = [];
+    const filter1s: BiquadFilterNode[] = [];
+
     for (let i = 0; i < Phaser.MAX_STAGES; i++) {
-      const filter = context.createBiquadFilter();
+      const filter0 = context.createBiquadFilter();
+      const filter1 = context.createBiquadFilter();
 
-      filter.type            = 'allpass';
-      filter.frequency.value = 350;
-      filter.Q.value         = 1;
-      filter.gain.value      = 0;  // Not used
+      filter0.type            = 'allpass';
+      filter0.frequency.value = 350;
+      filter0.Q.value         = 1;
+      filter0.gain.value      = 0;  // Not used
 
-      this.filters.push(filter);
+      filter1.type            = 'allpass';
+      filter1.frequency.value = 350;
+      filter1.Q.value         = 1;
+      filter1.gain.value      = 0;  // Not used
+
+      filter0s.push(filter0);
+      filter1s.push(filter1);
     }
 
-    this.dry = context.createGain();
-    this.wet = context.createGain();
+    this.filters[0] = filter0s;
+    this.filters[1] = filter1s;
+
+    this.dry  = context.createGain();
+    this.wets = [context.createGain(), context.createGain()];
+
+    this.splitter  = context.createChannelSplitter(2);
+    this.merger    = context.createChannelMerger(2);
 
     // Initialize parameters
-    this.depth.gain.value = 0;
-    this.rate.value       = 0;
-    this.dry.gain.value   = 1;
-    this.wet.gain.value   = 0;
+    this.depths[0].gain.value = 0;
+    this.depths[1].gain.value = 0;
+    this.rates[0].value       = 0;
+    this.rates[1].value       = 0;
+    this.dry.gain.value       = 1;
+    this.wets[0].gain.value   = 0;
+    this.wets[1].gain.value   = 0;
 
     // `Phaser` is not connected by default
     this.deactivate();
 
     // LFO
+
+    // Left Channel
     // GainNode (LFO) -> GainNode (Depth) -> AudioParam (frequency)
-    this.lfo.connect(this.depth);
+    this.lfos[0].connect(this.depths[0]);
 
     for (let i = 0; i < Phaser.MAX_STAGES; i++) {
-      this.depth.connect(this.filters[i].frequency);
+      this.depths[0].connect(this.filters[0][i].frequency);
+    }
+
+    // Right Channel
+    // GainNode (LFO) -> GainNode (Depth) -> AudioParam (frequency)
+    this.lfos[1].connect(this.depths[1]);
+
+    for (let i = 0; i < Phaser.MAX_STAGES; i++) {
+      this.depths[1].connect(this.filters[1][i].frequency);
     }
   }
 
@@ -73,11 +109,16 @@ export class Phaser extends Effector {
     super.stop(stopTime, releaseTime);
 
     if (this.isActive) {
-      // Connect `AudioNode`s again
-      this.lfo.connect(this.depth);
+      this.lfos[0].connect(this.depths[0]);
 
       for (let i = 0; i < Phaser.MAX_STAGES; i++) {
-        this.depth.connect(this.filters[i].frequency);
+        this.depths[0].connect(this.filters[0][i].frequency);
+      }
+
+      this.lfos[1].connect(this.depths[1]);
+
+      for (let i = 0; i < Phaser.MAX_STAGES; i++) {
+        this.depths[1].connect(this.filters[1][i].frequency);
       }
     }
   }
@@ -88,11 +129,15 @@ export class Phaser extends Effector {
     this.input.disconnect(0);
 
     for (let i = 0; i < Phaser.MAX_STAGES; i++) {
-      this.filters[i].disconnect(0);
+      this.filters[0][i].disconnect(0);
+      this.filters[1][i].disconnect(0);
     }
 
     this.dry.disconnect(0);
-    this.wet.disconnect(0);
+    this.wets[0].disconnect(0);
+    this.wets[1].disconnect(0);
+    this.splitter.disconnect(0);
+    this.splitter.disconnect(1);
 
     if (this.isActive && (this.numberOfStages > 0)) {
       // Effect ON
@@ -101,37 +146,118 @@ export class Phaser extends Effector {
       this.input.connect(this.dry);
       this.dry.connect(this.output);
 
-      switch (this.connectionType) {
-        case 'serial': {
-          // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Wet) -> GainNode (Output)
-          this.input.connect(this.filters[0]);
+      switch (this.type) {
+        case 'standard': {
+          switch (this.connectionType) {
+            case 'serial': {
+              // GainNode (Input) -> BiquadFilterNode (All-Pass Filter x N) -> GainNode (Wet) -> GainNode (Output)
+              this.input.connect(this.filters[0][0]);
 
-          for (let i = 0; i < this.numberOfStages; i++) {
-            if (i < (this.numberOfStages - 1)) {
-              this.filters[i].connect(this.filters[i + 1]);
-            } else {
-              this.filters[i].connect(this.wet);
-              this.wet.connect(this.output);
+              for (let i = 0; i < this.numberOfStages; i++) {
+                if (i < (this.numberOfStages - 1)) {
+                  this.filters[0][i].connect(this.filters[0][i + 1]);
+                } else {
+                  this.filters[0][i].connect(this.wets[0]);
+                  this.wets[0].connect(this.output);
+                }
+              }
+
+              break;
+            }
+
+            case 'parallel': {
+              for (let i = 0; i < this.numberOfStages; i++) {
+                this.input.connect(this.filters[0][i]);
+                this.filters[0][i].connect(this.wets[0]);
+              }
+
+              this.wets[0].connect(this.output);
+
+              break;
+            }
+          }
+
+          // Phaser don't work in Firefox if there is feedback connection.
+          // GainNode (Input) -> BiquadFilterNode (All-Pass Filter x N) -> GainNode (Feedback) -> BiquadFilterNode (All-Pass Filter x N) ...
+
+          break;
+        }
+
+        case 'stereo': {
+          switch (this.connectionType) {
+            case 'serial': {
+              //                                            |-> Left Channel Phaser  (BiquadFilterNode (All-Pass Filter x N) (Serial) -> GainNode (Wet)) ->|
+              // GainNode (Input) -> ChannelSplitterNode -> |                                                                                              | -> ChannelMergerNode
+              //                                            |-> Right Channel Phaser (BiquadFilterNode (All-Pass Filter x N) (Serial) -> GainNode (Wet)) ->|
+              this.input.connect(this.splitter);
+
+              // Left Channel
+              // ChannelSplitterNode (Left Channel) -> BiquadFilterNode (All-Pass Filter x N) -> GainNode (Wet) -> ChannelMergerNode
+              this.splitter.connect(this.filters[0][0], 0, 0);
+
+              for (let i = 0; i < this.numberOfStages; i++) {
+                if (i < (this.numberOfStages - 1)) {
+                  this.filters[0][i].connect(this.filters[0][i + 1]);
+                } else {
+                  this.filters[0][i].connect(this.wets[0]);
+                  this.wets[0].connect(this.merger, 0, 0);
+                }
+              }
+
+              // Right Channel
+              // ChannelSplitterNode (Right Channel) -> BiquadFilterNode (All-Pass Filter x N) -> GainNode (Wet) -> ChannelMergerNode
+              this.splitter.connect(this.filters[1][0], 1, 0);
+
+              for (let i = 0; i < this.numberOfStages; i++) {
+                if (i < (this.numberOfStages - 1)) {
+                  this.filters[1][i].connect(this.filters[1][i + 1]);
+                } else {
+                  this.filters[1][i].connect(this.wets[1]);
+                  this.wets[1].connect(this.merger, 0, 1);
+                }
+              }
+
+              // ChannelMergerNode -> GainNode (Output);
+              this.merger.connect(this.output);
+
+              break;
+            }
+
+            case 'parallel': {
+              //                                            |-> Left Channel Phaser  (BiquadFilterNode (All-Pass Filter x N) (Parallel) -> GainNode (Wet)) ->|
+              // GainNode (Input) -> ChannelSplitterNode -> |                                                                                                | -> ChannelMergerNode
+              //                                            |-> Right Channel Phaser (BiquadFilterNode (All-Pass Filter x N) (Parallel) -> GainNode (Wet)) ->|
+              this.input.connect(this.splitter);
+
+              // Left Channel
+              // ChannelSplitterNode (Left Channel) -> BiquadFilterNode (All-Pass Filter x N) -> GainNode (Wet) -> ChannelMergerNode
+              for (let i = 0; i < this.numberOfStages; i++) {
+                this.splitter.connect(this.filters[0][i], 0, 0);
+                this.filters[0][i].connect(this.wets[0]);
+              }
+
+              // GainNode
+              this.wets[0].connect(this.merger, 0, 0);
+
+              // Right Channel
+              // ChannelSplitterNode (Right Channel) -> BiquadFilterNode (All-Pass Filter x N) -> GainNode (Wet) -> ChannelMergerNode
+              for (let i = 0; i < this.numberOfStages; i++) {
+                this.splitter.connect(this.filters[1][i], 0, 1);
+                this.filters[1][i].connect(this.wets[1]);
+              }
+
+              this.wets[1].connect(this.merger, 1, 0);
+
+              // ChannelMergerNode -> GainNode (Output);
+              this.merger.connect(this.output);
+
+              break;
             }
           }
 
           break;
         }
-
-        case 'parallel': {
-          for (let i = 0; i < this.numberOfStages; i++) {
-            this.input.connect(this.filters[i]);
-            this.filters[i].connect(this.wet);
-          }
-
-          this.wet.connect(this.output);
-
-          break;
-        }
       }
-
-      // Phaser don't work in Firefox if there is feedback connection.
-      // GainNode (Input) -> BiquadFilterNode (All-pass Filter x N) -> GainNode (Feedback) -> BiquadFilterNode (All-pass Filter x N) ...
     } else {
       // Effect OFF
 
@@ -150,21 +276,26 @@ export class Phaser extends Effector {
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
+  public param(params: 'type'): PhaserType;
   public param(params: 'stage'): PhaserNumberOfStages;
   public param(params: 'connectionType'): PhaserFilterConnectionType;
-  public param(params: 'frequency'): number;
-  public param(params: 'resonance'): number;
-  public param(params: 'depth'): number;
-  public param(params: 'rate'): number;
-  public param(params: 'mix'): number;
+  public param(params: 'frequency'): number | [number, number];
+  public param(params: 'resonance'): number | [number, number];
+  public param(params: 'depth'): number | [number, number];
+  public param(params: 'rate'): number | [number, number];
+  public param(params: 'mix'): number | [number, number];
   public param(params: 'dry'): number;
-  public param(params: 'wet'): number;
+  public param(params: 'wet'): number | [number, number];
   public param(params: PhaserParams): Phaser;
   public param(params: keyof PhaserParams | PhaserParams): PhaserParams[keyof PhaserParams] | Phaser {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {
           return this.isActive;
+        }
+
+        case 'type': {
+          return this.type;
         }
 
         case 'stage': {
@@ -176,23 +307,73 @@ export class Phaser extends Effector {
         }
 
         case 'frequency': {
-          return this.filters[0].frequency.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.filters[0][0].frequency.value;
+            }
+
+            case 'stereo': {
+              return [this.filters[0][0].frequency.value, this.filters[1][0].frequency.value];
+            }
+          }
+
+          break;
         }
 
         case 'resonance': {
-          return this.filters[0].Q.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.filters[0][0].Q.value;
+            }
+
+            case 'stereo': {
+              return [this.filters[0][0].Q.value, this.filters[1][0].Q.value];
+            }
+          }
+
+          break;
         }
 
         case 'depth': {
-          return this.depthRate;
+          switch (this.type) {
+            case 'standard': {
+              return this.depthRates[0];
+            }
+
+            case 'stereo': {
+              return [this.depthRates[0], this.depthRates[1]];
+            }
+          }
+
+          break;
         }
 
         case 'rate': {
-          return this.rate.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.rates[0].value;
+            }
+
+            case 'stereo': {
+              return [this.rates[0].value, this.rates[1].value];
+            }
+          }
+
+          break;
         }
 
         case 'mix': {
-          return this.wet.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.wets[0].gain.value;
+            }
+
+            case 'stereo': {
+              return [this.wets[0].gain.value, this.wets[1].gain.value];
+            }
+          }
+
+          break;
         }
 
         case 'dry': {
@@ -200,7 +381,17 @@ export class Phaser extends Effector {
         }
 
         case 'wet': {
-          return this.wet.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.wets[0].gain.value;
+            }
+
+            case 'stereo': {
+              return [this.wets[0].gain.value, this.wets[1].gain.value];
+            }
+          }
+
+          break;
         }
       }
     }
@@ -210,6 +401,19 @@ export class Phaser extends Effector {
         case 'state': {
           if (typeof value === 'boolean') {
             this.isActive = value;
+          }
+
+          break;
+        }
+
+        case 'type': {
+          if (typeof value === 'string') {
+            if ((value === 'standard') || (value === 'stereo')) {
+              this.type = value;
+
+              // Update connection
+              this.connect();
+            }
           }
 
           break;
@@ -249,11 +453,22 @@ export class Phaser extends Effector {
 
         case 'frequency': {
           if (typeof value === 'number') {
-            for (const filter of this.filters) {
+            for (const filter of this.filters[0]) {
               filter.frequency.value = value;
             }
 
-            this.depth.gain.value = value * this.depthRate;
+            this.depths[0].gain.value = value * this.depthRates[0];
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            for (const filter of this.filters[0]) {
+              filter.frequency.value = value[0];
+            }
+
+            for (const filter of this.filters[1]) {
+              filter.frequency.value = value[1];
+            }
+
+            this.depths[0].gain.value = value[0] * this.depthRates[0];
+            this.depths[1].gain.value = value[1] * this.depthRates[1];
           }
 
           break;
@@ -261,8 +476,16 @@ export class Phaser extends Effector {
 
         case 'resonance': {
           if (typeof value === 'number') {
-            for (const filter of this.filters) {
+            for (const filter of this.filters[0]) {
               filter.Q.value = value;
+            }
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            for (const filter of this.filters[0]) {
+              filter.Q.value = value[0];
+            }
+
+            for (const filter of this.filters[1]) {
+              filter.Q.value = value[1];
             }
           }
 
@@ -271,8 +494,13 @@ export class Phaser extends Effector {
 
         case 'depth': {
           if (typeof value === 'number') {
-            this.depthRate        = value;
-            this.depth.gain.value = this.filters[0].frequency.value * value;
+            this.depthRates[0]        = value;
+            this.depths[0].gain.value = this.filters[0][0].frequency.value * value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.depthRates[0]        = value[0];
+            this.depthRates[1]        = value[1];
+            this.depths[0].gain.value = this.filters[0][0].frequency.value * value[0];
+            this.depths[1].gain.value = this.filters[1][0].frequency.value * value[1];
           }
 
           break;
@@ -280,7 +508,10 @@ export class Phaser extends Effector {
 
         case 'rate': {
           if (typeof value === 'number') {
-            this.rate.value = value;
+            this.rates[0].value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.rates[0].value = value[0];
+            this.rates[1].value = value[1];
           }
 
           break;
@@ -288,8 +519,14 @@ export class Phaser extends Effector {
 
         case 'mix': {
           if (typeof value === 'number') {
-            this.wet.gain.value = value;
-            this.dry.gain.value = 1 - this.wet.gain.value;
+            this.wets[0].gain.value = value;
+
+            this.dry.gain.value = 1 - this.wets[0].gain.value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.wets[0].gain.value = value[0];
+            this.wets[1].gain.value = value[1];
+
+            this.dry.gain.value = 1 - this.wets[0].gain.value;
           }
 
           break;
@@ -305,7 +542,10 @@ export class Phaser extends Effector {
 
         case 'wet': {
           if (typeof value === 'number') {
-            this.wet.gain.value = value;
+            this.wets[0].gain.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.wets[0].gain.value = value[0];
+            this.wets[1].gain.value = value[1];
           }
 
           break;
@@ -318,17 +558,38 @@ export class Phaser extends Effector {
 
   /** @override */
   public override params(): Required<PhaserParams> {
-    return {
-      state         : this.isActive,
-      stage         : this.numberOfStages,
-      connectionType: this.connectionType,
-      frequency     : this.filters[0].frequency.value,
-      resonance     : this.filters[0].Q.value,
-      depth         : this.depthRate,
-      rate          : this.rate.value,
-      mix           : this.wet.gain.value,
-      dry           : this.dry.gain.value,
-      wet           : this.wet.gain.value
-    };
+    switch (this.type) {
+      case 'standard': {
+        return {
+          state         : this.isActive,
+          type          : this.type,
+          stage         : this.numberOfStages,
+          connectionType: this.connectionType,
+          frequency     : this.filters[0][0].frequency.value,
+          resonance     : this.filters[0][0].Q.value,
+          depth         : this.depthRates[0],
+          rate          : this.rates[0].value,
+          mix           : this.wets[0].gain.value,
+          dry           : this.dry.gain.value,
+          wet           : this.wets[0].gain.value
+        };
+      }
+
+      case 'stereo': {
+        return {
+          state         : this.isActive,
+          type          : this.type,
+          stage         : this.numberOfStages,
+          connectionType: this.connectionType,
+          frequency     : [this.filters[0][0].frequency.value, this.filters[1][0].frequency.value],
+          resonance     : [this.filters[0][0].Q.value, this.filters[1][0].Q.value],
+          depth         : [this.depthRates[0], this.depthRates[1]],
+          rate          : [this.rates[0].value, this.rates[1].value],
+          mix           : [this.wets[0].gain.value, this.wets[1].gain.value],
+          dry           : this.dry.gain.value,
+          wet           : [this.wets[0].gain.value, this.wets[1].gain.value]
+        };
+      }
+    }
   }
 }

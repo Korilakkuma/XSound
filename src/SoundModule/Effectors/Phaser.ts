@@ -7,7 +7,7 @@ export type PhaserFilterConnectionType = 'serial' | 'parallel';
 export type PhaserParams = {
   state?: boolean,
   stage?: PhaserNumberOfStages,
-  type?: PhaserFilterConnectionType,
+  connectionType?: PhaserFilterConnectionType,
   frequency?: number,
   resonance?: number,
   depth?: number,
@@ -151,7 +151,7 @@ export class Phaser extends Effector {
    */
   public param(params: 'state'): boolean;
   public param(params: 'stage'): PhaserNumberOfStages;
-  public param(params: 'type'): PhaserFilterConnectionType;
+  public param(params: 'connectionType'): PhaserFilterConnectionType;
   public param(params: 'frequency'): number;
   public param(params: 'resonance'): number;
   public param(params: 'depth'): number;
@@ -171,7 +171,7 @@ export class Phaser extends Effector {
           return this.numberOfStages;
         }
 
-        case 'type': {
+        case 'connectionType': {
           return this.connectionType;
         }
 
@@ -234,7 +234,7 @@ export class Phaser extends Effector {
           break;
         }
 
-        case 'type': {
+        case 'connectionType': {
           if (typeof value === 'string') {
             if ((value === 'serial') || (value === 'parallel')) {
               this.connectionType = value;
@@ -319,16 +319,16 @@ export class Phaser extends Effector {
   /** @override */
   public override params(): Required<PhaserParams> {
     return {
-      state    : this.isActive,
-      stage    : this.numberOfStages,
-      type     : this.connectionType,
-      frequency: this.filters[0].frequency.value,
-      resonance: this.filters[0].Q.value,
-      depth    : this.depthRate,
-      rate     : this.rate.value,
-      mix      : this.wet.gain.value,
-      dry      : this.dry.gain.value,
-      wet      : this.wet.gain.value
+      state         : this.isActive,
+      stage         : this.numberOfStages,
+      connectionType: this.connectionType,
+      frequency     : this.filters[0].frequency.value,
+      resonance     : this.filters[0].Q.value,
+      depth         : this.depthRate,
+      rate          : this.rate.value,
+      mix           : this.wet.gain.value,
+      dry           : this.dry.gain.value,
+      wet           : this.wet.gain.value
     };
   }
 }

@@ -74,12 +74,12 @@ describe(Phaser.name, () => {
       BiquadFilterNode.prototype.disconnect = originalDisconnect;
       /* eslint-enable dot-notation */
 
-      phaser.param({ type: 'serial' });
+      phaser.param({ connectionType: 'serial' });
       phaser.deactivate();
     });
 
     test('should call `connect` method (if connection type is `serial`)', () => {
-      phaser.param({ type: 'serial' });
+      phaser.param({ connectionType: 'serial' });
 
       const inputConnectMock       = jest.fn();
       const inputDisconnectMock    = jest.fn();
@@ -122,7 +122,7 @@ describe(Phaser.name, () => {
     });
 
     test('should call `connect` method (if connection type is `parallel`)', () => {
-      phaser.param({ type: 'parallel' });
+      phaser.param({ connectionType: 'parallel' });
 
       const inputConnectMock       = jest.fn();
       const inputDisconnectMock    = jest.fn();
@@ -167,27 +167,27 @@ describe(Phaser.name, () => {
 
   describe(phaser.param.name, () => {
     const defaultParams: PhaserParams = {
-      stage    : 12,
-      type     : 'serial',
-      frequency: 350,
-      resonance: 1,
-      depth    : 0,
-      rate     : 0,
-      mix      : 0,
-      dry      : 1,
-      wet      : 0,
+      stage         : 12,
+      connectionType: 'serial',
+      frequency     : 350,
+      resonance     : 1,
+      depth         : 0,
+      rate          : 0,
+      mix           : 0,
+      dry           : 1,
+      wet           : 0,
     };
 
     const params: PhaserParams = {
-      stage    : 8,
-      type     : 'parallel',
-      frequency: 1000,
-      resonance: 10,
-      depth    : 0.5,
-      rate     : 0.5,
-      mix      : 0.5,
-      dry      : 0.5,
-      wet      : 0.5
+      stage         : 8,
+      connectionType: 'parallel',
+      frequency     : 1000,
+      resonance     : 10,
+      depth         : 0.5,
+      rate          : 0.5,
+      mix           : 0.5,
+      dry           : 0.5,
+      wet           : 0.5
     };
 
     beforeAll(() => {
@@ -208,8 +208,8 @@ describe(Phaser.name, () => {
       expect(phaser.param('stage')).toBe(8);
     });
 
-    test('should return `type`', () => {
-      expect(phaser.param('type')).toBe('parallel');
+    test('should return `connectionType`', () => {
+      expect(phaser.param('connectionType')).toBe('parallel');
     });
 
     test('should return `frequency`', () => {
@@ -244,16 +244,16 @@ describe(Phaser.name, () => {
   describe(phaser.params.name, () => {
     test('should return parameters for phaser effector as associative array', () => {
       expect(phaser.params()).toStrictEqual({
-        state    : false,
-        stage    : 12,
-        type     : 'serial',
-        frequency: 350,
-        resonance: 1,
-        depth    : 0,
-        rate     : 0,
-        mix      : 0,
-        dry      : 1,
-        wet      : 0
+        state         : false,
+        stage         : 12,
+        connectionType: 'serial',
+        frequency     : 350,
+        resonance     : 1,
+        depth         : 0,
+        rate          : 0,
+        mix           : 0,
+        dry           : 1,
+        wet           : 0
       });
     });
   });

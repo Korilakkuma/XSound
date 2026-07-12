@@ -306,6 +306,10 @@ describe(Flanger.name, () => {
       });
 
       // Getter
+      test('should return `type`', () => {
+        expect(flanger.param('type')).toBe('standard');
+      });
+
       test('should return `time`', () => {
         expect(flanger.param('time')).toBeCloseTo(0.25, 2);
       });
@@ -364,6 +368,10 @@ describe(Flanger.name, () => {
       });
 
       // Getter
+      test('should return `type`', () => {
+        expect(flanger.param('type')).toBe('stereo');
+      });
+
       test('should return `time`', () => {
         expect(flanger.param('time')).toStrictEqual([0.25, 0.50]);
       });
@@ -441,7 +449,7 @@ describe(Flanger.name, () => {
       const originalLFO1 = flanger['lfos'][1];
       /* eslint-enable dot-notation */
 
-      const connectMock  = jest.fn();
+      const connectMock   = jest.fn();
       const lfo0StartMock = jest.fn();
       const lfo1StartMock = jest.fn();
 
@@ -473,10 +481,10 @@ describe(Flanger.name, () => {
 
       /* eslint-disable dot-notation */
       const originalLFO0 = flanger['lfos'][0];
-      const originalLFO1 = flanger['lfos'][0];
+      const originalLFO1 = flanger['lfos'][1];
       /* eslint-enable dot-notation */
 
-      const connectMock = jest.fn();
+      const connectMock  = jest.fn();
       const lfo0StopMock = jest.fn();
       const lfo1StopMock = jest.fn();
 

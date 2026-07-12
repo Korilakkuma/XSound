@@ -144,7 +144,7 @@ export class Flanger extends StereoEffector {
           this.input.connect(this.splitter);
 
           // Left Channel
-          // ChannelSplitterNode (Left Channel) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
+          // ChannelSplitterNode (Left Channel) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> ChannelMergerNode (Output)
           this.splitter.connect(this.tones[0], 0, 0);
           this.tones[0].connect(this.delays[0]);
           this.delays[0].connect(this.wets[0]);
@@ -156,7 +156,7 @@ export class Flanger extends StereoEffector {
           this.feedbacks[0].connect(this.delays[0]);
 
           // Right Channel
-          // ChannelSplitterNode (Right Channel) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> GainNode (Output)
+          // ChannelSplitterNode (Right Channel) -> BiquadFilterNode (Tone) -> DelayNode (Delay) -> GainNode (Wet) -> ChannelMergerNode (Output)
           this.splitter.connect(this.tones[1], 1, 0);
           this.tones[1].connect(this.delays[1]);
           this.delays[1].connect(this.wets[1]);

@@ -316,6 +316,10 @@ describe(Chorus.name, () => {
       });
 
       // Getter
+      test('should return `type`', () => {
+        expect(chorus.param('type')).toBe('standard');
+      });
+
       test('should return `time`', () => {
         expect(chorus.param('time')).toBeCloseTo(0.25, 2);
       });
@@ -374,6 +378,10 @@ describe(Chorus.name, () => {
       });
 
       // Getter
+      test('should return `type`', () => {
+        expect(chorus.param('type')).toBe('stereo');
+      });
+
       test('should return `time`', () => {
         expect(chorus.param('time')).toStrictEqual([0.25, 0.50]);
       });
@@ -451,7 +459,7 @@ describe(Chorus.name, () => {
       const originalLFO1 = chorus['lfos'][1];
       /* eslint-enable dot-notation */
 
-      const connectMock  = jest.fn();
+      const connectMock   = jest.fn();
       const lfo0StartMock = jest.fn();
       const lfo1StartMock = jest.fn();
 
@@ -483,10 +491,10 @@ describe(Chorus.name, () => {
 
       /* eslint-disable dot-notation */
       const originalLFO0 = chorus['lfos'][0];
-      const originalLFO1 = chorus['lfos'][0];
+      const originalLFO1 = chorus['lfos'][1];
       /* eslint-enable dot-notation */
 
-      const connectMock = jest.fn();
+      const connectMock  = jest.fn();
       const lfo0StopMock = jest.fn();
       const lfo1StopMock = jest.fn();
 

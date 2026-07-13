@@ -2,7 +2,7 @@ import { Effector } from './Effector';
 
 export type TremoloParams = {
   state?: boolean,
-  type?: OscillatorType,
+  waveType?: OscillatorType,
   depth?: number,
   rate?: number
 };
@@ -76,7 +76,7 @@ export class Tremolo extends Effector {
    * @return {TremoloParams[keyof TremoloParams]|Tremolo} Return value is parameter for tremolo effector if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: 'type'): OscillatorType;
+  public param(params: 'waveType'): OscillatorType;
   public param(params: 'depth'): number;
   public param(params: 'rate'): number;
   public param(params: TremoloParams): Tremolo;
@@ -87,7 +87,7 @@ export class Tremolo extends Effector {
           return this.isActive;
         }
 
-        case 'type': {
+        case 'waveType': {
           return this.lfo.type;
         }
 
@@ -111,7 +111,7 @@ export class Tremolo extends Effector {
           break;
         }
 
-        case 'type': {
+        case 'waveType': {
           if (typeof value === 'string') {
             this.lfo.type = value;
           }
@@ -143,10 +143,10 @@ export class Tremolo extends Effector {
   /** @override */
   public override params(): Required<TremoloParams> {
     return {
-      state: this.isActive,
-      type : this.lfo.type,
-      depth: this.depth.gain.value,
-      rate : this.rate.value
+      state   : this.isActive,
+      waveType: this.lfo.type,
+      depth   : this.depth.gain.value,
+      rate    : this.rate.value
     };
   }
 }

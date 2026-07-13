@@ -102,15 +102,15 @@ describe(Tremolo.name, () => {
 
   describe(tremolo.param.name, () => {
     const defaultParams: TremoloParams = {
-      type : 'sine',
-      depth: 0,
-      rate : 0
+      waveType: 'sine',
+      depth   : 0,
+      rate    : 0
     };
 
     const params: TremoloParams = {
-      type : 'triangle',
-      depth: 0.5,
-      rate : 0.5
+      waveType: 'triangle',
+      depth   : 0.5,
+      rate    : 0.5
     };
 
     beforeAll(() => {
@@ -127,8 +127,8 @@ describe(Tremolo.name, () => {
     });
 
     // Getter
-    test('should return `type`', () => {
-      expect(tremolo.param('type')).toBe('triangle');
+    test('should return `waveType`', () => {
+      expect(tremolo.param('waveType')).toBe('triangle');
     });
 
     test('should return `depth`', () => {
@@ -143,10 +143,10 @@ describe(Tremolo.name, () => {
   describe(tremolo.params.name, () => {
     test('should return parameters for tremolo effector as associative array', () => {
       expect(tremolo.params()).toStrictEqual({
-        state: false,
-        type : 'sine',
-        depth: 0,
-        rate : 0
+        state   : false,
+        waveType: 'sine',
+        depth   : 0,
+        rate    : 0
       });
     });
   });

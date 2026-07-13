@@ -1,11 +1,13 @@
 {
   "state": false,
+  "type": "standard",
   "stage": 12,
-  "type": "serial",
-  "frequency": 350,
-  "resonance": 1,
-  "depth": 0,
-  "rate": 0,
-  "mix": 0,
-  "feedback": 0
+  "connectionType": "serial",
+  "frequency": [350, 350],
+  "resonance": [1, 1],
+  "depth": [0, 0],
+  "rate": [0, 0],
+  "mix": [0, 0],
+  "dry": 1,
+  "wet": [0, 0]
 }

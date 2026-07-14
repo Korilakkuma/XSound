@@ -88,7 +88,7 @@ import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reve
 import type { RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
 import type { SlicerParams } from './SoundModule/Effectors/Slicer';
 import type { StereoParams } from './SoundModule/Effectors/Stereo';
-import type { TremoloParams } from './SoundModule/Effectors/Tremolo';
+import type { TremoloParams, TremoloType } from './SoundModule/Effectors/Tremolo';
 import type { VocalCancelerParams, VocalCancelerAlgorithm } from './SoundModule/Effectors/VocalCanceler';
 import type { WahParams } from './SoundModule/Effectors/Wah';
 import type { PitchChar, ConvertedTime, FileEvent, FileReaderType, FileReaderErrorText, WindowFunction } from './XSound';
@@ -742,6 +742,7 @@ export type {
   StereoParams,
   Tremolo,
   TremoloParams,
+  TremoloType,
   VocalCanceler,
   VocalCancelerParams,
   VocalCancelerAlgorithm,

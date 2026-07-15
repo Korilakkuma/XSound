@@ -167,6 +167,11 @@ export class Phaser extends StereoEffector {
             }
 
             case 'parallel': {
+              //                     |-> BiquadFilterNode (All-Pass Filter) ->|
+              //                     |-> BiquadFilterNode (All-Pass Filter) ->|
+              // GainNode (Input) -> |-> BiquadFilterNode (All-Pass Filter) ->| -> GainNode (Wet) -> GainNode (Output)
+              //                     |-> BiquadFilterNode (All-Pass Filter) ->|
+              //                     |-> ... x N                            ->|
               for (let i = 0; i < this.numberOfStages; i++) {
                 this.input.connect(this.filters[0][i]);
                 this.filters[0][i].connect(this.wets[0]);
@@ -231,17 +236,24 @@ export class Phaser extends StereoEffector {
               this.input.connect(this.splitter);
 
               // Left Channel
-              // ChannelSplitterNode (Left Channel) -> BiquadFilterNode (All-Pass Filter x N) -> GainNode (Wet) -> ChannelMergerNode
+              //                                       |-> BiquadFilterNode (All-Pass Filter) ->|
+              //                                       |-> BiquadFilterNode (All-Pass Filter) ->|
+              // ChannelSplitterNode (Left Channel) -> |-> BiquadFilterNode (All-Pass Filter) ->| -> GainNode (Wet) -> ChannelMergerNode
+              //                                       |-> BiquadFilterNode (All-Pass Filter) ->|
+              //                                       |-> ... x N                            ->|
               for (let i = 0; i < this.numberOfStages; i++) {
                 this.splitter.connect(this.filters[0][i], 0, 0);
                 this.filters[0][i].connect(this.wets[0]);
               }
 
-              // GainNode
               this.wets[0].connect(this.merger, 0, 0);
 
               // Right Channel
-              // ChannelSplitterNode (Right Channel) -> BiquadFilterNode (All-Pass Filter x N) -> GainNode (Wet) -> ChannelMergerNode
+              //                                        |-> BiquadFilterNode (All-Pass Filter) ->|
+              //                                        |-> BiquadFilterNode (All-Pass Filter) ->|
+              // ChannelSplitterNode (Right Channel) -> |-> BiquadFilterNode (All-Pass Filter) ->| -> GainNode (Wet) -> ChannelMergerNode
+              //                                        |-> BiquadFilterNode (All-Pass Filter) ->|
+              //                                        |-> ... x N                            ->|
               for (let i = 0; i < this.numberOfStages; i++) {
                 this.splitter.connect(this.filters[1][i], 0, 1);
                 this.filters[1][i].connect(this.wets[1]);

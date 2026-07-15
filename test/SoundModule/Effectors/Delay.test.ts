@@ -37,8 +37,8 @@ describe(Delay.name, () => {
       delay['tones'][1]     = originalTone1;
       delay['feedbacks'][0] = originalFeedback0;
       delay['feedbacks'][1] = originalFeedback1;
-      delay['splitter']     = originalSplitter;;
-      delay['merger']       = originalMerger;;
+      delay['splitter']     = originalSplitter;
+      delay['merger']       = originalMerger;
       /* eslint-enable dot-notation */
 
       delay.param({ type: 'standard' });

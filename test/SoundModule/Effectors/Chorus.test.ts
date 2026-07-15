@@ -91,6 +91,8 @@ describe(Chorus.name, () => {
     const originalTone1     = chorus['tones'][1];
     const originalFeedback0 = chorus['feedbacks'][0];
     const originalFeedback1 = chorus['feedbacks'][1];
+    const originalSplitter  = chorus['splitter'];
+    const originalMerger    = chorus['merger'];
     /* eslint-enable dot-notation */
 
     afterEach(() => {
@@ -105,6 +107,8 @@ describe(Chorus.name, () => {
       chorus['tones'][1]     = originalTone1;
       chorus['feedbacks'][0] = originalFeedback0;
       chorus['feedbacks'][1] = originalFeedback1;
+      chorus['splitter']     = originalSplitter;
+      chorus['merger']       = originalMerger;
       /* eslint-enable dot-notation */
 
       chorus.param({ type: 'standard' });
@@ -264,6 +268,8 @@ describe(Chorus.name, () => {
       expect(tone1ConnectMock).toHaveBeenCalledTimes(1);
       expect(feedback0ConnectMock).toHaveBeenCalledTimes(1);
       expect(feedback1ConnectMock).toHaveBeenCalledTimes(1);
+      expect(splitterConnectMock).toHaveBeenCalledTimes(2);
+      expect(mergerConnectMock).toHaveBeenCalledTimes(1);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
       expect(delay0DisconnectMock).toHaveBeenCalledTimes(2);
       expect(dryDisconnectMock).toHaveBeenCalledTimes(2);

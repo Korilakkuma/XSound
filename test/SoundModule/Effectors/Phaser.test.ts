@@ -86,15 +86,15 @@ describe(Phaser.name, () => {
     const originalDry        = phaser['dry'];
     const originalWet0       = phaser['wets'][0];
     const originalWet1       = phaser['wets'][1];
+    const originalSplitter   = phaser['splitter'];
+    const originalMerger     = phaser['merger'];
     const originalConnect    = BiquadFilterNode.prototype.connect;
     const originalDisconnect = BiquadFilterNode.prototype.disconnect;
     /* eslint-enable dot-notation */
 
     describe('`type` is `standard`', () => {
-      phaser.param({ type: 'standard' });
-
       beforeEach(() => {
-        phaser.param({ stage: 12 });
+        phaser.param({ type: 'standard', stage: 12 });
       });
 
       afterEach(() => {
@@ -103,6 +103,8 @@ describe(Phaser.name, () => {
         phaser['dry']                         = originalDry;
         phaser['wets'][0]                     = originalWet0;
         phaser['wets'][1]                     = originalWet1;
+        phaser['splitter']                    = originalSplitter;
+        phaser['merger']                      = originalMerger;
         BiquadFilterNode.prototype.connect    = originalConnect;
         BiquadFilterNode.prototype.disconnect = originalDisconnect;
         /* eslint-enable dot-notation */
@@ -151,6 +153,7 @@ describe(Phaser.name, () => {
         expect(inputConnectMock).toHaveBeenCalledTimes(3);
         expect(filterConnectMock).toHaveBeenCalledTimes(12);
         expect(dryConnectMock).toHaveBeenCalledTimes(1);
+        expect(wetConnectMock).toHaveBeenCalledTimes(1);
         expect(filterDisconnectMock).toHaveBeenCalledTimes(96);
         expect(wetDisconnectMock).toHaveBeenCalledTimes(2);
       });
@@ -194,16 +197,15 @@ describe(Phaser.name, () => {
         expect(inputConnectMock).toHaveBeenCalledTimes(14);
         expect(filterConnectMock).toHaveBeenCalledTimes(12);
         expect(dryConnectMock).toHaveBeenCalledTimes(1);
+        expect(wetConnectMock).toHaveBeenCalledTimes(1);
         expect(filterDisconnectMock).toHaveBeenCalledTimes(96);
         expect(wetDisconnectMock).toHaveBeenCalledTimes(2);
       });
     });
 
     describe('`type` is `stereo`', () => {
-      phaser.param({ type: 'stereo' });
-
       beforeEach(() => {
-        phaser.param({ stage: 12 });
+        phaser.param({ type: 'stereo', stage: 12 });
       });
 
       afterEach(() => {
@@ -212,6 +214,8 @@ describe(Phaser.name, () => {
         phaser['dry']                         = originalDry;
         phaser['wets'][0]                     = originalWet0;
         phaser['wets'][1]                     = originalWet1;
+        phaser['splitter']                    = originalSplitter;
+        phaser['merger']                      = originalMerger;
         BiquadFilterNode.prototype.connect    = originalConnect;
         BiquadFilterNode.prototype.disconnect = originalDisconnect;
         /* eslint-enable dot-notation */
@@ -222,18 +226,20 @@ describe(Phaser.name, () => {
       });
 
       test('should call `connect` method (if connection type is `serial`)', () => {
-        phaser.param({ connectionType: 'serial' });
-
-        const inputConnectMock     = jest.fn();
-        const inputDisconnectMock  = jest.fn();
-        const filterConnectMock    = jest.fn();
-        const filterDisconnectMock = jest.fn();
-        const dryConnectMock       = jest.fn();
-        const dryDisconnectMock    = jest.fn();
-        const wet0ConnectMock      = jest.fn();
-        const wet0DisconnectMock   = jest.fn();
-        const wet1ConnectMock      = jest.fn();
-        const wet1DisconnectMock   = jest.fn();
+        const inputConnectMock       = jest.fn();
+        const inputDisconnectMock    = jest.fn();
+        const filterConnectMock      = jest.fn();
+        const filterDisconnectMock   = jest.fn();
+        const dryConnectMock         = jest.fn();
+        const dryDisconnectMock      = jest.fn();
+        const wet0ConnectMock        = jest.fn();
+        const wet0DisconnectMock     = jest.fn();
+        const wet1ConnectMock        = jest.fn();
+        const wet1DisconnectMock     = jest.fn();
+        const splitterConnectMock    = jest.fn();
+        const splitterDisconnectMock = jest.fn();
+        const mergerConnectMock      = jest.fn();
+        const mergerDisconnectMock   = jest.fn();
 
         /* eslint-disable dot-notation */
         phaser['input'].connect               = inputConnectMock;
@@ -244,46 +250,62 @@ describe(Phaser.name, () => {
         phaser['wets'][0].disconnect          = wet0DisconnectMock;
         phaser['wets'][1].connect             = wet1ConnectMock;
         phaser['wets'][1].disconnect          = wet1DisconnectMock;
+        phaser['splitter'].connect            = splitterConnectMock;
+        phaser['splitter'].disconnect         = splitterDisconnectMock;
+        phaser['merger'].connect              = mergerConnectMock;
+        phaser['merger'].disconnect           = mergerDisconnectMock;
         BiquadFilterNode.prototype.connect    = filterConnectMock;
         BiquadFilterNode.prototype.disconnect = filterDisconnectMock;
         /* eslint-enable dot-notation */
 
-        phaser.connect();
+        phaser.param({ connectionType: 'serial' });
 
         expect(inputConnectMock).toHaveBeenCalledTimes(1);
         expect(filterConnectMock).toHaveBeenCalledTimes(0);
         expect(dryConnectMock).toHaveBeenCalledTimes(0);
         expect(wet0ConnectMock).toHaveBeenCalledTimes(0);
         expect(wet1ConnectMock).toHaveBeenCalledTimes(0);
+        expect(splitterConnectMock).toHaveBeenCalledTimes(0);
+        expect(mergerConnectMock).toHaveBeenCalledTimes(0);
         expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
         expect(filterDisconnectMock).toHaveBeenCalledTimes(48);
         expect(dryDisconnectMock).toHaveBeenCalledTimes(1);
         expect(wet0DisconnectMock).toHaveBeenCalledTimes(1);
         expect(wet1DisconnectMock).toHaveBeenCalledTimes(1);
+        expect(splitterDisconnectMock).toHaveBeenCalledTimes(2);
+        expect(mergerDisconnectMock).toHaveBeenCalledTimes(1);
 
         phaser.activate();
 
         expect(inputConnectMock).toHaveBeenCalledTimes(3);
-        expect(filterConnectMock).toHaveBeenCalledTimes(12);
+        expect(filterConnectMock).toHaveBeenCalledTimes(24);
         expect(dryConnectMock).toHaveBeenCalledTimes(1);
+        expect(wet0ConnectMock).toHaveBeenCalledTimes(1);
+        expect(wet1ConnectMock).toHaveBeenCalledTimes(1);
+        expect(splitterConnectMock).toHaveBeenCalledTimes(2);
+        expect(mergerConnectMock).toHaveBeenCalledTimes(1);
         expect(filterDisconnectMock).toHaveBeenCalledTimes(96);
         expect(wet0DisconnectMock).toHaveBeenCalledTimes(2);
         expect(wet1DisconnectMock).toHaveBeenCalledTimes(2);
+        expect(splitterDisconnectMock).toHaveBeenCalledTimes(4);
+        expect(mergerDisconnectMock).toHaveBeenCalledTimes(2);
       });
 
       test('should call `connect` method (if connection type is `parallel`)', () => {
-        phaser.param({ connectionType: 'parallel' });
-
-        const inputConnectMock     = jest.fn();
-        const inputDisconnectMock  = jest.fn();
-        const filterConnectMock    = jest.fn();
-        const filterDisconnectMock = jest.fn();
-        const dryConnectMock       = jest.fn();
-        const dryDisconnectMock    = jest.fn();
-        const wet0ConnectMock      = jest.fn();
-        const wet0DisconnectMock   = jest.fn();
-        const wet1ConnectMock      = jest.fn();
-        const wet1DisconnectMock   = jest.fn();
+        const inputConnectMock       = jest.fn();
+        const inputDisconnectMock    = jest.fn();
+        const filterConnectMock      = jest.fn();
+        const filterDisconnectMock   = jest.fn();
+        const dryConnectMock         = jest.fn();
+        const dryDisconnectMock      = jest.fn();
+        const wet0ConnectMock        = jest.fn();
+        const wet0DisconnectMock     = jest.fn();
+        const wet1ConnectMock        = jest.fn();
+        const wet1DisconnectMock     = jest.fn();
+        const splitterConnectMock    = jest.fn();
+        const splitterDisconnectMock = jest.fn();
+        const mergerConnectMock      = jest.fn();
+        const mergerDisconnectMock   = jest.fn();
 
         /* eslint-disable dot-notation */
         phaser['input'].connect               = inputConnectMock;
@@ -294,31 +316,45 @@ describe(Phaser.name, () => {
         phaser['wets'][0].disconnect          = wet0DisconnectMock;
         phaser['wets'][1].connect             = wet1ConnectMock;
         phaser['wets'][1].disconnect          = wet1DisconnectMock;
+        phaser['splitter'].connect            = splitterConnectMock;
+        phaser['splitter'].disconnect         = splitterDisconnectMock;
+        phaser['merger'].connect              = mergerConnectMock;
+        phaser['merger'].disconnect           = mergerDisconnectMock;
         BiquadFilterNode.prototype.connect    = filterConnectMock;
         BiquadFilterNode.prototype.disconnect = filterDisconnectMock;
         /* eslint-enable dot-notation */
 
-        phaser.connect();
+        phaser.param({ connectionType: 'parallel' });
 
         expect(inputConnectMock).toHaveBeenCalledTimes(1);
         expect(filterConnectMock).toHaveBeenCalledTimes(0);
         expect(dryConnectMock).toHaveBeenCalledTimes(0);
         expect(wet0ConnectMock).toHaveBeenCalledTimes(0);
         expect(wet1ConnectMock).toHaveBeenCalledTimes(0);
+        expect(splitterConnectMock).toHaveBeenCalledTimes(0);
+        expect(mergerConnectMock).toHaveBeenCalledTimes(0);
         expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
         expect(filterDisconnectMock).toHaveBeenCalledTimes(48);
         expect(dryDisconnectMock).toHaveBeenCalledTimes(1);
         expect(wet0DisconnectMock).toHaveBeenCalledTimes(1);
         expect(wet1DisconnectMock).toHaveBeenCalledTimes(1);
+        expect(splitterDisconnectMock).toHaveBeenCalledTimes(2);
+        expect(mergerDisconnectMock).toHaveBeenCalledTimes(1);
 
         phaser.activate();
 
-        expect(inputConnectMock).toHaveBeenCalledTimes(14);
-        expect(filterConnectMock).toHaveBeenCalledTimes(12);
+        expect(inputConnectMock).toHaveBeenCalledTimes(3);
+        expect(filterConnectMock).toHaveBeenCalledTimes(24);
         expect(dryConnectMock).toHaveBeenCalledTimes(1);
+        expect(wet0ConnectMock).toHaveBeenCalledTimes(1);
+        expect(wet1ConnectMock).toHaveBeenCalledTimes(1);
+        expect(splitterConnectMock).toHaveBeenCalledTimes(24);
+        expect(mergerConnectMock).toHaveBeenCalledTimes(1);
         expect(filterDisconnectMock).toHaveBeenCalledTimes(96);
         expect(wet0DisconnectMock).toHaveBeenCalledTimes(2);
         expect(wet1DisconnectMock).toHaveBeenCalledTimes(2);
+        expect(splitterDisconnectMock).toHaveBeenCalledTimes(4);
+        expect(mergerDisconnectMock).toHaveBeenCalledTimes(2);
       });
     });
   });

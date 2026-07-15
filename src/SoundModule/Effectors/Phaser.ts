@@ -138,6 +138,7 @@ export class Phaser extends StereoEffector {
     this.wets[1].disconnect(0);
     this.splitter.disconnect(0);
     this.splitter.disconnect(1);
+    this.merger.disconnect(0);
 
     if (this.isActive && (this.numberOfStages > 0)) {
       // Effect ON

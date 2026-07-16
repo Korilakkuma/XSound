@@ -1,6 +1,7 @@
 {
   "state": false,
-  "type": "sine",
-  "depth": 0,
-  "rate": 0
+  "type": "standard",
+  "waveType": ["sine", "sine"],
+  "depth": [0, 0],
+  "rate": [0, 0]
 }

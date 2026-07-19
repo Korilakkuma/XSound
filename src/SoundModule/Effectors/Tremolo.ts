@@ -95,7 +95,7 @@ export class Tremolo extends StereoEffector {
         case 'stereo': {
           //                                            |-> Left Channel Tremolo  (GainNode (Tremolo)) ->|
           // GainNode (Input) -> ChannelSplitterNode -> |                                                | -> ChannelMergerNode
-          //                                            |-> Right Channel Tremolo (GainNode (tremolo)) ->|
+          //                                            |-> Right Channel Tremolo (GainNode (Tremolo)) ->|
           this.input.connect(this.splitter);
 
           // Left Channel

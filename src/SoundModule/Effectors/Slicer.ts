@@ -1,20 +1,27 @@
-import { Effector } from './Effector';
+import { StereoEffector } from './StereoEffector';
+
+export type SlicerType = 'standard' | 'stereo';
 
 export type SlicerParams = {
   state?: boolean,
-  depth?: number,
-  rate?: number,
+  type?: SlicerType,
+  depth?: number | [number, number],
+  rate?: number | [number, number],
   dry?: number,
-  wet?: number
+  wet?: number | [number, number]
 };
 
 /**
  * Effector's subclass for Slicer.
  */
-export class Slicer extends Effector {
-  private amplitude: GainNode;
+export class Slicer extends StereoEffector {
+  private type: SlicerType = 'standard';
+
+  private amplitudes: [GainNode, GainNode];
   private dry: GainNode;
-  private wet: GainNode;
+  private wets: [GainNode, GainNode];
+  private splitter: ChannelSplitterNode;
+  private merger: ChannelMergerNode;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -22,25 +29,39 @@ export class Slicer extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.amplitude = context.createGain();
-    this.dry       = context.createGain();
-    this.wet       = context.createGain();
+    this.amplitudes = [context.createGain(), context.createGain()];
+    this.dry        = context.createGain();
+    this.wets       = [context.createGain(), context.createGain()];
+    this.splitter   = context.createChannelSplitter(2);
+    this.merger     = context.createChannelMerger(2);
 
     // Initialize parameter
-    this.amplitude.gain.value = 1;  // 1 +- depth
-    this.dry.gain.value       = 1;
-    this.wet.gain.value       = 0;
-    this.lfo.type             = 'square';
-    this.depth.gain.value     = 0;
-    this.rate.value           = 0;
+    this.amplitudes[0].gain.value = 1;  // 1 +- depth
+    this.amplitudes[1].gain.value = 1;  // 1 +- depth
+    this.dry.gain.value           = 1;
+    this.wets[0].gain.value       = 0;
+    this.wets[1].gain.value       = 0;
+    this.lfos[0].type             = 'square';
+    this.lfos[1].type             = 'square';
+    this.depths[0].gain.value     = 0;
+    this.depths[1].gain.value     = 0;
+    this.rates[0].value           = 0;
+    this.rates[1].value           = 0;
 
     // `Slicer` is not connected by default
     this.deactivate();
 
     // LFO
+
+    // Left Channel
     // OscillatorNode (LFO) -> GainNode (Depth) -> AudioParam (gain)
-    this.lfo.connect(this.depth);
-    this.depth.connect(this.amplitude.gain);
+    this.lfos[0].connect(this.depths[0]);
+    this.depths[0].connect(this.amplitudes[0].gain);
+
+    // Right Channel
+    // OscillatorNode (LFO) -> GainNode (Depth) -> AudioParam (gain)
+    this.lfos[1].connect(this.depths[1]);
+    this.depths[1].connect(this.amplitudes[1].gain);
   }
 
   /** @override */
@@ -49,8 +70,11 @@ export class Slicer extends Effector {
 
     if (this.isActive) {
       // Connect `AudioNode`s again
-      this.lfo.connect(this.depth);
-      this.depth.connect(this.amplitude.gain);
+      this.lfos[0].connect(this.depths[0]);
+      this.depths[0].connect(this.amplitudes[0].gain);
+
+      this.lfos[1].connect(this.depths[1]);
+      this.depths[1].connect(this.amplitudes[1].gain);
     }
   }
 
@@ -58,20 +82,54 @@ export class Slicer extends Effector {
   public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
-    this.amplitude.disconnect(0);
+    this.amplitudes[0].disconnect(0);
     this.dry.disconnect(0);
-    this.wet.disconnect(0);
+    this.wets[0].disconnect(0);
+    this.splitter.disconnect(0);
+    this.splitter.disconnect(1);
+    this.merger.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
 
+      // GainNode (Input) -> GainNode (Dry) -> GainNode (wet)
       this.input.connect(this.dry);
       this.dry.connect(this.output);
 
-      // GainNode (Input) -> GainNode (Slicer) -> GainNode (Wet) -> GainNode (Output)
-      this.input.connect(this.amplitude);
-      this.amplitude.connect(this.wet);
-      this.wet.connect(this.output);
+      switch (this.type) {
+        case 'standard': {
+          // GainNode (Input) -> GainNode (Slicer) -> GainNode (Wet) -> GainNode (Output)
+          this.input.connect(this.amplitudes[0]);
+          this.amplitudes[0].connect(this.wets[0]);
+          this.wets[0].connect(this.output);
+
+          break;
+        }
+
+        case 'stereo': {
+          //                                            |-> Left Channel Slicer  (GainNode (Slicer)) ->|
+          // GainNode (Input) -> ChannelSplitterNode -> |                                              | -> ChannelMergerNode
+          //                                            |-> Right Channel Slicer (GainNode (Slicer)) ->|
+          this.input.connect(this.splitter);
+
+          // Left Channel
+          // ChannelSplitterNode (Left Channel) -> GainNode (Slicer) -> ChannelMergerNode
+          this.splitter.connect(this.amplitudes[0], 0, 0);
+          this.amplitudes[0].connect(this.wets[0]);
+          this.wets[0].connect(this.merger, 0, 0);
+
+          // Right Channel
+          // ChannelSplitterNode (Right Channel) -> GainNode (Slicer) -> ChannelMergerNode
+          this.splitter.connect(this.amplitudes[1], 1, 0);
+          this.amplitudes[1].connect(this.wets[1]);
+          this.wets[1].connect(this.merger, 0, 1);
+
+          // ChannelMergerNode -> GainNode (Output)
+          this.merger.connect(this.output);
+
+          break;
+        }
+      }
     } else {
       // Effect OFF
 
@@ -89,10 +147,11 @@ export class Slicer extends Effector {
    * @return {SlicerParams[keyof SlicerParams]|Slicer} Return value is parameter for slicer effector if getter.
    *     Otherwise, return value is for method chain.
    */
-  public param(params: 'depth'): number;
-  public param(params: 'rate'): number;
+  public param(params: 'type'): SlicerType;
+  public param(params: 'depth'): number | [number, number];
+  public param(params: 'rate'): number | [number, number];
   public param(params: 'dry'): number;
-  public param(params: 'wet'): number;
+  public param(params: 'wet'): number | [number, number];
   public param(params: SlicerParams): Slicer;
   public param(params: keyof SlicerParams | SlicerParams): SlicerParams[keyof SlicerParams] | Slicer {
     if (typeof params === 'string') {
@@ -101,12 +160,36 @@ export class Slicer extends Effector {
           return this.isActive;
         }
 
+        case 'type': {
+          return this.type;
+        }
+
         case 'depth': {
-          return this.depth.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.depths[0].gain.value;
+            }
+
+            case 'stereo': {
+              return [this.depths[0].gain.value, this.depths[1].gain.value];
+            }
+          }
+
+          break;
         }
 
         case 'rate': {
-          return this.rate.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.rates[0].value;
+            }
+
+            case 'stereo': {
+              return [this.rates[0].value, this.rates[1].value];
+            }
+          }
+
+          break;
         }
 
         case 'dry': {
@@ -114,7 +197,17 @@ export class Slicer extends Effector {
         }
 
         case 'wet': {
-          return this.wet.gain.value;
+          switch (this.type) {
+            case 'standard': {
+              return this.wets[0].gain.value;
+            }
+
+            case 'stereo': {
+              return [this.wets[0].gain.value, this.wets[1].gain.value];
+            }
+          }
+
+          break;
         }
       }
     }
@@ -129,17 +222,36 @@ export class Slicer extends Effector {
           break;
         }
 
+        case 'type': {
+          if (typeof value === 'string') {
+            if ((value === 'standard') || (value === 'stereo')) {
+              this.type = value;
+
+              this.connect();
+            }
+          }
+
+          break;
+        }
+
         case 'depth': {
           if (typeof value === 'number') {
-            this.depth.gain.value = value;
+            this.depths[0].gain.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.depths[0].gain.value = value[0];
+            this.depths[1].gain.value = value[1];
           }
+
 
           break;
         }
 
         case 'rate': {
           if (typeof value === 'number') {
-            this.rate.value = value;
+            this.rates[0].value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.rates[0].value = value[0];
+            this.rates[1].value = value[1];
           }
 
           break;
@@ -155,7 +267,10 @@ export class Slicer extends Effector {
 
         case 'wet': {
           if (typeof value === 'number') {
-            this.wet.gain.value = value;
+            this.wets[0].gain.value = value;
+          } else if (Array.isArray(value) && (value.length === 2)) {
+            this.wets[0].gain.value = value[0];
+            this.wets[1].gain.value = value[1];
           }
 
           break;
@@ -168,12 +283,28 @@ export class Slicer extends Effector {
 
   /** @override */
   public override params(): Required<SlicerParams> {
-    return {
-      state: this.isActive,
-      depth: this.depth.gain.value,
-      rate : this.rate.value,
-      dry  : this.dry.gain.value,
-      wet  : this.wet.gain.value
-    };
+    switch (this.type) {
+      case 'standard': {
+        return {
+          state: this.isActive,
+          type : this.type,
+          depth: this.depths[0].gain.value,
+          rate : this.rates[0].value,
+          dry  : this.dry.gain.value,
+          wet  : this.wets[0].gain.value
+        };
+      }
+
+      case 'stereo': {
+        return {
+          state: this.isActive,
+          type : this.type,
+          depth: [this.depths[0].gain.value, this.depths[1].gain.value],
+          rate : [this.rates[0].value, this.rates[1].value],
+          dry  : this.dry.gain.value,
+          wet  : [this.wets[0].gain.value, this.wets[1].gain.value]
+        };
+      }
+    }
   }
 }

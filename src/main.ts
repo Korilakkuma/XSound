@@ -86,7 +86,7 @@ import type {
 import type { CabinetParams } from './SoundModule/Effectors/Preamps/Cabinet';
 import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
 import type { RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
-import type { SlicerParams } from './SoundModule/Effectors/Slicer';
+import type { SlicerParams, SlicerType } from './SoundModule/Effectors/Slicer';
 import type { StereoParams } from './SoundModule/Effectors/Stereo';
 import type { TremoloParams, TremoloType } from './SoundModule/Effectors/Tremolo';
 import type { VocalCancelerParams, VocalCancelerAlgorithm } from './SoundModule/Effectors/VocalCanceler';
@@ -738,6 +738,7 @@ export type {
   RingmodulatorParams,
   Slicer,
   SlicerParams,
+  SlicerType,
   Stereo,
   StereoParams,
   Tremolo,

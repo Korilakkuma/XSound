@@ -54,9 +54,6 @@ describe(Preamp.name, () => {
           middle    : 0,
           treble    : 0,
           frequency : 500
-        },
-        cabinet: {
-          state: true
         }
       }
     };
@@ -83,9 +80,6 @@ describe(Preamp.name, () => {
           middle    : -10,
           treble    : 10,
           frequency : 1000
-        },
-        cabinet: {
-          state: false
         }
       }
     };
@@ -128,9 +122,6 @@ describe(Preamp.name, () => {
           middle    : -10,
           treble    : 10,
           frequency : 1000
-        },
-        cabinet: {
-          state: false
         }
       });
     });

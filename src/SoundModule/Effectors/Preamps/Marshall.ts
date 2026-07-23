@@ -1,9 +1,7 @@
 import type { PreampCurve } from '../Preamp';
-import type { CabinetParams } from './Cabinet';
 
 import { Effector } from '../Effector';
 import { createCurve } from '../Preamp';
-import { Cabinet } from './Cabinet';
 
 export type PreEqualizerParams = {
   state?: boolean,
@@ -28,8 +26,7 @@ export type MarshallParams = {
   level?: number,
   samples?: number,
   pre?: PreEqualizerParams,
-  post?: PostEqualizerParams,
-  cabinet?: CabinetParams
+  post?: PostEqualizerParams
 };
 
 /**
@@ -448,7 +445,6 @@ class PostEqualizer extends Effector {
 export class Marshall extends Effector {
   private preEQ: PreEqualizer;
   private postEQ: PostEqualizer;
-  private cabinet: Cabinet;
 
   // for creating curve
   private level           = 0;
@@ -460,9 +456,8 @@ export class Marshall extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.preEQ   = new PreEqualizer(context);
-    this.postEQ  = new PostEqualizer(context);
-    this.cabinet = new Cabinet(context);
+    this.preEQ  = new PreEqualizer(context);
+    this.postEQ = new PostEqualizer(context);
 
     // `Preamp` is not connected by default
     this.deactivate();
@@ -476,11 +471,10 @@ export class Marshall extends Effector {
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> Pre-Equalizer -> Post-Equalizer -> Cabinet -> GainNode (Output)
+      // GainNode (Input) -> Pre-Equalizer -> Post-Equalizer -> GainNode (Output)
       this.input.connect(this.preEQ.INPUT);
       this.preEQ.OUTPUT.connect(this.postEQ.INPUT);
-      this.postEQ.OUTPUT.connect(this.cabinet.INPUT);
-      this.cabinet.OUTPUT.connect(this.output);
+      this.postEQ.OUTPUT.connect(this.output);
     } else {
       // Effect OFF
 
@@ -503,7 +497,6 @@ export class Marshall extends Effector {
   public param(params: 'samples'): number;
   public param(params: 'pre'): MarshallParams['pre'];
   public param(params: 'post'): MarshallParams['post'];
-  public param(params: 'cabinet'): CabinetParams;
   public param(params: MarshallParams): Marshall;
   public param(params: keyof MarshallParams | MarshallParams): MarshallParams[keyof MarshallParams] | Marshall {
     if (typeof params === 'string') {
@@ -526,10 +519,6 @@ export class Marshall extends Effector {
 
         case 'post': {
           return this.postEQ.params();
-        }
-
-        case 'cabinet': {
-          return this.cabinet.params();
         }
       }
     }
@@ -593,14 +582,6 @@ export class Marshall extends Effector {
 
           break;
         }
-
-        case 'cabinet': {
-          if (typeof value === 'object') {
-            this.cabinet.param(value);
-          }
-
-          break;
-        }
       }
     }
 
@@ -614,8 +595,7 @@ export class Marshall extends Effector {
       level  : this.level,
       samples: this.numberOfSamples,
       pre    : this.preEQ.params(),
-      post   : this.postEQ.params(),
-      cabinet: this.cabinet.params()
+      post   : this.postEQ.params()
     };
   }
 }

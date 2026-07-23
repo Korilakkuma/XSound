@@ -1,5 +1,4 @@
 import type { FenderParams } from '/src/SoundModule/Effectors/Preamps/Fender';
-import type { CabinetParams } from '/src/SoundModule/Effectors/Preamps/Cabinet';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Fender } from '/src/SoundModule/Effectors/Preamps/Fender';
@@ -15,7 +14,6 @@ describe(Fender.name, () => {
     const originalInput      = fender['input'];
     const originalPreEQ      = fender['preEQ']['output'];
     const originalPostFilter = fender['postFilter']['output'];
-    const originalCabinet    = fender['cabinet']['output'];
     /* eslint-enable dot-notation */
 
     afterAll(() => {
@@ -23,7 +21,6 @@ describe(Fender.name, () => {
       fender['input']                = originalInput;
       fender['preEQ']['output']      = originalPreEQ;
       fender['postFilter']['output'] = originalPostFilter;
-      fender['cabinet']['output']    = originalCabinet;
       /* eslint-enable dot-notation */
 
       fender.deactivate();
@@ -84,14 +81,9 @@ describe(Fender.name, () => {
       tilt : false
     };
 
-    const defaultCabinetParams: CabinetParams = {
-      state: true
-    };
-
     const defaultParams: FenderParams = {
-      pre    : defaultPreEQParams,
-      post   : defaultPostFilterParams,
-      cabinet: defaultCabinetParams
+      pre : defaultPreEQParams,
+      post: defaultPostFilterParams,
     };
 
     const preEQParams: FenderParams['pre'] = {
@@ -111,14 +103,9 @@ describe(Fender.name, () => {
       tilt : true
     };
 
-    const cabinetParams: CabinetParams = {
-      state: false
-    };
-
     const params: FenderParams = {
-      pre    : preEQParams,
-      post   : postFilterParams,
-      cabinet: cabinetParams
+      pre : preEQParams,
+      post: postFilterParams,
     };
 
     beforeAll(() => {
@@ -142,19 +129,14 @@ describe(Fender.name, () => {
     test('should return Post-Filter parameters', () => {
       expect(fender.param('post')).toStrictEqual(postFilterParams);
     });
-
-    test('should return Cabinet parameters', () => {
-      expect(fender.param('cabinet')).toStrictEqual(cabinetParams);
-    });
   });
 
   describe(fender.params.name, () => {
     test('should return parameters for Fender preamplifier as associative array', () => {
       expect(fender.params()).toStrictEqual({
-        state  : false,
-        pre    : fender.param('pre'),
-        post   : fender.param('post'),
-        cabinet: fender.param('cabinet')
+        state: false,
+        pre  : fender.param('pre'),
+        post : fender.param('post'),
       });
     });
   });

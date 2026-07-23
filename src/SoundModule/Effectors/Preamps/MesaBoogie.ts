@@ -1,8 +1,5 @@
-import type { CabinetParams } from './Cabinet';
-
 import { Effector } from '../Effector';
 import { createCurve } from '../Preamp';
-import { Cabinet } from './Cabinet';
 
 export type PreEqualizerParams = {
   state?: boolean,
@@ -28,8 +25,7 @@ export type PostEqualizerParams = {
 export type MesaBoogieParams = {
   state?: boolean,
   pre?: PreEqualizerParams,
-  post?: PostEqualizerParams,
-  cabinet?: CabinetParams
+  post?: PostEqualizerParams
 };
 
 /**
@@ -514,7 +510,8 @@ class PostEqualizer extends Effector {
 export class MesaBoogie extends Effector {
   private preEQ: PreEqualizer;
   private postEQ: PostEqualizer;
-  private cabinet: Cabinet;
+  private cabinetLowpass: BiquadFilterNode;
+  private cabinetNotch: BiquadFilterNode;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -522,9 +519,21 @@ export class MesaBoogie extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.preEQ   = new PreEqualizer(context);
-    this.postEQ  = new PostEqualizer(context);
-    this.cabinet = new Cabinet(context);
+    this.preEQ  = new PreEqualizer(context);
+    this.postEQ = new PostEqualizer(context);
+    this.cabinetLowpass = context.createBiquadFilter();
+    this.cabinetNotch   = context.createBiquadFilter();
+
+    // Initialize parameters
+    this.cabinetLowpass.type            = 'lowpass';
+    this.cabinetLowpass.frequency.value = 3200;
+    this.cabinetLowpass.Q.value         = 6;
+    this.cabinetLowpass.gain.value      = 0;  // Not used
+
+    this.cabinetNotch.type            = 'notch';
+    this.cabinetNotch.frequency.value = 8000;
+    this.cabinetNotch.Q.value         = 1;
+    this.cabinetNotch.gain.value      = 0;  // Not used
 
     // `Preamp` is not connected by default
     this.deactivate();
@@ -534,14 +543,17 @@ export class MesaBoogie extends Effector {
   public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
+    this.cabinetLowpass.disconnect(0);
+    this.cabinetNotch.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> Pre-Equalizer -> Cabinet -> Post-Equalizer -> GainNode (Output)
+      // GainNode (Input) -> Pre-Equalizer -> Cabinet (Notch -> Low-Pass) -> Post-Equalizer -> GainNode (Output)
       this.input.connect(this.preEQ.INPUT);
-      this.preEQ.OUTPUT.connect(this.cabinet.INPUT);
-      this.cabinet.OUTPUT.connect(this.postEQ.INPUT);
+      this.preEQ.OUTPUT.connect(this.cabinetNotch);
+      this.cabinetNotch.connect(this.cabinetLowpass);
+      this.cabinetLowpass.connect(this.postEQ.INPUT);
       this.postEQ.OUTPUT.connect(this.output);
     } else {
       // Effect OFF
@@ -563,7 +575,6 @@ export class MesaBoogie extends Effector {
   public param(params: 'state'): boolean;
   public param(params: 'pre'): MesaBoogieParams['pre'];
   public param(params: 'post'): MesaBoogieParams['post'];
-  public param(params: 'cabinet'): CabinetParams;
   public param(params: MesaBoogieParams): MesaBoogie;
   public param(params: keyof MesaBoogieParams | MesaBoogieParams): MesaBoogieParams[keyof MesaBoogieParams] | MesaBoogie {
     if (typeof params === 'string') {
@@ -578,10 +589,6 @@ export class MesaBoogie extends Effector {
 
         case 'post': {
           return this.postEQ.params();
-        }
-
-        case 'cabinet': {
-          return this.cabinet.params();
         }
       }
     }
@@ -619,14 +626,6 @@ export class MesaBoogie extends Effector {
 
           break;
         }
-
-        case 'cabinet': {
-          if (typeof value === 'object') {
-            this.cabinet.param(value);
-          }
-
-          break;
-        }
       }
     }
 
@@ -638,8 +637,7 @@ export class MesaBoogie extends Effector {
     return {
       state  : this.isActive,
       pre    : this.preEQ.params(),
-      post   : this.postEQ.params(),
-      cabinet: this.cabinet.params()
+      post   : this.postEQ.params()
     };
   }
 }

@@ -1,5 +1,4 @@
 import type { MesaBoogieParams } from '/src/SoundModule/Effectors/Preamps/MesaBoogie';
-import type { CabinetParams } from '/src/SoundModule/Effectors/Preamps/Cabinet';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { MesaBoogie } from '/src/SoundModule/Effectors/Preamps/MesaBoogie';
@@ -12,9 +11,11 @@ describe(MesaBoogie.name, () => {
 
   describe(mesa.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput   = mesa['input'];
-    const originalPreEQ   = mesa['preEQ']['output'];
-    const originalPostEQ  = mesa['postEQ']['output'];
+    const originalInput          = mesa['input'];
+    const originalPreEQ          = mesa['preEQ']['output'];
+    const originalPostEQ         = mesa['postEQ']['output'];
+    const originalCabinetLowpass = mesa['cabinetLowpass'];
+    const originalCabinetNotch   = mesa['cabinetNotch'];
     /* eslint-enable dot-notation */
 
     afterAll(() => {
@@ -22,18 +23,24 @@ describe(MesaBoogie.name, () => {
       mesa['input']            = originalInput;
       mesa['preEQ']['output']  = originalPreEQ;
       mesa['postEQ']['output'] = originalPostEQ;
+      mesa['cabinetLowpass']   = originalCabinetLowpass;
+      mesa['cabinetNotch']     = originalCabinetNotch;;
       /* eslint-enable dot-notation */
 
       mesa.deactivate();
     });
 
     test('should call `connect` method', () => {
-      const inputConnectMock     = jest.fn();
-      const inputDisconnectMock  = jest.fn();
-      const preEQConnectMock     = jest.fn();
-      const preEQDisconnectMock  = jest.fn();
-      const postEQConnectMock    = jest.fn();
-      const postEQDisconnectMock = jest.fn();
+      const inputConnectMock             = jest.fn();
+      const inputDisconnectMock          = jest.fn();
+      const preEQConnectMock             = jest.fn();
+      const preEQDisconnectMock          = jest.fn();
+      const postEQConnectMock            = jest.fn();
+      const postEQDisconnectMock         = jest.fn();
+      const cabinetLowpassConnectMock    = jest.fn();
+      const cabinetLowpassDisconnectMock = jest.fn();
+      const cabinetNotchConnectMock      = jest.fn();
+      const cabinetNotchDisconnectMock   = jest.fn();
 
       /* eslint-disable dot-notation */
       mesa['input'].connect               = inputConnectMock;
@@ -42,6 +49,10 @@ describe(MesaBoogie.name, () => {
       mesa['preEQ']['output'].disconnect  = preEQDisconnectMock;
       mesa['postEQ']['output'].connect    = postEQConnectMock;
       mesa['postEQ']['output'].disconnect = postEQDisconnectMock;
+      mesa['cabinetLowpass'].connect      = cabinetLowpassConnectMock;
+      mesa['cabinetLowpass'].disconnect   = cabinetLowpassDisconnectMock;
+      mesa['cabinetNotch'].connect        = cabinetNotchConnectMock;
+      mesa['cabinetNotch'].disconnect     = cabinetNotchDisconnectMock;
       /* eslint-enable dot-notation */
 
       mesa.connect();
@@ -49,18 +60,26 @@ describe(MesaBoogie.name, () => {
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(preEQConnectMock).toHaveBeenCalledTimes(0);
       expect(postEQConnectMock).toHaveBeenCalledTimes(0);
+      expect(cabinetLowpassConnectMock).toHaveBeenCalledTimes(0);
+      expect(cabinetNotchConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(preEQDisconnectMock).toHaveBeenCalledTimes(0);
       expect(postEQDisconnectMock).toHaveBeenCalledTimes(0);
+      expect(cabinetLowpassDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(cabinetNotchDisconnectMock).toHaveBeenCalledTimes(1);
 
       mesa.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(2);
       expect(preEQConnectMock).toHaveBeenCalledTimes(1);
       expect(postEQConnectMock).toHaveBeenCalledTimes(1);
+      expect(cabinetLowpassConnectMock).toHaveBeenCalledTimes(1);
+      expect(cabinetNotchConnectMock).toHaveBeenCalledTimes(1);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
       expect(preEQDisconnectMock).toHaveBeenCalledTimes(0);
       expect(postEQDisconnectMock).toHaveBeenCalledTimes(0);
+      expect(cabinetLowpassDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(cabinetNotchDisconnectMock).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -86,14 +105,9 @@ describe(MesaBoogie.name, () => {
       fc4800: 0
     };
 
-    const defaultCabinetParams: CabinetParams = {
-      state: true
-    };
-
     const defaultParams: MesaBoogieParams = {
-      pre    : defaultPreEQParams,
-      post   : defaultPostEQParams,
-      cabinet: defaultCabinetParams
+      pre : defaultPreEQParams,
+      post: defaultPostEQParams,
     };
 
     const preEQParams: MesaBoogieParams['pre'] = {
@@ -117,14 +131,9 @@ describe(MesaBoogie.name, () => {
       fc4800: 10
     };
 
-    const cabinetParams: CabinetParams = {
-      state: false
-    };
-
     const params: MesaBoogieParams = {
-      pre    : preEQParams,
-      post   : postEQParams,
-      cabinet: cabinetParams
+      pre : preEQParams,
+      post: postEQParams,
     };
 
     beforeAll(() => {
@@ -148,19 +157,14 @@ describe(MesaBoogie.name, () => {
     test('should return Post-Equalizer parameters', () => {
       expect(mesa.param('post')).toStrictEqual(postEQParams);
     });
-
-    test('should return Cabinet parameters', () => {
-      expect(mesa.param('cabinet')).toStrictEqual(cabinetParams);
-    });
   });
 
   describe(mesa.params.name, () => {
     test('should return parameters for MesaBoogie preamplifier as associative array', () => {
       expect(mesa.params()).toStrictEqual({
-        state  : false,
-        pre    : mesa.param('pre'),
-        post   : mesa.param('post'),
-        cabinet: mesa.param('cabinet')
+        state: false,
+        pre  : mesa.param('pre'),
+        post : mesa.param('post'),
       });
     });
   });

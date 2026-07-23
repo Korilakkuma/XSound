@@ -1,5 +1,4 @@
 import type { MarshallParams } from '/src/SoundModule/Effectors/Preamps/Marshall';
-import type { CabinetParams } from '/src/SoundModule/Effectors/Preamps/Cabinet';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Marshall } from '/src/SoundModule/Effectors/Preamps/Marshall';
@@ -12,42 +11,36 @@ describe(Marshall.name, () => {
 
   describe(marshall.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput   = marshall['input'];
-    const originalPreEQ   = marshall['preEQ']['output'];
-    const originalPostEQ  = marshall['postEQ']['output'];
-    const originalCabinet = marshall['cabinet']['output'];
+    const originalInput  = marshall['input'];
+    const originalPreEQ  = marshall['preEQ']['output'];
+    const originalPostEQ = marshall['postEQ']['output'];
     /* eslint-enable dot-notation */
 
     afterAll(() => {
       /* eslint-disable dot-notation */
-      marshall['input']             = originalInput;
-      marshall['preEQ']['output']   = originalPreEQ;
-      marshall['postEQ']['output']  = originalPostEQ;
-      marshall['cabinet']['output'] = originalCabinet;
+      marshall['input']            = originalInput;
+      marshall['preEQ']['output']  = originalPreEQ;
+      marshall['postEQ']['output'] = originalPostEQ;
       /* eslint-enable dot-notation */
 
       marshall.deactivate();
     });
 
     test('should call `connect` method', () => {
-      const inputConnectMock      = jest.fn();
-      const inputDisconnectMock   = jest.fn();
-      const preEQConnectMock      = jest.fn();
-      const preEQDisconnectMock   = jest.fn();
-      const postEQConnectMock     = jest.fn();
-      const postEQDisconnectMock  = jest.fn();
-      const cabinetConnectMock    = jest.fn();
-      const cabinetDisconnectMock = jest.fn();
+      const inputConnectMock     = jest.fn();
+      const inputDisconnectMock  = jest.fn();
+      const preEQConnectMock     = jest.fn();
+      const preEQDisconnectMock  = jest.fn();
+      const postEQConnectMock    = jest.fn();
+      const postEQDisconnectMock = jest.fn();
 
       /* eslint-disable dot-notation */
-      marshall['input'].connect                = inputConnectMock;
-      marshall['input'].disconnect             = inputDisconnectMock;
-      marshall['preEQ']['output'].connect      = preEQConnectMock;
-      marshall['preEQ']['output'].disconnect   = preEQDisconnectMock;
-      marshall['postEQ']['output'].connect     = postEQConnectMock;
-      marshall['postEQ']['output'].disconnect  = postEQDisconnectMock;
-      marshall['cabinet']['output'].connect    = cabinetConnectMock;
-      marshall['cabinet']['output'].disconnect = cabinetDisconnectMock;
+      marshall['input'].connect               = inputConnectMock;
+      marshall['input'].disconnect            = inputDisconnectMock;
+      marshall['preEQ']['output'].connect     = preEQConnectMock;
+      marshall['preEQ']['output'].disconnect  = preEQDisconnectMock;
+      marshall['postEQ']['output'].connect    = postEQConnectMock;
+      marshall['postEQ']['output'].disconnect = postEQDisconnectMock;
       /* eslint-enable dot-notation */
 
       marshall.connect();
@@ -55,22 +48,18 @@ describe(Marshall.name, () => {
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(preEQConnectMock).toHaveBeenCalledTimes(0);
       expect(postEQConnectMock).toHaveBeenCalledTimes(0);
-      expect(cabinetConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(preEQDisconnectMock).toHaveBeenCalledTimes(0);
       expect(postEQDisconnectMock).toHaveBeenCalledTimes(0);
-      expect(cabinetDisconnectMock).toHaveBeenCalledTimes(0);
 
       marshall.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(2);
       expect(preEQConnectMock).toHaveBeenCalledTimes(1);
       expect(postEQConnectMock).toHaveBeenCalledTimes(1);
-      expect(cabinetConnectMock).toHaveBeenCalledTimes(1);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
       expect(preEQDisconnectMock).toHaveBeenCalledTimes(0);
       expect(postEQDisconnectMock).toHaveBeenCalledTimes(0);
-      expect(cabinetDisconnectMock).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -93,16 +82,11 @@ describe(Marshall.name, () => {
       frequency : 500
     };
 
-    const defaultCabinetParams: CabinetParams = {
-      state: true
-    };
-
     const defaultParams: MarshallParams = {
       level  : 0,
       samples: 1024,
       pre    : defaultPreEQParams,
-      post   : defaultPostEQParams,
-      cabinet: defaultCabinetParams
+      post   : defaultPostEQParams
     };
 
     const preEQParams: MarshallParams['pre'] = {
@@ -123,16 +107,11 @@ describe(Marshall.name, () => {
       frequency : 1000
     };
 
-    const cabinetParams: CabinetParams = {
-      state: false
-    };
-
     const params: MarshallParams = {
       level  : 0.5,
       samples: 2048,
       pre    : preEQParams,
-      post   : postEQParams,
-      cabinet: cabinetParams
+      post   : postEQParams
     };
 
     beforeAll(() => {
@@ -164,10 +143,6 @@ describe(Marshall.name, () => {
     test('should return Post-Equalizer parameters', () => {
       expect(marshall.param('post')).toStrictEqual(postEQParams);
     });
-
-    test('should return Cabinet parameters', () => {
-      expect(marshall.param('cabinet')).toStrictEqual(cabinetParams);
-    });
   });
 
   describe(marshall.params.name, () => {
@@ -177,8 +152,7 @@ describe(Marshall.name, () => {
         level  : 0,
         samples: 1024,
         pre    : marshall.param('pre'),
-        post   : marshall.param('post'),
-        cabinet: marshall.param('cabinet')
+        post   : marshall.param('post')
       });
     });
   });

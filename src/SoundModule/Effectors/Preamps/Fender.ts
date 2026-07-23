@@ -1,8 +1,5 @@
-import type { CabinetParams } from './Cabinet';
-
 import { Effector } from '../Effector';
 import { createCurve } from '../Preamp';
-import { Cabinet } from './Cabinet';
 
 export type SpeakerInches = -1 | 10 | 12 | 15;
 
@@ -26,8 +23,7 @@ export type PostFilterParams = {
 export type FenderParams = {
   state?: boolean,
   pre?: PreEqualizerParams,
-  post?: PostFilterParams,
-  cabinet?: CabinetParams
+  post?: PostFilterParams
 };
 
 /**
@@ -352,26 +348,35 @@ class PreEqualizer extends Effector {
  * Effector's subclass for Post-filter.
  */
 class PostFilter extends Effector {
-  private cabinet: Cabinet;
-
   private inch: SpeakerInches = -1;
   private tilt = false;
 
+  private preCabinetLowpass: BiquadFilterNode;
+  private preCabinetNotch: BiquadFilterNode;
   private speakerFilter: BiquadFilterNode;
   private tiltFilter: BiquadFilterNode;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {Cabinet} cabinet This argument is instance of `Cabinet`.
    */
-  constructor(context: AudioContext, cabinet: Cabinet) {
+  constructor(context: AudioContext) {
     super(context);
 
-    this.cabinet = cabinet;
-
-    this.speakerFilter = context.createBiquadFilter();
+    this.preCabinetLowpass = context.createBiquadFilter();
+    this.preCabinetNotch   = context.createBiquadFilter();
+    this.speakerFilter     = context.createBiquadFilter();
 
     // Initialize parameters
+    this.preCabinetLowpass.type            = 'lowpass';
+    this.preCabinetLowpass.frequency.value = 3200;
+    this.preCabinetLowpass.Q.value         = 6;
+    this.preCabinetLowpass.gain.value      = 0;  // Not used
+
+    this.preCabinetNotch.type            = 'notch';
+    this.preCabinetNotch.frequency.value = 8000;
+    this.preCabinetNotch.Q.value         = 1;
+    this.preCabinetNotch.gain.value      = 0;  // Not used
+
     this.speakerFilter.type            = 'peaking';
     this.speakerFilter.frequency.value = 40;  // 40 Hz
     this.speakerFilter.Q.value         = -3;
@@ -392,13 +397,16 @@ class PostFilter extends Effector {
   /** @override */
   public override connect(): GainNode {
     this.input.disconnect(0);
+    this.preCabinetLowpass.disconnect(0);
+    this.preCabinetNotch.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> Cabinet -> BiquadFilterNode (Speaker inch) -> BiquadFilterNode (Speaker tilt) ->  GainNode (Output)
-      this.input.connect(this.cabinet.INPUT);
-      this.cabinet.OUTPUT.connect(this.speakerFilter);
+      // GainNode (Input) -> Pre-Cabinet (Notch -> Low-Pass) -> BiquadFilterNode (Speaker inch) -> BiquadFilterNode (Speaker tilt) -> GainNode (Output)
+      this.input.connect(this.preCabinetNotch);
+      this.preCabinetNotch.connect(this.preCabinetLowpass);
+      this.preCabinetLowpass.connect(this.speakerFilter);
       this.speakerFilter.connect(this.tiltFilter);
       this.tiltFilter.connect(this.output);
     } else {
@@ -533,7 +541,6 @@ class PostFilter extends Effector {
 export class Fender extends Effector {
   private preEQ: PreEqualizer;
   private postFilter: PostFilter;
-  private cabinet: Cabinet;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -541,10 +548,8 @@ export class Fender extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.cabinet = new Cabinet(context);
-
     this.preEQ      = new PreEqualizer(context);
-    this.postFilter = new PostFilter(context, this.cabinet);
+    this.postFilter = new PostFilter(context);
 
     // `Preamp` is not connected by default
     this.deactivate();
@@ -581,7 +586,6 @@ export class Fender extends Effector {
   public param(params: 'state'): boolean;
   public param(params: 'pre'): FenderParams['pre']
   public param(params: 'post'): FenderParams['post']
-  public param(params: 'cabinet'): CabinetParams;
   public param(params: FenderParams): Fender;
   public param(params: keyof FenderParams | FenderParams): FenderParams[keyof FenderParams] | Fender {
     if (typeof params === 'string') {
@@ -596,10 +600,6 @@ export class Fender extends Effector {
 
         case 'post': {
           return this.postFilter.params();
-        }
-
-        case 'cabinet': {
-          return this.cabinet.params();
         }
       }
     }
@@ -637,14 +637,6 @@ export class Fender extends Effector {
 
           break;
         }
-
-        case 'cabinet': {
-          if (typeof value === 'object') {
-            this.cabinet.param(value);
-          }
-
-          break;
-        }
       }
     }
 
@@ -654,10 +646,9 @@ export class Fender extends Effector {
   /** @override */
   public override params(): Required<FenderParams> {
     return {
-      state  : this.isActive,
-      pre    : this.preEQ.params(),
-      post   : this.postFilter.params(),
-      cabinet: this.cabinet.params()
+      state: this.isActive,
+      pre  : this.preEQ.params(),
+      post : this.postFilter.params()
     };
   }
 }

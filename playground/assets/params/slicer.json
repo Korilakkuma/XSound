@@ -1,7 +1,8 @@
 {
   "state": false,
-  "depth": 0,
-  "rate": 0,
+  "type": "standard",
+  "depth": [0, 0],
+  "rate": [0, 0],
   "dry": 1,
-  "wet": 0
+  "wet": [0, 0]
 }

@@ -4,6 +4,7 @@ import { AudioContextMock } from '/mock/AudioContextMock';
 import { AudioBufferMock } from '/mock/AudioBufferMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
+import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
@@ -22,7 +23,6 @@ import { OverDrive } from '/src/SoundModule/Effectors/OverDrive';
 import { Panner } from '/src/SoundModule/Effectors/Panner';
 import { Phaser } from '/src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
-import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
 import { Slicer } from '/src/SoundModule/Effectors/Slicer';
@@ -273,6 +273,7 @@ describe(OneshotModule.name, () => {
     test('should return instance of `Module`', () => {
       expect(oneshotModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(oneshotModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(oneshotModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(oneshotModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(oneshotModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(oneshotModule.module('chorus')).toBeInstanceOf(Chorus);
@@ -290,7 +291,6 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.module('panner')).toBeInstanceOf(Panner);
       expect(oneshotModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(oneshotModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
-      expect(oneshotModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(oneshotModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(oneshotModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(oneshotModule.module('harmonizer')).toBeInstanceOf(Harmonizer);
@@ -308,6 +308,7 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.params()).toStrictEqual({
         mastervolume     : 1,
         transpose        : 1,
+        ampsimulator     : oneshotModule['ampsimulator'].params(),
         autopanner       : oneshotModule['autopanner'].params(),
         bitcrusher       : oneshotModule['bitcrusher'].params(),
         chorus           : oneshotModule['chorus'].params(),
@@ -326,7 +327,6 @@ describe(OneshotModule.name, () => {
         panner           : oneshotModule['panner'].params(),
         phaser           : oneshotModule['phaser'].params(),
         pitchshifter     : oneshotModule['pitchshifter'].params(),
-        preamp           : oneshotModule['preamp'].params(),
         reverb           : oneshotModule['reverb'].params(),
         ringmodulator    : oneshotModule['ringmodulator'].params(),
         slicer           : oneshotModule['slicer'].params(),

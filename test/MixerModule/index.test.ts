@@ -3,6 +3,7 @@ import type { SoundModuleParams } from '/src/SoundModule';
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
+import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
@@ -21,7 +22,6 @@ import { OverDrive } from '/src/SoundModule/Effectors/OverDrive';
 import { Panner } from '/src/SoundModule/Effectors/Panner';
 import { Phaser } from '/src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
-import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
 import { Slicer } from '/src/SoundModule/Effectors/Slicer';
@@ -272,6 +272,7 @@ describe(MixerModule.name, () => {
     test('should return instance of `Module`', () => {
       expect(mixerModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(mixerModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(mixerModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(mixerModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(mixerModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(mixerModule.module('chorus')).toBeInstanceOf(Chorus);
@@ -290,7 +291,6 @@ describe(MixerModule.name, () => {
       expect(mixerModule.module('panner')).toBeInstanceOf(Panner);
       expect(mixerModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(mixerModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
-      expect(mixerModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(mixerModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(mixerModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(mixerModule.module('slicer')).toBeInstanceOf(Slicer);

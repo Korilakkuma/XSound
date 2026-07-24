@@ -3,6 +3,7 @@ import type { MediaModuleParams } from '/src/MediaModule';
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
+import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
@@ -21,7 +22,6 @@ import { OverDrive } from '/src/SoundModule/Effectors/OverDrive';
 import { Panner } from '/src/SoundModule/Effectors/Panner';
 import { Phaser } from '/src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
-import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
 import { Slicer } from '/src/SoundModule/Effectors/Slicer';
@@ -277,6 +277,7 @@ describe(MediaModule.name, () => {
     test('should return instance of `Module`', () => {
       expect(mediaModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(mediaModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(mediaModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(mediaModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(mediaModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(mediaModule.module('chorus')).toBeInstanceOf(Chorus);
@@ -295,7 +296,6 @@ describe(MediaModule.name, () => {
       expect(mediaModule.module('panner')).toBeInstanceOf(Panner);
       expect(mediaModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(mediaModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
-      expect(mediaModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(mediaModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(mediaModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(mediaModule.module('slicer')).toBeInstanceOf(Slicer);
@@ -318,6 +318,7 @@ describe(MediaModule.name, () => {
         loop             : false,
         muted            : false,
         duration         : 0,
+        ampsimulator     : mediaModule['ampsimulator'].params(),
         autopanner       : mediaModule['autopanner'].params(),
         bitcrusher       : mediaModule['bitcrusher'].params(),
         chorus           : mediaModule['chorus'].params(),
@@ -336,7 +337,6 @@ describe(MediaModule.name, () => {
         panner           : mediaModule['panner'].params(),
         phaser           : mediaModule['phaser'].params(),
         pitchshifter     : mediaModule['pitchshifter'].params(),
-        preamp           : mediaModule['preamp'].params(),
         reverb           : mediaModule['reverb'].params(),
         ringmodulator    : mediaModule['ringmodulator'].params(),
         slicer           : mediaModule['slicer'].params(),

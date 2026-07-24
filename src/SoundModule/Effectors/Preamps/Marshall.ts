@@ -1,7 +1,7 @@
-import type { PreampCurve } from '../Preamp';
+import type { PreampCurve } from '../AmpSimulator';
 
 import { Effector } from '../Effector';
-import { createCurve } from '../Preamp';
+import { createCurve } from '../AmpSimulator';
 
 export type PreEqualizerParams = {
   state?: boolean,

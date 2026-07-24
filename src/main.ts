@@ -63,7 +63,7 @@ import type { OverDriveParams } from './SoundModule/Effectors/OverDrive';
 import type { PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import type { PhaserParams, PhaserType, PhaserNumberOfStages, PhaserFilterConnectionType } from './SoundModule/Effectors/Phaser';
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
-import type { PreampParams, PreampType, PreampCurve } from './SoundModule/Effectors/Preamp';
+import type { AmpSimulatorParams, PreampType, PreampCurve } from './SoundModule/Effectors/AmpSimulator';
 import type {
   Marshall,
   MarshallParams,
@@ -127,7 +127,7 @@ import { OverDrive } from './SoundModule/Effectors/OverDrive';
 import { Panner } from './SoundModule/Effectors/Panner';
 import { Phaser } from './SoundModule/Effectors/Phaser';
 import { PitchShifter } from './SoundModule/Effectors/PitchShifter';
-import { Preamp } from './SoundModule/Effectors/Preamp';
+import { AmpSimulator } from './SoundModule/Effectors/AmpSimulator';
 import { Reverb } from './SoundModule/Effectors/Reverb';
 import { Ringmodulator } from './SoundModule/Effectors/Ringmodulator';
 import { Slicer } from './SoundModule/Effectors/Slicer';
@@ -357,7 +357,7 @@ XSound.OverDrive       = OverDrive;
 XSound.Panner          = Panner;
 XSound.Phaser          = Phaser;
 XSound.PitchShifter    = PitchShifter;
-XSound.Preamp          = Preamp;
+XSound.AmpSimulator    = AmpSimulator;
 XSound.Reverb          = Reverb;
 XSound.Ringmodulator   = Ringmodulator;
 XSound.Slicer          = Slicer;
@@ -713,8 +713,8 @@ export type {
   PitchShifter,
   PitchShifterParams,
   PitchShifterProcessor,
-  Preamp,
-  PreampParams,
+  AmpSimulator,
+  AmpSimulatorParams,
   PreampType,
   PreampCurve,
   Marshall,

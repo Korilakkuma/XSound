@@ -1,20 +1,23 @@
 import type { MarshallParams } from './Preamps/Marshall';
 import type { MesaBoogieParams } from './Preamps/MesaBoogie';
 import type { FenderParams } from './Preamps/Fender';
+import type { CabinetParams } from './Preamps/Cabinet';
 
 import { Effector } from './Effector';
 import { Marshall } from './Preamps/Marshall';
 import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
+import { Cabinet } from './Preamps/Cabinet';
 
 export type PreampType = 'marshall' | 'mesa/boogie' | 'fender';
 
 export type PreampCurve = Float32Array<ArrayBuffer> | null;
 
-export type PreampParams = {
+export type AmpSimulatorParams = {
   state?: boolean,
   type?: PreampType,
-  preamp?: MarshallParams | MesaBoogieParams | FenderParams
+  preamp?: MarshallParams | MesaBoogieParams | FenderParams,
+  cabinet?: CabinetParams
 };
 
 /**
@@ -50,11 +53,12 @@ export function createCurve(level: number, numberOfSamples: number): PreampCurve
 }
 
 /**
- * Effector's subclass for Preamplifier.
+ * Effector's subclass for Amp Simulator.
  */
-export class Preamp extends Effector {
+export class AmpSimulator extends Effector {
   private type: PreampType = 'marshall';
   private preamp: Marshall | MesaBoogie | Fender;
+  private cabinet: Cabinet;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -62,9 +66,10 @@ export class Preamp extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.preamp = new Marshall(context);
+    this.preamp  = new Marshall(context);
+    this.cabinet = new Cabinet(context);
 
-    // `Preamp` is not connected by default
+    // `AmpSimulator` is not connected by default
     this.deactivate();
   }
 
@@ -78,9 +83,10 @@ export class Preamp extends Effector {
       // Create preamp connections
       this.preamp.connect();
 
-      // GainNode (INPUT) -> Preamplifier -> GainNode (Output)
+      // GainNode (INPUT) -> Preamplifier -> Cabinet -> GainNode (Output)
       this.input.connect(this.preamp.INPUT);
-      this.preamp.OUTPUT.connect(this.output);
+      this.preamp.OUTPUT.connect(this.cabinet.INPUT);
+      this.cabinet.OUTPUT.connect(this.output);
     } else {
       // Effect OFF
 
@@ -92,17 +98,18 @@ export class Preamp extends Effector {
   }
 
   /**
-   * This method gets or sets parameters for preamp effector.
+   * This method gets or sets parameters for Amp Simulator
    * This method is overloaded for type interface and type check.
-   * @param {keyof PreampParams|PreampParams} params This argument is string if getter. Otherwise, setter.
-   * @return {PreampParams[keyof PreampParams]|Marshall|MesaBoogie|Fender} Return value is parameter for preamp effector if getter.
+   * @param {keyof AmpSimulatorParams|AmpSimulatorParams} params This argument is string if getter. Otherwise, setter.
+   * @return {AmpSimulatorParams[keyof AmpSimulatorParams]|Marshall|MesaBoogie|Fender|Cabinet|AmpSimulator} Return value is parameter for Amp Simulator if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
   public param(params: 'type'): PreampType;
-  public param(params: 'preamp'): PreampParams['preamp'];
-  public param(params: PreampParams): Marshall | MesaBoogie | Fender;
-  public param(params: keyof PreampParams | PreampParams): PreampParams[keyof PreampParams] | Marshall | MesaBoogie | Fender {
+  public param(params: 'preamp'): AmpSimulatorParams['preamp'];
+  public param(params: 'cabinet'): AmpSimulatorParams['cabinet'];
+  public param(params: AmpSimulatorParams): Marshall | MesaBoogie | Fender | Cabinet;
+  public param(params: keyof AmpSimulatorParams | AmpSimulatorParams): AmpSimulatorParams[keyof AmpSimulatorParams] | Marshall | MesaBoogie | Fender | Cabinet | this {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {
@@ -115,6 +122,10 @@ export class Preamp extends Effector {
 
         case 'preamp': {
           return this.preamp.params();
+        }
+
+        case 'cabinet': {
+          return this.cabinet.params();
         }
       }
     }
@@ -141,22 +152,24 @@ export class Preamp extends Effector {
               case 'marshall': {
                 this.type   = 'marshall';
                 this.preamp = new Marshall(this.context);
+
                 break;
               }
 
               case 'mesa/boogie': {
                 this.type   = 'mesa/boogie';
                 this.preamp = new MesaBoogie(this.context);
+
                 break;
               }
 
               case 'fender': {
                 this.type   = 'fender';
                 this.preamp = new Fender(this.context);
+
                 break;
               }
             }
-
             this.connect();
           }
 
@@ -186,18 +199,27 @@ export class Preamp extends Effector {
 
           break;
         }
+
+        case 'cabinet': {
+          if (typeof value === 'object') {
+            const v: CabinetParams = value;
+
+            this.cabinet.param(v);
+          }
+        }
       }
     }
 
-    return this.preamp;
+    return this;
   }
 
   /** @override */
-  public override params(): Required<PreampParams> {
+  public override params(): Required<AmpSimulatorParams> {
     return {
-      state : this.isActive,
-      type  : this.type,
-      preamp: this.preamp.params()
+      state  : this.isActive,
+      type   : this.type,
+      preamp : this.preamp.params(),
+      cabinet: this.cabinet.params()
     };
   }
 }

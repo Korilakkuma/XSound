@@ -3,6 +3,7 @@ import type { NoiseModuleParams } from '/src/NoiseModule';
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
+import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
@@ -21,7 +22,6 @@ import { OverDrive } from '/src/SoundModule/Effectors/OverDrive';
 import { Panner } from '/src/SoundModule/Effectors/Panner';
 import { Phaser } from '/src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
-import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
 import { Slicer } from '/src/SoundModule/Effectors/Slicer';
@@ -127,6 +127,7 @@ describe(NoiseModule.name, () => {
     test('should return instance of `Module`', () => {
       expect(noiseModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(noiseModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(noiseModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(noiseModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(noiseModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(noiseModule.module('chorus')).toBeInstanceOf(Chorus);
@@ -145,7 +146,6 @@ describe(NoiseModule.name, () => {
       expect(noiseModule.module('panner')).toBeInstanceOf(Panner);
       expect(noiseModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(noiseModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
-      expect(noiseModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(noiseModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(noiseModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(noiseModule.module('slicer')).toBeInstanceOf(Slicer);
@@ -162,6 +162,7 @@ describe(NoiseModule.name, () => {
       expect(noiseModule.params()).toStrictEqual({
         mastervolume     : 1,
         type             : 'whitenoise',
+        ampsimulator     : noiseModule['ampsimulator'].params(),
         autopanner       : noiseModule['autopanner'].params(),
         bitcrusher       : noiseModule['bitcrusher'].params(),
         chorus           : noiseModule['chorus'].params(),
@@ -180,7 +181,6 @@ describe(NoiseModule.name, () => {
         panner           : noiseModule['panner'].params(),
         phaser           : noiseModule['phaser'].params(),
         pitchshifter     : noiseModule['pitchshifter'].params(),
-        preamp           : noiseModule['preamp'].params(),
         reverb           : noiseModule['reverb'].params(),
         ringmodulator    : noiseModule['ringmodulator'].params(),
         slicer           : noiseModule['slicer'].params(),

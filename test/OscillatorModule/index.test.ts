@@ -3,6 +3,7 @@ import type { OscillatorModuleParams } from '/src/OscillatorModule';
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
+import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
@@ -21,7 +22,6 @@ import { OverDrive } from '/src/SoundModule/Effectors/OverDrive';
 import { Panner } from '/src/SoundModule/Effectors/Panner';
 import { Phaser } from '/src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
-import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
 import { Slicer } from '/src/SoundModule/Effectors/Slicer';
@@ -202,6 +202,7 @@ describe(OscillatorNode.name, () => {
     test('should return instance of `Module`', () => {
       expect(oscillatorModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(oscillatorModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(oscillatorModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(oscillatorModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(oscillatorModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(oscillatorModule.module('chorus')).toBeInstanceOf(Chorus);
@@ -220,7 +221,6 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('panner')).toBeInstanceOf(Panner);
       expect(oscillatorModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(oscillatorModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
-      expect(oscillatorModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(oscillatorModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(oscillatorModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(oscillatorModule.module('slicer')).toBeInstanceOf(Slicer);
@@ -239,6 +239,7 @@ describe(OscillatorNode.name, () => {
       /* eslint-disable dot-notation */
       expect(oscillatorModule.params()).toStrictEqual({
         mastervolume     : 1,
+        ampsimulator     : oscillatorModule['ampsimulator'].params(),
         autopanner       : oscillatorModule['autopanner'].params(),
         bitcrusher       : oscillatorModule['bitcrusher'].params(),
         chorus           : oscillatorModule['chorus'].params(),
@@ -257,7 +258,6 @@ describe(OscillatorNode.name, () => {
         panner           : oscillatorModule['panner'].params(),
         phaser           : oscillatorModule['phaser'].params(),
         pitchshifter     : oscillatorModule['pitchshifter'].params(),
-        preamp           : oscillatorModule['preamp'].params(),
         reverb           : oscillatorModule['reverb'].params(),
         ringmodulator    : oscillatorModule['ringmodulator'].params(),
         slicer           : oscillatorModule['slicer'].params(),

@@ -2,6 +2,7 @@ import { AudioContextMock } from '/mock/AudioContextMock';
 import { AudioWorkletNodeMock, AudioParamMapMock } from '/mock/AudioWorkletNodeMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
+import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
@@ -20,7 +21,6 @@ import { OverDrive } from '/src/SoundModule/Effectors/OverDrive';
 import { Panner } from '/src/SoundModule/Effectors/Panner';
 import { Phaser } from '/src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
-import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
 import { Slicer } from '/src/SoundModule/Effectors/Slicer';
@@ -164,6 +164,7 @@ describe(ProcessorModule.name, () => {
     test('should return instance of `Module`', () => {
       expect(processorModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(processorModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(processorModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(processorModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(processorModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(processorModule.module('chorus')).toBeInstanceOf(Chorus);
@@ -182,7 +183,6 @@ describe(ProcessorModule.name, () => {
       expect(processorModule.module('panner')).toBeInstanceOf(Panner);
       expect(processorModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(processorModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
-      expect(processorModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(processorModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(processorModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(processorModule.module('slicer')).toBeInstanceOf(Slicer);

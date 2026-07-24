@@ -1,38 +1,37 @@
-import type { PreampParams } from '/src/SoundModule/Effectors/Preamp';
+import type { AmpSimulatorParams } from '/src/SoundModule/Effectors/AmpSimulator';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Preamp } from '/src/SoundModule/Effectors/Preamp';
-import { Marshall } from '/src/SoundModule/Effectors/Preamps/Marshall';
+import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 
-describe(Preamp.name, () => {
+describe(AmpSimulator.name, () => {
   const context = new AudioContextMock();
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const preamp = new Preamp(context);
+  const ampsimulator = new AmpSimulator(context);
 
-  describe(preamp.connect.name, () => {
+  describe(ampsimulator.connect.name, () => {
     // eslint-disable-next-line dot-notation
-    const originalConnect = preamp['preamp'].connect;
+    const originalConnect = ampsimulator['preamp'].connect;
 
     const preampConnectMock = jest.fn();
 
-    preamp.activate();
+    ampsimulator.activate();
 
     // eslint-disable-next-line dot-notation
-    preamp['preamp'].connect = preampConnectMock;
+    ampsimulator['preamp'].connect = preampConnectMock;
 
-    preamp.connect();
+    ampsimulator.connect();
 
     expect(preampConnectMock).toHaveBeenCalledTimes(1);
 
     // eslint-disable-next-line dot-notation
-    preamp['preamp'].connect = originalConnect;
+    ampsimulator['preamp'].connect = originalConnect;
 
-    preamp.deactivate();
+    ampsimulator.deactivate();
   });
 
-  describe(preamp.param.name, () => {
-    const defaultParams: PreampParams = {
+  describe(ampsimulator.param.name, () => {
+    const defaultParams: AmpSimulatorParams = {
       state : false,
       type  : 'marshall',
       preamp: {
@@ -58,7 +57,7 @@ describe(Preamp.name, () => {
       }
     };
 
-    const params: PreampParams = {
+    const params: AmpSimulatorParams = {
       state : true,
       type  : 'marshall',
       preamp: {
@@ -85,25 +84,25 @@ describe(Preamp.name, () => {
     };
 
     beforeAll(() => {
-      preamp.param(params);
+      ampsimulator.param(params);
     });
 
     afterAll(() => {
-      preamp.param(defaultParams);
+      ampsimulator.param(defaultParams);
     });
 
     // Setter
-    test('should return instance of `Marshall`', () => {
-      expect(preamp.param(params)).toBeInstanceOf(Marshall);
+    test('should return instance of `AmpSimulator`', () => {
+      expect(ampsimulator.param(params)).toBeInstanceOf(AmpSimulator);
     });
 
     // Getter
     test('should return `type`', () => {
-      expect(preamp.param('type')).toBe('marshall');
+      expect(ampsimulator.param('type')).toBe('marshall');
     });
 
     test('should return `preamp`', () => {
-      expect(preamp.param('preamp')).toStrictEqual({
+      expect(ampsimulator.param('preamp')).toStrictEqual({
         state  : true,
         level  : 0.5,
         samples: 2048,
@@ -125,56 +124,60 @@ describe(Preamp.name, () => {
         }
       });
     });
+
+    test('should return `cabinet`', () => {
+      expect(ampsimulator.param('cabinet')).toStrictEqual({ state: true });
+    });
   });
 
-  describe(preamp.params.name, () => {
+  describe(ampsimulator.params.name, () => {
     test('should call preamp `params` method', () => {
       // eslint-disable-next-line dot-notation
-      const originalParams = preamp['preamp'].params;
+      const originalParams = ampsimulator['preamp'].params;
 
       const preampParamsMock = jest.fn();
 
       // eslint-disable-next-line dot-notation
-      preamp['preamp'].params = preampParamsMock;
+      ampsimulator['preamp'].params = preampParamsMock;
 
-      preamp.params();
+      ampsimulator.params();
 
       expect(preampParamsMock).toHaveBeenCalledTimes(1);
 
       // eslint-disable-next-line dot-notation
-      preamp['preamp'].params = originalParams;
+      ampsimulator['preamp'].params = originalParams;
     });
   });
 
-  describe(preamp.activate.name, () => {
+  describe(ampsimulator.activate.name, () => {
     test('should call preamp `activate` method', () => {
-      const originalActivate = preamp.activate;
+      const originalActivate = ampsimulator.activate;
 
       const preampActivateMock = jest.fn();
 
-      preamp.activate = preampActivateMock;
+      ampsimulator.activate = preampActivateMock;
 
-      preamp.activate();
+      ampsimulator.activate();
 
       expect(preampActivateMock).toHaveBeenCalledTimes(1);
 
-      preamp.activate = originalActivate;
+      ampsimulator.activate = originalActivate;
     });
   });
 
-  describe(preamp.deactivate.name, () => {
+  describe(ampsimulator.deactivate.name, () => {
     test('should call `deactivate` method', () => {
-      const originalDeactivate = preamp.deactivate;
+      const originalDeactivate = ampsimulator.deactivate;
 
       const preampDeactivateMock = jest.fn();
 
-      preamp.deactivate = preampDeactivateMock;
+      ampsimulator.deactivate = preampDeactivateMock;
 
-      preamp.deactivate();
+      ampsimulator.deactivate();
 
       expect(preampDeactivateMock).toHaveBeenCalledTimes(1);
 
-      preamp.deactivate = originalDeactivate;
+      ampsimulator.deactivate = originalDeactivate;
     });
   });
 });

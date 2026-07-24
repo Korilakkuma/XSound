@@ -3,6 +3,7 @@ import type { StreamModuleParams } from '/src/StreamModule';
 import { AudioContextMock } from '/mock/AudioContextMock';
 import { Analyser } from '/src/SoundModule/Analyser';
 import { Recorder } from '/src/SoundModule/Recorder';
+import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
@@ -21,7 +22,6 @@ import { OverDrive } from '/src/SoundModule/Effectors/OverDrive';
 import { Panner } from '/src/SoundModule/Effectors/Panner';
 import { Phaser } from '/src/SoundModule/Effectors/Phaser';
 import { PitchShifter } from '/src/SoundModule/Effectors/PitchShifter';
-import { Preamp } from '/src/SoundModule/Effectors/Preamp';
 import { Reverb } from '/src/SoundModule/Effectors/Reverb';
 import { Ringmodulator } from '/src/SoundModule/Effectors/Ringmodulator';
 import { Slicer } from '/src/SoundModule/Effectors/Slicer';
@@ -429,6 +429,7 @@ describe(StreamModule.name, () => {
     test('should return instance of `Module`', () => {
       expect(streamModule.module('analyser')).toBeInstanceOf(Analyser);
       expect(streamModule.module('recorder')).toBeInstanceOf(Recorder);
+      expect(streamModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(streamModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(streamModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
       expect(streamModule.module('chorus')).toBeInstanceOf(Chorus);
@@ -447,7 +448,6 @@ describe(StreamModule.name, () => {
       expect(streamModule.module('panner')).toBeInstanceOf(Panner);
       expect(streamModule.module('phaser')).toBeInstanceOf(Phaser);
       expect(streamModule.module('pitchshifter')).toBeInstanceOf(PitchShifter);
-      expect(streamModule.module('preamp')).toBeInstanceOf(Preamp);
       expect(streamModule.module('reverb')).toBeInstanceOf(Reverb);
       expect(streamModule.module('ringmodulator')).toBeInstanceOf(Ringmodulator);
       expect(streamModule.module('slicer')).toBeInstanceOf(Slicer);
@@ -465,6 +465,7 @@ describe(StreamModule.name, () => {
         mastervolume     : 1,
         output           : true,
         track            : false,
+        ampsimulator     : streamModule['ampsimulator'].params(),
         autopanner       : streamModule['autopanner'].params(),
         bitcrusher       : streamModule['bitcrusher'].params(),
         chorus           : streamModule['chorus'].params(),
@@ -483,7 +484,6 @@ describe(StreamModule.name, () => {
         panner           : streamModule['panner'].params(),
         phaser           : streamModule['phaser'].params(),
         pitchshifter     : streamModule['pitchshifter'].params(),
-        preamp           : streamModule['preamp'].params(),
         reverb           : streamModule['reverb'].params(),
         ringmodulator    : streamModule['ringmodulator'].params(),
         slicer           : streamModule['slicer'].params(),

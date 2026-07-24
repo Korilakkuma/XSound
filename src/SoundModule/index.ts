@@ -18,7 +18,7 @@ import type { OverDriveParams } from '../SoundModule/Effectors/OverDrive';
 import type { PannerParams } from './Effectors/Panner';
 import type { PhaserParams } from './Effectors/Phaser';
 import type { PitchShifterParams } from './Effectors/PitchShifter';
-import type { PreampParams } from './Effectors/Preamp';
+import type { AmpSimulatorParams } from './Effectors/AmpSimulator';
 import type { ReverbParams } from './Effectors/Reverb';
 import type { RingmodulatorParams } from './Effectors/Ringmodulator';
 import type { SlicerParams } from './Effectors/Slicer';
@@ -48,7 +48,7 @@ import { OverDrive }  from '../SoundModule/Effectors/OverDrive';
 import { Panner } from './Effectors/Panner';
 import { Phaser } from './Effectors/Phaser';
 import { PitchShifter } from './Effectors/PitchShifter';
-import { Preamp } from './Effectors/Preamp';
+import { AmpSimulator } from './Effectors/AmpSimulator';
 import { Reverb } from './Effectors/Reverb';
 import { Ringmodulator } from './Effectors/Ringmodulator';
 import { Slicer } from './Effectors/Slicer';
@@ -60,6 +60,7 @@ import { Wah } from './Effectors/Wah';
 export type Module =
   Analyser          |
   Recorder          |
+  AmpSimulator      |
   Autopanner        |
   BitCrusher        |
   Chorus            |
@@ -78,7 +79,6 @@ export type Module =
   Panner            |
   Phaser            |
   PitchShifter      |
-  Preamp            |
   Reverb            |
   Ringmodulator     |
   Slicer            |
@@ -90,6 +90,7 @@ export type Module =
 export type ModuleName =
   'analyser'          |
   'recorder'          |
+  'ampsimulator'      |
   'autopanner'        |
   'bitcrusher'        |
   'chorus'            |
@@ -108,7 +109,6 @@ export type ModuleName =
   'panner'            |
   'phaser'            |
   'pitchshifter'      |
-  'preamp'            |
   'reverb'            |
   'ringmodulator'     |
   'slicer'            |
@@ -119,6 +119,7 @@ export type ModuleName =
 
 export type SoundModuleParams = {
   mastervolume?: number,
+  ampsimulator?: AmpSimulatorParams,
   autopanner?: AutopannerParams,
   bitcrusher?: BitCrusherParams,
   chorus?: ChorusParams,
@@ -137,7 +138,6 @@ export type SoundModuleParams = {
   panner?: PannerParams,
   phaser?: PhaserParams,
   pitchshifter?: PitchShifterParams,
-  preamp?: PreampParams,
   reverb?: ReverbParams,
   ringmodulator?: RingmodulatorParams,
   slicer?: SlicerParams,
@@ -168,6 +168,7 @@ export abstract class SoundModule implements Connectable {
   protected analyser: Analyser;
   protected recorder: Recorder;
 
+  protected ampsimulator: AmpSimulator;
   protected autopanner: Autopanner;
   protected bitcrusher: BitCrusher;
   protected chorus: Chorus;
@@ -186,7 +187,6 @@ export abstract class SoundModule implements Connectable {
   protected panner: Panner;
   protected phaser: Phaser;
   protected pitchshifter: PitchShifter;
-  protected preamp: Preamp;
   protected reverb: Reverb;
   protected ringmodulator: Ringmodulator;
   protected slicer: Slicer;
@@ -211,6 +211,7 @@ export abstract class SoundModule implements Connectable {
 
     this.analyser          = new Analyser(context);
     this.recorder          = new Recorder(context);
+    this.ampsimulator      = new AmpSimulator(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
     this.chorus            = new Chorus(context);
@@ -229,7 +230,6 @@ export abstract class SoundModule implements Connectable {
     this.panner            = new Panner(context);
     this.phaser            = new Phaser(context);
     this.pitchshifter      = new PitchShifter(context);
-    this.preamp            = new Preamp(context);
     this.reverb            = new Reverb(context);
     this.ringmodulator     = new Ringmodulator(context);
     this.slicer            = new Slicer(context);
@@ -246,7 +246,7 @@ export abstract class SoundModule implements Connectable {
       this.bitcrusher,
       this.overdrive,
       this.fuzz,
-      this.preamp,
+      this.ampsimulator,
       this.equalizer,
       this.filter,
       this.pitchshifter,
@@ -507,7 +507,7 @@ export abstract class SoundModule implements Connectable {
       bitcrusher       : this.bitcrusher.params(),
       overdrive        : this.overdrive.params(),
       fuzz             : this.fuzz.params(),
-      preamp           : this.preamp.params(),
+      ampsimulator     : this.ampsimulator.params(),
       equalizer        : this.equalizer.params(),
       filter           : this.filter.params(),
       pitchshifter     : this.pitchshifter.params(),
@@ -584,6 +584,7 @@ export abstract class SoundModule implements Connectable {
 
     this.analyser          = new Analyser(context);
     this.recorder          = new Recorder(context);
+    this.ampsimulator      = new AmpSimulator(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
     this.chorus            = new Chorus(context);
@@ -602,7 +603,6 @@ export abstract class SoundModule implements Connectable {
     this.panner            = new Panner(context);
     this.phaser            = new Phaser(context);
     this.pitchshifter      = new PitchShifter(context);
-    this.preamp            = new Preamp(context);
     this.reverb            = new Reverb(context);
     this.ringmodulator     = new Ringmodulator(context);
     this.slicer            = new Slicer(context);
@@ -619,7 +619,7 @@ export abstract class SoundModule implements Connectable {
       this.bitcrusher,
       this.overdrive,
       this.fuzz,
-      this.preamp,
+      this.ampsimulator,
       this.equalizer,
       this.filter,
       this.pitchshifter,

@@ -19,7 +19,7 @@ import type { OverDrive } from '../SoundModule/Effectors/OverDrive';
 import type { Panner } from '../SoundModule/Effectors/Panner';
 import type { Phaser } from '../SoundModule/Effectors/Phaser';
 import type { PitchShifter } from '../SoundModule/Effectors/PitchShifter';
-import type { Preamp } from '../SoundModule/Effectors/Preamp';
+import type { AmpSimulator } from '../SoundModule/Effectors/AmpSimulator';
 import type { Reverb } from '../SoundModule/Effectors/Reverb';
 import type { Ringmodulator } from '../SoundModule/Effectors/Ringmodulator';
 import type { Slicer } from '../SoundModule/Effectors/Slicer';
@@ -187,6 +187,7 @@ export class ProcessorModule extends SoundModule {
    */
   public module(moduleName: 'analyser'): Analyser;
   public module(moduleName: 'recorder'): Recorder;
+  public module(moduleName: 'ampsimulator'): AmpSimulator;
   public module(moduleName: 'autopanner'): Autopanner;
   public module(moduleName: 'bitcrusher'): BitCrusher;
   public module(moduleName: 'chorus'): Chorus;
@@ -205,7 +206,6 @@ export class ProcessorModule extends SoundModule {
   public module(moduleName: 'panner'): Panner;
   public module(moduleName: 'phaser'): Phaser;
   public module(moduleName: 'pitchshifter'): PitchShifter;
-  public module(moduleName: 'preamp'): Preamp;
   public module(moduleName: 'reverb'): Reverb;
   public module(moduleName: 'ringmodulator'): Ringmodulator;
   public module(moduleName: 'slicer'): Slicer;
@@ -221,6 +221,10 @@ export class ProcessorModule extends SoundModule {
 
       case 'recorder': {
         return this.recorder;
+      }
+
+      case 'ampsimulator': {
+        return this.ampsimulator;
       }
 
       case 'autopanner': {
@@ -293,10 +297,6 @@ export class ProcessorModule extends SoundModule {
 
       case 'pitchshifter': {
         return this.pitchshifter;
-      }
-
-      case 'preamp': {
-        return this.preamp;
       }
 
       case 'reverb': {

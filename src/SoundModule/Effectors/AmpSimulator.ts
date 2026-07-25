@@ -1,13 +1,13 @@
 import type { MarshallParams } from './Preamps/Marshall';
 import type { MesaBoogieParams } from './Preamps/MesaBoogie';
 import type { FenderParams } from './Preamps/Fender';
-import type { CabinetParams } from './Preamps/Cabinet';
+import type { SimpleCabinetParams } from './Cabinets/SimpleCabinet';
 
 import { Effector } from './Effector';
 import { Marshall } from './Preamps/Marshall';
 import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
-import { Cabinet } from './Preamps/Cabinet';
+import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 
 export type PreampType = 'marshall' | 'mesa/boogie' | 'fender';
 
@@ -17,7 +17,7 @@ export type AmpSimulatorParams = {
   state?: boolean,
   type?: PreampType,
   preamp?: MarshallParams | MesaBoogieParams | FenderParams,
-  cabinet?: CabinetParams
+  cabinet?: SimpleCabinetParams
 };
 
 /**
@@ -58,7 +58,7 @@ export function createCurve(level: number, numberOfSamples: number): PreampCurve
 export class AmpSimulator extends Effector {
   private type: PreampType = 'marshall';
   private preamp: Marshall | MesaBoogie | Fender;
-  private cabinet: Cabinet;
+  private cabinet: SimpleCabinet;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -67,7 +67,7 @@ export class AmpSimulator extends Effector {
     super(context);
 
     this.preamp  = new Marshall(context);
-    this.cabinet = new Cabinet(context);
+    this.cabinet = new SimpleCabinet(context);
 
     // `AmpSimulator` is not connected by default
     this.deactivate();
@@ -80,8 +80,9 @@ export class AmpSimulator extends Effector {
     if (this.isActive) {
       // Effect ON
 
-      // Create preamp connections
+      // Create connections
       this.preamp.connect();
+      this.cabinet.connect();
 
       // GainNode (INPUT) -> Preamplifier -> Cabinet -> GainNode (Output)
       this.input.connect(this.preamp.INPUT);
@@ -101,15 +102,15 @@ export class AmpSimulator extends Effector {
    * This method gets or sets parameters for Amp Simulator
    * This method is overloaded for type interface and type check.
    * @param {keyof AmpSimulatorParams|AmpSimulatorParams} params This argument is string if getter. Otherwise, setter.
-   * @return {AmpSimulatorParams[keyof AmpSimulatorParams]|Marshall|MesaBoogie|Fender|Cabinet|AmpSimulator} Return value is parameter for Amp Simulator if getter.
+   * @return {AmpSimulatorParams[keyof AmpSimulatorParams]|Marshall|MesaBoogie|Fender|SimpleCabinet|AmpSimulator} Return value is parameter for Amp Simulator if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
   public param(params: 'type'): PreampType;
   public param(params: 'preamp'): AmpSimulatorParams['preamp'];
   public param(params: 'cabinet'): AmpSimulatorParams['cabinet'];
-  public param(params: AmpSimulatorParams): Marshall | MesaBoogie | Fender | Cabinet;
-  public param(params: keyof AmpSimulatorParams | AmpSimulatorParams): AmpSimulatorParams[keyof AmpSimulatorParams] | Marshall | MesaBoogie | Fender | Cabinet | this {
+  public param(params: AmpSimulatorParams): Marshall | MesaBoogie | Fender | SimpleCabinet;
+  public param(params: keyof AmpSimulatorParams | AmpSimulatorParams): AmpSimulatorParams[keyof AmpSimulatorParams] | Marshall | MesaBoogie | Fender | SimpleCabinet | this {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {
@@ -170,6 +171,7 @@ export class AmpSimulator extends Effector {
                 break;
               }
             }
+
             this.connect();
           }
 
@@ -202,7 +204,7 @@ export class AmpSimulator extends Effector {
 
         case 'cabinet': {
           if (typeof value === 'object') {
-            const v: CabinetParams = value;
+            const v: SimpleCabinetParams = value;
 
             this.cabinet.param(v);
           }

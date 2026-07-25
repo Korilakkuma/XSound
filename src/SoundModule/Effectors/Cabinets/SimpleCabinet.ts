@@ -1,13 +1,13 @@
 import { Effector } from '../Effector';
 
-export type CabinetParams = {
+export type SimpleCabinetParams = {
   state?: boolean
 };
 
 /**
- * Effector's subclass for Cabinet.
+ * Effector's subclass for SimpleCabinet.
  */
-export class Cabinet extends Effector {
+export class SimpleCabinet extends Effector {
   private lowpass: BiquadFilterNode;
   private notch: BiquadFilterNode;
 
@@ -31,7 +31,7 @@ export class Cabinet extends Effector {
     this.notch.Q.value         = 1;
     this.notch.gain.value      = 0;  // Not used
 
-    // `Cabinet` is connected by default
+    // `SimpleCabinet` is connected by default
     this.activate();
   }
 
@@ -39,11 +39,13 @@ export class Cabinet extends Effector {
   public override connect(): GainNode {
     // Clear connection
     this.input.disconnect(0);
+    this.lowpass.disconnect(0);
+    this.notch.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> BiquadFilterNode (Notch) -> BiquadFilterNode (Low-pass) -> GainNode (Output)
+      // GainNode (Input) -> BiquadFilterNode (Notch) -> BiquadFilterNode (Low-Pass) -> GainNode (Output)
       this.input.connect(this.notch);
       this.notch.connect(this.lowpass);
       this.lowpass.connect(this.output);
@@ -60,12 +62,13 @@ export class Cabinet extends Effector {
   /**
    * This method gets or sets parameters for cabinet.
    * This method is overloaded for type interface and type check.
-   * @param {keyof CabinetParams|CabinetParams} params This argument is string if getter. Otherwise, setter.
-   * @return {CabinetParams[keyof CabinetParams]} Return value is parameter for cabinet if getter.
+   * @param {keyof SimpleCabinetParams|SimpleCabinetParams} params This argument is string if getter. Otherwise, setter.
+   * @return {SimpleCabinetParams[keyof SimpleCabinetParams]|SimpleCabinet} Return value is parameter for cabinet if getter.
+   *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
-  public param(params: CabinetParams): void;
-  public param(params: keyof CabinetParams | CabinetParams): CabinetParams[keyof CabinetParams] | void {
+  public param(params: SimpleCabinetParams): SimpleCabinet;
+  public param(params: keyof SimpleCabinetParams | SimpleCabinetParams): SimpleCabinetParams[keyof SimpleCabinetParams] | SimpleCabinet {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {
@@ -89,10 +92,12 @@ export class Cabinet extends Effector {
         }
       }
     }
+
+    return this;
   }
 
   /** @override */
-  public override params(): Required<CabinetParams> {
+  public override params(): Required<SimpleCabinetParams> {
     return {
       state: this.isActive
     };

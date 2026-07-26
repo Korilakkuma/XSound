@@ -17,9 +17,6 @@
       "state": true,
       "inch": -1,
       "tilt": false
-    },
-    "cabinet": {
-      "state": true
     }
   }
 }

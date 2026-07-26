@@ -91,7 +91,7 @@ X.OverDrive(context: AudioContext);
 X.Panner(context: AudioContext);
 X.Phaser(context: AudioContext);
 X.PitchShifter(context: AudioContext);
-X.Preamp(context: AudioContext);
+X.AmpSimulator(context: AudioContext);
 X.Reverb(context: AudioContext);
 X.Ringmodulator(context: AudioContext);
 X.Slicer(context: AudioContext);

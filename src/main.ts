@@ -84,6 +84,7 @@ import type {
   SpeakerInches as FenderSpeakerInches
 } from './SoundModule/Effectors/Preamps/Fender';
 import type { SimpleCabinetParams } from './SoundModule/Effectors/Cabinets/SimpleCabinet';
+import type { FilterBankCabinetParams } from './SoundModule/Effectors/Cabinets/FilterBankCabinet';
 import type { ReverbParams, ReverbErrorText } from './SoundModule/Effectors/Reverb';
 import type { RingmodulatorParams } from './SoundModule/Effectors/Ringmodulator';
 import type { SlicerParams, SlicerType } from './SoundModule/Effectors/Slicer';
@@ -730,6 +731,7 @@ export type {
   FenderPreEqualizerParams,
   FenderPostFilterParams,
   FenderSpeakerInches,
+  FilterBankCabinetParams,
   SimpleCabinetParams,
   Reverb,
   ReverbParams,

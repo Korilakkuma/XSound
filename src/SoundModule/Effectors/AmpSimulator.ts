@@ -102,15 +102,15 @@ export class AmpSimulator extends Effector {
    * This method gets or sets parameters for Amp Simulator
    * This method is overloaded for type interface and type check.
    * @param {keyof AmpSimulatorParams|AmpSimulatorParams} params This argument is string if getter. Otherwise, setter.
-   * @return {AmpSimulatorParams[keyof AmpSimulatorParams]|Marshall|MesaBoogie|Fender|SimpleCabinet|AmpSimulator} Return value is parameter for Amp Simulator if getter.
+   * @return {AmpSimulatorParams[keyof AmpSimulatorParams]|AmpSimulator} Return value is parameter for Amp Simulator if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
   public param(params: 'type'): PreampType;
   public param(params: 'preamp'): AmpSimulatorParams['preamp'];
   public param(params: 'cabinet'): AmpSimulatorParams['cabinet'];
-  public param(params: AmpSimulatorParams): Marshall | MesaBoogie | Fender | SimpleCabinet;
-  public param(params: keyof AmpSimulatorParams | AmpSimulatorParams): AmpSimulatorParams[keyof AmpSimulatorParams] | Marshall | MesaBoogie | Fender | SimpleCabinet | this {
+  public param(params: AmpSimulatorParams): AmpSimulator;
+  public param(params: keyof AmpSimulatorParams | AmpSimulatorParams): AmpSimulatorParams[keyof AmpSimulatorParams] | AmpSimulator {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {

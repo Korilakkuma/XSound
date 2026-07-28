@@ -32,54 +32,71 @@ describe(AmpSimulator.name, () => {
 
   describe(ampsimulator.param.name, () => {
     const defaultParams: AmpSimulatorParams = {
-      state : false,
-      type  : 'marshall',
+      state      : false,
+      preampType : 'marshall',
+      cabinetType: 'simple',
       preamp: {
-        state  : false,
-        level  : 0,
-        samples: 1024,
-        pre    : {
-          state     : true,
-          curve     : new Float32Array([0, 0, 0, 0]),
-          oversample: '4x',
-          gain      : 0.5,
-          lead      : 0.5
+        state: true,
+        pre  : {
+          state      : true,
+          gain       : 0,
+          bass       : 0,
+          middle     : 0,
+          treble     : 0,
+          level      : 0,
+          samples    : 1024,
+          oversample : '4x',
+          postFilters: true
         },
-        post: {
-          state     : true,
-          curve     : new Float32Array([0, 0, 0, 0]),
-          oversample: '4x',
-          bass      : 0,
-          middle    : 0,
-          treble    : 0,
-          frequency : 500
+        post : {
+          state : true,
+          fc100 : 0,
+          fc360 : 0,
+          fc720 : 0,
+          fc1600: 0,
+          fc4800: 0
         }
+      },
+      cabinet: {
+        state: true,
       }
     };
 
     const params: AmpSimulatorParams = {
-      state : true,
-      type  : 'marshall',
-      preamp: {
-        state  : true,
-        level  : 0.5,
-        samples: 2048,
-        pre    : {
-          state     : true,
-          curve     : new Float32Array([0, 0, 0, 0]),
-          oversample: '2x',
-          gain      : 0.75,
-          lead      : 0.75
+      state      : true,
+      preampType : 'mesa/boogie',
+      cabinetType: 'filterbank',
+      preamp     : {
+        state: true,
+        pre  : {
+          state      : true,
+          gain       : 0,
+          bass       : 0,
+          middle     : 0,
+          treble     : 0,
+          level      : 0,
+          samples    : 1024,
+          oversample : '4x',
+          postFilters: true
         },
-        post: {
-          state     : true,
-          curve     : new Float32Array([0, 0, 0, 0]),
-          oversample: '2x',
-          bass      : 10,
-          middle    : -10,
-          treble    : 10,
-          frequency : 1000
+        post      : {
+          state : true,
+          fc100 : 0,
+          fc360 : 0,
+          fc720 : 0,
+          fc1600: 0,
+          fc4800: 0
         }
+      },
+      cabinet     : {
+        state   : true,
+        notch   : { frequency: 8800, gain: 0.0,  Q: 0.6 },
+        preTone : { frequency: 4400, gain: 0.0,  Q: 0.0 },
+        postTone: { frequency: 6400, gain: 0.0,  Q: 6.4 },
+        preBass : { frequency: 120,  gain: 0.0,  Q: 2.0 },
+        postBass: { frequency: 80,   gain: 0.0,  Q: 6.0 },
+        middle  : { frequency: 1340, gain: -8.0, Q: 3.0 },
+        treble  : { frequency: 1340, gain: 8.0,  Q: 3.0 }
       }
     };
 
@@ -97,36 +114,50 @@ describe(AmpSimulator.name, () => {
     });
 
     // Getter
-    test('should return `type`', () => {
-      expect(ampsimulator.param('type')).toBe('marshall');
+    test('should return `preampType`', () => {
+      expect(ampsimulator.param('preampType')).toBe('mesa/boogie');
+    });
+
+    test('should return `cabinetType`', () => {
+      expect(ampsimulator.param('cabinetType')).toBe('filterbank');
     });
 
     test('should return `preamp`', () => {
       expect(ampsimulator.param('preamp')).toStrictEqual({
-        state  : true,
-        level  : 0.5,
-        samples: 2048,
-        pre    : {
-          state     : true,
-          curve     : new Float32Array([0, 0, 0, 0]),
-          oversample: '2x',
-          gain      : 0.75,
-          lead      : 0.75
+        state: true,
+        pre  : {
+          state      : true,
+          gain       : 0,
+          bass       : 0,
+          middle     : 0,
+          treble     : 0,
+          level      : 0,
+          samples    : 1024,
+          oversample : '4x',
+          postFilters: true
         },
-        post: {
-          state     : true,
-          curve     : new Float32Array([0, 0, 0, 0]),
-          oversample: '2x',
-          bass      : 10,
-          middle    : -10,
-          treble    : 10,
-          frequency : 1000
+        post : {
+          state : true,
+          fc100 : 0,
+          fc360 : 0,
+          fc720 : 0,
+          fc1600: 0,
+          fc4800: 0
         }
       });
     });
 
     test('should return `cabinet`', () => {
-      expect(ampsimulator.param('cabinet')).toStrictEqual({ state: true });
+      expect(ampsimulator.param('cabinet')).toStrictEqual({
+        state   : true,
+        notch   : { frequency: 8800, gain: 0.0,  Q: 0.6 },
+        preTone : { frequency: 4400, gain: 0.0,  Q: 0.0 },
+        postTone: { frequency: 6400, gain: 0.0,  Q: 6.4 },
+        preBass : { frequency: 120,  gain: 0.0,  Q: 2.0 },
+        postBass: { frequency: 80,   gain: 0.0,  Q: 6.0 },
+        middle  : { frequency: 1340, gain: -8.0, Q: 3.0 },
+        treble  : { frequency: 1340, gain: 8.0,  Q: 3.0 }
+      });
     });
   });
 

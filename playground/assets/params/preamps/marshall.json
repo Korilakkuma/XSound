@@ -1,6 +1,6 @@
 {
   "state": false,
-  "type": "marshall",
+  "preampType": "marshall",
   "preamp": {
     "state": true,
     "level": 0,

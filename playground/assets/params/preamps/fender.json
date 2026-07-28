@@ -1,6 +1,6 @@
 {
   "state": false,
-  "type": "fender",
+  "preampType": "fender",
   "preamp": {
     "state": true,
     "pre": {

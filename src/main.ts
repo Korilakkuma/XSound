@@ -63,7 +63,7 @@ import type { OverDriveParams } from './SoundModule/Effectors/OverDrive';
 import type { PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import type { PhaserParams, PhaserType, PhaserNumberOfStages, PhaserFilterConnectionType } from './SoundModule/Effectors/Phaser';
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
-import type { AmpSimulatorParams, PreampType, PreampCurve } from './SoundModule/Effectors/AmpSimulator';
+import type { AmpSimulatorParams, PreampType, CabinetType, PreampCurve } from './SoundModule/Effectors/AmpSimulator';
 import type {
   Marshall,
   MarshallParams,
@@ -717,6 +717,7 @@ export type {
   AmpSimulator,
   AmpSimulatorParams,
   PreampType,
+  CabinetType,
   PreampCurve,
   Marshall,
   MarshallParams,

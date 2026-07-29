@@ -1,4 +1,6 @@
 {
+  "state": false,
+  "cabinetType": "simple",
   "cabinet": {
     "state": true
   }

@@ -126,7 +126,7 @@ const successCallback = () => {
     } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
       X('oneshot').module('analyser').domain(moduleName).param(params);
     } else if (moduleName.includes('/')) {
-      X('oneshot').module('ampsimulator').param(params);
+      X('oneshot').module('ampsimulator').param({ state, ...params });
     } else if (X('oneshot').module(moduleName)) {
       X('oneshot').module(moduleName).param(params);
 

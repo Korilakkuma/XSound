@@ -50,7 +50,7 @@ document.getElementById('button-set-parameters').onclick = () => {
   } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
     X('processor').module('analyser').domain(moduleName).param(params);
   } else if (moduleName.includes('/')) {
-    X('processor').module('ampsimulator').param(params);
+    X('processor').module('ampsimulator').param({ state, ...params });
   } else if (X('processor').module(moduleName)) {
     X('processor').module(moduleName).param(params);
 

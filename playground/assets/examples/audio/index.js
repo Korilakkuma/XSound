@@ -54,7 +54,7 @@ document.getElementById('button-set-parameters').onclick = () => {
   } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
     X('audio').module('analyser').domain(moduleName).param(params);
   } else if (moduleName.includes('/')) {
-    X('audio').module('ampsimulator').param(params);
+    X('audio').module('ampsimulator').param({ state, ...params });
   } else if (X('audio').module(moduleName)) {
     X('audio').module(moduleName).param(params);
 

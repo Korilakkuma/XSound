@@ -36,7 +36,7 @@ document.getElementById('button-set-parameters').onclick = () => {
   } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
     X('noise').module('analyser').domain(moduleName).param(params);
   } else if (moduleName.includes('/')) {
-    X('noise').module('ampsimulator').param(params);
+    X('noise').module('ampsimulator').param({ state, ...params });
   } else if (X('noise').module(moduleName)) {
     X('noise').module(moduleName).param(params);
 

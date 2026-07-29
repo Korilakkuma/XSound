@@ -36,7 +36,7 @@ document.getElementById('button-set-parameters').onclick = () => {
   } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
     X('oscillator').module('analyser').domain(moduleName).param(params);
   } else if (moduleName.includes('/')) {
-    X('oscillator').module('ampsimulator').param(params);
+    X('oscillator').module('ampsimulator').param({ state, ...params });
   } else if (X('oscillator').module(moduleName)) {
     X('oscillator').module(moduleName).param(params);
 

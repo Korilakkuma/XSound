@@ -66,7 +66,7 @@ document.getElementById('button-set-parameters').onclick = () => {
   } else if ((moduleName === 'timeoverview') || (moduleName === 'time') || (moduleName === 'fft')) {
     X('stream').module('analyser').domain(moduleName).param(params);
   } else if (moduleName.includes('/')) {
-    X('stream').module('ampsimulator').param(params);
+    X('stream').module('ampsimulator').param({ state, ...params });
   } else if (X('stream').module(moduleName)) {
     X('stream').module(moduleName).param(params);
 

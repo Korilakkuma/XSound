@@ -129,7 +129,7 @@ export class AudioContextMock {
   }
 
   decodeAudioData() {
-    return {} as Promise<AudioBuffer>;
+    return Promise.resolve(new AudioBufferMock(new Float32Array(2048), new Float32Array(2048)));
   }
 
   resume() {

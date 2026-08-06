@@ -184,7 +184,7 @@ describe(FilterBankCabinet.name, () => {
   });
 
   describe(cabinet.params.name, () => {
-    test('should return parameters for simple cabinet as associative array', () => {
+    test('should return parameters for filter bank cabinet as associative array', () => {
       expect(cabinet.params()).toStrictEqual({
         state   : true,
         notch   : { frequency: 8800, gain: 0.0,  Q: 0.6 },

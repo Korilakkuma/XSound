@@ -3,6 +3,7 @@ import type { MesaBoogieParams } from './Preamps/MesaBoogie';
 import type { FenderParams } from './Preamps/Fender';
 import type { SimpleCabinetParams } from './Cabinets/SimpleCabinet';
 import type { FilterBankCabinetParams } from './Cabinets/FilterBankCabinet';
+import type { IRCabinetParams } from './Cabinets/IRCabinet';
 
 import { Effector } from './Effector';
 import { Marshall } from './Preamps/Marshall';
@@ -10,10 +11,11 @@ import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
 import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
+import { IRCabinet } from './Cabinets/IRCabinet';
 
 export type PreampType = 'marshall' | 'mesa/boogie' | 'fender';
 
-export type CabinetType = 'simple' | 'filterbank';
+export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
 export type PreampCurve = Float32Array<ArrayBuffer> | null;
 
@@ -23,7 +25,7 @@ export type AmpSimulatorParams = {
   preampType?: PreampType,
   cabinetType?: CabinetType,
   preamp?: MarshallParams | MesaBoogieParams | FenderParams,
-  cabinet?: SimpleCabinetParams | FilterBankCabinetParams
+  cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
 /**
@@ -66,7 +68,7 @@ export class AmpSimulator extends Effector {
   private cabinetType: CabinetType = 'simple';
 
   private preamp: Marshall | MesaBoogie | Fender;
-  private cabinet: SimpleCabinet | FilterBankCabinet;
+  private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -247,6 +249,13 @@ export class AmpSimulator extends Effector {
 
                 break;
               }
+
+              case 'IR': {
+                this.cabinetType = 'IR';
+                this.cabinet     = new IRCabinet(this.context);
+
+                break;
+              }
             }
 
             this.connect();
@@ -292,7 +301,15 @@ export class AmpSimulator extends Effector {
 
               this.cabinet.param(v);
             }
+
+            if (this.cabinet instanceof IRCabinet) {
+              const v: IRCabinetParams = value;
+
+              this.cabinet.param(v);
+            }
           }
+
+          break;
         }
       }
     }

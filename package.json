@@ -7,6 +7,11 @@
   "description": "XSound gives Web Developers Powerful Audio Features Easily !",
   "main": "build/xsound.js",
   "types": "build/types/src/main.d.ts",
+  "allowScripts": {
+    "fsevents": true,
+    "husky": true,
+    "unrs-resolver": true
+  },
   "scripts": {
     "clean": "rm -rf build",
     "lint": "eslint 'src/**/*.ts' 'test/**/*.ts' 'mock/**/*.ts' jest.config.mjs webpack.config.mjs",

@@ -2,6 +2,9 @@
   "name": "xsound",
   "description": "XSound gives Web Developers Powerful Audio Features Easily !",
   "main": "index.html",
+  "allowScripts": {
+    "husky": true
+  },
   "scripts": {
     "lint:css": "stylelint app.css",
     "lint:html": "markuplint index.html",

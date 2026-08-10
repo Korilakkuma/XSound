@@ -1,0 +1,9 @@
+{
+  "state": false,
+  "cabinetType": "IR",
+  "cabinet": {
+    "state": true,
+    "buffer": "assets/audio/cabinet.wav",
+    "tone": 350
+  }
+}

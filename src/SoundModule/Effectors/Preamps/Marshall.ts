@@ -1,7 +1,7 @@
 import type { PreampCurve } from '../AmpSimulator';
 
 import { Effector } from '../Effector';
-import { createCurve } from '../AmpSimulator';
+import { AmpSimulator } from '../AmpSimulator';
 
 export type PreEqualizerParams = {
   state?: boolean,
@@ -545,7 +545,7 @@ export class Marshall extends Effector {
           if (typeof value === 'number') {
             this.level = value;
 
-            const curve = createCurve(this.level, this.numberOfSamples);
+            const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
 
             this.preEQ.param({ curve });
             this.postEQ.param({ curve });
@@ -558,7 +558,7 @@ export class Marshall extends Effector {
           if (typeof value === 'number') {
             this.numberOfSamples = value;
 
-            const curve = createCurve(this.level, this.numberOfSamples);
+            const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
 
             this.preEQ.param({ curve });
             this.postEQ.param({ curve });

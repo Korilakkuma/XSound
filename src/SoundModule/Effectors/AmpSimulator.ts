@@ -29,38 +29,6 @@ export type AmpSimulatorParams = {
 };
 
 /**
- * This function creates instance of `Float32Array` for `WaveShaperNode`.
- * @param {number} level This argument is preamp effect level.
- * @param {number} numberOfSamples This argument is curve size.
- * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
- */
-export function createCurve(level: number, numberOfSamples: number): PreampCurve {
-  const index = Math.trunc((numberOfSamples - 1) / 2);
-
-  const curves = new Float32Array(numberOfSamples);
-
-  const d = (10 ** ((level / 5.0) - 1.0)) - 0.1;
-  const c = (d / 5.0) + 1.0;
-
-  let peak = 0.4;
-
-  if (c === 1) {
-    peak = 1.0;
-  } else if ((c > 1) && (c < 1.04)) {
-    peak = (-15.5 * c) + 16.52;
-  }
-
-  for (let i = 0; i < index; i++) {
-    curves[index + i] = peak * (+1 - (c ** -i) + (i * (c ** -index)) / index);
-    curves[index - i] = peak * (-1 + (c ** -i) - (i * (c ** -index)) / index);
-  }
-
-  curves[index] = 0;
-
-  return curves;
-}
-
-/**
  * Effector's subclass for Amp Simulator.
  */
 export class AmpSimulator extends Effector {
@@ -69,6 +37,38 @@ export class AmpSimulator extends Effector {
 
   private preamp: Marshall | MesaBoogie | Fender;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
+
+  /**
+  * This static method creates instance of `Float32Array` for `WaveShaperNode`.
+  * @param {number} level This argument is preamp effect level.
+  * @param {number} numberOfSamples This argument is curve size.
+  * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
+  */
+  public static createCurve(level: number, numberOfSamples: number): PreampCurve {
+    const index = Math.trunc((numberOfSamples - 1) / 2);
+
+    const curves = new Float32Array(numberOfSamples);
+
+    const d = (10 ** ((level / 5.0) - 1.0)) - 0.1;
+    const c = (d / 5.0) + 1.0;
+
+    let peak = 0.4;
+
+    if (c === 1) {
+      peak = 1.0;
+    } else if ((c > 1) && (c < 1.04)) {
+      peak = (-15.5 * c) + 16.52;
+    }
+
+    for (let i = 0; i < index; i++) {
+      curves[index + i] = peak * (+1 - (c ** -i) + (i * (c ** -index)) / index);
+      curves[index - i] = peak * (-1 + (c ** -i) - (i * (c ** -index)) / index);
+    }
+
+    curves[index] = 0;
+
+    return curves;
+  }
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.

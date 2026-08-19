@@ -1,5 +1,5 @@
 import { Effector } from '../Effector';
-import { createCurve } from '../AmpSimulator';
+import { AmpSimulator } from '../AmpSimulator';
 
 export type PreEqualizerParams = {
   state?: boolean,
@@ -98,7 +98,7 @@ class PreEqualizer extends Effector {
     this.middle.gain.value = 0;
     this.treble.gain.value = 0;
 
-    const curve = createCurve(this.level, this.numberOfSamples);
+    const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
 
     // Initialize parameters
     for (let i = 0; i < 2; i++) {
@@ -270,7 +270,7 @@ class PreEqualizer extends Effector {
           if (typeof value === 'number') {
             this.level = value;
 
-            const curve = createCurve(this.level, this.numberOfSamples);
+            const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
 
             for (let i = 0; i < 2; i++) {
               this.shapers[i].curve = curve;
@@ -284,7 +284,7 @@ class PreEqualizer extends Effector {
           if (typeof value === 'number') {
             this.numberOfSamples = value;
 
-            const curve = createCurve(this.level, this.numberOfSamples);
+            const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
 
             for (let i = 0; i < 2; i++) {
               this.shapers[i].curve = curve;

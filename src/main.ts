@@ -59,7 +59,7 @@ import type { HarmonizerParams, HarmonizerType, HarmonizerMode } from './SoundMo
 import type { ListenerParams } from './SoundModule/Effectors/Listener';
 import type { NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
 import type { NoiseSuppressorParams } from './SoundModule/Effectors/NoiseSuppressor';
-import type { OverDriveParams } from './SoundModule/Effectors/OverDrive';
+import type { OverDriveParams, OverDriveType, OverDriveCurve } from './SoundModule/Effectors/OverDrive';
 import type { PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import type { PhaserParams, PhaserType, PhaserNumberOfStages, PhaserFilterConnectionType } from './SoundModule/Effectors/Phaser';
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
@@ -704,6 +704,8 @@ export type {
   NoiseSuppressorProcessor,
   OverDrive,
   OverDriveParams,
+  OverDriveType,
+  OverDriveCurve,
   Panner,
   PannerParams,
   Position3D,

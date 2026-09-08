@@ -87,7 +87,7 @@ document.getElementById('button-stop').onclick = () => {
     }
   }, true);
 
-  window.addEventListener('unload', () => {
+  window.addEventListener('pagehide', () => {
     localStorage.setItem(STORAGE_KEY, editor.getValue())
   }, true);
 });

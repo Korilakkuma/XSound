@@ -1,6 +1,8 @@
 {
   "state": false,
+  "type": "natural",
   "drive": 0,
   "level": 1,
+  "numberOfSamples": 1024,
   "oversample": "4x"
 }

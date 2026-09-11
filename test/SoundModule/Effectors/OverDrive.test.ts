@@ -73,7 +73,7 @@ describe(OverDrive.name, () => {
     const originalLevel        = overdrive['level'];
     /* eslint-enable dot-notation */
 
-    afterAll(() => {
+    afterEach(() => {
       /* eslint-disable dot-notation */
       overdrive['input']        = originalInput;
       overdrive['shaper']       = originalShaper;
@@ -88,7 +88,7 @@ describe(OverDrive.name, () => {
       overdrive.deactivate();
     });
 
-    test('should call `connect` method', () => {
+    test('should call `connect` method (if `type` is `natural`)', () => {
       const inputConnectMock           = jest.fn();
       const inputDisconnectMock        = jest.fn();
       const shaperConnectMock          = jest.fn();
@@ -161,6 +161,78 @@ describe(OverDrive.name, () => {
       expect(inputGainDisconnectMock).toHaveBeenCalledTimes(2);
       expect(outputGainDisconnectMock).toHaveBeenCalledTimes(2);
       expect(driveInputDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
+    });
+
+    test('should call `connect` method (if `type` is `warm`)', () => {
+      const inputConnectMock     = jest.fn();
+      const inputDisconnectMock  = jest.fn();
+      const shaperConnectMock    = jest.fn();
+      const shaperDisconnectMock = jest.fn();
+      const levelConnectMock     = jest.fn();
+      const levelDisconnectMock  = jest.fn();
+
+      /* eslint-disable dot-notation */
+      overdrive['input'].connect     = inputConnectMock;
+      overdrive['input'].disconnect  = inputDisconnectMock;
+      overdrive['shaper'].connect    = shaperConnectMock;
+      overdrive['shaper'].disconnect = shaperDisconnectMock;
+      overdrive['level'].connect     = levelConnectMock;
+      overdrive['level'].disconnect  = levelDisconnectMock;
+      /* eslint-enable dot-notation */
+
+      overdrive.param({ type: 'warm' });
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(1);
+      expect(shaperConnectMock).toHaveBeenCalledTimes(0);
+      expect(levelConnectMock).toHaveBeenCalledTimes(0);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(shaperDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
+
+      overdrive.activate();
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(2);
+      expect(shaperConnectMock).toHaveBeenCalledTimes(1);
+      expect(levelConnectMock).toHaveBeenCalledTimes(1);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(shaperDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
+    });
+
+    test('should call `connect` method (if `type` is `crunch`)', () => {
+      const inputConnectMock     = jest.fn();
+      const inputDisconnectMock  = jest.fn();
+      const shaperConnectMock    = jest.fn();
+      const shaperDisconnectMock = jest.fn();
+      const levelConnectMock     = jest.fn();
+      const levelDisconnectMock  = jest.fn();
+
+      /* eslint-disable dot-notation */
+      overdrive['input'].connect     = inputConnectMock;
+      overdrive['input'].disconnect  = inputDisconnectMock;
+      overdrive['shaper'].connect    = shaperConnectMock;
+      overdrive['shaper'].disconnect = shaperDisconnectMock;
+      overdrive['level'].connect     = levelConnectMock;
+      overdrive['level'].disconnect  = levelDisconnectMock;
+      /* eslint-enable dot-notation */
+
+      overdrive.param({ type: 'crunch' });
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(1);
+      expect(shaperConnectMock).toHaveBeenCalledTimes(0);
+      expect(levelConnectMock).toHaveBeenCalledTimes(0);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(shaperDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
+
+      overdrive.activate();
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(2);
+      expect(shaperConnectMock).toHaveBeenCalledTimes(1);
+      expect(levelConnectMock).toHaveBeenCalledTimes(1);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(shaperDisconnectMock).toHaveBeenCalledTimes(2);
       expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
     });
   });

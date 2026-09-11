@@ -1,7 +1,10 @@
 import { Effector } from './Effector';
 
+export type FuzzType = 'standard' | 'full-rectifier' | 'half-rectifier';
+
 export type FuzzParams = {
   state?: boolean,
+  type?: FuzzType,
   drive?: number,
   level?: number,
   oversample?: OverSampleType
@@ -11,12 +14,16 @@ export type FuzzParams = {
  * Effector's subclass for Fuzz.
  */
 export class Fuzz extends Effector {
+  private type: FuzzType = 'standard';
+
   private positiveShaper: WaveShaperNode;
   private negativeShaper: WaveShaperNode;
+  private rectifier: WaveShaperNode;
   private positiveInputGain: GainNode;
   private negativeInputGain: GainNode;
   private positiveOutputGain: GainNode;
   private negativeOutputGain: GainNode;
+  private gain: GainNode;
   private outFilter: BiquadFilterNode;
   private driveInput: ConstantSourceNode;
   private level: GainNode;
@@ -31,10 +38,12 @@ export class Fuzz extends Effector {
 
     this.positiveShaper     = this.context.createWaveShaper();
     this.negativeShaper     = this.context.createWaveShaper();
+    this.rectifier          = this.context.createWaveShaper();
     this.positiveInputGain  = this.context.createGain();
     this.negativeInputGain  = this.context.createGain();
     this.positiveOutputGain = this.context.createGain();
     this.negativeOutputGain = this.context.createGain();
+    this.gain               = this.context.createGain();
 
     this.driveInput = this.context.createConstantSource();
 
@@ -58,12 +67,14 @@ export class Fuzz extends Effector {
 
     this.positiveShaper.oversample = '4x';
     this.negativeShaper.oversample = '4x';
+    this.rectifier.oversample      = '4x';
 
     this.positiveInputGain.gain.value =  1;
     this.negativeInputGain.gain.value = -1;
 
     this.positiveOutputGain.gain.value =  1;
     this.negativeOutputGain.gain.value = -1;
+    this.gain.gain.value               =  1;
 
     this.driveInput.offset.value = this.drive;
 
@@ -114,6 +125,7 @@ export class Fuzz extends Effector {
     // Clear connection
     this.input.disconnect(0);
     this.positiveShaper.disconnect(0);
+    this.rectifier.disconnect(0);
     this.negativeShaper.disconnect(0);
     this.positiveInputGain.disconnect(0);
     this.negativeInputGain.disconnect(0);
@@ -126,24 +138,56 @@ export class Fuzz extends Effector {
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) > GainNode (Positive Input Gain) -> WaveShaperNode (+Fuzz) -> GainNode (Positive Output Gain) -> BiquadFilterNode (High-pass)
-      this.input.connect(this.positiveInputGain);
-      this.positiveInputGain.connect(this.positiveShaper);
-      this.positiveShaper.connect(this.positiveOutputGain);
-      this.positiveOutputGain.connect(this.outFilter);
+      switch (this.type) {
+        case 'standard': {
+          // GainNode (Input) > GainNode (Positive Input Gain) -> WaveShaperNode (+Fuzz) -> GainNode (Positive Output Gain) -> BiquadFilterNode (High-pass)
+          this.input.connect(this.positiveInputGain);
+          this.positiveInputGain.connect(this.positiveShaper);
+          this.positiveShaper.connect(this.positiveOutputGain);
+          this.positiveOutputGain.connect(this.outFilter);
 
-      // GainNode (Input) > GainNode (Negative Input Gain) -> WaveShaperNode (-Fuzz) -> GainNode (Negative Output Gain) -> BiquadFilterNode (High-pass)
-      this.input.connect(this.negativeInputGain);
-      this.negativeInputGain.connect(this.negativeShaper);
-      this.negativeShaper.connect(this.negativeOutputGain);
-      this.negativeOutputGain.connect(this.outFilter);
+          // GainNode (Input) > GainNode (Negative Input Gain) -> WaveShaperNode (-Fuzz) -> GainNode (Negative Output Gain) -> BiquadFilterNode (High-pass)
+          this.input.connect(this.negativeInputGain);
+          this.negativeInputGain.connect(this.negativeShaper);
+          this.negativeShaper.connect(this.negativeOutputGain);
+          this.negativeOutputGain.connect(this.outFilter);
 
-      // ConstantSourceNode (Input as Fuzz) -> AudioParam (gain as negative output gain)
-      this.driveInput.connect(this.negativeOutputGain.gain);
+          // ConstantSourceNode (Input as Fuzz) -> AudioParam (gain as negative output gain)
+          this.driveInput.connect(this.negativeOutputGain.gain);
 
-      // BiquadFilterNode (High-pass) -> GainNode (Fuzz Level) -> GainNode (Output)
-      this.outFilter.connect(this.level);
-      this.level.connect(this.output);
+          // BiquadFilterNode (High-pass) -> GainNode (Fuzz Level) -> GainNode (Output)
+          this.outFilter.connect(this.level);
+          this.level.connect(this.output);
+
+          break;
+        }
+
+        case 'full-rectifier': {
+          const clippingLevel = this.level.gain.value;
+
+          // GainNode (Input) -> GainNode (Amplitude) -> WaveShaperNode (Fuzz) -> GainNode (Output)
+          this.rectifier.curve = new Float32Array([clippingLevel, 0, clippingLevel]);
+
+          this.input.connect(this.gain);
+          this.gain.connect(this.rectifier);
+          this.rectifier.connect(this.output);
+
+          break;
+        }
+
+        case 'half-rectifier': {
+          const clippingLevel = this.level.gain.value;
+
+          this.rectifier.curve = new Float32Array([0, 0, clippingLevel]);
+
+          // GainNode (Input) -> GainNode (Amplitude) -> WaveShaperNode (Fuzz) -> GainNode (Output)
+          this.input.connect(this.gain);
+          this.gain.connect(this.rectifier);
+          this.rectifier.connect(this.output);
+
+          break;
+        }
+      }
     } else {
       // Effect OFF
 
@@ -162,6 +206,7 @@ export class Fuzz extends Effector {
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
+  public param(params: 'type'): FuzzType;
   public param(params: 'drive'): number;
   public param(params: 'level'): number;
   public param(params: 'oversample'): OverSampleType;
@@ -171,6 +216,10 @@ export class Fuzz extends Effector {
       switch (params) {
         case 'state': {
           return this.isActive;
+        }
+
+        case 'type': {
+          return this.type;
         }
 
         case 'drive': {
@@ -197,10 +246,23 @@ export class Fuzz extends Effector {
           break;
         }
 
+        case 'type': {
+          if (typeof value === 'string') {
+            if ((value === 'standard') || (value === 'full-rectifier') || (value === 'half-rectifier')) {
+              this.type = value;
+
+              this.connect();
+            }
+          }
+
+          break;
+        }
+
         case 'drive': {
           if (typeof value === 'number') {
             this.drive = value;
             this.driveInput.offset.value = this.drive;
+            this.gain.gain.value         = 10 * this.drive;
           }
 
           break;
@@ -219,6 +281,7 @@ export class Fuzz extends Effector {
             if ((value === 'none') || (value === '2x') || (value === '4x')) {
               this.positiveShaper.oversample = value;
               this.negativeShaper.oversample = value;
+              this.rectifier.oversample      = value;
             }
           }
 
@@ -234,6 +297,7 @@ export class Fuzz extends Effector {
   public override params(): Required<FuzzParams> {
     return {
       state     : this.isActive,
+      type      : this.type,
       drive     : this.drive,
       level     : this.level.gain.value,
       oversample: this.positiveShaper.oversample

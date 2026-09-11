@@ -66,6 +66,7 @@ describe(Fuzz.name, () => {
     const originalInput              = fuzz['input'];
     const originalPositiveShaper     = fuzz['positiveShaper'];
     const originalNegativeShaper     = fuzz['negativeShaper'];
+    const originalRectifier          = fuzz['rectifier'];
     const originalPositiveInputGain  = fuzz['positiveInputGain'];
     const originalNegativeInputGain  = fuzz['negativeInputGain'];
     const originalPositiveOutputGain = fuzz['positiveOutputGain'];
@@ -75,11 +76,12 @@ describe(Fuzz.name, () => {
     const originalLevel              = fuzz['level'];
     /* eslint-enable dot-notation */
 
-    afterAll(() => {
+    afterEach(() => {
       /* eslint-disable dot-notation */
       fuzz['input']              = originalInput;
       fuzz['positiveShaper']     = originalPositiveShaper;
       fuzz['negativeShaper']     = originalNegativeShaper;
+      fuzz['rectifier']          = originalRectifier;
       fuzz['positiveInputGain']  = originalPositiveInputGain;
       fuzz['negativeInputGain']  = originalNegativeInputGain;
       fuzz['positiveOutputGain'] = originalPositiveOutputGain;
@@ -92,7 +94,7 @@ describe(Fuzz.name, () => {
       fuzz.deactivate();
     });
 
-    test('should call `connect` method', () => {
+    test('should call `connect` method (if `type` is `standard`)', () => {
       const inputConnectMock                 = jest.fn();
       const inputDisconnectMock              = jest.fn();
       const positiveShaperConnectMock        = jest.fn();
@@ -183,17 +185,75 @@ describe(Fuzz.name, () => {
       expect(outFilterDisconnectMock).toHaveBeenCalledTimes(2);
       expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
     });
+
+    test('should call `connect` method (if `type` is `full-rectifier`)', () => {
+      const inputConnectMock        = jest.fn();
+      const inputDisconnectMock     = jest.fn();
+      const rectifierConnectMock    = jest.fn();
+      const rectifierDisconnectMock = jest.fn();
+
+      /* eslint-disable dot-notation */
+      fuzz['input'].connect        = inputConnectMock;
+      fuzz['input'].disconnect     = inputDisconnectMock;
+      fuzz['rectifier'].connect    = rectifierConnectMock;
+      fuzz['rectifier'].disconnect = rectifierDisconnectMock;
+      /* eslint-enable dot-notation */
+
+      fuzz.param({ type: 'full-rectifier' });
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(1);
+      expect(rectifierConnectMock).toHaveBeenCalledTimes(0);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(rectifierDisconnectMock).toHaveBeenCalledTimes(1);
+
+      fuzz.activate();
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(2);
+      expect(rectifierConnectMock).toHaveBeenCalledTimes(1);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(rectifierDisconnectMock).toHaveBeenCalledTimes(2);
+    });
+
+    test('should call `connect` method (if `type` is `half-rectifier`)', () => {
+      const inputConnectMock        = jest.fn();
+      const inputDisconnectMock     = jest.fn();
+      const rectifierConnectMock    = jest.fn();
+      const rectifierDisconnectMock = jest.fn();
+
+      /* eslint-disable dot-notation */
+      fuzz['input'].connect        = inputConnectMock;
+      fuzz['input'].disconnect     = inputDisconnectMock;
+      fuzz['rectifier'].connect    = rectifierConnectMock;
+      fuzz['rectifier'].disconnect = rectifierDisconnectMock;
+      /* eslint-enable dot-notation */
+
+      fuzz.param({ type: 'half-rectifier' });
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(1);
+      expect(rectifierConnectMock).toHaveBeenCalledTimes(0);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(rectifierDisconnectMock).toHaveBeenCalledTimes(1);
+
+      fuzz.activate();
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(2);
+      expect(rectifierConnectMock).toHaveBeenCalledTimes(1);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(rectifierDisconnectMock).toHaveBeenCalledTimes(2);
+    });
   });
 
   describe(fuzz.param.name, () => {
     const defaultParams: FuzzParams = {
       drive     : 0,
+      type      : 'standard',
       level     : 1,
       oversample: '4x'
     };
 
     const params: FuzzParams = {
       drive     : 0.5,
+      type      : 'full-rectifier',
       level     : 0.5,
       oversample: 'none'
     };
@@ -208,6 +268,10 @@ describe(Fuzz.name, () => {
     });
 
     // Getter
+    test('should return `type`', () => {
+      expect(fuzz.param('type')).toBe('full-rectifier');
+    });
+
     test('should return `drive`', () => {
       expect(fuzz.param('drive')).toBeCloseTo(0.5, 1);
     });
@@ -225,6 +289,7 @@ describe(Fuzz.name, () => {
     test('should return parameters for fuzz effector as associative array', () => {
       expect(fuzz.params()).toStrictEqual({
         state     : false,
+        type      : 'standard',
         drive     : 0,
         level     : 1,
         oversample: '4x'

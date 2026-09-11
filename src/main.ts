@@ -54,7 +54,7 @@ import type { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/E
 import type { EqualizerParams } from './SoundModule/Effectors/Equalizer';
 import type { FilterParams } from './SoundModule/Effectors/Filter';
 import type { FlangerParams, FlangerType } from './SoundModule/Effectors/Flanger';
-import type { FuzzParams } from './SoundModule/Effectors/Fuzz';
+import type { FuzzParams, FuzzType } from './SoundModule/Effectors/Fuzz';
 import type { HarmonizerParams, HarmonizerType, HarmonizerMode } from './SoundModule/Effectors/Harmonizer';
 import type { ListenerParams } from './SoundModule/Effectors/Listener';
 import type { NoiseGateParams } from './SoundModule/Effectors/NoiseGate';
@@ -690,6 +690,7 @@ export type {
   FlangerType,
   Fuzz,
   FuzzParams,
+  FuzzType,
   Harmonizer,
   HarmonizerParams,
   HarmonizerType,

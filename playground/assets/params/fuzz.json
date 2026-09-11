@@ -1,5 +1,6 @@
 {
   "state": false,
+  "type": "standard",
   "drive": 0,
   "level": 1,
   "oversample": "4x"

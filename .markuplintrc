@@ -10,7 +10,11 @@
     {
       "selector": "html",
       "rules": {
-        "invalid-attr": false
+        "no-unknown-attr": {
+          "options": {
+            "allowAttrs": ["prefix"]
+          }
+        }
       }
     }
   ]

@@ -5,6 +5,7 @@ import type { BitCrusherParams } from './Effectors/BitCrusher';
 import type { ChorusParams } from './Effectors/Chorus';
 import type { CompressorParams } from './Effectors/Compressor';
 import type { DelayParams } from './Effectors/Delay';
+import type { DistortionParams } from './Effectors/Distortion';
 import type { EnvelopeGeneratorParams } from './Effectors/EnvelopeGenerator';
 import type { EqualizerParams } from './Effectors/Equalizer';
 import type { FilterParams } from './Effectors/Filter';
@@ -35,6 +36,7 @@ import { BitCrusher } from './Effectors/BitCrusher';
 import { Chorus } from './Effectors/Chorus';
 import { Compressor } from './Effectors/Compressor';
 import { Delay } from './Effectors/Delay';
+import { Distortion } from './Effectors/Distortion';
 import { EnvelopeGenerator } from './Effectors/EnvelopeGenerator';
 import { Equalizer } from './Effectors/Equalizer';
 import { Filter } from './Effectors/Filter';
@@ -66,6 +68,7 @@ export type Module =
   Chorus            |
   Compressor        |
   Delay             |
+  Distortion        |
   EnvelopeGenerator |
   Equalizer         |
   Filter            |
@@ -96,6 +99,7 @@ export type ModuleName =
   'chorus'            |
   'compressor'        |
   'delay'             |
+  'distortion'        |
   'envelopegenerator' |
   'equalizer'         |
   'filter'            |
@@ -125,6 +129,7 @@ export type SoundModuleParams = {
   chorus?: ChorusParams,
   compressor?: CompressorParams,
   delay?: DelayParams,
+  distortion?: DistortionParams,
   envelopegenerator?: EnvelopeGeneratorParams,
   equalizer?: EqualizerParams,
   filter?: FilterParams,
@@ -174,6 +179,7 @@ export abstract class SoundModule implements Connectable {
   protected chorus: Chorus;
   protected compressor: Compressor;
   protected delay: Delay;
+  protected distortion: Distortion;
   protected envelopegenerator: EnvelopeGenerator;
   protected equalizer: Equalizer;
   protected filter: Filter;
@@ -217,6 +223,7 @@ export abstract class SoundModule implements Connectable {
     this.chorus            = new Chorus(context);
     this.compressor        = new Compressor(context);
     this.delay             = new Delay(context);
+    this.distortion        = new Distortion(context);
     this.envelopegenerator = new EnvelopeGenerator(context);
     this.equalizer         = new Equalizer(context);
     this.filter            = new Filter(context);
@@ -245,6 +252,7 @@ export abstract class SoundModule implements Connectable {
       this.slicer,
       this.bitcrusher,
       this.overdrive,
+      this.distortion,
       this.fuzz,
       this.ampsimulator,
       this.equalizer,
@@ -506,6 +514,7 @@ export abstract class SoundModule implements Connectable {
       slicer           : this.slicer.params(),
       bitcrusher       : this.bitcrusher.params(),
       overdrive        : this.overdrive.params(),
+      distortion       : this.distortion.params(),
       fuzz             : this.fuzz.params(),
       ampsimulator     : this.ampsimulator.params(),
       equalizer        : this.equalizer.params(),

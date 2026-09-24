@@ -10,6 +10,7 @@ import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
 import { Compressor } from '/src/SoundModule/Effectors/Compressor';
 import { Delay } from '/src/SoundModule/Effectors/Delay';
+import { Distortion } from '/src/SoundModule/Effectors/Distortion';
 import { EnvelopeGenerator } from '/src/SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer } from '/src/SoundModule/Effectors/Equalizer';
 import { Filter } from '/src/SoundModule/Effectors/Filter';
@@ -334,6 +335,7 @@ describe(AudioModule.name, () => {
       expect(audioModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(audioModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(audioModule.module('delay')).toBeInstanceOf(Delay);
+      expect(audioModule.module('distortion')).toBeInstanceOf(Distortion);
       expect(audioModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(audioModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(audioModule.module('filter')).toBeInstanceOf(Filter);
@@ -376,6 +378,7 @@ describe(AudioModule.name, () => {
         chorus           : audioModule['chorus'].params(),
         compressor       : audioModule['compressor'].params(),
         delay            : audioModule['delay'].params(),
+        distortion       : audioModule['distortion'].params(),
         envelopegenerator: audioModule['envelopegenerator'].params(),
         equalizer        : audioModule['equalizer'].params(),
         filter           : audioModule['filter'].params(),

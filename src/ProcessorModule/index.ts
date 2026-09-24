@@ -6,6 +6,7 @@ import type { BitCrusher } from '../SoundModule/Effectors/BitCrusher';
 import type { Chorus } from '../SoundModule/Effectors/Chorus';
 import type { Compressor } from '../SoundModule/Effectors/Compressor';
 import type { Delay } from '../SoundModule/Effectors/Delay';
+import type { Distortion } from '../SoundModule/Effectors/Distortion';
 import type { EnvelopeGenerator } from '../SoundModule/Effectors/EnvelopeGenerator';
 import type { Equalizer } from '../SoundModule/Effectors/Equalizer';
 import type { Filter } from '../SoundModule/Effectors/Filter';
@@ -193,6 +194,7 @@ export class ProcessorModule extends SoundModule {
   public module(moduleName: 'chorus'): Chorus;
   public module(moduleName: 'compressor'): Compressor;
   public module(moduleName: 'delay'): Delay;
+  public module(moduleName: 'distortion'): Distortion;
   public module(moduleName: 'envelopegenerator'): EnvelopeGenerator;
   public module(moduleName: 'equalizer'): Equalizer;
   public module(moduleName: 'filter'): Filter;
@@ -245,6 +247,10 @@ export class ProcessorModule extends SoundModule {
 
       case 'delay': {
         return this.delay;
+      }
+
+      case 'distortion': {
+        return this.distortion;
       }
 
       case 'envelopegenerator': {

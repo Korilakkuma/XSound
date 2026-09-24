@@ -50,6 +50,7 @@ import type { BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
 import type { ChorusParams, ChorusType } from './SoundModule/Effectors/Chorus';
 import type { CompressorParams } from './SoundModule/Effectors/Compressor';
 import type { DelayParams, DelayType } from './SoundModule/Effectors/Delay';
+import type { DistortionParams, DistortionType, DistortionCurve } from './SoundModule/Effectors/Distortion';
 import type { EnvelopeGenerator, EnvelopeGeneratorParams } from './SoundModule/Effectors/EnvelopeGenerator';
 import type { EqualizerParams } from './SoundModule/Effectors/Equalizer';
 import type { FilterParams } from './SoundModule/Effectors/Filter';
@@ -118,6 +119,7 @@ import { BitCrusher } from './SoundModule/Effectors/BitCrusher';
 import { Chorus } from './SoundModule/Effectors/Chorus';
 import { Compressor } from './SoundModule/Effectors/Compressor';
 import { Delay } from './SoundModule/Effectors/Delay';
+import { Distortion } from './SoundModule/Effectors/Distortion';
 import { Equalizer } from './SoundModule/Effectors/Equalizer';
 import { Filter } from './SoundModule/Effectors/Filter';
 import { Flanger } from './SoundModule/Effectors/Flanger';
@@ -347,6 +349,7 @@ XSound.BitCrusher      = BitCrusher;
 XSound.Chorus          = Chorus;
 XSound.Compressor      = Compressor;
 XSound.Delay           = Delay;
+XSound.Distortion      = Distortion;
 XSound.Equalizer       = Equalizer;
 XSound.Filter          = Filter;
 XSound.Flanger         = Flanger;
@@ -679,6 +682,10 @@ export type {
   Delay,
   DelayParams,
   DelayType,
+  Distortion,
+  DistortionParams,
+  DistortionType,
+  DistortionCurve,
   EnvelopeGenerator,
   EnvelopeGeneratorParams,
   Equalizer,

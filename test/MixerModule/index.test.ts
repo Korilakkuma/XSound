@@ -9,6 +9,7 @@ import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
 import { Compressor } from '/src/SoundModule/Effectors/Compressor';
 import { Delay } from '/src/SoundModule/Effectors/Delay';
+import { Distortion } from '/src/SoundModule/Effectors/Distortion';
 import { EnvelopeGenerator } from '/src/SoundModule/Effectors/EnvelopeGenerator';
 import { Equalizer } from '/src/SoundModule/Effectors/Equalizer';
 import { Filter } from '/src/SoundModule/Effectors/Filter';
@@ -278,6 +279,7 @@ describe(MixerModule.name, () => {
       expect(mixerModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(mixerModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(mixerModule.module('delay')).toBeInstanceOf(Delay);
+      expect(mixerModule.module('distortion')).toBeInstanceOf(Distortion);
       expect(mixerModule.module('envelopegenerator')).toBeInstanceOf(EnvelopeGenerator);
       expect(mixerModule.module('equalizer')).toBeInstanceOf(Equalizer);
       expect(mixerModule.module('filter')).toBeInstanceOf(Filter);

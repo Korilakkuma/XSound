@@ -79,6 +79,7 @@ X.BitCrusher(context: AudioContext);
 X.Chorus(context: AudioContext);
 X.Compressor(context: AudioContext);
 X.Delay(context: AudioContext);
+X.Distortion(context: AudioContext);
 X.Equalizer(context: AudioContext);
 X.Filter(context: AudioContext);
 X.Flanger(context: AudioContext);

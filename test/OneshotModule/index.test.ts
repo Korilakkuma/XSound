@@ -7,6 +7,7 @@ import { Recorder } from '/src/SoundModule/Recorder';
 import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
+import { Booster } from '/src/SoundModule/Effectors/Booster';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
 import { Compressor } from '/src/SoundModule/Effectors/Compressor';
 import { Delay } from '/src/SoundModule/Effectors/Delay';
@@ -277,6 +278,7 @@ describe(OneshotModule.name, () => {
       expect(oneshotModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(oneshotModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(oneshotModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
+      expect(oneshotModule.module('booster')).toBeInstanceOf(Booster);
       expect(oneshotModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(oneshotModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(oneshotModule.module('delay')).toBeInstanceOf(Delay);
@@ -313,6 +315,7 @@ describe(OneshotModule.name, () => {
         ampsimulator     : oneshotModule['ampsimulator'].params(),
         autopanner       : oneshotModule['autopanner'].params(),
         bitcrusher       : oneshotModule['bitcrusher'].params(),
+        booster          : oneshotModule['booster'].params(),
         chorus           : oneshotModule['chorus'].params(),
         compressor       : oneshotModule['compressor'].params(),
         delay            : oneshotModule['delay'].params(),

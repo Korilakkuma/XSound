@@ -6,6 +6,7 @@ import { Recorder } from '/src/SoundModule/Recorder';
 import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
+import { Booster } from '/src/SoundModule/Effectors/Booster';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
 import { Compressor } from '/src/SoundModule/Effectors/Compressor';
 import { Delay } from '/src/SoundModule/Effectors/Delay';
@@ -433,6 +434,7 @@ describe(StreamModule.name, () => {
       expect(streamModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(streamModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(streamModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
+      expect(streamModule.module('booster')).toBeInstanceOf(Booster);
       expect(streamModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(streamModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(streamModule.module('delay')).toBeInstanceOf(Delay);
@@ -470,6 +472,7 @@ describe(StreamModule.name, () => {
         ampsimulator     : streamModule['ampsimulator'].params(),
         autopanner       : streamModule['autopanner'].params(),
         bitcrusher       : streamModule['bitcrusher'].params(),
+        booster          : streamModule['booster'].params(),
         chorus           : streamModule['chorus'].params(),
         compressor       : streamModule['compressor'].params(),
         delay            : streamModule['delay'].params(),

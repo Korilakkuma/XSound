@@ -2,6 +2,7 @@ import type { Connectable } from '../interfaces';
 import type { Effector } from './Effectors/Effector';
 import type { AutopannerParams } from './Effectors/Autopanner';
 import type { BitCrusherParams } from './Effectors/BitCrusher';
+import type { BoosterParams } from './Effectors/Booster';
 import type { ChorusParams } from './Effectors/Chorus';
 import type { CompressorParams } from './Effectors/Compressor';
 import type { DelayParams } from './Effectors/Delay';
@@ -33,6 +34,7 @@ import { Analyser } from './Analyser';
 import { Recorder } from './Recorder';
 import { Autopanner } from './Effectors/Autopanner';
 import { BitCrusher } from './Effectors/BitCrusher';
+import { Booster } from './Effectors/Booster';
 import { Chorus } from './Effectors/Chorus';
 import { Compressor } from './Effectors/Compressor';
 import { Delay } from './Effectors/Delay';
@@ -65,6 +67,7 @@ export type Module =
   AmpSimulator      |
   Autopanner        |
   BitCrusher        |
+  Booster           |
   Chorus            |
   Compressor        |
   Delay             |
@@ -96,6 +99,7 @@ export type ModuleName =
   'ampsimulator'      |
   'autopanner'        |
   'bitcrusher'        |
+  'booster'           |
   'chorus'            |
   'compressor'        |
   'delay'             |
@@ -126,6 +130,7 @@ export type SoundModuleParams = {
   ampsimulator?: AmpSimulatorParams,
   autopanner?: AutopannerParams,
   bitcrusher?: BitCrusherParams,
+  booster?: BoosterParams,
   chorus?: ChorusParams,
   compressor?: CompressorParams,
   delay?: DelayParams,
@@ -176,6 +181,7 @@ export abstract class SoundModule implements Connectable {
   protected ampsimulator: AmpSimulator;
   protected autopanner: Autopanner;
   protected bitcrusher: BitCrusher;
+  protected booster: Booster;
   protected chorus: Chorus;
   protected compressor: Compressor;
   protected delay: Delay;
@@ -220,6 +226,7 @@ export abstract class SoundModule implements Connectable {
     this.ampsimulator      = new AmpSimulator(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
+    this.booster           = new Booster(context);
     this.chorus            = new Chorus(context);
     this.compressor        = new Compressor(context);
     this.delay             = new Delay(context);
@@ -251,6 +258,7 @@ export abstract class SoundModule implements Connectable {
       this.wah,
       this.slicer,
       this.bitcrusher,
+      this.booster,
       this.overdrive,
       this.distortion,
       this.fuzz,
@@ -513,6 +521,7 @@ export abstract class SoundModule implements Connectable {
       wah              : this.wah.params(),
       slicer           : this.slicer.params(),
       bitcrusher       : this.bitcrusher.params(),
+      booster          : this.booster.params(),
       overdrive        : this.overdrive.params(),
       distortion       : this.distortion.params(),
       fuzz             : this.fuzz.params(),
@@ -596,6 +605,7 @@ export abstract class SoundModule implements Connectable {
     this.ampsimulator      = new AmpSimulator(context);
     this.autopanner        = new Autopanner(context);
     this.bitcrusher        = new BitCrusher(context);
+    this.booster           = new Booster(context);
     this.chorus            = new Chorus(context);
     this.compressor        = new Compressor(context);
     this.delay             = new Delay(context);
@@ -626,6 +636,7 @@ export abstract class SoundModule implements Connectable {
       this.wah,
       this.slicer,
       this.bitcrusher,
+      this.booster,
       this.overdrive,
       this.fuzz,
       this.ampsimulator,

@@ -47,6 +47,7 @@ import type {
 import type { RecorderParams, RecordType, QuantizationBit, WaveExportType, Frame, Channel, RecorderProcessorMessageEventData } from './SoundModule/Recorder';
 import type { AutopannerParams } from './SoundModule/Effectors/Autopanner';
 import type { BitCrusherParams } from './SoundModule/Effectors/BitCrusher';
+import type { BoosterParams, BoosterType, BoosterCurve } from './SoundModule/Effectors/Booster';
 import type { ChorusParams, ChorusType } from './SoundModule/Effectors/Chorus';
 import type { CompressorParams } from './SoundModule/Effectors/Compressor';
 import type { DelayParams, DelayType } from './SoundModule/Effectors/Delay';
@@ -116,6 +117,7 @@ import { StereoEffector } from './SoundModule/Effectors/StereoEffector';
 import { AmpSimulator } from './SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from './SoundModule/Effectors/Autopanner';
 import { BitCrusher } from './SoundModule/Effectors/BitCrusher';
+import { Booster } from './SoundModule/Effectors/Booster';
 import { Chorus } from './SoundModule/Effectors/Chorus';
 import { Compressor } from './SoundModule/Effectors/Compressor';
 import { Delay } from './SoundModule/Effectors/Delay';
@@ -346,6 +348,7 @@ XSound.Effector        = Effector;
 XSound.StereoEffector  = StereoEffector;
 XSound.Autopanner      = Autopanner;
 XSound.BitCrusher      = BitCrusher;
+XSound.Booster         = Booster;
 XSound.Chorus          = Chorus;
 XSound.Compressor      = Compressor;
 XSound.Delay           = Delay;
@@ -674,6 +677,10 @@ export type {
   AutopannerParams,
   BitCrusher,
   BitCrusherParams,
+  Booster,
+  BoosterParams,
+  BoosterType,
+  BoosterCurve,
   Chorus,
   ChorusParams,
   ChorusType,

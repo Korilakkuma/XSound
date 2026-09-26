@@ -6,6 +6,7 @@ import { Recorder } from '/src/SoundModule/Recorder';
 import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
+import { Booster } from '/src/SoundModule/Effectors/Booster';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
 import { Compressor } from '/src/SoundModule/Effectors/Compressor';
 import { Delay } from '/src/SoundModule/Effectors/Delay';
@@ -206,6 +207,7 @@ describe(OscillatorNode.name, () => {
       expect(oscillatorModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(oscillatorModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(oscillatorModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
+      expect(oscillatorModule.module('booster')).toBeInstanceOf(Booster);
       expect(oscillatorModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(oscillatorModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(oscillatorModule.module('delay')).toBeInstanceOf(Delay);
@@ -244,6 +246,7 @@ describe(OscillatorNode.name, () => {
         ampsimulator     : oscillatorModule['ampsimulator'].params(),
         autopanner       : oscillatorModule['autopanner'].params(),
         bitcrusher       : oscillatorModule['bitcrusher'].params(),
+        booster          : oscillatorModule['booster'].params(),
         chorus           : oscillatorModule['chorus'].params(),
         compressor       : oscillatorModule['compressor'].params(),
         delay            : oscillatorModule['delay'].params(),

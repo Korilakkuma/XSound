@@ -6,6 +6,7 @@ import { Recorder } from '/src/SoundModule/Recorder';
 import { AmpSimulator } from '/src/SoundModule/Effectors/AmpSimulator';
 import { Autopanner } from '/src/SoundModule/Effectors/Autopanner';
 import { BitCrusher } from '/src/SoundModule/Effectors/BitCrusher';
+import { Booster } from '/src/SoundModule/Effectors/Booster';
 import { Chorus } from '/src/SoundModule/Effectors/Chorus';
 import { Compressor } from '/src/SoundModule/Effectors/Compressor';
 import { Delay } from '/src/SoundModule/Effectors/Delay';
@@ -276,6 +277,7 @@ describe(MixerModule.name, () => {
       expect(mixerModule.module('ampsimulator')).toBeInstanceOf(AmpSimulator);
       expect(mixerModule.module('autopanner')).toBeInstanceOf(Autopanner);
       expect(mixerModule.module('bitcrusher')).toBeInstanceOf(BitCrusher);
+      expect(mixerModule.module('booster')).toBeInstanceOf(Booster);
       expect(mixerModule.module('chorus')).toBeInstanceOf(Chorus);
       expect(mixerModule.module('compressor')).toBeInstanceOf(Compressor);
       expect(mixerModule.module('delay')).toBeInstanceOf(Delay);

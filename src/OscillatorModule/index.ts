@@ -4,6 +4,7 @@ import type { Analyser } from '../SoundModule/Analyser';
 import type { Recorder } from '../SoundModule/Recorder';
 import type { Autopanner } from '../SoundModule/Effectors/Autopanner';
 import type { BitCrusher } from '../SoundModule/Effectors/BitCrusher';
+import type { Booster } from '../SoundModule/Effectors/Booster';
 import type { Chorus } from '../SoundModule/Effectors/Chorus';
 import type { Compressor } from '../SoundModule/Effectors/Compressor';
 import type { Delay } from '../SoundModule/Effectors/Delay';
@@ -244,6 +245,7 @@ export class OscillatorModule extends SoundModule {
   public module(moduleName: 'ampsimulator'): AmpSimulator;
   public module(moduleName: 'autopanner'): Autopanner;
   public module(moduleName: 'bitcrusher'): BitCrusher;
+  public module(moduleName: 'booster'): Booster;
   public module(moduleName: 'chorus'): Chorus;
   public module(moduleName: 'compressor'): Compressor;
   public module(moduleName: 'delay'): Delay;
@@ -289,6 +291,10 @@ export class OscillatorModule extends SoundModule {
 
       case 'bitcrusher': {
         return this.bitcrusher;
+      }
+
+      case 'booster': {
+        return this.booster;
       }
 
       case 'chorus': {

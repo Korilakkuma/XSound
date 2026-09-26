@@ -1,0 +1,10 @@
+{
+  "state": false,
+  "type": "distortion",
+  "drive": 0,
+  "level": 1,
+  "oversample": "4x",
+  "bass": 0,
+  "middle": 0,
+  "treble": 0
+}

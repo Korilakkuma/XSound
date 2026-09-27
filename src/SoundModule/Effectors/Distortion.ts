@@ -33,24 +33,26 @@ export class Distortion extends Effector {
   private postTreble: BiquadFilterNode;
   private postHighCut: BiquadFilterNode;
 
+  private driveValue = 0;
+
   /**
    * This static method creates instance of `Float32Array` for `WaveShaperNode`.
-   * @param {number} drive This argument is drive level.
-   * @param {number} numberOfSamples This argument is curve size. The default is `1024`.
+   * @param {number} amount This argument is curve shape.
+   * @param {number} numberOfSamples This argument is curve size. The default is `48000`.
    * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
    */
   public static createDistortionCurve(amount: number = 500, numberOfSamples: number = 48000): DistortionCurve {
-    const curve = new Float32Array(numberOfSamples);
+    const curves = new Float32Array(numberOfSamples);
 
     const deg = Math.PI / 180;
 
     for (let n = 0; n < numberOfSamples; n++) {
       const x = ((n * 2) / numberOfSamples) - 1;
 
-      curve[n] = ((3 + amount) * x * 20 * deg) / (Math.PI + (amount * Math.abs(x)));
+      curves[n] = ((3 + amount) * x * 20 * deg) / (Math.PI + (amount * Math.abs(x)));
     }
 
-    return curve;
+    return curves;
   }
 
   /**
@@ -130,7 +132,7 @@ export class Distortion extends Effector {
       // Effect ON
       switch (this.type) {
         case 'distortion': {
-          this.shaper.curve = Distortion.createDistortionCurve(500 * this.drive.gain.value);
+          this.shaper.curve = Distortion.createDistortionCurve(500 * this.driveValue);
 
           this.preLowCut.frequency.value = 250;
 
@@ -152,7 +154,7 @@ export class Distortion extends Effector {
         }
 
         case 'metal': {
-          this.shaper.curve = Distortion.createDistortionCurve(1000 * this.drive.gain.value);
+          this.shaper.curve = Distortion.createDistortionCurve(1000 * this.driveValue);
 
           this.preLowCut.frequency.value = 150;
           this.preLowCut.Q.value         = Math.SQRT1_2;
@@ -184,7 +186,7 @@ export class Distortion extends Effector {
         }
 
         case 'core': {
-          this.shaper.curve = Distortion.createDistortionCurve(1000 * this.drive.gain.value);
+          this.shaper.curve = Distortion.createDistortionCurve(1000 * this.driveValue);
 
           this.preLowCut.frequency.value = 90;
           this.preLowCut.Q.value         = 0.7;
@@ -253,7 +255,7 @@ export class Distortion extends Effector {
         }
 
         case 'drive': {
-          return this.drive.gain.value / 10;
+          return this.driveValue;
         }
 
         case 'level': {
@@ -302,7 +304,14 @@ export class Distortion extends Effector {
 
         case 'drive': {
           if (typeof value === 'number') {
-            this.drive.gain.value = 10 * value;
+            this.driveValue = value;
+
+            this.drive.gain.value = 10 * this.driveValue;
+
+            if (this.drive.gain.value > 10) {
+              this.drive.gain.value = 10;
+              this.driveValue       = 1;
+            }
 
             this.connect();
           }
@@ -362,7 +371,7 @@ export class Distortion extends Effector {
     return {
       state     : this.isActive,
       type      : this.type,
-      drive     : this.drive.gain.value / 10,
+      drive     : this.driveValue,
       level     : this.level.gain.value,
       oversample: this.shaper.oversample,
       bass      : this.postBass.gain.value,

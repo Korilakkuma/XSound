@@ -76,6 +76,7 @@ X.Recorder(context: AudioContext);
 // Effectors
 X.Autopanner(context: AudioContext);
 X.BitCrusher(context: AudioContext);
+X.Booster(context: AudioContext);
 X.Chorus(context: AudioContext);
 X.Compressor(context: AudioContext);
 X.Delay(context: AudioContext);

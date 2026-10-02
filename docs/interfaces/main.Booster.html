@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>PitchShifter | XSound - v4.3.16</title><meta name="description" content="Documentation for XSound"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Booster | XSound - v4.3.16</title><meta name="description" content="Documentation for XSound"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container"><a href="../index.html" class="title">XSound - v4.3.16</a>
 <div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
 <ul role="listbox" id="tsd-search-results"></ul>
@@ -9,20 +9,20 @@
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
 <li><a href="../modules/main.html">main</a></li>
-<li><a href="" aria-current="page">PitchShifter</a></li></ul>
-<h1>Interface PitchShifter</h1></div>
+<li><a href="" aria-current="page">Booster</a></li></ul>
+<h1>Interface Booster</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>Effector's subclass for Pitch Shifter.</p>
+<div class="tsd-comment tsd-typography"><p>Effector's subclass for Booster.</p>
 </div></section>
-<div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">PitchShifter</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#context">context</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AudioContext</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#depth">depth</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#input">input</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#isactive">isActive</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#lfo">lfo</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">OscillatorNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#output">output</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#paused">paused</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#rate">rate</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AudioParam</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-keyword">get</span> <a class="tsd-kind-get-signature" href="#inputinput">INPUT</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-keyword">get</span> <a class="tsd-kind-get-signature" href="#outputoutput">OUTPUT</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#activate-1">activate</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#connect-1">connect</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#deactivate-1">deactivate</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-1">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;state&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-2">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;pitch&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-3">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;speed&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-4">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;dry&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-5">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;wet&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-6">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <a href="../types/main.PitchShifterParams.html" class="tsd-signature-type tsd-kind-type-alias">PitchShifterParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#params-1">params</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/main.PitchShifterParams.html" class="tsd-signature-type tsd-kind-type-alias">PitchShifterParams</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#start-1">start</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#state-1">state</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#stop-1">stop</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#tojson-1">toJSON</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
-<section class="tsd-panel tsd-hierarchy" data-refl="5042">
-<h4>Hierarchy (<a href="../hierarchy.html#main.PitchShifter">View Summary</a>)</h4>
+<div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">Booster</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#context">context</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AudioContext</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#depth">depth</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#input">input</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#isactive">isActive</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#lfo">lfo</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">OscillatorNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#output">output</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#paused">paused</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#rate">rate</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AudioParam</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-keyword">get</span> <a class="tsd-kind-get-signature" href="#inputinput">INPUT</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-keyword">get</span> <a class="tsd-kind-get-signature" href="#outputoutput">OUTPUT</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#activate-1">activate</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#connect-1">connect</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GainNode</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#deactivate-1">deactivate</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-1">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;state&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-2">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;type&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../types/main.BoosterType.html" class="tsd-signature-type tsd-kind-type-alias">BoosterType</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-3">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;drive&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-4">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;level&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-5">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;oversample&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">OverSampleType</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#param-6">param</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <a href="../types/main.BoosterParams.html" class="tsd-signature-type tsd-kind-type-alias">BoosterParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#params-1">params</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/main.BoosterParams.html" class="tsd-signature-type tsd-kind-type-alias">BoosterParams</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#start-1">start</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">startTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#state-1">state</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#stop-1">stop</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">stopTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">releaseTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#tojson-1">toJSON</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
+<section class="tsd-panel tsd-hierarchy" data-refl="3893">
+<h4>Hierarchy (<a href="../hierarchy.html#main.Booster">View Summary</a>)</h4>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><a href="main.Effector.html" class="tsd-signature-type tsd-kind-interface">Effector</a>
 <ul class="tsd-hierarchy">
-<li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">PitchShifter</span></li></ul></li></ul></section><aside class="tsd-sources">
+<li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">Booster</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L18">SoundModule/Effectors/PitchShifter.ts:18</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L18">SoundModule/Effectors/Booster.ts:18</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -51,9 +51,9 @@
 <a href="#deactivate" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>deactivate</span></a>
 <a href="#param" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>param</span></a>
 <a href="#params" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>params</span></a>
-<a href="#start" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>start</span></a>
+<a href="#start" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>start</span></a>
 <a href="#state" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>state</span></a>
-<a href="#stop" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>stop</span></a>
+<a href="#stop" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>stop</span></a>
 <a href="#tojson" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>to<wbr/>JSON</span></a>
 </div></section></div></details></section></section>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -141,11 +141,11 @@
 <h3 class="tsd-anchor-link" id="activate"><span>activate</span><a href="#activate" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
 <li class="tsd-is-inherited">
-<div class="tsd-signature tsd-anchor-link" id="activate-1"><span class="tsd-kind-call-signature">activate</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a><a href="#activate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="activate-1"><span class="tsd-kind-call-signature">activate</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a><a href="#activate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>This method activates effector.</p>
 </div>
-<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a></h4><p>Return value is for method chain.</p>
+<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a></h4><p>Return value is for method chain.</p>
 <aside class="tsd-sources">
 <p>Inherited from <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#activate">activate</a></p>
 <ul>
@@ -159,16 +159,16 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">GainNode</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#connect">connect</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L56">SoundModule/Effectors/PitchShifter.ts:56</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L79">SoundModule/Effectors/Booster.ts:79</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="deactivate"><span>deactivate</span><a href="#deactivate" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
 <li class="tsd-is-inherited">
-<div class="tsd-signature tsd-anchor-link" id="deactivate-1"><span class="tsd-kind-call-signature">deactivate</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a><a href="#deactivate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="deactivate-1"><span class="tsd-kind-call-signature">deactivate</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a><a href="#deactivate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>This method deactivates effector.</p>
 </div>
-<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a></h4><p>Return value is for method chain.</p>
+<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a></h4><p>Return value is for method chain.</p>
 <aside class="tsd-sources">
 <p>Inherited from <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#deactivate">deactivate</a></p>
 <ul>
@@ -179,7 +179,7 @@
 <li class="">
 <div class="tsd-signature tsd-anchor-link" id="param-1"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;state&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><a href="#param-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for pitch shifter.
+<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for booster effector.
 This method is overloaded for type interface and type check.</p>
 </div>
 <div class="tsd-parameters">
@@ -188,116 +188,124 @@ This method is overloaded for type interface and type check.</p>
 <li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;state&quot;</span></span>
 <div class="tsd-comment tsd-typography"><p>This argument is string if getter. Otherwise, setter.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><p>Return value is parameter for pitch shifter if getter.
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><p>Return value is parameter for booster effector if getter.
 Otherwise, return value is for method chain.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L80">SoundModule/Effectors/PitchShifter.ts:80</a></li></ul></aside></div></li>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L132">SoundModule/Effectors/Booster.ts:132</a></li></ul></aside></div></li>
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="param-2"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;pitch&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><a href="#param-2" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="param-2"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;type&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../types/main.BoosterType.html" class="tsd-signature-type tsd-kind-type-alias">BoosterType</a><a href="#param-2" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for pitch shifter.
+<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for booster effector.
 This method is overloaded for type interface and type check.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;pitch&quot;</span></span>
+<li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;type&quot;</span></span>
 <div class="tsd-comment tsd-typography"><p>This argument is string if getter. Otherwise, setter.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><p>Return value is parameter for pitch shifter if getter.
+<h4 class="tsd-returns-title">Returns <a href="../types/main.BoosterType.html" class="tsd-signature-type tsd-kind-type-alias">BoosterType</a></h4><p>Return value is parameter for booster effector if getter.
 Otherwise, return value is for method chain.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L81">SoundModule/Effectors/PitchShifter.ts:81</a></li></ul></aside></div></li>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L133">SoundModule/Effectors/Booster.ts:133</a></li></ul></aside></div></li>
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="param-3"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;speed&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><a href="#param-3" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="param-3"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;drive&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><a href="#param-3" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for pitch shifter.
+<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for booster effector.
 This method is overloaded for type interface and type check.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;speed&quot;</span></span>
+<li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;drive&quot;</span></span>
 <div class="tsd-comment tsd-typography"><p>This argument is string if getter. Otherwise, setter.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><p>Return value is parameter for pitch shifter if getter.
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><p>Return value is parameter for booster effector if getter.
 Otherwise, return value is for method chain.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L82">SoundModule/Effectors/PitchShifter.ts:82</a></li></ul></aside></div></li>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L134">SoundModule/Effectors/Booster.ts:134</a></li></ul></aside></div></li>
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="param-4"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;dry&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><a href="#param-4" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="param-4"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;level&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><a href="#param-4" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for pitch shifter.
+<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for booster effector.
 This method is overloaded for type interface and type check.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;dry&quot;</span></span>
+<li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;level&quot;</span></span>
 <div class="tsd-comment tsd-typography"><p>This argument is string if getter. Otherwise, setter.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><p>Return value is parameter for pitch shifter if getter.
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><p>Return value is parameter for booster effector if getter.
 Otherwise, return value is for method chain.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L83">SoundModule/Effectors/PitchShifter.ts:83</a></li></ul></aside></div></li>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L135">SoundModule/Effectors/Booster.ts:135</a></li></ul></aside></div></li>
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="param-5"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;wet&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><a href="#param-5" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="param-5"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;oversample&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">OverSampleType</span><a href="#param-5" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for pitch shifter.
+<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for booster effector.
 This method is overloaded for type interface and type check.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;wet&quot;</span></span>
+<li><span><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">&quot;oversample&quot;</span></span>
 <div class="tsd-comment tsd-typography"><p>This argument is string if getter. Otherwise, setter.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><p>Return value is parameter for pitch shifter if getter.
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">OverSampleType</span></h4><p>Return value is parameter for booster effector if getter.
 Otherwise, return value is for method chain.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L84">SoundModule/Effectors/PitchShifter.ts:84</a></li></ul></aside></div></li>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L136">SoundModule/Effectors/Booster.ts:136</a></li></ul></aside></div></li>
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="param-6"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <a href="../types/main.PitchShifterParams.html" class="tsd-signature-type tsd-kind-type-alias">PitchShifterParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a><a href="#param-6" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="param-6"><span class="tsd-kind-call-signature">param</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <a href="../types/main.BoosterParams.html" class="tsd-signature-type tsd-kind-type-alias">BoosterParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a><a href="#param-6" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for pitch shifter.
+<div class="tsd-comment tsd-typography"><p>This method gets or sets parameters for booster effector.
 This method is overloaded for type interface and type check.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><span class="tsd-kind-parameter">params</span>: <a href="../types/main.PitchShifterParams.html" class="tsd-signature-type tsd-kind-type-alias">PitchShifterParams</a></span>
+<li><span><span class="tsd-kind-parameter">params</span>: <a href="../types/main.BoosterParams.html" class="tsd-signature-type tsd-kind-type-alias">BoosterParams</a></span>
 <div class="tsd-comment tsd-typography"><p>This argument is string if getter. Otherwise, setter.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-interface">PitchShifter</a></h4><p>Return value is parameter for pitch shifter if getter.
+<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-interface">Booster</a></h4><p>Return value is parameter for booster effector if getter.
 Otherwise, return value is for method chain.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L85">SoundModule/Effectors/PitchShifter.ts:85</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L137">SoundModule/Effectors/Booster.ts:137</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="params"><span>params</span><a href="#params" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="params-1"><span class="tsd-kind-call-signature">params</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/main.PitchShifterParams.html" class="tsd-signature-type tsd-kind-type-alias">PitchShifterParams</a><span class="tsd-signature-symbol">&gt;</span><a href="#params-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="params-1"><span class="tsd-kind-call-signature">params</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/main.BoosterParams.html" class="tsd-signature-type tsd-kind-type-alias">BoosterParams</a><span class="tsd-signature-symbol">&gt;</span><a href="#params-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/main.PitchShifterParams.html" class="tsd-signature-type tsd-kind-type-alias">PitchShifterParams</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/main.BoosterParams.html" class="tsd-signature-type tsd-kind-type-alias">BoosterParams</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#params">params</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L187">SoundModule/Effectors/PitchShifter.ts:187</a></li></ul></aside></div></li></ul></section>
-<section class="tsd-panel tsd-member">
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Booster.ts#L226">SoundModule/Effectors/Booster.ts:226</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="start"><span>start</span><a href="#start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="">
-<div class="tsd-signature tsd-anchor-link" id="start-1"><span class="tsd-kind-call-signature">start</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#start-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="start-1"><span class="tsd-kind-call-signature">start</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">startTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#start-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>This method starts LFO. Namely, this method starts effector.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">startTime</span>: <span class="tsd-signature-type">number</span></span>
+<div class="tsd-comment tsd-typography"><p>This argument is in order to schedule parameter.</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Overrides <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#start">start</a></p>
+<p>Inherited from <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#start">start</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L48">SoundModule/Effectors/PitchShifter.ts:48</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Effector.ts#L40">SoundModule/Effectors/Effector.ts:40</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="state"><span>state</span><a href="#state" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -310,16 +318,27 @@ Otherwise, return value is for method chain.</p>
 <p>Inherited from <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#state">state</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Effector.ts#L101">SoundModule/Effectors/Effector.ts:101</a></li></ul></aside></div></li></ul></section>
-<section class="tsd-panel tsd-member">
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="stop"><span>stop</span><a href="#stop" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="">
-<div class="tsd-signature tsd-anchor-link" id="stop-1"><span class="tsd-kind-call-signature">stop</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#stop-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="stop-1"><span class="tsd-kind-call-signature">stop</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">stopTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">releaseTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#stop-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>This method stops LFO, then creates instance of <code>OscillatorNode</code> again.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">stopTime</span>: <span class="tsd-signature-type">number</span></span>
+<div class="tsd-comment tsd-typography"><p>This argument is in order to schedule parameter.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">releaseTime</span>: <span class="tsd-signature-type">number</span></span>
+<div class="tsd-comment tsd-typography"><p>This argument is in order to schedule parameter when it is necessary to consider release time.</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Overrides <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#stop">stop</a></p>
+<p>Inherited from <a href="main.Effector.html">Effector</a>.<a href="main.Effector.html#stop">stop</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/PitchShifter.ts#L52">SoundModule/Effectors/PitchShifter.ts:52</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/Korilakkuma/XSound/blob/main/src/SoundModule/Effectors/Effector.ts#L54">SoundModule/Effectors/Effector.ts:54</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="tojson"><span>to<wbr/>JSON</span><a href="#tojson" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -351,7 +370,7 @@ Otherwise, return value is for method chain.</p>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Accessors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Accessors</summary>
 <div><a href="#input-1" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Accessor"><use href="../assets/icons.svg#icon-262144"></use></svg><span>INPUT</span></a><a href="#output-1" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Accessor"><use href="../assets/icons.svg#icon-262144"></use></svg><span>OUTPUT</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
-<div><a href="#activate" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>activate</span></a><a href="#connect"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>connect</span></a><a href="#deactivate" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>deactivate</span></a><a href="#param"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>param</span></a><a href="#params"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>params</span></a><a href="#start"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>start</span></a><a href="#state" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>state</span></a><a href="#stop"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>stop</span></a><a href="#tojson" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>to<wbr/>JSON</span></a></div></details></div></details></div>
+<div><a href="#activate" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>activate</span></a><a href="#connect"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>connect</span></a><a href="#deactivate" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>deactivate</span></a><a href="#param"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>param</span></a><a href="#params"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>params</span></a><a href="#start" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>start</span></a><a href="#state" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>state</span></a><a href="#stop" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>stop</span></a><a href="#tojson" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>to<wbr/>JSON</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../modules.html">XSound - v4.3.16</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">

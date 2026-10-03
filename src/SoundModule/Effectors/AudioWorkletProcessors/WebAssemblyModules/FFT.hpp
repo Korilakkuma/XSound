@@ -10,11 +10,13 @@ typedef enum {
 static void window_function(float *const window, const size_t size, const WINDOW_FUNCTION function) {
   switch (function) {
     case HANNING: {
-      for (int n = 0; n < size; n++) {
-        if (n & 0x00000001) {
-          window[n] = 0.5f - (0.5f * cosf(((2.0f * M_PI) * (n + 0.5f)) / (size - 1)));
-        } else {
-          window[n] = 0.5f - (0.5f * cosf(((2.0f * M_PI) * n) / (size - 1)));
+      if (size & 0x00000001) {
+        for (int n = 0; n < size; n++) {
+          window[n] = 0.5f - (0.5f * cosf(((2.0f * M_PI) * (n + 0.5f)) / size));
+        }
+      } else {
+        for (int n = 0; n < size; n++) {
+          window[n] = 0.5f - (0.5f * cosf(((2.0f * M_PI) * n) / size));
         }
       }
 
@@ -22,11 +24,13 @@ static void window_function(float *const window, const size_t size, const WINDOW
     }
 
     case HAMMING: {
-      for (int n = 0; n < size; n++) {
-        if (n & 0x00000001) {
-          window[n] = 0.54f - (0.46f * cosf(((2.0f * M_PI) * (n + 0.5f)) / (size - 1)));
-        } else {
-          window[n] = 0.54f - (0.46f * cosf(((2.0f * M_PI) * n) / (size - 1)));
+      if (size & 0x00000001) {
+        for (int n = 0; n < size; n++) {
+          window[n] = 0.54f - (0.46f * cosf(((2.0f * M_PI) * (n + 0.5f)) / size));
+        }
+      } else {
+        for (int n = 0; n < size; n++) {
+          window[n] = 0.54f - (0.46f * cosf(((2.0f * M_PI) * n) / size));
         }
       }
 

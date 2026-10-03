@@ -74,6 +74,7 @@ X.Analyser(context: AudioContext);
 X.Recorder(context: AudioContext);
 
 // Effectors
+X.AmpSimulator(context: AudioContext);
 X.Autopanner(context: AudioContext);
 X.BitCrusher(context: AudioContext);
 X.Booster(context: AudioContext);
@@ -93,7 +94,6 @@ X.OverDrive(context: AudioContext);
 X.Panner(context: AudioContext);
 X.Phaser(context: AudioContext);
 X.PitchShifter(context: AudioContext);
-X.AmpSimulator(context: AudioContext);
 X.Reverb(context: AudioContext);
 X.Ringmodulator(context: AudioContext);
 X.Slicer(context: AudioContext);
@@ -101,6 +101,13 @@ X.Stereo(context: AudioContext);
 X.Tremolo(context: AudioContext);
 X.VocalCanceler(context: AudioContext);
 X.Wah(context: AudioContext);
+
+X.AmpSimulator.Preamps.Marshall(context: AudioContext);
+X.AmpSimulator.Preamps.Fender(context: AudioContext);
+X.AmpSimulator.Preamps.MesaBoogie(context: AudioContext);
+X.AmpSimulator.Cabinets.SimpleCabinet(context: AudioContext);
+X.AmpSimulator.Cabinets.FilterBankCabinet(context: AudioContext);
+X.AmpSimulator.Cabinets.IRCabinet(context: AudioContext);
 ```
 
 ## Demo

@@ -38,6 +38,20 @@ export class AmpSimulator extends Effector {
   private preamp: Marshall | MesaBoogie | Fender;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
+  // for export
+  public static readonly Preamps = {
+    Marshall,
+    MesaBoogie,
+    Fender
+  } as const;
+
+  // for export
+  public static readonly Cabinets = {
+    SimpleCabinet,
+    FilterBankCabinet,
+    IRCabinet
+  } as const;
+
   /**
   * This static method creates instance of `Float32Array` for `WaveShaperNode`.
   * @param {number} level This argument is preamp effect level.

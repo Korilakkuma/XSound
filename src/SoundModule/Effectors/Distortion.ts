@@ -1,6 +1,6 @@
 import { Effector } from './Effector';
 
-export type DistortionType = 'distortion' | 'metal' | 'core';
+export type DistortionType = 'distortion' | 'blues' | 'metal' | 'core';
 
 export type DistortionCurve = Float32Array<ArrayBuffer> | null;
 
@@ -37,11 +37,12 @@ export class Distortion extends Effector {
 
   /**
    * This static method creates instance of `Float32Array` for `WaveShaperNode`.
-   * @param {number} amount This argument is curve shape.
-   * @param {number} numberOfSamples This argument is curve size. The default is `48000`.
+   * @param {number} amount This argument is curve shape. The default value is `500`.
+   * @param {number} numberOfSamples This argument is curve size. The default value is `48000`.
+   * @param {boolean} asymmetrical This argument is asymmetrical clipping if this value is `true`. The default value is `false`
    * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
    */
-  public static createDistortionCurve(amount: number = 500, numberOfSamples: number = 48000): DistortionCurve {
+  public static createDistortionCurve(amount: number = 500, numberOfSamples: number = 48000, asymmetrical: boolean = false): DistortionCurve {
     const curves = new Float32Array(numberOfSamples);
 
     const deg = Math.PI / 180;
@@ -49,7 +50,18 @@ export class Distortion extends Effector {
     for (let n = 0; n < numberOfSamples; n++) {
       const x = ((n * 2) / numberOfSamples) - 1;
 
-      curves[n] = ((3 + amount) * x * 20 * deg) / (Math.PI + (amount * Math.abs(x)));
+      if (asymmetrical) {
+        if (x >= 0) {
+          curves[n] = ((3 + amount) * x * 20 * deg) / (Math.PI + (amount * Math.abs(x)));
+        } else {
+          const k = 1.4 * amount;
+          const y = ((3 + k) * x * 20 * deg) / (Math.PI + (k * Math.abs(x)));
+
+          curves[n] = 0.88 * y;
+        }
+      } else {
+        curves[n] = ((3 + amount) * x * 20 * deg) / (Math.PI + (amount * Math.abs(x)));
+      }
     }
 
     return curves;
@@ -148,6 +160,28 @@ export class Distortion extends Effector {
           this.shaper.connect(this.postMiddle);
           this.postMiddle.connect(this.postHighCut);
           this.postHighCut.connect(this.level);
+          this.level.connect(this.output);
+
+          break;
+        }
+
+        case 'blues': {
+          this.shaper.curve = Distortion.createDistortionCurve((500 * this.driveValue), this.context.sampleRate, true);
+
+          this.preLowCut.frequency.value = 110;
+
+          this.postHighCut.frequency.value = 5000;
+
+          this.postTreble.frequency.value = 3500;
+          this.postTreble.gain.value      = 3;
+
+          // GainNode (Input) > BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (High Cut) -> BiquadFilterNode (Tone) -> GainNode (Level) -> GainNode (Output)
+          this.input.connect(this.preLowCut);
+          this.preLowCut.connect(this.drive);
+          this.drive.connect(this.shaper);
+          this.shaper.connect(this.postHighCut);
+          this.postHighCut.connect(this.postTreble);
+          this.postTreble.connect(this.level);
           this.level.connect(this.output);
 
           break;
@@ -292,7 +326,7 @@ export class Distortion extends Effector {
 
         case 'type': {
           if (typeof value === 'string') {
-            if ((value === 'distortion') || (value === 'metal') || (value === 'core')) {
+            if ((value === 'distortion') || (value === 'blues') || (value === 'metal') || (value === 'core')) {
               this.type = value;
 
               this.connect();

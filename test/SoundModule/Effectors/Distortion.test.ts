@@ -127,6 +127,91 @@ describe(Distortion.name, () => {
       expect(postHighCutDisconnectMock).toHaveBeenCalledTimes(3);
     });
 
+    test('should call `connect` method (if `type` is `blues`)', () => {
+      const inputConnectMock          = jest.fn();
+      const inputDisconnectMock       = jest.fn();
+      const driveConnectMock          = jest.fn();
+      const driveDisconnectMock       = jest.fn();
+      const shaperConnectMock         = jest.fn();
+      const shaperDisconnectMock      = jest.fn();
+      const levelConnectMock          = jest.fn();
+      const levelDisconnectMock       = jest.fn();
+      const preLowCutConnectMock      = jest.fn();
+      const preLowCutDisconnectMock   = jest.fn();
+      const postHighCutConnectMock    = jest.fn();
+      const postHighCutDisconnectMock = jest.fn();
+      const postTrebleConnectMock     = jest.fn();
+      const postTrebleDisconnectMock  = jest.fn();
+
+      /* eslint-disable dot-notation */
+      distortion['input'].connect          = inputConnectMock;
+      distortion['input'].disconnect       = inputDisconnectMock;
+      distortion['drive'].connect          = driveConnectMock;
+      distortion['drive'].disconnect       = driveDisconnectMock;
+      distortion['shaper'].connect         = shaperConnectMock;
+      distortion['shaper'].disconnect      = shaperDisconnectMock;
+      distortion['level'].connect          = levelConnectMock;
+      distortion['level'].disconnect       = levelDisconnectMock;
+      distortion['preLowCut'].connect      = preLowCutConnectMock;
+      distortion['preLowCut'].disconnect   = preLowCutDisconnectMock;;
+      distortion['postTreble'].connect     = postTrebleConnectMock;
+      distortion['postTreble'].disconnect  = postTrebleDisconnectMock;;
+      distortion['postHighCut'].connect    = postHighCutConnectMock;
+      distortion['postHighCut'].disconnect = postHighCutDisconnectMock;
+      /* eslint-enable dot-notation */
+
+      distortion.param({ type: 'blues' });
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(1);
+      expect(driveConnectMock).toHaveBeenCalledTimes(0);
+      expect(shaperConnectMock).toHaveBeenCalledTimes(0);
+      expect(levelConnectMock).toHaveBeenCalledTimes(0);
+      expect(preLowCutConnectMock).toHaveBeenCalledTimes(0);
+      expect(postHighCutConnectMock).toHaveBeenCalledTimes(0);
+      expect(postTrebleConnectMock).toHaveBeenCalledTimes(0);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(driveDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(shaperDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(preLowCutDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(postHighCutDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(postTrebleDisconnectMock).toHaveBeenCalledTimes(1);
+
+      distortion.activate();
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(2);
+      expect(driveConnectMock).toHaveBeenCalledTimes(0);
+      expect(shaperConnectMock).toHaveBeenCalledTimes(0);
+      expect(levelConnectMock).toHaveBeenCalledTimes(0);
+      expect(preLowCutConnectMock).toHaveBeenCalledTimes(0);
+      expect(postHighCutConnectMock).toHaveBeenCalledTimes(0);
+      expect(postTrebleConnectMock).toHaveBeenCalledTimes(0);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(driveDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(shaperDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(preLowCutDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(postHighCutDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(postTrebleDisconnectMock).toHaveBeenCalledTimes(2);
+
+      distortion.param({ drive: 1 });
+
+      expect(inputConnectMock).toHaveBeenCalledTimes(3);
+      expect(driveConnectMock).toHaveBeenCalledTimes(1);
+      expect(shaperConnectMock).toHaveBeenCalledTimes(1);
+      expect(levelConnectMock).toHaveBeenCalledTimes(1);
+      expect(preLowCutConnectMock).toHaveBeenCalledTimes(1);
+      expect(postHighCutConnectMock).toHaveBeenCalledTimes(1);
+      expect(postTrebleConnectMock).toHaveBeenCalledTimes(1);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(driveDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(shaperDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(preLowCutDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(postHighCutDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(postTrebleDisconnectMock).toHaveBeenCalledTimes(3);
+    });
+
     test('should call `connect` method (if `type` is `metal`)', () => {
       const inputConnectMock          = jest.fn();
       const inputDisconnectMock       = jest.fn();

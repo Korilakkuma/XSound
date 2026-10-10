@@ -28,8 +28,8 @@ export class Booster extends Effector {
 
   /**
    * This static method creates instance of `Float32Array` for `WaveShaperNode`.
-   * @param {number} drive This argument is drive level.
-   * @param {number} numberOfSamples This argument is curve size. The default is `48000`.
+   * @param {number} drive This argument is drive level. The default value is `1`.
+   * @param {number} numberOfSamples This argument is curve size. The default value is `48000`.
    * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
    */
   public static createBoosterCurve(drive: number = 1, numberOfSamples: number = 48000): BoosterCurve {

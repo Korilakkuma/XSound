@@ -33,7 +33,7 @@ export class OverDrive extends Effector {
 
   /**
    * This static method creates instance of `Float32Array` for `WaveShaperNode`.
-   * @param {number} numberOfSamples This argument is curve size. The default is `1024`.
+   * @param {number} numberOfSamples This argument is curve size. The default value is `1024`.
    * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
    */
   public static createNaturalOverdriveCurve(numberOfSamples: number = 1024): OverDriveCurve {
@@ -54,7 +54,7 @@ export class OverDrive extends Effector {
   /**
    * This static method creates instance of `Float32Array` for `WaveShaperNode`.
    * @param {number} drive This argument is drive level.
-   * @param {number} numberOfSamples This argument is curve size. The default is `1024`.
+   * @param {number} numberOfSamples This argument is curve size. The default value is `1024`.
    * @param {boolean} asymmetrical This argument is asymmetrical clipping if this value is `true`. The default value is `false`
    * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
    */

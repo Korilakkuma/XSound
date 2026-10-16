@@ -1,6 +1,6 @@
 import { Effector } from './Effector';
 
-export type DistortionType = 'distortion' | 'blues' | 'metal' | 'core';
+export type DistortionType = 'distortion' | 'blues' | 'guvnor' | 'metal' | 'core';
 
 export type DistortionCurve = Float32Array<ArrayBuffer> | null;
 
@@ -187,6 +187,33 @@ export class Distortion extends Effector {
           break;
         }
 
+        case 'guvnor': {
+          this.shaper.curve = Distortion.createDistortionCurve(350 * this.driveValue);
+
+          this.preLowCut.frequency.value = 80;
+          this.preLowCut.Q.value         = Math.SQRT1_2;
+
+          this.postBass.frequency.value   = 120;
+          this.postTreble.frequency.value = 4000;
+          this.postMiddle.frequency.value = 750;
+          this.postMiddle.Q.value         = 1.0;
+
+          this.postHighCut.frequency.value = 8000;
+
+          // GainNode (Input) > BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          this.input.connect(this.preLowCut);
+          this.preLowCut.connect(this.drive);
+          this.drive.connect(this.shaper);
+          this.shaper.connect(this.postBass);
+          this.postBass.connect(this.postMiddle);
+          this.postMiddle.connect(this.postTreble);
+          this.postTreble.connect(this.postHighCut);
+          this.postHighCut.connect(this.level);
+          this.level.connect(this.output);
+
+          break;
+        }
+
         case 'metal': {
           this.shaper.curve = Distortion.createDistortionCurve(1000 * this.driveValue);
 
@@ -326,7 +353,7 @@ export class Distortion extends Effector {
 
         case 'type': {
           if (typeof value === 'string') {
-            if ((value === 'distortion') || (value === 'blues') || (value === 'metal') || (value === 'core')) {
+            if ((value === 'distortion') || (value === 'blues') || (value === 'guvnor') || (value === 'metal') || (value === 'core')) {
               this.type = value;
 
               this.connect();

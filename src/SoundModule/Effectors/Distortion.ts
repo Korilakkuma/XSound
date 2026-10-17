@@ -1,6 +1,6 @@
 import { Effector } from './Effector';
 
-export type DistortionType = 'distortion' | 'blues' | 'guvnor' | 'metal' | 'core';
+export type DistortionType = 'distortion' | 'blues' | 'guvnor' | 'rat' | 'metal' | 'core';
 
 export type DistortionCurve = Float32Array<ArrayBuffer> | null;
 
@@ -10,6 +10,7 @@ export type DistortionParams = {
   drive?: number,
   level?: number,
   oversample?: OverSampleType
+  tone?: number,
   bass?: number,
   middle?: number,
   treble?: number
@@ -214,6 +215,28 @@ export class Distortion extends Effector {
           break;
         }
 
+        case 'rat': {
+          this.shaper.curve = Distortion.createDistortionCurve(800 * this.driveValue);
+
+          this.preLowCut.frequency.value = 120;
+          this.preLowCut.Q.value         = Math.SQRT1_2;
+
+          this.postBass.frequency.value = 100;
+
+          this.postHighCut.frequency.value = 3000;
+
+          // GainNode (Input) > BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          this.input.connect(this.preLowCut);
+          this.preLowCut.connect(this.drive);
+          this.drive.connect(this.shaper);
+          this.shaper.connect(this.postBass);
+          this.postBass.connect(this.postHighCut);
+          this.postHighCut.connect(this.level);
+          this.level.connect(this.output);
+
+          break;
+        }
+
         case 'metal': {
           this.shaper.curve = Distortion.createDistortionCurve(1000 * this.driveValue);
 
@@ -300,6 +323,7 @@ export class Distortion extends Effector {
   public param(params: 'drive'): number;
   public param(params: 'level'): number;
   public param(params: 'oversample'): OverSampleType;
+  public param(params: 'tone'): number;
   public param(params: 'bass'): number;
   public param(params: 'middle'): number;
   public param(params: 'treble'): number;
@@ -325,6 +349,10 @@ export class Distortion extends Effector {
 
         case 'oversample': {
           return this.shaper.oversample;
+        }
+
+        case 'tone': {
+          return this.postHighCut.frequency.value;
         }
 
         case 'bass': {
@@ -353,7 +381,7 @@ export class Distortion extends Effector {
 
         case 'type': {
           if (typeof value === 'string') {
-            if ((value === 'distortion') || (value === 'blues') || (value === 'guvnor') || (value === 'metal') || (value === 'core')) {
+            if ((value === 'distortion') || (value === 'blues') || (value === 'guvnor') || (value === 'rat') || (value === 'metal') || (value === 'core')) {
               this.type = value;
 
               this.connect();
@@ -398,6 +426,14 @@ export class Distortion extends Effector {
           break;
         }
 
+        case 'tone': {
+          if (typeof value === 'number') {
+            this.postHighCut.frequency.value = value;
+          }
+
+          break;
+        }
+
         case 'bass': {
           if (typeof value === 'number') {
             this.postBass.gain.value = value;
@@ -435,6 +471,7 @@ export class Distortion extends Effector {
       drive     : this.driveValue,
       level     : this.level.gain.value,
       oversample: this.shaper.oversample,
+      tone      : this.postHighCut.frequency.value,
       bass      : this.postBass.gain.value,
       middle    : this.postMiddle.gain.value,
       treble    : this.postTreble.gain.value

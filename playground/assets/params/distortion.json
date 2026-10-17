@@ -4,6 +4,7 @@
   "drive": 0,
   "level": 1,
   "oversample": "4x",
+  "tone": 6500,
   "bass": 0,
   "middle": 0,
   "treble": 0

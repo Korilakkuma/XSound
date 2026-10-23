@@ -154,7 +154,7 @@ export class Distortion extends Effector {
 
           this.postHighCut.frequency.value = 4500;
 
-          // GainNode (Input) > BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Tone) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Tone) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.drive);
           this.drive.connect(this.shaper);
@@ -176,7 +176,7 @@ export class Distortion extends Effector {
           this.postTreble.frequency.value = 3500;
           this.postTreble.gain.value      = 3;
 
-          // GainNode (Input) > BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (High Cut) -> BiquadFilterNode (Tone) -> GainNode (Level) -> GainNode (Output)
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (High Cut) -> BiquadFilterNode (Tone) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.drive);
           this.drive.connect(this.shaper);
@@ -201,7 +201,7 @@ export class Distortion extends Effector {
 
           this.postHighCut.frequency.value = 8000;
 
-          // GainNode (Input) > BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.drive);
           this.drive.connect(this.shaper);
@@ -225,7 +225,7 @@ export class Distortion extends Effector {
 
           this.postHighCut.frequency.value = 3000;
 
-          // GainNode (Input) > BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.drive);
           this.drive.connect(this.shaper);
@@ -254,7 +254,7 @@ export class Distortion extends Effector {
 
           this.postHighCut.frequency.value = 6500;
 
-          // GainNode (Input) > BiquadFilterNode (Low Cut) -> BiquadFilterNode (Pre Middle Booster) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> BiquadFilterNode (Pre Middle Booster) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.preMiddle);
           this.preMiddle.connect(this.drive);
@@ -286,7 +286,7 @@ export class Distortion extends Effector {
 
           this.postHighCut.frequency.value = 7500;
 
-          // GainNode (Input) > BiquadFilterNode (Low Cut) -> BiquadFilterNode (Pre Middle Booster) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> BiquadFilterNode (Pre Middle Booster) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.preMiddle);
           this.preMiddle.connect(this.drive);

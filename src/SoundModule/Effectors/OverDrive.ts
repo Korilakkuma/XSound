@@ -1,6 +1,6 @@
 import { Effector } from './Effector';
 
-export type OverDriveType = 'natural' | 'warm' | 'crunch';
+export type OverDriveType = 'overdrive' | 'natural' | 'warm' | 'crunch';
 
 export type OverDriveCurve = Float32Array<ArrayBuffer> | null;
 
@@ -26,10 +26,12 @@ export class OverDrive extends Effector {
   private outputGain: GainNode;
   private driveInput: ConstantSourceNode;
   private level: GainNode;
+  private drive: GainNode;
+  private lowCut: BiquadFilterNode;
+  private highCut: BiquadFilterNode;
 
-  private drive = 0;
+  private driveValue = 0;
   private numberOfSamples = 1024;
-
 
   /**
    * This static method creates instance of `Float32Array` for `WaveShaperNode`.
@@ -87,6 +89,38 @@ export class OverDrive extends Effector {
   }
 
   /**
+   * This static method creates instance of `Float32Array` for `WaveShaperNode`.
+   * @param {number} amount This argument is curve shape. The default value is `100`.
+   * @param {number} numberOfSamples This argument is curve size. The default value is `48000`.
+   * @param {boolean} asymmetrical This argument is asymmetrical clipping if this value is `true`. The default value is `true`.
+   * @return {Float32Array|null} Return value is `WaveShaperNode`'s 'curve'.
+   */
+  public static createOD1Curve(amount: number = 100, numberOfSamples: number = 48000, asymmetrical: boolean = true): OverDriveCurve {
+    const curves = new Float32Array(numberOfSamples);
+
+    const deg = Math.PI / 180;
+
+    for (let n = 0; n < numberOfSamples; n++) {
+      const x = ((n * 2) / numberOfSamples) - 1;
+
+      if (asymmetrical) {
+        if (x >= 0) {
+          curves[n] = ((3 + amount) * x * 20 * deg) / (Math.PI + (amount * Math.abs(x)));
+        } else {
+          const k = 1.4 * amount;
+          const y = ((3 + k) * x * 20 * deg) / (Math.PI + (k * Math.abs(x)));
+
+          curves[n] = 0.88 * y;
+        }
+      } else {
+        curves[n] = ((3 + amount) * x * 20 * deg) / (Math.PI + (amount * Math.abs(x)));
+      }
+    }
+
+    return curves;
+  }
+
+  /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
    */
   constructor(context: AudioContext) {
@@ -102,6 +136,11 @@ export class OverDrive extends Effector {
     this.driveInput = this.context.createConstantSource();
 
     this.level = this.context.createGain();
+
+    this.drive = this.context.createGain();
+
+    this.lowCut  = this.context.createBiquadFilter();
+    this.highCut = this.context.createBiquadFilter();
 
     // Initialize parameters
     const curve = OverDrive.createNaturalOverdriveCurve();
@@ -126,9 +165,20 @@ export class OverDrive extends Effector {
     this.inputGain.gain.value  = 0;
     this.outputGain.gain.value = 0;
 
-    this.driveInput.offset.value = this.drive;
+    this.driveInput.offset.value = this.driveValue;
 
     this.level.gain.value = 1;
+
+    this.drive.gain.value = this.driveValue;
+
+    this.lowCut.type  = 'highpass';
+    this.highCut.type = 'lowpass';
+
+    this.lowCut.frequency.value  = 300;
+    this.highCut.frequency.value = 3800;
+
+    this.lowCut.Q.value  = Math.SQRT1_2;
+    this.highCut.Q.value = Math.SQRT1_2;
 
     // `OverDrive` is not connected by default
     this.deactivate();
@@ -157,7 +207,7 @@ export class OverDrive extends Effector {
     this.driveInput = this.context.createConstantSource();
 
     // Restore parameters
-    this.driveInput.offset.value = this.drive;
+    this.driveInput.offset.value = this.driveValue;
 
     this.paused = true;
 
@@ -176,11 +226,28 @@ export class OverDrive extends Effector {
     this.outputGain.disconnect(0);
     this.driveInput.disconnect(0);
     this.level.disconnect(0);
+    this.drive.disconnect(0);
+    this.lowCut.disconnect(0);
+    this.highCut.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
 
       switch (this.type) {
+        case 'overdrive': {
+          this.shaper.curve = OverDrive.createOD1Curve(150 * this.driveValue);
+
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) > WaveShaperNode (OverDrive) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          this.input.connect(this.lowCut);
+          this.lowCut.connect(this.drive);
+          this.drive.connect(this.shaper);
+          this.shaper.connect(this.highCut);
+          this.highCut.connect(this.level);
+          this.level.connect(this.output);
+
+          break;
+        }
+
         case 'natural': {
           this.shaper.curve = OverDrive.createNaturalOverdriveCurve(this.numberOfSamples);
 
@@ -203,7 +270,7 @@ export class OverDrive extends Effector {
         }
 
         case 'warm': {
-          this.shaper.curve = OverDrive.createOverdriveCurve(this.drive, this.numberOfSamples, true);
+          this.shaper.curve = OverDrive.createOverdriveCurve(this.driveValue, this.numberOfSamples, true);
 
           // GainNode (Input) > WaveShaperNode (OverDrive) -> GainNode (OverDrive Level) -> GainNode (Output)
           this.input.connect(this.shaper);
@@ -214,7 +281,7 @@ export class OverDrive extends Effector {
         }
 
         case 'crunch': {
-          this.shaper.curve = OverDrive.createOverdriveCurve(this.drive, this.numberOfSamples, false);
+          this.shaper.curve = OverDrive.createOverdriveCurve(this.driveValue, this.numberOfSamples, false);
 
           // GainNode (Input) > WaveShaperNode (OverDrive) -> GainNode (OverDrive Level) -> GainNode (Output)
           this.input.connect(this.shaper);
@@ -260,7 +327,7 @@ export class OverDrive extends Effector {
         }
 
         case 'drive': {
-          return this.drive;
+          return this.driveValue;
         }
 
         case 'level': {
@@ -289,7 +356,7 @@ export class OverDrive extends Effector {
 
         case 'type': {
           if (typeof value === 'string') {
-            if ((value === 'natural') || (value === 'warm') || (value === 'crunch')) {
+            if ((value === 'overdrive') || (value === 'natural') || (value === 'warm') || (value === 'crunch')) {
               this.type = value;
 
               this.connect();
@@ -301,8 +368,16 @@ export class OverDrive extends Effector {
 
         case 'drive': {
           if (typeof value === 'number') {
-            this.drive = value;
-            this.driveInput.offset.value = this.drive;
+            this.driveValue = value;
+
+            this.driveInput.offset.value = this.driveValue;
+            this.drive.gain.value        = 10 * this.driveValue;
+
+            if (this.drive.gain.value > 10) {
+              this.driveValue              = 1;
+              this.driveInput.offset.value = 1;
+              this.drive.gain.value        = 10;
+            }
           }
 
           break;
@@ -344,7 +419,7 @@ export class OverDrive extends Effector {
     return {
       state          : this.isActive,
       type           : this.type,
-      drive          : this.drive,
+      drive          : this.driveValue,
       level          : this.level.gain.value,
       numberOfSamples: this.numberOfSamples,
       oversample     : this.shaper.oversample

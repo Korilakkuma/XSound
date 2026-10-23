@@ -1,6 +1,6 @@
 import { Effector } from './Effector';
 
-export type DistortionType = 'distortion' | 'blues' | 'guvnor' | 'rat' | 'metal' | 'core';
+export type DistortionType = 'distortion' | 'blues' | 'guvnor' | 'rat' | 'metal' | 'core' | 'grunge';
 
 export type DistortionCurve = Float32Array<ArrayBuffer> | null;
 
@@ -300,6 +300,38 @@ export class Distortion extends Effector {
 
           break;
         }
+
+        case 'grunge': {
+          this.shaper.curve = Distortion.createDistortionCurve(1200 * this.driveValue);
+
+          this.preLowCut.frequency.value = 100;
+          this.preLowCut.Q.value         = Math.SQRT1_2;
+
+          this.preMiddle.frequency.value = 1200;
+          this.preMiddle.Q.value         = 1.5;
+          this.preMiddle.gain.value      = 0;
+
+          this.postBass.frequency.value   = 110;
+          this.postTreble.frequency.value = 4000;
+          this.postMiddle.frequency.value = 600;
+          this.postMiddle.Q.value         = 1.2;
+
+          this.postHighCut.frequency.value = 7500;
+
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> BiquadFilterNode (Pre Middle Booster) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          this.input.connect(this.preLowCut);
+          this.preLowCut.connect(this.preMiddle);
+          this.preMiddle.connect(this.drive);
+          this.drive.connect(this.shaper);
+          this.shaper.connect(this.postBass);
+          this.postBass.connect(this.postMiddle);
+          this.postMiddle.connect(this.postTreble);
+          this.postTreble.connect(this.postHighCut);
+          this.postHighCut.connect(this.level);
+          this.level.connect(this.output);
+
+          break;
+        }
       }
     } else {
       // Effect OFF
@@ -381,7 +413,7 @@ export class Distortion extends Effector {
 
         case 'type': {
           if (typeof value === 'string') {
-            if ((value === 'distortion') || (value === 'blues') || (value === 'guvnor') || (value === 'rat') || (value === 'metal') || (value === 'core')) {
+            if ((value === 'distortion') || (value === 'blues') || (value === 'guvnor') || (value === 'rat') || (value === 'metal') || (value === 'core') || (value === 'grunge')) {
               this.type = value;
 
               this.connect();

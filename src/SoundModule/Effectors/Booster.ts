@@ -22,6 +22,7 @@ export class Booster extends Effector {
   private shaper: WaveShaperNode;
   private level: GainNode;
   private lowCut: BiquadFilterNode;
+  private middle: BiquadFilterNode;
   private highCut: BiquadFilterNode;
 
   private driveValue = 0;
@@ -54,6 +55,7 @@ export class Booster extends Effector {
     this.drive   = this.context.createGain();
     this.level   = this.context.createGain();
     this.lowCut  = this.context.createBiquadFilter();
+    this.middle  = this.context.createBiquadFilter();
     this.highCut = this.context.createBiquadFilter();
 
     // Initialize parameters
@@ -66,10 +68,20 @@ export class Booster extends Effector {
     this.level.gain.value = 1;
 
     this.lowCut.type  = 'highpass';
+    this.middle.type  = 'peaking';
     this.highCut.type = 'lowpass';
 
     this.lowCut.frequency.value  = 15;
+    this.middle.frequency.value  = 750;
     this.highCut.frequency.value = 22000;
+
+    this.lowCut.Q.value  = 1;  // Not used
+    this.middle.Q.value  = 1.2;
+    this.highCut.Q.value = 1;  // Not used
+
+    this.lowCut.gain.value  = 0;  // Not used
+    this.middle.gain.value  = 6;
+    this.highCut.gain.value = 0;  // Not used
 
     // `Booster` is not connected by default
     this.deactivate();
@@ -83,6 +95,7 @@ export class Booster extends Effector {
     this.shaper.disconnect(0);
     this.level.disconnect(0);
     this.lowCut.disconnect(0);
+    this.middle.disconnect(0);
     this.highCut.disconnect(0);
 
     if (this.isActive && (this.drive.gain.value > 0)) {
@@ -101,9 +114,10 @@ export class Booster extends Effector {
         case 'drive': {
           this.shaper.curve = Booster.createBoosterCurve(this.driveValue);
 
-          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Booster) -> WaveShaperNode (Drive) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
+          // GainNode (Input) -> BiquadFilterNode (Low Cut) -> BiquadFilterNode (Middle Booster) -> GainNode (Booster) -> WaveShaperNode (Drive) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.lowCut);
-          this.lowCut.connect(this.drive);
+          this.lowCut.connect(this.middle);
+          this.middle.connect(this.drive);
           this.drive.connect(this.shaper);
           this.shaper.connect(this.highCut);
           this.highCut.connect(this.level);

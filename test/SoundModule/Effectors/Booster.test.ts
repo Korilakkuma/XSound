@@ -16,6 +16,7 @@ describe(Booster.name, () => {
     const originalShaper  = booster['shaper'];
     const originalLevel   = booster['level'];
     const originalLowCut  = booster['lowCut'];
+    const originalMiddle  = booster['middle'];
     const originalHighCut = booster['highCut'];
     /* eslint-enable dot-notation */
 
@@ -26,6 +27,7 @@ describe(Booster.name, () => {
       booster['shaper']  = originalShaper;
       booster['level']   = originalLevel;
       booster['lowCut']  = originalLowCut;
+      booster['middle']  = originalMiddle;
       booster['highCut'] = originalHighCut;
       /* eslint-enable dot-notation */
 
@@ -120,6 +122,8 @@ describe(Booster.name, () => {
       const levelDisconnectMock   = jest.fn();
       const lowCutConnectMock     = jest.fn();
       const lowCutDisconnectMock  = jest.fn();
+      const middleConnectMock     = jest.fn();
+      const middleDisconnectMock  = jest.fn();
       const highCutConnectMock    = jest.fn();
       const highCutDisconnectMock = jest.fn();
 
@@ -134,6 +138,8 @@ describe(Booster.name, () => {
       booster['level'].disconnect   = levelDisconnectMock;
       booster['lowCut'].connect     = lowCutConnectMock;
       booster['lowCut'].disconnect  = lowCutDisconnectMock;
+      booster['middle'].connect     = middleConnectMock;
+      booster['middle'].disconnect  = middleDisconnectMock;
       booster['highCut'].connect    = highCutConnectMock;
       booster['highCut'].disconnect = highCutDisconnectMock;
       /* eslint-enable dot-notation */
@@ -145,12 +151,14 @@ describe(Booster.name, () => {
       expect(shaperConnectMock).toHaveBeenCalledTimes(0);
       expect(levelConnectMock).toHaveBeenCalledTimes(0);
       expect(lowCutConnectMock).toHaveBeenCalledTimes(0);
+      expect(middleConnectMock).toHaveBeenCalledTimes(0);
       expect(highCutConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(driveDisconnectMock).toHaveBeenCalledTimes(1);
       expect(shaperDisconnectMock).toHaveBeenCalledTimes(1);
       expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
       expect(lowCutDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(middleDisconnectMock).toHaveBeenCalledTimes(1);
       expect(highCutDisconnectMock).toHaveBeenCalledTimes(1);
 
       booster.activate();
@@ -160,12 +168,14 @@ describe(Booster.name, () => {
       expect(shaperConnectMock).toHaveBeenCalledTimes(0);
       expect(levelConnectMock).toHaveBeenCalledTimes(0);
       expect(lowCutConnectMock).toHaveBeenCalledTimes(0);
+      expect(middleConnectMock).toHaveBeenCalledTimes(0);
       expect(highCutConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
       expect(driveDisconnectMock).toHaveBeenCalledTimes(2);
       expect(shaperDisconnectMock).toHaveBeenCalledTimes(2);
       expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
       expect(lowCutDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(middleDisconnectMock).toHaveBeenCalledTimes(2);
       expect(highCutDisconnectMock).toHaveBeenCalledTimes(2);
 
       booster.param({ drive: 1 });
@@ -175,12 +185,14 @@ describe(Booster.name, () => {
       expect(shaperConnectMock).toHaveBeenCalledTimes(1);
       expect(levelConnectMock).toHaveBeenCalledTimes(1);
       expect(lowCutConnectMock).toHaveBeenCalledTimes(1);
+      expect(middleConnectMock).toHaveBeenCalledTimes(1);
       expect(highCutConnectMock).toHaveBeenCalledTimes(1);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(3);
       expect(driveDisconnectMock).toHaveBeenCalledTimes(3);
       expect(shaperDisconnectMock).toHaveBeenCalledTimes(3);
       expect(levelDisconnectMock).toHaveBeenCalledTimes(3);
       expect(lowCutDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(middleDisconnectMock).toHaveBeenCalledTimes(3);
       expect(highCutDisconnectMock).toHaveBeenCalledTimes(3);
     });
   });

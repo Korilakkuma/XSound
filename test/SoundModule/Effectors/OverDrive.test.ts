@@ -9,86 +9,24 @@ describe(OverDrive.name, () => {
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const overdrive = new OverDrive(context);
 
-  describe(overdrive.start.name, () => {
-    test('should call `ConstantSourceNode` start', () => {
-      // eslint-disable-next-line dot-notation
-      const originalDriveInput = overdrive['driveInput'];
-
-      const driveInputMock = jest.fn();
-
-      // eslint-disable-next-line dot-notation
-      overdrive['driveInput'].start = driveInputMock;
-
-      overdrive.start();
-
-      expect(driveInputMock).toHaveBeenCalledTimes(0);
-
-      overdrive.activate();
-      overdrive.start();
-
-      expect(driveInputMock).toHaveBeenCalledTimes(1);
-
-      // eslint-disable-next-line dot-notation
-      overdrive['driveInput'] = originalDriveInput;
-
-      overdrive.deactivate();
-    });
-  });
-
-  describe(overdrive.stop.name, () => {
-    test('should call `ConstantSourceNode` stop', () => {
-      // eslint-disable-next-line dot-notation
-      const originalDriveInput = overdrive['driveInput'];
-
-      const driveInputMock = jest.fn();
-
-      // eslint-disable-next-line dot-notation
-      overdrive['driveInput'].stop = driveInputMock;
-
-      overdrive.stop();
-
-      expect(driveInputMock).toHaveBeenCalledTimes(0);
-
-      overdrive.activate();
-      overdrive.stop();
-
-      expect(driveInputMock).toHaveBeenCalledTimes(1);
-
-      // eslint-disable-next-line dot-notation
-      overdrive['driveInput'] = originalDriveInput;
-
-      overdrive.deactivate();
-    });
-  });
-
   describe(overdrive.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput        = overdrive['input'];
-    const originalShaper       = overdrive['shaper'];
-    const originalInputShaper  = overdrive['inputShaper'];
-    const originalOutputShaper = overdrive['outputShaper'];
-    const originalInputGain    = overdrive['inputGain'];
-    const originalOutputGain   = overdrive['outputGain'];
-    const originalDriveInput   = overdrive['driveInput'];
-    const originalLevel        = overdrive['level'];
-    const originalDrive        = overdrive['drive'];
-    const originalLowCut       = overdrive['lowCut'];
-    const originalHighCut      = overdrive['highCut'];
+    const originalInput   = overdrive['input'];
+    const originalShaper  = overdrive['shaper'];
+    const originalDrive   = overdrive['drive'];
+    const originalLevel   = overdrive['level'];
+    const originalLowCut  = overdrive['lowCut'];
+    const originalHighCut = overdrive['highCut'];
     /* eslint-enable dot-notation */
 
     afterEach(() => {
       /* eslint-disable dot-notation */
-      overdrive['input']        = originalInput;
-      overdrive['shaper']       = originalShaper;
-      overdrive['inputShaper']  = originalInputShaper;
-      overdrive['outputShaper'] = originalOutputShaper;
-      overdrive['inputGain']    = originalInputGain;
-      overdrive['outputGain']   = originalOutputGain;
-      overdrive['driveInput']   = originalDriveInput;
-      overdrive['level']        = originalLevel;
-      overdrive['drive']        = originalDrive;
-      overdrive['lowCut']       = originalLowCut;
-      overdrive['highCut']      = originalHighCut;
+      overdrive['input']   = originalInput;
+      overdrive['shaper']  = originalShaper;
+      overdrive['drive']   = originalDrive;
+      overdrive['level']   = originalLevel;
+      overdrive['lowCut']  = originalLowCut;
+      overdrive['highCut'] = originalHighCut;
       /* eslint-enable dot-notation */
 
       overdrive.deactivate();
@@ -99,10 +37,10 @@ describe(OverDrive.name, () => {
       const inputDisconnectMock   = jest.fn();
       const shaperConnectMock     = jest.fn();
       const shaperDisconnectMock  = jest.fn();
-      const levelConnectMock      = jest.fn();
-      const levelDisconnectMock   = jest.fn();
       const driveConnectMock      = jest.fn();
       const driveDisconnectMock   = jest.fn();
+      const levelConnectMock      = jest.fn();
+      const levelDisconnectMock   = jest.fn();
       const lowCutConnectMock     = jest.fn();
       const lowCutDisconnectMock  = jest.fn();
       const highCutConnectMock    = jest.fn();
@@ -113,10 +51,10 @@ describe(OverDrive.name, () => {
       overdrive['input'].disconnect   = inputDisconnectMock;
       overdrive['shaper'].connect     = shaperConnectMock;
       overdrive['shaper'].disconnect  = shaperDisconnectMock;
-      overdrive['level'].connect      = levelConnectMock;
-      overdrive['level'].disconnect   = levelDisconnectMock;
       overdrive['drive'].connect      = driveConnectMock;
       overdrive['drive'].disconnect   = driveDisconnectMock;
+      overdrive['level'].connect      = levelConnectMock;
+      overdrive['level'].disconnect   = levelDisconnectMock;
       overdrive['lowCut'].connect     = lowCutConnectMock;
       overdrive['lowCut'].disconnect  = lowCutDisconnectMock;
       overdrive['highCut'].connect    = highCutConnectMock;
@@ -127,197 +65,62 @@ describe(OverDrive.name, () => {
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(shaperConnectMock).toHaveBeenCalledTimes(0);
-      expect(levelConnectMock).toHaveBeenCalledTimes(0);
       expect(driveConnectMock).toHaveBeenCalledTimes(0);
+      expect(levelConnectMock).toHaveBeenCalledTimes(0);
       expect(lowCutConnectMock).toHaveBeenCalledTimes(0);
       expect(highCutConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
       expect(shaperDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
       expect(driveDisconnectMock).toHaveBeenCalledTimes(1);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
       expect(lowCutDisconnectMock).toHaveBeenCalledTimes(1);
       expect(highCutDisconnectMock).toHaveBeenCalledTimes(1);
 
       overdrive.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(2);
-      expect(shaperConnectMock).toHaveBeenCalledTimes(1);
-      expect(levelConnectMock).toHaveBeenCalledTimes(1);
-      expect(driveConnectMock).toHaveBeenCalledTimes(1);
-      expect(lowCutConnectMock).toHaveBeenCalledTimes(1);
-      expect(highCutConnectMock).toHaveBeenCalledTimes(1);
+      expect(shaperConnectMock).toHaveBeenCalledTimes(0);
+      expect(driveConnectMock).toHaveBeenCalledTimes(0);
+      expect(levelConnectMock).toHaveBeenCalledTimes(0);
+      expect(lowCutConnectMock).toHaveBeenCalledTimes(0);
+      expect(highCutConnectMock).toHaveBeenCalledTimes(0);
       expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
       expect(shaperDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
       expect(driveDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
       expect(lowCutDisconnectMock).toHaveBeenCalledTimes(2);
       expect(highCutDisconnectMock).toHaveBeenCalledTimes(2);
-    });
 
-    test('should call `connect` method (if `type` is `natural`)', () => {
-      const inputConnectMock           = jest.fn();
-      const inputDisconnectMock        = jest.fn();
-      const shaperConnectMock          = jest.fn();
-      const shaperDisconnectMock       = jest.fn();
-      const inputShaperConnectMock     = jest.fn();
-      const inputShaperDisconnectMock  = jest.fn();
-      const outputShaperConnectMock    = jest.fn();
-      const outputShaperDisconnectMock = jest.fn();
-      const inputGainConnectMock       = jest.fn();
-      const inputGainDisconnectMock    = jest.fn();
-      const outputGainConnectMock      = jest.fn();
-      const outputGainDisconnectMock   = jest.fn();
-      const driveInputConnectMock      = jest.fn();
-      const driveInputDisconnectMock   = jest.fn();
-      const levelConnectMock           = jest.fn();
-      const levelDisconnectMock        = jest.fn();
+      overdrive.param({ drive: 1 });
 
-      /* eslint-disable dot-notation */
-      overdrive['input'].connect           = inputConnectMock;
-      overdrive['input'].disconnect        = inputDisconnectMock;
-      overdrive['shaper'].connect          = shaperConnectMock;
-      overdrive['shaper'].disconnect       = shaperDisconnectMock;
-      overdrive['inputShaper'].connect     = inputShaperConnectMock;
-      overdrive['inputShaper'].disconnect  = inputShaperDisconnectMock;
-      overdrive['outputShaper'].connect    = outputShaperConnectMock;
-      overdrive['outputShaper'].disconnect = outputShaperDisconnectMock;
-      overdrive['inputGain'].connect       = inputGainConnectMock;
-      overdrive['inputGain'].disconnect    = inputGainDisconnectMock;
-      overdrive['outputGain'].connect      = outputGainConnectMock;
-      overdrive['outputGain'].disconnect   = outputGainDisconnectMock;
-      overdrive['driveInput'].connect      = driveInputConnectMock;
-      overdrive['driveInput'].disconnect   = driveInputDisconnectMock;
-      overdrive['level'].connect           = levelConnectMock;
-      overdrive['level'].disconnect        = levelDisconnectMock;
-      /* eslint-enable dot-notation */
-
-      overdrive.param({ type: 'natural' });
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(1);
-      expect(shaperConnectMock).toHaveBeenCalledTimes(0);
-      expect(inputShaperConnectMock).toHaveBeenCalledTimes(0);
-      expect(outputShaperConnectMock).toHaveBeenCalledTimes(0);
-      expect(inputGainConnectMock).toHaveBeenCalledTimes(0);
-      expect(outputGainConnectMock).toHaveBeenCalledTimes(0);
-      expect(driveInputConnectMock).toHaveBeenCalledTimes(0);
-      expect(levelConnectMock).toHaveBeenCalledTimes(0);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(shaperDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(inputShaperDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(outputShaperDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(inputGainDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(outputGainDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(driveInputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
-
-      overdrive.activate();
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(2);
+      expect(inputConnectMock).toHaveBeenCalledTimes(3);
       expect(shaperConnectMock).toHaveBeenCalledTimes(1);
-      expect(inputShaperConnectMock).toHaveBeenCalledTimes(1);
-      expect(outputShaperConnectMock).toHaveBeenCalledTimes(1);
-      expect(inputGainConnectMock).toHaveBeenCalledTimes(1);
-      expect(outputGainConnectMock).toHaveBeenCalledTimes(1);
-      expect(driveInputConnectMock).toHaveBeenCalledTimes(2);
+      expect(driveConnectMock).toHaveBeenCalledTimes(1);
       expect(levelConnectMock).toHaveBeenCalledTimes(1);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(shaperDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(inputShaperDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(outputShaperDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(inputGainDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(outputGainDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(driveInputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
-    });
-
-    test('should call `connect` method (if `type` is `warm`)', () => {
-      const inputConnectMock     = jest.fn();
-      const inputDisconnectMock  = jest.fn();
-      const shaperConnectMock    = jest.fn();
-      const shaperDisconnectMock = jest.fn();
-      const levelConnectMock     = jest.fn();
-      const levelDisconnectMock  = jest.fn();
-
-      /* eslint-disable dot-notation */
-      overdrive['input'].connect     = inputConnectMock;
-      overdrive['input'].disconnect  = inputDisconnectMock;
-      overdrive['shaper'].connect    = shaperConnectMock;
-      overdrive['shaper'].disconnect = shaperDisconnectMock;
-      overdrive['level'].connect     = levelConnectMock;
-      overdrive['level'].disconnect  = levelDisconnectMock;
-      /* eslint-enable dot-notation */
-
-      overdrive.param({ type: 'warm' });
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(1);
-      expect(shaperConnectMock).toHaveBeenCalledTimes(0);
-      expect(levelConnectMock).toHaveBeenCalledTimes(0);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(shaperDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
-
-      overdrive.activate();
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(2);
-      expect(shaperConnectMock).toHaveBeenCalledTimes(1);
-      expect(levelConnectMock).toHaveBeenCalledTimes(1);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(shaperDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
-    });
-
-    test('should call `connect` method (if `type` is `crunch`)', () => {
-      const inputConnectMock     = jest.fn();
-      const inputDisconnectMock  = jest.fn();
-      const shaperConnectMock    = jest.fn();
-      const shaperDisconnectMock = jest.fn();
-      const levelConnectMock     = jest.fn();
-      const levelDisconnectMock  = jest.fn();
-
-      /* eslint-disable dot-notation */
-      overdrive['input'].connect     = inputConnectMock;
-      overdrive['input'].disconnect  = inputDisconnectMock;
-      overdrive['shaper'].connect    = shaperConnectMock;
-      overdrive['shaper'].disconnect = shaperDisconnectMock;
-      overdrive['level'].connect     = levelConnectMock;
-      overdrive['level'].disconnect  = levelDisconnectMock;
-      /* eslint-enable dot-notation */
-
-      overdrive.param({ type: 'crunch' });
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(1);
-      expect(shaperConnectMock).toHaveBeenCalledTimes(0);
-      expect(levelConnectMock).toHaveBeenCalledTimes(0);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(shaperDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
-
-      overdrive.activate();
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(2);
-      expect(shaperConnectMock).toHaveBeenCalledTimes(1);
-      expect(levelConnectMock).toHaveBeenCalledTimes(1);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(shaperDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
+      expect(lowCutConnectMock).toHaveBeenCalledTimes(1);
+      expect(highCutConnectMock).toHaveBeenCalledTimes(1);
+      expect(inputDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(shaperDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(driveDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(levelDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(lowCutDisconnectMock).toHaveBeenCalledTimes(3);
+      expect(highCutDisconnectMock).toHaveBeenCalledTimes(3);
     });
   });
 
   describe(overdrive.param.name, () => {
     const defaultParams: OverDriveParams = {
-      type           : 'natural',
-      drive          : 0,
-      level          : 1,
-      numberOfSamples: 1024,
-      oversample     : '4x',
+      type      : 'overdrive',
+      drive     : 0,
+      level     : 1,
+      oversample: '4x',
     };
 
     const params: OverDriveParams = {
-      type           : 'warm',
-      drive          : 0.5,
-      level          : 0.5,
-      numberOfSamples: 2048,
-      oversample     : 'none'
+      type      : 'warm',
+      drive     : 0.5,
+      level     : 0.5,
+      oversample: 'none'
     };
 
     afterAll(() => {
@@ -342,10 +145,6 @@ describe(OverDrive.name, () => {
       expect(overdrive.param('level')).toBeCloseTo(0.5, 1);
     });
 
-    test('should return `numberOfSamples`', () => {
-      expect(overdrive.param('numberOfSamples')).toBe(2048);
-    });
-
     test('should return `oversample`', () => {
       expect(overdrive.param('oversample')).toBe('none');
     });
@@ -354,12 +153,11 @@ describe(OverDrive.name, () => {
   describe(overdrive.params.name, () => {
     test('should return parameters for overdrive effector as associative array', () => {
       expect(overdrive.params()).toStrictEqual({
-        state          : false,
-        type           : 'natural',
-        drive          : 0,
-        level          : 1,
-        numberOfSamples: 1024,
-        oversample     : '4x'
+        state     : false,
+        type      : 'overdrive',
+        drive     : 0,
+        level     : 1,
+        oversample: '4x'
       });
     });
   });
@@ -390,7 +188,7 @@ describe(OverDrive.name, () => {
 
       overdrive.deactivate();
 
-      expect(connectMock).toHaveBeenCalledTimes(2);
+      expect(connectMock).toHaveBeenCalledTimes(1);
 
       overdrive.connect = originalConnect;
     });

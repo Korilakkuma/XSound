@@ -430,7 +430,6 @@ export abstract class SoundModule implements Connectable {
     this.chorus.start(s);
     this.filter.start(s);
     this.flanger.start(s);
-    this.fuzz.start(s);
     this.overdrive.start(s);
     this.phaser.start(s);
     this.ringmodulator.start(s);
@@ -455,7 +454,6 @@ export abstract class SoundModule implements Connectable {
     this.chorus.stop(s);
     this.filter.stop(s);
     this.flanger.stop(s);
-    this.fuzz.stop(s);
     this.overdrive.stop(s);
     this.phaser.stop(s);
     this.ringmodulator.stop(s);

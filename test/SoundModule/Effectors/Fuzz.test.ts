@@ -9,181 +9,23 @@ describe(Fuzz.name, () => {
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
   const fuzz = new Fuzz(context);
 
-  describe(fuzz.start.name, () => {
-    test('should call `ConstantSourceNode` start', () => {
-      // eslint-disable-next-line dot-notation
-      const originalDriveInput = fuzz['driveInput'];
-
-      const driveInputMock = jest.fn();
-
-      // eslint-disable-next-line dot-notation
-      fuzz['driveInput'].start = driveInputMock;
-
-      fuzz.start();
-
-      expect(driveInputMock).toHaveBeenCalledTimes(0);
-
-      fuzz.activate();
-      fuzz.start();
-
-      expect(driveInputMock).toHaveBeenCalledTimes(1);
-
-      // eslint-disable-next-line dot-notation
-      fuzz['driveInput'] = originalDriveInput;
-
-      fuzz.deactivate();
-    });
-  });
-
-  describe(fuzz.stop.name, () => {
-    test('should call `ConstantSourceNode` stop', () => {
-      // eslint-disable-next-line dot-notation
-      const originalDriveInput = fuzz['driveInput'];
-
-      const driveInputMock = jest.fn();
-
-      // eslint-disable-next-line dot-notation
-      fuzz['driveInput'].stop = driveInputMock;
-
-      fuzz.stop();
-
-      expect(driveInputMock).toHaveBeenCalledTimes(0);
-
-      fuzz.activate();
-      fuzz.stop();
-
-      expect(driveInputMock).toHaveBeenCalledTimes(1);
-
-      // eslint-disable-next-line dot-notation
-      fuzz['driveInput'] = originalDriveInput;
-
-      fuzz.deactivate();
-    });
-  });
-
   describe(fuzz.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput              = fuzz['input'];
-    const originalPositiveShaper     = fuzz['positiveShaper'];
-    const originalNegativeShaper     = fuzz['negativeShaper'];
-    const originalRectifier          = fuzz['rectifier'];
-    const originalPositiveInputGain  = fuzz['positiveInputGain'];
-    const originalNegativeInputGain  = fuzz['negativeInputGain'];
-    const originalPositiveOutputGain = fuzz['positiveOutputGain'];
-    const originalNegativeOutputGain = fuzz['negativeOutputGain'];
-    const originalDriveInput         = fuzz['driveInput'];
-    const originalOutFilter          = fuzz['outFilter'];
-    const originalLevel              = fuzz['level'];
+    const originalInput     = fuzz['input'];
+    const originalRectifier = fuzz['rectifier'];
+    const originalDrive     = fuzz['drive'];
+    const originalLevel     = fuzz['level'];
     /* eslint-enable dot-notation */
 
     afterEach(() => {
       /* eslint-disable dot-notation */
-      fuzz['input']              = originalInput;
-      fuzz['positiveShaper']     = originalPositiveShaper;
-      fuzz['negativeShaper']     = originalNegativeShaper;
-      fuzz['rectifier']          = originalRectifier;
-      fuzz['positiveInputGain']  = originalPositiveInputGain;
-      fuzz['negativeInputGain']  = originalNegativeInputGain;
-      fuzz['positiveOutputGain'] = originalPositiveOutputGain;
-      fuzz['negativeOutputGain'] = originalNegativeOutputGain;
-      fuzz['driveInput']         = originalDriveInput;
-      fuzz['outFilter']          = originalOutFilter;
-      fuzz['level']              = originalLevel;
+      fuzz['input']     = originalInput;
+      fuzz['rectifier'] = originalRectifier;
+      fuzz['drive']     = originalDrive;
+      fuzz['level']     = originalLevel;
       /* eslint-enable dot-notation */
 
       fuzz.deactivate();
-    });
-
-    test('should call `connect` method (if `type` is `standard`)', () => {
-      const inputConnectMock                 = jest.fn();
-      const inputDisconnectMock              = jest.fn();
-      const positiveShaperConnectMock        = jest.fn();
-      const positiveShaperDisconnectMock     = jest.fn();
-      const negativeShaperConnectMock        = jest.fn();
-      const negativeShaperDisconnectMock     = jest.fn();
-      const positiveInputGainConnectMock     = jest.fn();
-      const positiveInputGainDisconnectMock  = jest.fn();
-      const negativeInputGainConnectMock     = jest.fn();
-      const negativeInputGainDisconnectMock  = jest.fn();
-      const positiveOutputGainConnectMock    = jest.fn();
-      const positiveOutputGainDisconnectMock = jest.fn();
-      const negativeOutputGainConnectMock    = jest.fn();
-      const negativeOutputGainDisconnectMock = jest.fn();
-      const driveInputConnectMock            = jest.fn();
-      const driveInputDisconnectMock         = jest.fn();
-      const outFilterConnectMock             = jest.fn();
-      const outFilterDisconnectMock          = jest.fn();
-      const levelConnectMock                 = jest.fn();
-      const levelDisconnectMock              = jest.fn();
-
-      /* eslint-disable dot-notation */
-      fuzz['input'].connect                 = inputConnectMock;
-      fuzz['input'].disconnect              = inputDisconnectMock;
-      fuzz['positiveShaper'].connect        = positiveShaperConnectMock;
-      fuzz['positiveShaper'].disconnect     = positiveShaperDisconnectMock;
-      fuzz['negativeShaper'].connect        = negativeShaperConnectMock;
-      fuzz['negativeShaper'].disconnect     = negativeShaperDisconnectMock;
-      fuzz['positiveInputGain'].connect     = positiveInputGainConnectMock;
-      fuzz['positiveInputGain'].disconnect  = positiveInputGainDisconnectMock;
-      fuzz['negativeInputGain'].connect     = negativeInputGainConnectMock;
-      fuzz['negativeInputGain'].disconnect  = negativeInputGainDisconnectMock;
-      fuzz['positiveOutputGain'].connect    = positiveOutputGainConnectMock;
-      fuzz['positiveOutputGain'].disconnect = positiveOutputGainDisconnectMock;
-      fuzz['negativeOutputGain'].connect    = negativeOutputGainConnectMock;
-      fuzz['negativeOutputGain'].disconnect = negativeOutputGainDisconnectMock;
-      fuzz['driveInput'].connect            = driveInputConnectMock;
-      fuzz['driveInput'].disconnect         = driveInputDisconnectMock;
-      fuzz['outFilter'].connect             = outFilterConnectMock;
-      fuzz['outFilter'].disconnect          = outFilterDisconnectMock;
-      fuzz['level'].connect                 = levelConnectMock;
-      fuzz['level'].disconnect              = levelDisconnectMock;
-      /* eslint-enable dot-notation */
-
-      fuzz.connect();
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(1);
-      expect(positiveShaperConnectMock).toHaveBeenCalledTimes(0);
-      expect(negativeShaperConnectMock).toHaveBeenCalledTimes(0);
-      expect(positiveInputGainConnectMock).toHaveBeenCalledTimes(0);
-      expect(negativeInputGainConnectMock).toHaveBeenCalledTimes(0);
-      expect(positiveOutputGainConnectMock).toHaveBeenCalledTimes(0);
-      expect(negativeOutputGainConnectMock).toHaveBeenCalledTimes(0);
-      expect(driveInputConnectMock).toHaveBeenCalledTimes(0);
-      expect(outFilterConnectMock).toHaveBeenCalledTimes(0);
-      expect(levelConnectMock).toHaveBeenCalledTimes(0);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(positiveShaperDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(negativeShaperDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(positiveInputGainDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(negativeInputGainDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(positiveOutputGainDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(negativeOutputGainDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(driveInputDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(outFilterDisconnectMock).toHaveBeenCalledTimes(1);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(1);
-
-      fuzz.activate();
-
-      expect(inputConnectMock).toHaveBeenCalledTimes(3);
-      expect(positiveShaperConnectMock).toHaveBeenCalledTimes(1);
-      expect(negativeShaperConnectMock).toHaveBeenCalledTimes(1);
-      expect(positiveInputGainConnectMock).toHaveBeenCalledTimes(1);
-      expect(negativeInputGainConnectMock).toHaveBeenCalledTimes(1);
-      expect(positiveOutputGainConnectMock).toHaveBeenCalledTimes(1);
-      expect(negativeOutputGainConnectMock).toHaveBeenCalledTimes(1);
-      expect(driveInputConnectMock).toHaveBeenCalledTimes(1);
-      expect(outFilterConnectMock).toHaveBeenCalledTimes(1);
-      expect(levelConnectMock).toHaveBeenCalledTimes(1);
-      expect(inputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(positiveShaperDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(negativeShaperDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(positiveInputGainDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(negativeInputGainDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(positiveOutputGainDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(negativeOutputGainDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(driveInputDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(outFilterDisconnectMock).toHaveBeenCalledTimes(2);
-      expect(levelDisconnectMock).toHaveBeenCalledTimes(2);
     });
 
     test('should call `connect` method (if `type` is `full-rectifier`)', () => {
@@ -245,16 +87,18 @@ describe(Fuzz.name, () => {
 
   describe(fuzz.param.name, () => {
     const defaultParams: FuzzParams = {
+      type      : 'full-rectifier',
       drive     : 0,
-      type      : 'standard',
       level     : 1,
+      tone      : 6000,
       oversample: '4x'
     };
 
     const params: FuzzParams = {
+      type      : 'half-rectifier',
       drive     : 0.5,
-      type      : 'full-rectifier',
       level     : 0.5,
+      tone      : 3000,
       oversample: 'none'
     };
 
@@ -269,7 +113,7 @@ describe(Fuzz.name, () => {
 
     // Getter
     test('should return `type`', () => {
-      expect(fuzz.param('type')).toBe('full-rectifier');
+      expect(fuzz.param('type')).toBe('half-rectifier');
     });
 
     test('should return `drive`', () => {
@@ -278,6 +122,10 @@ describe(Fuzz.name, () => {
 
     test('should return `level`', () => {
       expect(fuzz.param('level')).toBeCloseTo(0.5, 1);
+    });
+
+    test('should return `tone`', () => {
+      expect(fuzz.param('tone')).toBe(3000);
     });
 
     test('should return `oversample`', () => {
@@ -289,9 +137,10 @@ describe(Fuzz.name, () => {
     test('should return parameters for fuzz effector as associative array', () => {
       expect(fuzz.params()).toStrictEqual({
         state     : false,
-        type      : 'standard',
+        type      : 'full-rectifier',
         drive     : 0,
         level     : 1,
+        tone      : 6000,
         oversample: '4x'
       });
     });
@@ -323,7 +172,7 @@ describe(Fuzz.name, () => {
 
       fuzz.deactivate();
 
-      expect(connectMock).toHaveBeenCalledTimes(2);
+      expect(connectMock).toHaveBeenCalledTimes(1);
 
       fuzz.connect = originalConnect;
     });

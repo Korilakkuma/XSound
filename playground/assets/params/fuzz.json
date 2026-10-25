@@ -1,7 +1,8 @@
 {
   "state": false,
-  "type": "standard",
+  "type": "full-rectifier",
   "drive": 0,
   "level": 1,
+  "tone": 6000,
   "oversample": "4x"
 }

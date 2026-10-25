@@ -147,13 +147,6 @@ export class Distortion extends Effector {
         case 'distortion': {
           this.shaper.curve = Distortion.createDistortionCurve(500 * this.driveValue);
 
-          this.preLowCut.frequency.value = 250;
-
-          this.postMiddle.frequency.value = 800;
-          this.postMiddle.Q.value         = 0.7;
-
-          this.postHighCut.frequency.value = 4500;
-
           // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Tone) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.drive);
@@ -169,13 +162,6 @@ export class Distortion extends Effector {
         case 'blues': {
           this.shaper.curve = Distortion.createDistortionCurve((500 * this.driveValue), this.context.sampleRate, true);
 
-          this.preLowCut.frequency.value = 110;
-
-          this.postHighCut.frequency.value = 5000;
-
-          this.postTreble.frequency.value = 3500;
-          this.postTreble.gain.value      = 3;
-
           // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (High Cut) -> BiquadFilterNode (Tone) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.drive);
@@ -190,16 +176,6 @@ export class Distortion extends Effector {
 
         case 'guvnor': {
           this.shaper.curve = Distortion.createDistortionCurve(350 * this.driveValue);
-
-          this.preLowCut.frequency.value = 80;
-          this.preLowCut.Q.value         = Math.SQRT1_2;
-
-          this.postBass.frequency.value   = 120;
-          this.postTreble.frequency.value = 4000;
-          this.postMiddle.frequency.value = 750;
-          this.postMiddle.Q.value         = 1.0;
-
-          this.postHighCut.frequency.value = 8000;
 
           // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
@@ -218,13 +194,6 @@ export class Distortion extends Effector {
         case 'rat': {
           this.shaper.curve = Distortion.createDistortionCurve(800 * this.driveValue);
 
-          this.preLowCut.frequency.value = 120;
-          this.preLowCut.Q.value         = Math.SQRT1_2;
-
-          this.postBass.frequency.value = 100;
-
-          this.postHighCut.frequency.value = 3000;
-
           // GainNode (Input) -> BiquadFilterNode (Low Cut) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.drive);
@@ -239,20 +208,6 @@ export class Distortion extends Effector {
 
         case 'metal': {
           this.shaper.curve = Distortion.createDistortionCurve(1000 * this.driveValue);
-
-          this.preLowCut.frequency.value = 150;
-          this.preLowCut.Q.value         = Math.SQRT1_2;
-
-          this.preMiddle.frequency.value = 1000;
-          this.preMiddle.Q.value         = 1.0;
-          this.preMiddle.gain.value      = 12;
-
-          this.postBass.frequency.value   = 100;
-          this.postTreble.frequency.value = 5000;
-          this.postMiddle.frequency.value = 500;
-          this.postMiddle.Q.value         = 1.5;
-
-          this.postHighCut.frequency.value = 6500;
 
           // GainNode (Input) -> BiquadFilterNode (Low Cut) -> BiquadFilterNode (Pre Middle Booster) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
@@ -272,20 +227,6 @@ export class Distortion extends Effector {
         case 'core': {
           this.shaper.curve = Distortion.createDistortionCurve(1000 * this.driveValue);
 
-          this.preLowCut.frequency.value = 90;
-          this.preLowCut.Q.value         = 0.7;
-
-          this.preMiddle.frequency.value = 2500;
-          this.preMiddle.Q.value         = 1.2;
-          this.preMiddle.gain.value      = 6;
-
-          this.postBass.frequency.value   = 120;
-          this.postTreble.frequency.value = 4500;
-          this.postMiddle.frequency.value = 600;
-          this.postMiddle.Q.value         = 1;
-
-          this.postHighCut.frequency.value = 7500;
-
           // GainNode (Input) -> BiquadFilterNode (Low Cut) -> BiquadFilterNode (Pre Middle Booster) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
           this.preLowCut.connect(this.preMiddle);
@@ -303,20 +244,6 @@ export class Distortion extends Effector {
 
         case 'grunge': {
           this.shaper.curve = Distortion.createDistortionCurve(1200 * this.driveValue);
-
-          this.preLowCut.frequency.value = 100;
-          this.preLowCut.Q.value         = Math.SQRT1_2;
-
-          this.preMiddle.frequency.value = 1200;
-          this.preMiddle.Q.value         = 1.5;
-          this.preMiddle.gain.value      = 0;
-
-          this.postBass.frequency.value   = 110;
-          this.postTreble.frequency.value = 4000;
-          this.postMiddle.frequency.value = 600;
-          this.postMiddle.Q.value         = 1.2;
-
-          this.postHighCut.frequency.value = 7500;
 
           // GainNode (Input) -> BiquadFilterNode (Low Cut) -> BiquadFilterNode (Pre Middle Booster) -> GainNode (Drive) -> WaveShaperNode (Distortion) -> BiquadFilterNode (Bass) -> BiquadFilterNode (Middle) -> BiquadFilterNode (Treble) -> BiquadFilterNode (High Cut) -> GainNode (Level) -> GainNode (Output)
           this.input.connect(this.preLowCut);
@@ -415,6 +342,109 @@ export class Distortion extends Effector {
           if (typeof value === 'string') {
             if ((value === 'distortion') || (value === 'blues') || (value === 'guvnor') || (value === 'rat') || (value === 'metal') || (value === 'core') || (value === 'grunge')) {
               this.type = value;
+
+              switch (this.type) {
+                case 'distortion': {
+                  this.preLowCut.frequency.value = 250;
+
+                  this.postMiddle.frequency.value = 800;
+                  this.postMiddle.Q.value         = 0.7;
+
+                  this.postHighCut.frequency.value = 4500;
+
+                  break;
+                }
+
+                case 'blues': {
+                  this.preLowCut.frequency.value = 110;
+
+                  this.postHighCut.frequency.value = 5000;
+
+                  this.postTreble.frequency.value = 3500;
+                  this.postTreble.gain.value      = 3;
+
+                  break;
+                }
+
+                case 'guvnor': {
+                  this.preLowCut.frequency.value = 80;
+                  this.preLowCut.Q.value         = Math.SQRT1_2;
+
+                  this.postBass.frequency.value   = 120;
+                  this.postTreble.frequency.value = 4000;
+                  this.postMiddle.frequency.value = 750;
+                  this.postMiddle.Q.value         = 1.0;
+
+                  this.postHighCut.frequency.value = 8000;
+
+                  break;
+                }
+
+                case 'rat': {
+                  this.preLowCut.frequency.value = 120;
+                  this.preLowCut.Q.value         = Math.SQRT1_2;
+
+                  this.postBass.frequency.value = 100;
+
+                  this.postHighCut.frequency.value = 3000;
+
+                  break;
+                }
+
+                case 'metal': {
+                  this.preLowCut.frequency.value = 150;
+                  this.preLowCut.Q.value         = Math.SQRT1_2;
+
+                  this.preMiddle.frequency.value = 1000;
+                  this.preMiddle.Q.value         = 1.0;
+                  this.preMiddle.gain.value      = 12;
+
+                  this.postBass.frequency.value   = 100;
+                  this.postTreble.frequency.value = 5000;
+                  this.postMiddle.frequency.value = 500;
+                  this.postMiddle.Q.value         = 1.5;
+
+                  this.postHighCut.frequency.value = 6500;
+
+                  break;
+                }
+
+                case 'core': {
+                  this.preLowCut.frequency.value = 90;
+                  this.preLowCut.Q.value         = 0.7;
+
+                  this.preMiddle.frequency.value = 2500;
+                  this.preMiddle.Q.value         = 1.2;
+                  this.preMiddle.gain.value      = 6;
+
+                  this.postBass.frequency.value   = 120;
+                  this.postTreble.frequency.value = 4500;
+                  this.postMiddle.frequency.value = 600;
+                  this.postMiddle.Q.value         = 1;
+
+                  this.postHighCut.frequency.value = 7500;
+
+                  break;
+                }
+
+                case 'grunge': {
+                  this.preLowCut.frequency.value = 100;
+                  this.preLowCut.Q.value         = Math.SQRT1_2;
+
+                  this.preMiddle.frequency.value = 1200;
+                  this.preMiddle.Q.value         = 1.5;
+                  this.preMiddle.gain.value      = 0;
+
+                  this.postBass.frequency.value   = 110;
+                  this.postTreble.frequency.value = 4000;
+                  this.postMiddle.frequency.value = 600;
+                  this.postMiddle.Q.value         = 1.2;
+
+                  this.postHighCut.frequency.value = 7500;
+
+                  break;
+                }
+              }
 
               this.connect();
             }

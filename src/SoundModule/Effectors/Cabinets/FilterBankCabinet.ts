@@ -13,8 +13,8 @@ export type FilterBankCabinetParams = {
   postTone?: FilterParams,
   preBass?: FilterParams,
   postBass?: FilterParams,
-  middle?: FilterParams,
-  treble?: FilterParams
+  postMiddle?: FilterParams,
+  postTreble?: FilterParams
 };
 
 /**
@@ -26,31 +26,31 @@ export class FilterBankCabinet extends Effector {
    */
   public static readonly FilterBankPresets = {
     default: {
-      notch   : { frequency: 8800, gain: 0.0,  Q: 0.6 },
-      preTone : { frequency: 4400, gain: 0.0,  Q: 0.0 },
-      postTone: { frequency: 6400, gain: 0.0,  Q: 6.4 },
-      preBass : { frequency: 120,  gain: 0.0,  Q: 2.0 },
-      postBass: { frequency: 80,   gain: 0.0,  Q: 6.0 },
-      middle  : { frequency: 1340, gain: -8.0, Q: 3.0 },
-      treble  : { frequency: 1340, gain: 8.0,  Q: 3.0 }
+      notch     : { frequency: 8800, gain: 0.0,  Q: 0.6 },
+      preTone   : { frequency: 4400, gain: 0.0,  Q: 0.0 },
+      postTone  : { frequency: 6400, gain: 0.0,  Q: 6.4 },
+      preBass   : { frequency: 120,  gain: 0.0,  Q: 2.0 },
+      postBass  : { frequency: 80,   gain: 0.0,  Q: 6.0 },
+      postMiddle: { frequency: 1340, gain: -8.0, Q: 3.0 },
+      postTreble: { frequency: 1340, gain: 8.0,  Q: 3.0 }
     },
-    treble: {
-      notch   : { frequency: 10800, gain: 0.0,   Q: 2.0 },
-      preTone : { frequency: 4000,  gain: 0.0,   Q: 1.5 },
-      postTone: { frequency: 6000,  gain: 0.0,   Q: 8.0 },
-      preBass : { frequency: 180,   gain: 0.0,   Q: -0.4 },
-      postBass: { frequency: 90,    gain: 0.0,   Q: 6.0 },
-      middle  : { frequency: 1600,  gain: -12.0, Q: 3.0 },
-      treble  : { frequency: 680,   gain: 4.0,   Q: 0.0 }
+    postTreble: {
+      notch     : { frequency: 10800, gain: 0.0,   Q: 2.0 },
+      preTone   : { frequency: 4000,  gain: 0.0,   Q: 1.5 },
+      postTone  : { frequency: 6000,  gain: 0.0,   Q: 8.0 },
+      preBass   : { frequency: 180,   gain: 0.0,   Q: -0.4 },
+      postBass  : { frequency: 90,    gain: 0.0,   Q: 6.0 },
+      postMiddle: { frequency: 1600,  gain: -12.0, Q: 3.0 },
+      postTreble: { frequency: 680,   gain: 4.0,   Q: 0.0 }
     },
-    middle: {
-      notch   : { frequency: 8000, gain: 0.0,  Q: 1.2 },
-      preTone : { frequency: 2800, gain: 0.0,  Q: 2.0 },
-      postTone: { frequency: 5200, gain: 0.0,  Q: 10.0 },
-      preBass : { frequency: 120,  gain: 0.0,  Q: 0.0 },
-      postBass: { frequency: 80,   gain: 0.0,  Q: 12.0 },
-      middle  : { frequency: 1000, gain: -3.0, Q: 1.4 },
-      treble  : { frequency: 500,  gain: 3.0,  Q: 0.0 }
+    postMiddle: {
+      notch     : { frequency: 8000, gain: 0.0,  Q: 1.2 },
+      preTone   : { frequency: 2800, gain: 0.0,  Q: 2.0 },
+      postTone  : { frequency: 5200, gain: 0.0,  Q: 10.0 },
+      preBass   : { frequency: 120,  gain: 0.0,  Q: 0.0 },
+      postBass  : { frequency: 80,   gain: 0.0,  Q: 12.0 },
+      postMiddle: { frequency: 1000, gain: -3.0, Q: 1.4 },
+      postTreble: { frequency: 500,  gain: 3.0,  Q: 0.0 }
     }
   };
 
@@ -59,8 +59,8 @@ export class FilterBankCabinet extends Effector {
   private postTone: BiquadFilterNode;
   private preBass: BiquadFilterNode;
   private postBass: BiquadFilterNode;
-  private middle: BiquadFilterNode;
-  private treble: BiquadFilterNode;
+  private postMiddle: BiquadFilterNode;
+  private postTreble: BiquadFilterNode;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
@@ -68,13 +68,13 @@ export class FilterBankCabinet extends Effector {
   constructor(context: AudioContext) {
     super(context);
 
-    this.notch  = context.createBiquadFilter();
-    this.preTone  = context.createBiquadFilter();
-    this.postTone  = context.createBiquadFilter();
-    this.preBass  = context.createBiquadFilter();
-    this.postBass  = context.createBiquadFilter();
-    this.middle = context.createBiquadFilter();
-    this.treble = context.createBiquadFilter();
+    this.notch      = context.createBiquadFilter();
+    this.preTone    = context.createBiquadFilter();
+    this.postTone   = context.createBiquadFilter();
+    this.preBass    = context.createBiquadFilter();
+    this.postBass   = context.createBiquadFilter();
+    this.postMiddle = context.createBiquadFilter();
+    this.postTreble = context.createBiquadFilter();
 
     // Initialize parameters
     this.notch.type            = 'notch';
@@ -102,15 +102,15 @@ export class FilterBankCabinet extends Effector {
     this.postBass.gain.value      = 0;
     this.postBass.Q.value         = 6.0;
 
-    this.middle.type            = 'peaking';
-    this.middle.frequency.value = 1340;
-    this.middle.gain.value      = -8.0;
-    this.middle.Q.value         = 3.0;
+    this.postMiddle.type            = 'peaking';
+    this.postMiddle.frequency.value = 1340;
+    this.postMiddle.gain.value      = -8.0;
+    this.postMiddle.Q.value         = 3.0;
 
-    this.treble.type            = 'highshelf';
-    this.treble.frequency.value = 1340;
-    this.treble.gain.value      = 8.0;
-    this.treble.Q.value         = 0;
+    this.postTreble.type            = 'highshelf';
+    this.postTreble.frequency.value = 1340;
+    this.postTreble.gain.value      = 8.0;
+    this.postTreble.Q.value         = 0;
 
     // `FilterBankCabinet` is connected by default
     this.activate();
@@ -125,8 +125,8 @@ export class FilterBankCabinet extends Effector {
     this.postTone.disconnect(0);
     this.preBass.disconnect(0);
     this.postBass.disconnect(0);
-    this.middle.disconnect(0);
-    this.treble.disconnect(0);
+    this.postMiddle.disconnect(0);
+    this.postTreble.disconnect(0);
 
     if (this.isActive) {
       // Effect ON
@@ -137,9 +137,9 @@ export class FilterBankCabinet extends Effector {
       this.preTone.connect(this.postTone);
       this.postTone.connect(this.preBass);
       this.preBass.connect(this.postBass);
-      this.postBass.connect(this.middle);
-      this.middle.connect(this.treble);
-      this.treble.connect(this.output);
+      this.postBass.connect(this.postMiddle);
+      this.postMiddle.connect(this.postTreble);
+      this.postTreble.connect(this.output);
     } else {
       // Effect OFF
 
@@ -163,8 +163,8 @@ export class FilterBankCabinet extends Effector {
   public param(params: 'postTone'): FilterParams;
   public param(params: 'preBass'): FilterParams;
   public param(params: 'postBass'): FilterParams;
-  public param(params: 'middle'): FilterParams;
-  public param(params: 'treble'): FilterParams;
+  public param(params: 'postMiddle'): FilterParams;
+  public param(params: 'postTreble'): FilterParams;
   public param(params: FilterBankCabinetParams): FilterBankCabinet;
   public param(params: keyof FilterBankCabinetParams | FilterBankCabinetParams): FilterBankCabinetParams[keyof FilterBankCabinetParams] | FilterBankCabinet {
     if (typeof params === 'string') {
@@ -193,12 +193,12 @@ export class FilterBankCabinet extends Effector {
           return { frequency: this.postBass.frequency.value, gain: this.postBass.gain.value, Q: this.postBass.Q.value };
         }
 
-        case 'middle': {
-          return { frequency: this.middle.frequency.value, gain: this.middle.gain.value, Q: this.middle.Q.value };
+        case 'postMiddle': {
+          return { frequency: this.postMiddle.frequency.value, gain: this.postMiddle.gain.value, Q: this.postMiddle.Q.value };
         }
 
-        case 'treble': {
-          return { frequency: this.treble.frequency.value, gain: this.treble.gain.value, Q: this.treble.Q.value };
+        case 'postTreble': {
+          return { frequency: this.postTreble.frequency.value, gain: this.postTreble.gain.value, Q: this.postTreble.Q.value };
         }
       }
     }
@@ -307,36 +307,36 @@ export class FilterBankCabinet extends Effector {
           break;
         }
 
-        case 'middle': {
+        case 'postMiddle': {
           if (typeof value === 'object') {
             if (typeof value.frequency === 'number') {
-              this.middle.frequency.value = value.frequency;
+              this.postMiddle.frequency.value = value.frequency;
             }
 
             if (typeof value.gain === 'number') {
-              this.middle.gain.value = value.gain;
+              this.postMiddle.gain.value = value.gain;
             }
 
             if (typeof value.Q === 'number') {
-              this.middle.Q.value = value.Q;
+              this.postMiddle.Q.value = value.Q;
             }
           }
 
           break;
         }
 
-        case 'treble': {
+        case 'postTreble': {
           if (typeof value === 'object') {
             if (typeof value.frequency === 'number') {
-              this.treble.frequency.value = value.frequency;
+              this.postTreble.frequency.value = value.frequency;
             }
 
             if (typeof value.gain === 'number') {
-              this.treble.gain.value = value.gain;
+              this.postTreble.gain.value = value.gain;
             }
 
             if (typeof value.Q === 'number') {
-              this.treble.Q.value = value.Q;
+              this.postTreble.Q.value = value.Q;
             }
           }
 
@@ -351,14 +351,14 @@ export class FilterBankCabinet extends Effector {
   /** @override */
   public override params(): Required<FilterBankCabinetParams> {
     return {
-      state   : this.isActive,
-      notch   : { frequency: this.notch.frequency.value,    gain: this.notch.gain.value,    Q: this.notch.Q.value },
-      preTone : { frequency: this.preTone.frequency.value,  gain: this.preTone.gain.value,  Q: this.preTone.Q.value },
-      postTone: { frequency: this.postTone.frequency.value, gain: this.postTone.gain.value, Q: this.postTone.Q.value },
-      preBass : { frequency: this.preBass.frequency.value,  gain: this.preBass.gain.value,  Q: this.preBass.Q.value },
-      postBass: { frequency: this.postBass.frequency.value, gain: this.postBass.gain.value, Q: this.postBass.Q.value },
-      middle  : { frequency: this.middle.frequency.value,   gain: this.middle.gain.value,   Q: this.middle.Q.value },
-      treble  : { frequency: this.treble.frequency.value,   gain: this.treble.gain.value,   Q: this.treble.Q.value },
+      state     : this.isActive,
+      notch     : { frequency: this.notch.frequency.value,      gain: this.notch.gain.value,      Q: this.notch.Q.value },
+      preTone   : { frequency: this.preTone.frequency.value,    gain: this.preTone.gain.value,    Q: this.preTone.Q.value },
+      postTone  : { frequency: this.postTone.frequency.value,   gain: this.postTone.gain.value,   Q: this.postTone.Q.value },
+      preBass   : { frequency: this.preBass.frequency.value,    gain: this.preBass.gain.value,    Q: this.preBass.Q.value },
+      postBass  : { frequency: this.postBass.frequency.value,   gain: this.postBass.gain.value,   Q: this.postBass.Q.value },
+      postMiddle: { frequency: this.postMiddle.frequency.value, gain: this.postMiddle.gain.value, Q: this.postMiddle.Q.value },
+      postTreble: { frequency: this.postTreble.frequency.value, gain: this.postTreble.gain.value, Q: this.postTreble.Q.value },
     };
   }
 }

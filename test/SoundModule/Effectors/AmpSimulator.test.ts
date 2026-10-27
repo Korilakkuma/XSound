@@ -89,14 +89,14 @@ describe(AmpSimulator.name, () => {
         }
       },
       cabinet     : {
-        state   : true,
-        notch   : { frequency: 8800, gain: 0.0,  Q: 0.6 },
-        preTone : { frequency: 4400, gain: 0.0,  Q: 0.0 },
-        postTone: { frequency: 6400, gain: 0.0,  Q: 6.4 },
-        preBass : { frequency: 120,  gain: 0.0,  Q: 2.0 },
-        postBass: { frequency: 80,   gain: 0.0,  Q: 6.0 },
-        middle  : { frequency: 1340, gain: -8.0, Q: 3.0 },
-        treble  : { frequency: 1340, gain: 8.0,  Q: 3.0 }
+        state     : true,
+        notch     : { frequency: 8800, gain: 0.0,  Q: 0.6 },
+        preTone   : { frequency: 4400, gain: 0.0,  Q: 0.0 },
+        postTone  : { frequency: 6400, gain: 0.0,  Q: 6.4 },
+        preBass   : { frequency: 120,  gain: 0.0,  Q: 2.0 },
+        postBass  : { frequency: 80,   gain: 0.0,  Q: 6.0 },
+        postMiddle: { frequency: 1340, gain: -8.0, Q: 3.0 },
+        postTreble: { frequency: 1340, gain: 8.0,  Q: 3.0 }
       }
     };
 
@@ -149,14 +149,14 @@ describe(AmpSimulator.name, () => {
 
     test('should return `cabinet`', () => {
       expect(ampsimulator.param('cabinet')).toStrictEqual({
-        state   : true,
-        notch   : { frequency: 8800, gain: 0.0,  Q: 0.6 },
-        preTone : { frequency: 4400, gain: 0.0,  Q: 0.0 },
-        postTone: { frequency: 6400, gain: 0.0,  Q: 6.4 },
-        preBass : { frequency: 120,  gain: 0.0,  Q: 2.0 },
-        postBass: { frequency: 80,   gain: 0.0,  Q: 6.0 },
-        middle  : { frequency: 1340, gain: -8.0, Q: 3.0 },
-        treble  : { frequency: 1340, gain: 8.0,  Q: 3.0 }
+        state     : true,
+        notch     : { frequency: 8800, gain: 0.0,  Q: 0.6 },
+        preTone   : { frequency: 4400, gain: 0.0,  Q: 0.0 },
+        postTone  : { frequency: 6400, gain: 0.0,  Q: 6.4 },
+        preBass   : { frequency: 120,  gain: 0.0,  Q: 2.0 },
+        postBass  : { frequency: 80,   gain: 0.0,  Q: 6.0 },
+        postMiddle: { frequency: 1340, gain: -8.0, Q: 3.0 },
+        postTreble: { frequency: 1340, gain: 8.0,  Q: 3.0 }
       });
     });
   });

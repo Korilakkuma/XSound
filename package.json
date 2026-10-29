@@ -94,7 +94,7 @@
     "ts-loader": "^9.6.2",
     "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0",
+    "typescript-eslint": "^8.72.1",
     "webpack": "^5.112.2",
     "webpack-cli": "^7.2.3",
     "webpack-dev-server": "^6.0.0"

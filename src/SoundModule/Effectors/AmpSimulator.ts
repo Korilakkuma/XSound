@@ -1,3 +1,4 @@
+import type { JC120Params } from './Preamps/JC120';
 import type { MarshallParams } from './Preamps/Marshall';
 import type { MesaBoogieParams } from './Preamps/MesaBoogie';
 import type { FenderParams } from './Preamps/Fender';
@@ -6,6 +7,7 @@ import type { FilterBankCabinetParams } from './Cabinets/FilterBankCabinet';
 import type { IRCabinetParams } from './Cabinets/IRCabinet';
 
 import { Effector } from './Effector';
+import { JC120 } from './Preamps/JC120';
 import { Marshall } from './Preamps/Marshall';
 import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
@@ -13,7 +15,7 @@ import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
 import { IRCabinet } from './Cabinets/IRCabinet';
 
-export type PreampType = 'marshall' | 'mesa/boogie' | 'fender';
+export type PreampType = 'jc-120' | 'marshall' | 'mesa/boogie' | 'fender';
 
 export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
@@ -24,7 +26,7 @@ export type AmpSimulatorParams = {
   type?: PreampType,  // for compatible
   preampType?: PreampType,
   cabinetType?: CabinetType,
-  preamp?: MarshallParams | MesaBoogieParams | FenderParams,
+  preamp?: JC120Params | MarshallParams | MesaBoogieParams | FenderParams;
   cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
@@ -35,11 +37,12 @@ export class AmpSimulator extends Effector {
   private preampType: PreampType   = 'marshall';
   private cabinetType: CabinetType = 'simple';
 
-  private preamp: Marshall | MesaBoogie | Fender;
+  private preamp: JC120 | Marshall | MesaBoogie | Fender;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   // for export
   public static readonly Preamps = {
+    JC120,
     Marshall,
     MesaBoogie,
     Fender
@@ -188,6 +191,13 @@ export class AmpSimulator extends Effector {
         case 'type': {
           if (typeof value === 'string') {
             switch (value) {
+              case 'jc-120': {
+                this.preampType = 'jc-120';
+                this.preamp     = new JC120(this.context);
+
+                break;
+              }
+
               case 'marshall': {
                 this.preampType = 'marshall';
                 this.preamp     = new Marshall(this.context);
@@ -219,6 +229,13 @@ export class AmpSimulator extends Effector {
         case 'preampType': {
           if (typeof value === 'string') {
             switch (value) {
+              case 'jc-120': {
+                this.preampType = 'jc-120';
+                this.preamp     = new JC120(this.context);
+
+                break;
+              }
+
               case 'marshall': {
                 this.preampType = 'marshall';
                 this.preamp     = new Marshall(this.context);
@@ -280,6 +297,12 @@ export class AmpSimulator extends Effector {
 
         case 'preamp': {
           if (typeof value === 'object') {
+            if (this.preamp instanceof JC120) {
+              const v: JC120Params = value;
+
+              this.preamp.param(v);
+            }
+
             if (this.preamp instanceof Marshall) {
               const v: MarshallParams = value;
 

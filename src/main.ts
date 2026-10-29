@@ -66,6 +66,7 @@ import type { PannerParams, Position3D } from './SoundModule/Effectors/Panner';
 import type { PhaserParams, PhaserType, PhaserNumberOfStages, PhaserFilterConnectionType } from './SoundModule/Effectors/Phaser';
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
 import type { AmpSimulatorParams, PreampType, CabinetType, PreampCurve } from './SoundModule/Effectors/AmpSimulator';
+import type { JC120, JC120Params } from './SoundModule/Effectors/Preamps/JC120';
 import type {
   Marshall,
   MarshallParams,
@@ -737,6 +738,8 @@ export type {
   PreampType,
   CabinetType,
   PreampCurve,
+  JC120,
+  JC120Params,
   Marshall,
   MarshallParams,
   MarshallPreEqualizerParams,

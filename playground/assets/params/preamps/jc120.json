@@ -1,0 +1,13 @@
+{
+  "state": false,
+  "preampType": "jc-120",
+  "preamp": {
+    "state": false,
+    "volume": 0.2,
+    "bright": 0,
+    "bass": 0,
+    "middle": 0,
+    "treble": 0,
+    "level": 1
+  }
+}

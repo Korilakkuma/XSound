@@ -1,0 +1,10 @@
+{
+  "state": false,
+  "preampType": "gsp2101",
+  "preamp": {
+    "state": false,
+    "air": 4,
+    "tone": 9000,
+    "level": 1
+  }
+}

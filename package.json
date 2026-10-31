@@ -82,7 +82,7 @@
     "@types/jest": "^30.0.0",
     "cross-env": "^10.1.0",
     "dotenv-webpack": "^9.0.0",
-    "eslint": "^10.13.0",
+    "eslint": "^10.14.0",
     "globals": "^17.13.0",
     "husky": "4.3.8",
     "jest": "^30.5.2",
@@ -96,7 +96,7 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1",
     "webpack": "^5.112.2",
-    "webpack-cli": "^7.2.3",
+    "webpack-cli": "^7.3.1",
     "webpack-dev-server": "^6.0.0"
   }
 }

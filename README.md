@@ -102,6 +102,7 @@ X.Tremolo(context: AudioContext);
 X.VocalCanceler(context: AudioContext);
 X.Wah(context: AudioContext);
 
+X.AmpSimulator.Preamps.JC120(context: AudioContext);
 X.AmpSimulator.Preamps.GSP2101(context: AudioContext);
 X.AmpSimulator.Preamps.Marshall(context: AudioContext);
 X.AmpSimulator.Preamps.Fender(context: AudioContext);

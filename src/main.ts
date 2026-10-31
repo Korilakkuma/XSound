@@ -67,6 +67,7 @@ import type { PhaserParams, PhaserType, PhaserNumberOfStages, PhaserFilterConnec
 import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
 import type { AmpSimulatorParams, PreampType, CabinetType, PreampCurve } from './SoundModule/Effectors/AmpSimulator';
 import type { JC120, JC120Params } from './SoundModule/Effectors/Preamps/JC120';
+import type { GSP2101, GSP2101Params } from './SoundModule/Effectors/Preamps/GSP2101';
 import type {
   Marshall,
   MarshallParams,
@@ -740,6 +741,8 @@ export type {
   PreampCurve,
   JC120,
   JC120Params,
+  GSP2101,
+  GSP2101Params,
   Marshall,
   MarshallParams,
   MarshallPreEqualizerParams,

@@ -1,4 +1,5 @@
 import type { JC120Params } from './Preamps/JC120';
+import type { GSP2101Params } from './Preamps/GSP2101';
 import type { MarshallParams } from './Preamps/Marshall';
 import type { MesaBoogieParams } from './Preamps/MesaBoogie';
 import type { FenderParams } from './Preamps/Fender';
@@ -8,6 +9,7 @@ import type { IRCabinetParams } from './Cabinets/IRCabinet';
 
 import { Effector } from './Effector';
 import { JC120 } from './Preamps/JC120';
+import { GSP2101 } from './Preamps/GSP2101';
 import { Marshall } from './Preamps/Marshall';
 import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
@@ -15,7 +17,7 @@ import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
 import { IRCabinet } from './Cabinets/IRCabinet';
 
-export type PreampType = 'jc-120' | 'marshall' | 'mesa/boogie' | 'fender';
+export type PreampType = 'jc-120' | 'gsp2101' | 'marshall' | 'mesa/boogie' | 'fender';
 
 export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
@@ -26,7 +28,7 @@ export type AmpSimulatorParams = {
   type?: PreampType,  // for compatible
   preampType?: PreampType,
   cabinetType?: CabinetType,
-  preamp?: JC120Params | MarshallParams | MesaBoogieParams | FenderParams;
+  preamp?: JC120Params | GSP2101Params | MarshallParams | MesaBoogieParams | FenderParams;
   cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
@@ -37,12 +39,13 @@ export class AmpSimulator extends Effector {
   private preampType: PreampType   = 'marshall';
   private cabinetType: CabinetType = 'simple';
 
-  private preamp: JC120 | Marshall | MesaBoogie | Fender;
+  private preamp: JC120 | GSP2101 | Marshall | MesaBoogie | Fender;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   // for export
   public static readonly Preamps = {
     JC120,
+    GSP2101,
     Marshall,
     MesaBoogie,
     Fender
@@ -198,6 +201,13 @@ export class AmpSimulator extends Effector {
                 break;
               }
 
+              case 'gsp2101': {
+                this.preampType = 'gsp2101';
+                this.preamp     = new GSP2101(this.context);
+
+                break;
+              }
+
               case 'marshall': {
                 this.preampType = 'marshall';
                 this.preamp     = new Marshall(this.context);
@@ -232,6 +242,13 @@ export class AmpSimulator extends Effector {
               case 'jc-120': {
                 this.preampType = 'jc-120';
                 this.preamp     = new JC120(this.context);
+
+                break;
+              }
+
+              case 'gsp2101': {
+                this.preampType = 'gsp2101';
+                this.preamp     = new GSP2101(this.context);
 
                 break;
               }
@@ -299,6 +316,12 @@ export class AmpSimulator extends Effector {
           if (typeof value === 'object') {
             if (this.preamp instanceof JC120) {
               const v: JC120Params = value;
+
+              this.preamp.param(v);
+            }
+
+            if (this.preamp instanceof GSP2101) {
+              const v: GSP2101Params = value;
 
               this.preamp.param(v);
             }

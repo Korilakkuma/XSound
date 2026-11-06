@@ -71,6 +71,7 @@ import type { GSP2101, GSP2101Params } from './SoundModule/Effectors/Preamps/GSP
 import type { PreEqualizerParams as MarshallPreEqualizerParams, PostEqualizerParams as MarshallPostEqualizerParams } from './SoundModule/Effectors/Preamps/Marshall/Marshall';
 import type { JTM45, JTM45Params } from './SoundModule/Effectors/Preamps/Marshall/JTM45';
 import type { JMP, JMPParams } from './SoundModule/Effectors/Preamps/Marshall/JMP';
+import type { JCM800, JCM800Params } from './SoundModule/Effectors/Preamps/Marshall/JCM800';
 import type {
   MesaBoogie,
   MesaBoogieParams,
@@ -746,6 +747,8 @@ export type {
   JTM45Params,
   JMP,
   JMPParams,
+  JCM800,
+  JCM800Params,
   MesaBoogie,
   MesaBoogieParams,
   MesaBoogiePreEqualizerParams,

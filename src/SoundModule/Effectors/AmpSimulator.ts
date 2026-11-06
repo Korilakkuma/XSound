@@ -2,6 +2,7 @@ import type { JC120Params } from './Preamps/JC120';
 import type { GSP2101Params } from './Preamps/GSP2101';
 import type { JTM45Params } from './Preamps/Marshall/JTM45';
 import type { JMPParams } from './Preamps/Marshall/JMP';
+import type { JCM800Params } from './Preamps/Marshall/JCM800';
 import type { MesaBoogieParams } from './Preamps/MesaBoogie';
 import type { FenderParams } from './Preamps/Fender';
 import type { SimpleCabinetParams } from './Cabinets/SimpleCabinet';
@@ -13,13 +14,14 @@ import { JC120 } from './Preamps/JC120';
 import { GSP2101 } from './Preamps/GSP2101';
 import { JTM45 } from './Preamps/Marshall/JTM45';
 import { JMP } from './Preamps/Marshall/JMP';
+import { JCM800 } from './Preamps/Marshall/JCM800';
 import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
 import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
 import { IRCabinet } from './Cabinets/IRCabinet';
 
-export type PreampType = 'jc-120' | 'gsp2101' | 'jtm45' | 'jmp' | 'mesa/boogie' | 'fender';
+export type PreampType = 'jc-120' | 'gsp2101' | 'jtm45' | 'jmp' | 'jcm800' | 'mesa/boogie' | 'fender';
 
 export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
@@ -30,7 +32,7 @@ export type AmpSimulatorParams = {
   type?: PreampType,  // for compatible
   preampType?: PreampType,
   cabinetType?: CabinetType,
-  preamp?: JC120Params | GSP2101Params | JTM45Params | JMPParams | MesaBoogieParams | FenderParams;
+  preamp?: JC120Params | GSP2101Params | JTM45Params | JMPParams | JCM800Params | MesaBoogieParams | FenderParams;
   cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
@@ -41,7 +43,7 @@ export class AmpSimulator extends Effector {
   private preampType: PreampType   = 'jmp';
   private cabinetType: CabinetType = 'simple';
 
-  private preamp: JC120 | GSP2101 | JTM45 | JMP | MesaBoogie | Fender;
+  private preamp: JC120 | GSP2101 | JTM45 | JMP | JCM800 | MesaBoogie | Fender;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   // for export
@@ -50,6 +52,7 @@ export class AmpSimulator extends Effector {
     GSP2101,
     JTM45,
     JMP,
+    JCM800,
     MesaBoogie,
     Fender
   } as const;
@@ -225,6 +228,13 @@ export class AmpSimulator extends Effector {
                 break;
               }
 
+              case 'jcm800': {
+                this.preampType = 'jcm800';
+                this.preamp     = new JCM800(this.context);
+
+                break;
+              }
+
               case 'mesa/boogie': {
                 this.preampType = 'mesa/boogie';
                 this.preamp     = new MesaBoogie(this.context);
@@ -273,6 +283,13 @@ export class AmpSimulator extends Effector {
               case 'jmp': {
                 this.preampType = 'jmp';
                 this.preamp     = new JMP(this.context);
+
+                break;
+              }
+
+              case 'jcm800': {
+                this.preampType = 'jcm800';
+                this.preamp     = new JCM800(this.context);
 
                 break;
               }
@@ -351,6 +368,12 @@ export class AmpSimulator extends Effector {
 
             if (this.preamp instanceof JMP) {
               const v: JMPParams = value;
+
+              this.preamp.param(v);
+            }
+
+            if (this.preamp instanceof JCM800) {
+              const v: JCM800Params = value;
 
               this.preamp.param(v);
             }

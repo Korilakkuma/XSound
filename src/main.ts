@@ -68,12 +68,8 @@ import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
 import type { AmpSimulatorParams, PreampType, CabinetType, PreampCurve } from './SoundModule/Effectors/AmpSimulator';
 import type { JC120, JC120Params } from './SoundModule/Effectors/Preamps/JC120';
 import type { GSP2101, GSP2101Params } from './SoundModule/Effectors/Preamps/GSP2101';
-import type {
-  JMP,
-  JMPParams,
-  PreEqualizerParams as JMPPreEqualizerParams,
-  PostEqualizerParams as JMPPostEqualizerParams
-} from './SoundModule/Effectors/Preamps/JMP';
+import type { PreEqualizerParams as MarshallPreEqualizerParams, PostEqualizerParams as MarshallPostEqualizerParams } from './SoundModule/Effectors/Preamps/Marshall/Marshall';
+import type { JMP, JMPParams } from './SoundModule/Effectors/Preamps/Marshall/JMP';
 import type {
   MesaBoogie,
   MesaBoogieParams,
@@ -743,10 +739,10 @@ export type {
   JC120Params,
   GSP2101,
   GSP2101Params,
+  MarshallPreEqualizerParams,
+  MarshallPostEqualizerParams,
   JMP,
   JMPParams,
-  JMPPreEqualizerParams,
-  JMPPostEqualizerParams,
   MesaBoogie,
   MesaBoogieParams,
   MesaBoogiePreEqualizerParams,

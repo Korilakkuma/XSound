@@ -1,6 +1,6 @@
 import type { JC120Params } from './Preamps/JC120';
 import type { GSP2101Params } from './Preamps/GSP2101';
-import type { JMPParams } from './Preamps/JMP';
+import type { JMPParams } from './Preamps/Marshall/JMP';
 import type { MesaBoogieParams } from './Preamps/MesaBoogie';
 import type { FenderParams } from './Preamps/Fender';
 import type { SimpleCabinetParams } from './Cabinets/SimpleCabinet';
@@ -10,7 +10,7 @@ import type { IRCabinetParams } from './Cabinets/IRCabinet';
 import { Effector } from './Effector';
 import { JC120 } from './Preamps/JC120';
 import { GSP2101 } from './Preamps/GSP2101';
-import { JMP } from './Preamps/JMP';
+import { JMP } from './Preamps/Marshall/JMP';
 import { MesaBoogie } from './Preamps/MesaBoogie';
 import { Fender } from './Preamps/Fender';
 import { SimpleCabinet } from './Cabinets/SimpleCabinet';

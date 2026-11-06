@@ -1,7 +1,7 @@
-import type { PreampCurve } from '../AmpSimulator';
+import type { FilterParams } from '../../../../types';
+import type { PreampCurve } from '../../AmpSimulator';
 
-import { Effector } from '../Effector';
-import { AmpSimulator } from '../AmpSimulator';
+import { Effector } from '../../Effector';
 
 export type PreEqualizerParams = {
   state?: boolean,
@@ -18,21 +18,27 @@ export type PostEqualizerParams = {
   bass?: number,
   middle?: number,
   treble?: number,
+  presence?: number,
   frequency?: number
 };
 
-export type JMPParams = {
-  state?: boolean,
-  level?: number,
-  samples?: number,
-  pre?: PreEqualizerParams,
-  post?: PostEqualizerParams
+export type PreEqualizerFilterParams = {
+  lowpass: Required<FilterParams>,
+  highpasses: [Required<FilterParams>, Required<FilterParams>, Required<FilterParams>]
+};
+
+export type PostEqualizerFilterParams = {
+  bass: Required<FilterParams>,
+  middle: Required<FilterParams>,
+  treble: Required<FilterParams>,
+  lowpass: Required<FilterParams>,
+  highpass: Required<FilterParams>
 };
 
 /**
  * Effector's subclass for Pre-Equalizer.
  */
-class PreEqualizer extends Effector {
+export class PreEqualizer extends Effector {
   private shaper: WaveShaperNode;
   private preGain: GainNode;
   private leadGain: GainNode;
@@ -43,8 +49,9 @@ class PreEqualizer extends Effector {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
+   * @param {PreEqualizerFilterParams} filterParams This argument is.
    */
-  constructor(context: AudioContext) {
+  constructor(context: AudioContext, filterParams: PreEqualizerFilterParams) {
     super(context);
 
     this.shaper = context.createWaveShaper();
@@ -64,23 +71,23 @@ class PreEqualizer extends Effector {
     this.leadGain.gain.value = 0.5;
 
     this.lowpass.type            = 'lowpass';
-    this.lowpass.frequency.value = 3200;
-    this.lowpass.Q.value         = -3;
+    this.lowpass.frequency.value = filterParams.lowpass.frequency;
+    this.lowpass.Q.value         = filterParams.lowpass.Q;
     this.lowpass.gain.value      = 0;  // Not used
 
     this.highpass1.type            = 'highpass';
-    this.highpass1.frequency.value = 80;
-    this.highpass1.Q.value         = -3;
+    this.highpass1.frequency.value = filterParams.highpasses[0].frequency;
+    this.highpass1.Q.value         = filterParams.highpasses[0].Q;
     this.highpass1.gain.value      = 0;  // Not used
 
     this.highpass2.type            = 'highpass';
-    this.highpass2.frequency.value = 640;
-    this.highpass2.Q.value         = -3;
+    this.highpass2.frequency.value = filterParams.highpasses[1].frequency;
+    this.highpass2.Q.value         = filterParams.highpasses[1].Q;
     this.highpass2.gain.value      = 0;  // Not used
 
     this.highpass3.type            = 'highpass';
-    this.highpass3.frequency.value = 80;
-    this.highpass3.Q.value         = -3;
+    this.highpass3.frequency.value = filterParams.highpasses[2].frequency;
+    this.highpass3.Q.value         = filterParams.highpasses[2].Q;;
     this.highpass3.gain.value      = 0;  // Not used
 
     // `PreEqualizer` is not connected by default
@@ -223,61 +230,68 @@ class PreEqualizer extends Effector {
 /**
  * Effector's subclass for Post-Equalizer.
  */
-class PostEqualizer extends Effector {
+export class PostEqualizer extends Effector {
   private shaper: WaveShaperNode;
 
   private bass: BiquadFilterNode;
   private middle: BiquadFilterNode;
   private treble: BiquadFilterNode;
+  private presence: BiquadFilterNode;
 
   private lowpass: BiquadFilterNode;
   private highpass: BiquadFilterNode;
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
+   * @param {PostEqualizerFilterParams} filterParams This argument is.
    */
-  constructor(context: AudioContext) {
+  constructor(context: AudioContext, filterParams: PostEqualizerFilterParams) {
     super(context);
 
     this.shaper = context.createWaveShaper();
 
-    this.bass   = context.createBiquadFilter();
-    this.middle = context.createBiquadFilter();
-    this.treble = context.createBiquadFilter();
+    this.bass     = context.createBiquadFilter();
+    this.middle   = context.createBiquadFilter();
+    this.treble   = context.createBiquadFilter();
+    this.presence = context.createBiquadFilter();
 
     // Initialize parameters
     this.shaper.oversample = '4x';
 
-    this.bass.type   = 'lowshelf';
-    this.middle.type = 'peaking';
-    this.treble.type = 'highshelf';
+    this.bass.type     = 'lowshelf';
+    this.middle.type   = 'peaking';
+    this.treble.type   = 'highshelf';
+    this.presence.type = 'peaking';
 
     // Set cutoff frequency
-    this.bass.frequency.value   = 240;  // 240 Hz
-    this.middle.frequency.value = 500;  // 500 Hz
-    this.treble.frequency.value = 1600; // 1.6 kHz
+    this.bass.frequency.value     = filterParams.bass.frequency;
+    this.middle.frequency.value   = filterParams.middle.frequency;
+    this.treble.frequency.value   = filterParams.treble.frequency;
+    this.presence.frequency.value = 4000;
 
     // Set Q
-    this.bass.Q.value   = 0;  // Not used
-    this.middle.Q.value = 1.5;
-    this.treble.Q.value = 0;  // Not used
+    this.bass.Q.value     = 0;  // Not used
+    this.middle.Q.value   = filterParams.middle.Q;
+    this.treble.Q.value   = 0;  // Not used
+    this.presence.Q.value = 0.7;
 
     // Set Gain
-    this.bass.gain.value   = 0;
-    this.middle.gain.value = 0;
-    this.treble.gain.value = 0;
+    this.bass.gain.value     = 0;
+    this.middle.gain.value   = 0;
+    this.treble.gain.value   = 0;
+    this.presence.gain.value = 0;
 
     this.lowpass  = context.createBiquadFilter();
     this.highpass = context.createBiquadFilter();
 
     this.lowpass.type            = 'lowpass';
-    this.lowpass.frequency.value = 4000;
-    this.lowpass.Q.value         = -3;
+    this.lowpass.frequency.value = filterParams.lowpass.frequency;
+    this.lowpass.Q.value         = filterParams.lowpass.Q;
     this.lowpass.gain.value      = 0;  // Not used
 
     this.highpass.type            = 'highpass';
-    this.highpass.frequency.value = 40;
-    this.highpass.Q.value         = -3;
+    this.highpass.frequency.value = filterParams.highpass.frequency;
+    this.highpass.Q.value         = filterParams.highpass.Q;
     this.highpass.gain.value      = 0;  // Not used
 
     // `PostEqualizer` is not connected by default
@@ -291,14 +305,15 @@ class PostEqualizer extends Effector {
     if (this.isActive) {
       // Effect ON
 
-      // GainNode (Input) -> BiquadFilterNode (Low-pass) -> BiquadFilterNode (High-pass) -> WaveShaperNode (Clipping) -> BiquadFilterNode (Bass: Low-shelving) -> BiquadFilterNode (Middle: Peaking) -> BiquadFilterNode (Treble: High-shelving) -> GainNode (Output)
+      // GainNode (Input) -> BiquadFilterNode (Low-pass) -> BiquadFilterNode (High-pass) -> WaveShaperNode (Clipping) -> BiquadFilterNode (Bass: Low-shelving) -> BiquadFilterNode (Middle: Peaking) -> BiquadFilterNode (Treble: High-shelving) -> BiquadFilterNode (Presence: Peaking) -> GainNode (Output)
       this.input.connect(this.lowpass);
       this.lowpass.connect(this.highpass);
       this.highpass.connect(this.shaper);
       this.shaper.connect(this.bass);
       this.bass.connect(this.middle);
       this.middle.connect(this.treble);
-      this.treble.connect(this.output);
+      this.treble.connect(this.presence);
+      this.presence.connect(this.output);
     } else {
       // Effect OFF
 
@@ -321,6 +336,7 @@ class PostEqualizer extends Effector {
   public param(params: 'bass'): number;
   public param(params: 'middle'): number;
   public param(params: 'treble'): number;
+  public param(params: 'presence'): number;
   public param(params: 'frequency'): number;
   public param(params: PostEqualizerParams): void;
   public param(params: keyof PostEqualizerParams | PostEqualizerParams): PostEqualizerParams[keyof PostEqualizerParams] | void {
@@ -348,6 +364,10 @@ class PostEqualizer extends Effector {
 
         case 'treble': {
           return this.treble.gain.value;
+        }
+
+        case 'presence': {
+          return this.presence.gain.value;
         }
 
         case 'frequency': {
@@ -414,6 +434,14 @@ class PostEqualizer extends Effector {
           break;
         }
 
+        case 'presence': {
+          if (typeof value === 'number') {
+            this.presence.gain.value = value;
+          }
+
+          break;
+        }
+
         case 'frequency': {
           if (typeof value === 'number') {
             this.middle.frequency.value = value;
@@ -434,168 +462,8 @@ class PostEqualizer extends Effector {
       bass      : this.bass.gain.value,
       middle    : this.middle.gain.value,
       treble    : this.treble.gain.value,
+      presence  : this.presence.gain.value,
       frequency : this.middle.frequency.value
-    };
-  }
-}
-
-/**
- * Effector's subclass for Preamplifier (Marshall JMP).
- */
-export class JMP extends Effector {
-  private preEQ: PreEqualizer;
-  private postEQ: PostEqualizer;
-
-  // for creating curve
-  private level           = 0;
-  private numberOfSamples = 1024;
-
-  /**
-   * @param {AudioContext} context This argument is in order to use Web Audio API.
-   */
-  constructor(context: AudioContext) {
-    super(context);
-
-    this.preEQ  = new PreEqualizer(context);
-    this.postEQ = new PostEqualizer(context);
-
-    // `Preamp` is not connected by default
-    this.deactivate();
-  }
-
-  /** @override */
-  public override connect(): GainNode {
-    // Clear connection
-    this.input.disconnect(0);
-
-    if (this.isActive) {
-      // Effect ON
-
-      // GainNode (Input) -> Pre-Equalizer -> Post-Equalizer -> GainNode (Output)
-      this.input.connect(this.preEQ.INPUT);
-      this.preEQ.OUTPUT.connect(this.postEQ.INPUT);
-      this.postEQ.OUTPUT.connect(this.output);
-    } else {
-      // Effect OFF
-
-      // GainNode (Input) -> GainNode (Output)
-      this.input.connect(this.output);
-    }
-
-    return this.output;
-  }
-
-  /**
-   * This method gets or sets parameters for preamp effector.
-   * This method is overloaded for type interface and type check.
-   * @param {keyof JMPParams|JMPParams} params This argument is string if getter. Otherwise, setter.
-   * @return {JMPParams[keyof JMPParams]|JMP} Return value is parameter for preamp effector if getter.
-   *     Otherwise, return value is for method chain.
-   */
-  public param(params: 'state'): boolean;
-  public param(params: 'level'): number;
-  public param(params: 'samples'): number;
-  public param(params: 'pre'): JMPParams['pre'];
-  public param(params: 'post'): JMPParams['post'];
-  public param(params: JMPParams): JMP;
-  public param(params: keyof JMPParams | JMPParams): JMPParams[keyof JMPParams] | JMP {
-    if (typeof params === 'string') {
-      switch (params) {
-        case 'state': {
-          return this.isActive;
-        }
-
-        case 'level': {
-          return this.level;
-        }
-
-        case 'samples': {
-          return this.numberOfSamples;
-        }
-
-        case 'pre': {
-          return this.preEQ.params();
-        }
-
-        case 'post': {
-          return this.postEQ.params();
-        }
-      }
-    }
-
-    for (const [key, value] of Object.entries(params)) {
-      switch (key) {
-        case 'state': {
-          if (typeof value === 'boolean') {
-            if (value) {
-              this.activate();
-              this.preEQ.activate();
-              this.postEQ.activate();
-            } else {
-              this.deactivate();
-              this.preEQ.deactivate();
-              this.postEQ.deactivate();
-            }
-          }
-
-          break;
-        }
-
-        case 'level': {
-          if (typeof value === 'number') {
-            this.level = value;
-
-            const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
-
-            this.preEQ.param({ curve });
-            this.postEQ.param({ curve });
-          }
-
-          break;
-        }
-
-        case 'samples': {
-          if (typeof value === 'number') {
-            this.numberOfSamples = value;
-
-            const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
-
-            this.preEQ.param({ curve });
-            this.postEQ.param({ curve });
-          }
-
-          break;
-        }
-
-        case 'pre': {
-          if (typeof value === 'object') {
-            this.preEQ.param(value);
-          }
-
-          break;
-        }
-
-        case 'post': {
-          if (typeof value === 'object') {
-            this.postEQ.param(value);
-          }
-
-          break;
-        }
-      }
-    }
-
-    return this;
-  }
-
-  /** @override */
-  public override params(): Required<JMPParams> {
-    return {
-      state  : this.isActive,
-      level  : this.level,
-      samples: this.numberOfSamples,
-      pre    : this.preEQ.params(),
-      post   : this.postEQ.params()
     };
   }
 }

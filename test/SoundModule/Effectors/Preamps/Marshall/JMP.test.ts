@@ -1,7 +1,7 @@
-import type { JMPParams } from '/src/SoundModule/Effectors/Preamps/JMP';
+import type { JMPParams } from '/src/SoundModule/Effectors/Preamps/Marshall/JMP';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { JMP } from '/src/SoundModule/Effectors/Preamps/JMP';
+import { JMP } from '/src/SoundModule/Effectors/Preamps/Marshall/JMP';
 
 describe(JMP.name, () => {
   const context = new AudioContextMock();
@@ -104,6 +104,7 @@ describe(JMP.name, () => {
       bass      : 10,
       middle    : -10,
       treble    : 10,
+      presence  : 0,
       frequency : 1000
     };
 

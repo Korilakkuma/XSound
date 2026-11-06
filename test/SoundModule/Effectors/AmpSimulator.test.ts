@@ -33,7 +33,7 @@ describe(AmpSimulator.name, () => {
   describe(ampsimulator.param.name, () => {
     const defaultParams: AmpSimulatorParams = {
       state      : false,
-      preampType : 'marshall',
+      preampType : 'jmp',
       cabinetType: 'simple',
       preamp: {
         state: true,

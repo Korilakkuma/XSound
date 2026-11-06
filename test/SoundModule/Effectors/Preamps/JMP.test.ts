@@ -1,29 +1,29 @@
-import type { MarshallParams } from '/src/SoundModule/Effectors/Preamps/Marshall';
+import type { JMPParams } from '/src/SoundModule/Effectors/Preamps/JMP';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Marshall } from '/src/SoundModule/Effectors/Preamps/Marshall';
+import { JMP } from '/src/SoundModule/Effectors/Preamps/JMP';
 
-describe(Marshall.name, () => {
+describe(JMP.name, () => {
   const context = new AudioContextMock();
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const marshall = new Marshall(context);
+  const jmp = new JMP(context);
 
-  describe(marshall.connect.name, () => {
+  describe(jmp.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput  = marshall['input'];
-    const originalPreEQ  = marshall['preEQ']['output'];
-    const originalPostEQ = marshall['postEQ']['output'];
+    const originalInput  = jmp['input'];
+    const originalPreEQ  = jmp['preEQ']['output'];
+    const originalPostEQ = jmp['postEQ']['output'];
     /* eslint-enable dot-notation */
 
     afterAll(() => {
       /* eslint-disable dot-notation */
-      marshall['input']            = originalInput;
-      marshall['preEQ']['output']  = originalPreEQ;
-      marshall['postEQ']['output'] = originalPostEQ;
+      jmp['input']            = originalInput;
+      jmp['preEQ']['output']  = originalPreEQ;
+      jmp['postEQ']['output'] = originalPostEQ;
       /* eslint-enable dot-notation */
 
-      marshall.deactivate();
+      jmp.deactivate();
     });
 
     test('should call `connect` method', () => {
@@ -35,15 +35,15 @@ describe(Marshall.name, () => {
       const postEQDisconnectMock = jest.fn();
 
       /* eslint-disable dot-notation */
-      marshall['input'].connect               = inputConnectMock;
-      marshall['input'].disconnect            = inputDisconnectMock;
-      marshall['preEQ']['output'].connect     = preEQConnectMock;
-      marshall['preEQ']['output'].disconnect  = preEQDisconnectMock;
-      marshall['postEQ']['output'].connect    = postEQConnectMock;
-      marshall['postEQ']['output'].disconnect = postEQDisconnectMock;
+      jmp['input'].connect               = inputConnectMock;
+      jmp['input'].disconnect            = inputDisconnectMock;
+      jmp['preEQ']['output'].connect     = preEQConnectMock;
+      jmp['preEQ']['output'].disconnect  = preEQDisconnectMock;
+      jmp['postEQ']['output'].connect    = postEQConnectMock;
+      jmp['postEQ']['output'].disconnect = postEQDisconnectMock;
       /* eslint-enable dot-notation */
 
-      marshall.connect();
+      jmp.connect();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(preEQConnectMock).toHaveBeenCalledTimes(0);
@@ -52,7 +52,7 @@ describe(Marshall.name, () => {
       expect(preEQDisconnectMock).toHaveBeenCalledTimes(0);
       expect(postEQDisconnectMock).toHaveBeenCalledTimes(0);
 
-      marshall.activate();
+      jmp.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(2);
       expect(preEQConnectMock).toHaveBeenCalledTimes(1);
@@ -63,8 +63,8 @@ describe(Marshall.name, () => {
     });
   });
 
-  describe(marshall.param.name, () => {
-    const defaultPreEQParams: MarshallParams['pre'] = {
+  describe(jmp.param.name, () => {
+    const defaultPreEQParams: JMPParams['pre'] = {
       state     : false,
       curve     : null,
       oversample: '4x',
@@ -72,7 +72,7 @@ describe(Marshall.name, () => {
       lead      : 0.5
     };
 
-    const defaultPostEQParams: MarshallParams['post'] = {
+    const defaultPostEQParams: JMPParams['post'] = {
       state     : false,
       curve     : null,
       oversample: '4x',
@@ -82,14 +82,14 @@ describe(Marshall.name, () => {
       frequency : 500
     };
 
-    const defaultParams: MarshallParams = {
+    const defaultParams: JMPParams = {
       level  : 0,
       samples: 1024,
       pre    : defaultPreEQParams,
       post   : defaultPostEQParams
     };
 
-    const preEQParams: MarshallParams['pre'] = {
+    const preEQParams: JMPParams['pre'] = {
       state     : true,
       curve     : new Float32Array([0, 0, 0, 0]),
       oversample: 'none',
@@ -97,7 +97,7 @@ describe(Marshall.name, () => {
       lead      : 0.5
     };
 
-    const postEQParams: MarshallParams['post'] = {
+    const postEQParams: JMPParams['post'] = {
       state     : true,
       curve     : new Float32Array([0, 0, 0, 0]),
       oversample: 'none',
@@ -107,7 +107,7 @@ describe(Marshall.name, () => {
       frequency : 1000
     };
 
-    const params: MarshallParams = {
+    const params: JMPParams = {
       level  : 0.5,
       samples: 2048,
       pre    : preEQParams,
@@ -115,77 +115,77 @@ describe(Marshall.name, () => {
     };
 
     beforeAll(() => {
-      marshall.param(params);
+      jmp.param(params);
     });
 
     afterAll(() => {
-      marshall.param(defaultParams);
+      jmp.param(defaultParams);
     });
 
     // Setter
-    test('should return instance of `Marshall`', () => {
-      expect(marshall.param(params)).toBeInstanceOf(Marshall);
+    test('should return instance of `JMP`', () => {
+      expect(jmp.param(params)).toBeInstanceOf(JMP);
     });
 
     // Getter
     test('should return `level`', () => {
-      expect(marshall.param('level')).toBeCloseTo(0.5, 1);
+      expect(jmp.param('level')).toBeCloseTo(0.5, 1);
     });
 
     test('should return `samples`', () => {
-      expect(marshall.param('samples')).toBe(2048);
+      expect(jmp.param('samples')).toBe(2048);
     });
 
     test('should return Pre-Equalizer parameters', () => {
-      expect(marshall.param('pre')).toStrictEqual(preEQParams);
+      expect(jmp.param('pre')).toStrictEqual(preEQParams);
     });
 
     test('should return Post-Equalizer parameters', () => {
-      expect(marshall.param('post')).toStrictEqual(postEQParams);
+      expect(jmp.param('post')).toStrictEqual(postEQParams);
     });
   });
 
-  describe(marshall.params.name, () => {
-    test('should return parameters for Marshall preamplifier as associative array', () => {
-      expect(marshall.params()).toStrictEqual({
+  describe(jmp.params.name, () => {
+    test('should return parameters for Marshall JMP preamplifier as associative array', () => {
+      expect(jmp.params()).toStrictEqual({
         state  : false,
         level  : 0,
         samples: 1024,
-        pre    : marshall.param('pre'),
-        post   : marshall.param('post')
+        pre    : jmp.param('pre'),
+        post   : jmp.param('post')
       });
     });
   });
 
-  describe(marshall.activate.name, () => {
+  describe(jmp.activate.name, () => {
     test('should call `connect` method', () => {
-      const originalConnect = marshall.connect;
+      const originalConnect = jmp.connect;
 
       const connectMock = jest.fn();
 
-      marshall.connect = connectMock;
+      jmp.connect = connectMock;
 
-      marshall.activate();
+      jmp.activate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
-      marshall.connect = originalConnect;
+      jmp.connect = originalConnect;
     });
   });
 
-  describe(marshall.deactivate.name, () => {
+  describe(jmp.deactivate.name, () => {
     test('should call `connect` method', () => {
-      const originalConnect = marshall.connect;
+      const originalConnect = jmp.connect;
 
       const connectMock = jest.fn();
 
-      marshall.connect = connectMock;
+      jmp.connect = connectMock;
 
-      marshall.deactivate();
+      jmp.deactivate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
-      marshall.connect = originalConnect;
+      jmp.connect = originalConnect;
     });
   });
 });

@@ -21,7 +21,7 @@ export type PostEqualizerParams = {
   frequency?: number
 };
 
-export type MarshallParams = {
+export type JMPParams = {
   state?: boolean,
   level?: number,
   samples?: number,
@@ -440,9 +440,9 @@ class PostEqualizer extends Effector {
 }
 
 /**
- * Effector's subclass for Preamplifier (Marshall).
+ * Effector's subclass for Preamplifier (Marshall JMP).
  */
-export class Marshall extends Effector {
+export class JMP extends Effector {
   private preEQ: PreEqualizer;
   private postEQ: PostEqualizer;
 
@@ -488,17 +488,17 @@ export class Marshall extends Effector {
   /**
    * This method gets or sets parameters for preamp effector.
    * This method is overloaded for type interface and type check.
-   * @param {keyof MarshallParams|MarshallParams} params This argument is string if getter. Otherwise, setter.
-   * @return {MarshallParams[keyof MarshallParams]|Marshall} Return value is parameter for preamp effector if getter.
+   * @param {keyof JMPParams|JMPParams} params This argument is string if getter. Otherwise, setter.
+   * @return {JMPParams[keyof JMPParams]|JMP} Return value is parameter for preamp effector if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
   public param(params: 'level'): number;
   public param(params: 'samples'): number;
-  public param(params: 'pre'): MarshallParams['pre'];
-  public param(params: 'post'): MarshallParams['post'];
-  public param(params: MarshallParams): Marshall;
-  public param(params: keyof MarshallParams | MarshallParams): MarshallParams[keyof MarshallParams] | Marshall {
+  public param(params: 'pre'): JMPParams['pre'];
+  public param(params: 'post'): JMPParams['post'];
+  public param(params: JMPParams): JMP;
+  public param(params: keyof JMPParams | JMPParams): JMPParams[keyof JMPParams] | JMP {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {
@@ -589,7 +589,7 @@ export class Marshall extends Effector {
   }
 
   /** @override */
-  public override params(): Required<MarshallParams> {
+  public override params(): Required<JMPParams> {
     return {
       state  : this.isActive,
       level  : this.level,

@@ -1,10 +1,6 @@
-import { Effector } from '../Effector';
+import type { FilterParams } from '../../../types';
 
-type FilterParams = {
-  frequency?: number,
-  gain?: number,
-  Q?: number
-};
+import { Effector } from '../Effector';
 
 export type FilterBankCabinetParams = {
   state?: boolean,

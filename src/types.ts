@@ -10,3 +10,10 @@ declare global {
 
 // `-1` is inactive channel
 export type ChannelNumber = -1 | 0 | 1;
+
+export type FilterParams = {
+  frequency?: number,
+  detune?: number,
+  Q?: number,
+  gain?: number
+};

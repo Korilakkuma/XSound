@@ -1,6 +1,6 @@
 {
   "state": false,
-  "preampType": "marshall",
+  "preampType": "jmp",
   "preamp": {
     "state": true,
     "level": 0,

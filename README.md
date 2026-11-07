@@ -106,6 +106,7 @@ X.AmpSimulator.Preamps.JC120(context: AudioContext);
 X.AmpSimulator.Preamps.GSP2101(context: AudioContext);
 X.AmpSimulator.Preamps.JTM45(context: AudioContext);
 X.AmpSimulator.Preamps.JMP(context: AudioContext);
+X.AmpSimulator.Preamps.JCM800(context: AudioContext);
 X.AmpSimulator.Preamps.Fender(context: AudioContext);
 X.AmpSimulator.Preamps.MesaBoogie(context: AudioContext);
 X.AmpSimulator.Cabinets.SimpleCabinet(context: AudioContext);

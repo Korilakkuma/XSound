@@ -1,6 +1,6 @@
 {
   "state": false,
-  "preampType": "marshall",
+  "preampType": "jcm800",
   "preamp": {
     "state": true,
     "level": 0,
@@ -17,6 +17,7 @@
       "bass": 0,
       "middle": 0,
       "treble": 0,
+      "presence": 0,
       "frequency": 500
     }
   }

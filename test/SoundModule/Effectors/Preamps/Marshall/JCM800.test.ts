@@ -79,6 +79,7 @@ describe(JCM800.name, () => {
       bass      : 0,
       middle    : 0,
       treble    : 0,
+      presence  : 0,
       frequency : 500
     };
 

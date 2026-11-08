@@ -1,6 +1,6 @@
 {
   "state": false,
-  "preampType": "mesa",
+  "preampType": "rectifier",
   "preamp": {
     "state": true,
     "pre": {
@@ -9,7 +9,7 @@
       "bass": 0,
       "middle": 0,
       "treble": 0,
-      "level": 0,
+      "level": 1,
       "samples": 1024,
       "oversample": "4x",
       "postFilters": true

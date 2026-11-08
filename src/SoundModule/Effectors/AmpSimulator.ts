@@ -3,6 +3,7 @@ import type { GSP2101Params } from './Preamps/GSP2101';
 import type { JTM45Params } from './Preamps/Marshall/JTM45';
 import type { JMPParams } from './Preamps/Marshall/JMP';
 import type { JCM800Params } from './Preamps/Marshall/JCM800';
+import type { MarkParams } from './Preamps/MesaBoogie/Mark';
 import type { RectifierParams } from './Preamps/MesaBoogie/Rectifier';
 import type { FenderParams } from './Preamps/Fender';
 import type { SimpleCabinetParams } from './Cabinets/SimpleCabinet';
@@ -15,13 +16,14 @@ import { GSP2101 } from './Preamps/GSP2101';
 import { JTM45 } from './Preamps/Marshall/JTM45';
 import { JMP } from './Preamps/Marshall/JMP';
 import { JCM800 } from './Preamps/Marshall/JCM800';
+import { Mark } from './Preamps/MesaBoogie/Mark';
 import { Rectifier } from './Preamps/MesaBoogie/Rectifier';
 import { Fender } from './Preamps/Fender';
 import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
 import { IRCabinet } from './Cabinets/IRCabinet';
 
-export type PreampType = 'jc-120' | 'gsp2101' | 'jtm45' | 'jmp' | 'jcm800' | 'rectifier' | 'fender';
+export type PreampType = 'jc-120' | 'gsp2101' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier' | 'fender';
 
 export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
@@ -32,7 +34,7 @@ export type AmpSimulatorParams = {
   type?: PreampType,  // for compatible
   preampType?: PreampType,
   cabinetType?: CabinetType,
-  preamp?: JC120Params | GSP2101Params | JTM45Params | JMPParams | JCM800Params | RectifierParams | FenderParams;
+  preamp?: JC120Params | GSP2101Params | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams | FenderParams;
   cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
@@ -43,7 +45,7 @@ export class AmpSimulator extends Effector {
   private preampType: PreampType   = 'jmp';
   private cabinetType: CabinetType = 'simple';
 
-  private preamp: JC120 | GSP2101 | JTM45 | JMP | JCM800 | Rectifier | Fender;
+  private preamp: JC120 | GSP2101 | JTM45 | JMP | JCM800 | Mark | Rectifier | Fender;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   // for export
@@ -53,6 +55,7 @@ export class AmpSimulator extends Effector {
     JTM45,
     JMP,
     JCM800,
+    Mark,
     Rectifier,
     Fender
   } as const;
@@ -235,6 +238,13 @@ export class AmpSimulator extends Effector {
                 break;
               }
 
+              case 'mark': {
+                this.preampType = 'mark';
+                this.preamp     = new Mark(this.context);
+
+                break;
+              }
+
               case 'rectifier': {
                 this.preampType = 'rectifier';
                 this.preamp     = new Rectifier(this.context);
@@ -290,6 +300,13 @@ export class AmpSimulator extends Effector {
               case 'jcm800': {
                 this.preampType = 'jcm800';
                 this.preamp     = new JCM800(this.context);
+
+                break;
+              }
+
+              case 'mark': {
+                this.preampType = 'mark';
+                this.preamp     = new Mark(this.context);
 
                 break;
               }
@@ -374,6 +391,12 @@ export class AmpSimulator extends Effector {
 
             if (this.preamp instanceof JCM800) {
               const v: JCM800Params = value;
+
+              this.preamp.param(v);
+            }
+
+            if (this.preamp instanceof Mark) {
+              const v: MarkParams = value;
 
               this.preamp.param(v);
             }

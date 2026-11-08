@@ -50,6 +50,7 @@ export class JCM800 extends Effector {
     this.preEQ  = new PreEqualizer(context, preEqualizerFilterParams);
     this.postEQ = new PostEqualizer(context, postEqualizerFilterParams);
 
+    // `Preamp` is not connected by default
     this.deactivate();
   }
 

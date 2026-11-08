@@ -49,7 +49,7 @@ export class PreEqualizer extends Effector {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {PreEqualizerFilterParams} filterParams This argument is.
+   * @param {PreEqualizerFilterParams} filterParams This argument is constant value for filters. This value determines the sound character every preamplifier.
    */
   constructor(context: AudioContext, filterParams: PreEqualizerFilterParams) {
     super(context);
@@ -243,7 +243,7 @@ export class PostEqualizer extends Effector {
 
   /**
    * @param {AudioContext} context This argument is in order to use Web Audio API.
-   * @param {PostEqualizerFilterParams} filterParams This argument is.
+   * @param {PostEqualizerFilterParams} filterParams This argument is constant value for filters. This value determines the sound character every preamplifier.
    */
   constructor(context: AudioContext, filterParams: PostEqualizerFilterParams) {
     super(context);

@@ -1,5 +1,5 @@
-import { Effector } from '../Effector';
-import { AmpSimulator } from '../AmpSimulator';
+import { Effector } from '../../Effector';
+import { AmpSimulator } from '../../AmpSimulator';
 
 export type PreEqualizerParams = {
   state?: boolean,
@@ -22,7 +22,7 @@ export type PostEqualizerParams = {
   fc4800?: number
 };
 
-export type MesaBoogieParams = {
+export type RectifierParams = {
   state?: boolean,
   pre?: PreEqualizerParams,
   post?: PostEqualizerParams
@@ -505,9 +505,9 @@ class PostEqualizer extends Effector {
 }
 
 /**
- * Effector's subclass for Preamplifier (MesaBoogie).
+ * Effector's subclass for Preamplifier (Mesa/Boogie Rectifier).
  */
-export class MesaBoogie extends Effector {
+export class Rectifier extends Effector {
   private preEQ: PreEqualizer;
   private postEQ: PostEqualizer;
   private cabinetLowpass: BiquadFilterNode;
@@ -521,6 +521,7 @@ export class MesaBoogie extends Effector {
 
     this.preEQ  = new PreEqualizer(context);
     this.postEQ = new PostEqualizer(context);
+
     this.cabinetLowpass = context.createBiquadFilter();
     this.cabinetNotch   = context.createBiquadFilter();
 
@@ -568,15 +569,15 @@ export class MesaBoogie extends Effector {
   /**
    * This method gets or sets parameters for preamp effector.
    * This method is overloaded for type interface and type check.
-   * @param {keyof MesaBoogieParams|MesaBoogieParams} params This argument is string if getter. Otherwise, setter.
-   * @return {MesaBoogieParams[keyof MesaBoogieParams]|MesaBoogie} Return value is parameter for preamp effector if getter.
+   * @param {keyof RectifierParams|RectifierParams} params This argument is string if getter. Otherwise, setter.
+   * @return {RectifierParams[keyof RectifierParams]|Rectifier} Return value is parameter for preamp effector if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
-  public param(params: 'pre'): MesaBoogieParams['pre'];
-  public param(params: 'post'): MesaBoogieParams['post'];
-  public param(params: MesaBoogieParams): MesaBoogie;
-  public param(params: keyof MesaBoogieParams | MesaBoogieParams): MesaBoogieParams[keyof MesaBoogieParams] | MesaBoogie {
+  public param(params: 'pre'): RectifierParams['pre'];
+  public param(params: 'post'): RectifierParams['post'];
+  public param(params: RectifierParams): Rectifier;
+  public param(params: keyof RectifierParams | RectifierParams): RectifierParams[keyof RectifierParams] | Rectifier {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {
@@ -633,11 +634,11 @@ export class MesaBoogie extends Effector {
   }
 
   /** @override */
-  public override params(): Required<MesaBoogieParams> {
+  public override params(): Required<RectifierParams> {
     return {
-      state  : this.isActive,
-      pre    : this.preEQ.params(),
-      post   : this.postEQ.params()
+      state: this.isActive,
+      pre  : this.preEQ.params(),
+      post : this.postEQ.params()
     };
   }
 }

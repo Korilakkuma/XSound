@@ -64,7 +64,7 @@ describe(AmpSimulator.name, () => {
 
     const params: AmpSimulatorParams = {
       state      : true,
-      preampType : 'mesa/boogie',
+      preampType : 'rectifier',
       cabinetType: 'filterbank',
       preamp     : {
         state: true,
@@ -115,7 +115,7 @@ describe(AmpSimulator.name, () => {
 
     // Getter
     test('should return `preampType`', () => {
-      expect(ampsimulator.param('preampType')).toBe('mesa/boogie');
+      expect(ampsimulator.param('preampType')).toBe('rectifier');
     });
 
     test('should return `cabinetType`', () => {

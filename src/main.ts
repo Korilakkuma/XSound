@@ -73,11 +73,11 @@ import type { JTM45, JTM45Params } from './SoundModule/Effectors/Preamps/Marshal
 import type { JMP, JMPParams } from './SoundModule/Effectors/Preamps/Marshall/JMP';
 import type { JCM800, JCM800Params } from './SoundModule/Effectors/Preamps/Marshall/JCM800';
 import type {
-  MesaBoogie,
-  MesaBoogieParams,
-  PreEqualizerParams as MesaBoogiePreEqualizerParams,
-  PostEqualizerParams as MesaBoogiePostEqualizerParams
-} from './SoundModule/Effectors/Preamps/MesaBoogie';
+  Rectifier,
+  RectifierParams,
+  PreEqualizerParams as RectifierPreEqualizerParams,
+  PostEqualizerParams as RectifierPostEqualizerParams
+} from './SoundModule/Effectors/Preamps/MesaBoogie/Rectifier';
 import type {
   Fender,
   FenderParams,
@@ -749,10 +749,10 @@ export type {
   JMPParams,
   JCM800,
   JCM800Params,
-  MesaBoogie,
-  MesaBoogieParams,
-  MesaBoogiePreEqualizerParams,
-  MesaBoogiePostEqualizerParams,
+  Rectifier,
+  RectifierParams,
+  RectifierPreEqualizerParams,
+  RectifierPostEqualizerParams,
   Fender,
   FenderParams,
   FenderPreEqualizerParams,

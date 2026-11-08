@@ -1,33 +1,33 @@
-import type { MesaBoogieParams } from '/src/SoundModule/Effectors/Preamps/MesaBoogie';
+import type { RectifierParams } from '/src/SoundModule/Effectors/Preamps/MesaBoogie/Rectifier';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { MesaBoogie } from '/src/SoundModule/Effectors/Preamps/MesaBoogie';
+import { Rectifier } from '/src/SoundModule/Effectors/Preamps/MesaBoogie/Rectifier';
 
-describe(MesaBoogie.name, () => {
+describe(Rectifier.name, () => {
   const context = new AudioContextMock();
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const mesa = new MesaBoogie(context);
+  const rectifier = new Rectifier(context);
 
-  describe(mesa.connect.name, () => {
+  describe(rectifier.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput          = mesa['input'];
-    const originalPreEQ          = mesa['preEQ']['output'];
-    const originalPostEQ         = mesa['postEQ']['output'];
-    const originalCabinetLowpass = mesa['cabinetLowpass'];
-    const originalCabinetNotch   = mesa['cabinetNotch'];
+    const originalInput          = rectifier['input'];
+    const originalPreEQ          = rectifier['preEQ']['output'];
+    const originalPostEQ         = rectifier['postEQ']['output'];
+    const originalCabinetLowpass = rectifier['cabinetLowpass'];
+    const originalCabinetNotch   = rectifier['cabinetNotch'];
     /* eslint-enable dot-notation */
 
     afterAll(() => {
       /* eslint-disable dot-notation */
-      mesa['input']            = originalInput;
-      mesa['preEQ']['output']  = originalPreEQ;
-      mesa['postEQ']['output'] = originalPostEQ;
-      mesa['cabinetLowpass']   = originalCabinetLowpass;
-      mesa['cabinetNotch']     = originalCabinetNotch;;
+      rectifier['input']            = originalInput;
+      rectifier['preEQ']['output']  = originalPreEQ;
+      rectifier['postEQ']['output'] = originalPostEQ;
+      rectifier['cabinetLowpass']   = originalCabinetLowpass;
+      rectifier['cabinetNotch']     = originalCabinetNotch;;
       /* eslint-enable dot-notation */
 
-      mesa.deactivate();
+      rectifier.deactivate();
     });
 
     test('should call `connect` method', () => {
@@ -43,19 +43,19 @@ describe(MesaBoogie.name, () => {
       const cabinetNotchDisconnectMock   = jest.fn();
 
       /* eslint-disable dot-notation */
-      mesa['input'].connect               = inputConnectMock;
-      mesa['input'].disconnect            = inputDisconnectMock;
-      mesa['preEQ']['output'].connect     = preEQConnectMock;
-      mesa['preEQ']['output'].disconnect  = preEQDisconnectMock;
-      mesa['postEQ']['output'].connect    = postEQConnectMock;
-      mesa['postEQ']['output'].disconnect = postEQDisconnectMock;
-      mesa['cabinetLowpass'].connect      = cabinetLowpassConnectMock;
-      mesa['cabinetLowpass'].disconnect   = cabinetLowpassDisconnectMock;
-      mesa['cabinetNotch'].connect        = cabinetNotchConnectMock;
-      mesa['cabinetNotch'].disconnect     = cabinetNotchDisconnectMock;
+      rectifier['input'].connect               = inputConnectMock;
+      rectifier['input'].disconnect            = inputDisconnectMock;
+      rectifier['preEQ']['output'].connect     = preEQConnectMock;
+      rectifier['preEQ']['output'].disconnect  = preEQDisconnectMock;
+      rectifier['postEQ']['output'].connect    = postEQConnectMock;
+      rectifier['postEQ']['output'].disconnect = postEQDisconnectMock;
+      rectifier['cabinetLowpass'].connect      = cabinetLowpassConnectMock;
+      rectifier['cabinetLowpass'].disconnect   = cabinetLowpassDisconnectMock;
+      rectifier['cabinetNotch'].connect        = cabinetNotchConnectMock;
+      rectifier['cabinetNotch'].disconnect     = cabinetNotchDisconnectMock;
       /* eslint-enable dot-notation */
 
-      mesa.connect();
+      rectifier.connect();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(preEQConnectMock).toHaveBeenCalledTimes(0);
@@ -68,7 +68,7 @@ describe(MesaBoogie.name, () => {
       expect(cabinetLowpassDisconnectMock).toHaveBeenCalledTimes(1);
       expect(cabinetNotchDisconnectMock).toHaveBeenCalledTimes(1);
 
-      mesa.activate();
+      rectifier.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(2);
       expect(preEQConnectMock).toHaveBeenCalledTimes(1);
@@ -83,8 +83,8 @@ describe(MesaBoogie.name, () => {
     });
   });
 
-  describe(mesa.param.name, () => {
-    const defaultPreEQParams: MesaBoogieParams['pre'] = {
+  describe(rectifier.param.name, () => {
+    const defaultPreEQParams: RectifierParams['pre'] = {
       state      : false,
       gain       : 0.5,
       bass       : 0,
@@ -96,7 +96,7 @@ describe(MesaBoogie.name, () => {
       postFilters: true
     };
 
-    const defaultPostEQParams: MesaBoogieParams['post'] = {
+    const defaultPostEQParams: RectifierParams['post'] = {
       state : false,
       fc100 : 0,
       fc360 : 0,
@@ -105,12 +105,12 @@ describe(MesaBoogie.name, () => {
       fc4800: 0
     };
 
-    const defaultParams: MesaBoogieParams = {
+    const defaultParams: RectifierParams = {
       pre : defaultPreEQParams,
       post: defaultPostEQParams,
     };
 
-    const preEQParams: MesaBoogieParams['pre'] = {
+    const preEQParams: RectifierParams['pre'] = {
       state      : true,
       gain       : 1,
       bass       : 10,
@@ -122,7 +122,7 @@ describe(MesaBoogie.name, () => {
       postFilters: false
     };
 
-    const postEQParams: MesaBoogieParams['post'] = {
+    const postEQParams: RectifierParams['post'] = {
       state : true,
       fc100 : 10,
       fc360 : 10,
@@ -131,73 +131,73 @@ describe(MesaBoogie.name, () => {
       fc4800: 10
     };
 
-    const params: MesaBoogieParams = {
+    const params: RectifierParams = {
       pre : preEQParams,
       post: postEQParams,
     };
 
     beforeAll(() => {
-      mesa.param(params);
+      rectifier.param(params);
     });
 
     afterAll(() => {
-      mesa.param(defaultParams);
+      rectifier.param(defaultParams);
     });
 
     // Setter
-    test('should return instance of `MesaBoogie`', () => {
-      expect(mesa.param(params)).toBeInstanceOf(MesaBoogie);
+    test('should return instance of `Rectifier`', () => {
+      expect(rectifier.param(params)).toBeInstanceOf(Rectifier);
     });
 
     // Getter
     test('should return Pre-Equalizer parameters', () => {
-      expect(mesa.param('pre')).toStrictEqual(preEQParams);
+      expect(rectifier.param('pre')).toStrictEqual(preEQParams);
     });
 
     test('should return Post-Equalizer parameters', () => {
-      expect(mesa.param('post')).toStrictEqual(postEQParams);
+      expect(rectifier.param('post')).toStrictEqual(postEQParams);
     });
   });
 
-  describe(mesa.params.name, () => {
-    test('should return parameters for MesaBoogie preamplifier as associative array', () => {
-      expect(mesa.params()).toStrictEqual({
+  describe(rectifier.params.name, () => {
+    test('should return parameters for Mesa/Boogie Rectifier preamplifier as associative array', () => {
+      expect(rectifier.params()).toStrictEqual({
         state: false,
-        pre  : mesa.param('pre'),
-        post : mesa.param('post'),
+        pre  : rectifier.param('pre'),
+        post : rectifier.param('post'),
       });
     });
   });
 
-  describe(mesa.activate.name, () => {
+  describe(rectifier.activate.name, () => {
     test('should call `connect` method', () => {
-      const originalConnect = mesa.connect;
+      const originalConnect = rectifier.connect;
 
       const connectMock = jest.fn();
 
-      mesa.connect = connectMock;
+      rectifier.connect = connectMock;
 
-      mesa.activate();
+      rectifier.activate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
-      mesa.connect = originalConnect;
+      rectifier.connect = originalConnect;
     });
   });
 
-  describe(mesa.deactivate.name, () => {
+  describe(rectifier.deactivate.name, () => {
     test('should call `connect` method', () => {
-      const originalConnect = mesa.connect;
+      const originalConnect = rectifier.connect;
 
       const connectMock = jest.fn();
 
-      mesa.connect = connectMock;
+      rectifier.connect = connectMock;
 
-      mesa.deactivate();
+      rectifier.deactivate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
-      mesa.connect = originalConnect;
+      rectifier.connect = originalConnect;
     });
   });
 });

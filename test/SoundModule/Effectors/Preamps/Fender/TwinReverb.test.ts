@@ -1,29 +1,29 @@
-import type { FenderParams } from '/src/SoundModule/Effectors/Preamps/Fender';
+import type { TwinReverbParams } from '/src/SoundModule/Effectors/Preamps/Fender/TwinReverb';
 
 import { AudioContextMock } from '/mock/AudioContextMock';
-import { Fender } from '/src/SoundModule/Effectors/Preamps/Fender';
+import { TwinReverb } from '/src/SoundModule/Effectors/Preamps/Fender/TwinReverb';
 
-describe(Fender.name, () => {
+describe(TwinReverb.name, () => {
   const context = new AudioContextMock();
 
   // @ts-expect-error Because there is not Web Audio API in Jest environment (Node.js environment), mocks Web Audio API
-  const fender = new Fender(context);
+  const twin = new TwinReverb(context);
 
-  describe(fender.connect.name, () => {
+  describe(twin.connect.name, () => {
     /* eslint-disable dot-notation */
-    const originalInput      = fender['input'];
-    const originalPreEQ      = fender['preEQ']['output'];
-    const originalPostFilter = fender['postFilter']['output'];
+    const originalInput      = twin['input'];
+    const originalPreEQ      = twin['preEQ']['output'];
+    const originalPostFilter = twin['postFilter']['output'];
     /* eslint-enable dot-notation */
 
     afterAll(() => {
       /* eslint-disable dot-notation */
-      fender['input']                = originalInput;
-      fender['preEQ']['output']      = originalPreEQ;
-      fender['postFilter']['output'] = originalPostFilter;
+      twin['input']                = originalInput;
+      twin['preEQ']['output']      = originalPreEQ;
+      twin['postFilter']['output'] = originalPostFilter;
       /* eslint-enable dot-notation */
 
-      fender.deactivate();
+      twin.deactivate();
     });
 
     test('should call `connect` method', () => {
@@ -35,15 +35,15 @@ describe(Fender.name, () => {
       const postFilterDisconnectMock = jest.fn();
 
       /* eslint-disable dot-notation */
-      fender['input'].connect                   = inputConnectMock;
-      fender['input'].disconnect                = inputDisconnectMock;
-      fender['preEQ']['output'].connect         = preEQConnectMock;
-      fender['preEQ']['output'].disconnect      = preEQDisconnectMock;
-      fender['postFilter']['output'].connect    = postFilterConnectMock;
-      fender['postFilter']['output'].disconnect = postFilterDisconnectMock;
+      twin['input'].connect                   = inputConnectMock;
+      twin['input'].disconnect                = inputDisconnectMock;
+      twin['preEQ']['output'].connect         = preEQConnectMock;
+      twin['preEQ']['output'].disconnect      = preEQDisconnectMock;
+      twin['postFilter']['output'].connect    = postFilterConnectMock;
+      twin['postFilter']['output'].disconnect = postFilterDisconnectMock;
       /* eslint-enable dot-notation */
 
-      fender.connect();
+      twin.connect();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(1);
       expect(preEQConnectMock).toHaveBeenCalledTimes(0);
@@ -52,7 +52,7 @@ describe(Fender.name, () => {
       expect(preEQDisconnectMock).toHaveBeenCalledTimes(0);
       expect(postFilterDisconnectMock).toHaveBeenCalledTimes(0);
 
-      fender.activate();
+      twin.activate();
 
       expect(inputConnectMock).toHaveBeenCalledTimes(2);
       expect(preEQConnectMock).toHaveBeenCalledTimes(1);
@@ -63,8 +63,8 @@ describe(Fender.name, () => {
     });
   });
 
-  describe(fender.param.name, () => {
-    const defaultPreEQParams: FenderParams['pre'] = {
+  describe(twin.param.name, () => {
+    const defaultPreEQParams: TwinReverbParams['pre'] = {
       state     : false,
       gain      : 0.5,
       bass      : 0,
@@ -75,18 +75,18 @@ describe(Fender.name, () => {
       oversample: '4x',
     };
 
-    const defaultPostFilterParams: FenderParams['post'] = {
+    const defaultPostFilterParams: TwinReverbParams['post'] = {
       state: false,
       inch : -1,
       tilt : false
     };
 
-    const defaultParams: FenderParams = {
+    const defaultParams: TwinReverbParams = {
       pre : defaultPreEQParams,
       post: defaultPostFilterParams,
     };
 
-    const preEQParams: FenderParams['pre'] = {
+    const preEQParams: TwinReverbParams['pre'] = {
       state     : true,
       gain      : 0.75,
       bass      : 10,
@@ -97,79 +97,79 @@ describe(Fender.name, () => {
       oversample: 'none'
     };
 
-    const postFilterParams: FenderParams['post'] = {
+    const postFilterParams: TwinReverbParams['post'] = {
       state: true,
       inch : 15,
       tilt : true
     };
 
-    const params: FenderParams = {
+    const params: TwinReverbParams = {
       pre : preEQParams,
       post: postFilterParams,
     };
 
     beforeAll(() => {
-      fender.param(params);
+      twin.param(params);
     });
 
     afterAll(() => {
-      fender.param(defaultParams);
+      twin.param(defaultParams);
     });
 
     // Setter
-    test('should return instance of `Fender`', () => {
-      expect(fender.param(params)).toBeInstanceOf(Fender);
+    test('should return instance of `TwinReverb`', () => {
+      expect(twin.param(params)).toBeInstanceOf(TwinReverb);
     });
 
     // Getter
     test('should return Pre-Equalizer parameters', () => {
-      expect(fender.param('pre')).toStrictEqual(preEQParams);
+      expect(twin.param('pre')).toStrictEqual(preEQParams);
     });
 
     test('should return Post-Filter parameters', () => {
-      expect(fender.param('post')).toStrictEqual(postFilterParams);
+      expect(twin.param('post')).toStrictEqual(postFilterParams);
     });
   });
 
-  describe(fender.params.name, () => {
-    test('should return parameters for Fender preamplifier as associative array', () => {
-      expect(fender.params()).toStrictEqual({
+  describe(twin.params.name, () => {
+    test('should return parameters for Fender Twin Reverb preamplifier as associative array', () => {
+      expect(twin.params()).toStrictEqual({
         state: false,
-        pre  : fender.param('pre'),
-        post : fender.param('post'),
+        pre  : twin.param('pre'),
+        post : twin.param('post'),
       });
     });
   });
 
-  describe(fender.activate.name, () => {
+  describe(twin.activate.name, () => {
     test('should call `connect` method', () => {
-      const originalConnect = fender.connect;
+      const originalConnect = twin.connect;
 
       const connectMock = jest.fn();
 
-      fender.connect = connectMock;
+      twin.connect = connectMock;
 
-      fender.activate();
+      twin.activate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
-      fender.connect = originalConnect;
+      twin.connect = originalConnect;
     });
   });
 
-  describe(fender.deactivate.name, () => {
+  describe(twin.deactivate.name, () => {
     test('should call `connect` method', () => {
-      const originalConnect = fender.connect;
+      const originalConnect = twin.connect;
 
       const connectMock = jest.fn();
 
-      fender.connect = connectMock;
+      twin.connect = connectMock;
 
-      fender.deactivate();
+      twin.deactivate();
 
       expect(connectMock).toHaveBeenCalledTimes(1);
 
-      fender.connect = originalConnect;
+      twin.connect = originalConnect;
     });
   });
 });

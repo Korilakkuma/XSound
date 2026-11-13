@@ -1,5 +1,5 @@
-import { Effector } from '../Effector';
-import { AmpSimulator } from '../AmpSimulator';
+import { Effector } from '../../Effector';
+import { AmpSimulator } from '../../AmpSimulator';
 
 export type SpeakerInches = -1 | 10 | 12 | 15;
 
@@ -20,7 +20,7 @@ export type PostFilterParams = {
   tilt?: boolean
 };
 
-export type FenderParams = {
+export type TwinReverbParams = {
   state?: boolean,
   pre?: PreEqualizerParams,
   post?: PostFilterParams
@@ -104,11 +104,11 @@ class PreEqualizer extends Effector {
     const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
 
     // Initialize parameters
-    for (let i = 0; i < 3; i++) {
-      this.shapers[i] = context.createWaveShaper();
+    for (let n = 0; n < 3; n++) {
+      this.shapers[n] = context.createWaveShaper();
 
-      this.shapers[i].curve      = curve;
-      this.shapers[i].oversample = '4x';
+      this.shapers[n].curve      = curve;
+      this.shapers[n].oversample = '4x';
     }
 
     const coefficient1 = (220 / context.sampleRate) * Math.PI;
@@ -292,8 +292,8 @@ class PreEqualizer extends Effector {
 
             const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
 
-            for (let i = 0; i < 3; i++) {
-              this.shapers[i].curve = curve;
+            for (let n = 0; n < 3; n++) {
+              this.shapers[n].curve = curve;
             }
           }
 
@@ -306,8 +306,8 @@ class PreEqualizer extends Effector {
 
             const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
 
-            for (let i = 0; i < 3; i++) {
-              this.shapers[i].curve = curve;
+            for (let n = 0; n < 3; n++) {
+              this.shapers[n].curve = curve;
             }
           }
 
@@ -536,9 +536,9 @@ class PostFilter extends Effector {
 }
 
 /**
- * Effector's subclass for Preamplifier (Fender).
+ * Effector's subclass for Preamplifier (Fender Twin Reverb).
  */
-export class Fender extends Effector {
+export class TwinReverb extends Effector {
   private preEQ: PreEqualizer;
   private postFilter: PostFilter;
 
@@ -557,6 +557,7 @@ export class Fender extends Effector {
 
   /** @override */
   public override connect(): GainNode {
+    // Clear connection
     this.input.disconnect(0);
 
     if (this.isActive) {
@@ -579,15 +580,15 @@ export class Fender extends Effector {
   /**
    * This method gets or sets parameters for preamp effector.
    * This method is overloaded for type interface and type check.
-   * @param {keyof FenderParams|FenderParams} params This argument is string if getter. Otherwise, setter.
-   * @return {FenderParams[keyof FenderParams]|Fender} Return value is parameter for preamp effector if getter.
+   * @param {keyof TwinReverbParams|TwinReverbParams} params This argument is string if getter. Otherwise, setter.
+   * @return {TwinReverbParams[keyof TwinReverbParams]|TwinReverb} Return value is parameter for preamp effector if getter.
    *     Otherwise, return value is for method chain.
    */
   public param(params: 'state'): boolean;
-  public param(params: 'pre'): FenderParams['pre']
-  public param(params: 'post'): FenderParams['post']
-  public param(params: FenderParams): Fender;
-  public param(params: keyof FenderParams | FenderParams): FenderParams[keyof FenderParams] | Fender {
+  public param(params: 'pre'): TwinReverbParams['pre']
+  public param(params: 'post'): TwinReverbParams['post']
+  public param(params: TwinReverbParams): TwinReverb;
+  public param(params: keyof TwinReverbParams | TwinReverbParams): TwinReverbParams[keyof TwinReverbParams] | TwinReverb {
     if (typeof params === 'string') {
       switch (params) {
         case 'state': {
@@ -644,7 +645,7 @@ export class Fender extends Effector {
   }
 
   /** @override */
-  public override params(): Required<FenderParams> {
+  public override params(): Required<TwinReverbParams> {
     return {
       state: this.isActive,
       pre  : this.preEQ.params(),

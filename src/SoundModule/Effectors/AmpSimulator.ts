@@ -1,11 +1,11 @@
 import type { JC120Params } from './Preamps/JC120';
 import type { GSP2101Params } from './Preamps/GSP2101';
+import type { TwinReverbParams } from './Preamps/Fender/TwinReverb';
 import type { JTM45Params } from './Preamps/Marshall/JTM45';
 import type { JMPParams } from './Preamps/Marshall/JMP';
 import type { JCM800Params } from './Preamps/Marshall/JCM800';
 import type { MarkParams } from './Preamps/MesaBoogie/Mark';
 import type { RectifierParams } from './Preamps/MesaBoogie/Rectifier';
-import type { FenderParams } from './Preamps/Fender';
 import type { SimpleCabinetParams } from './Cabinets/SimpleCabinet';
 import type { FilterBankCabinetParams } from './Cabinets/FilterBankCabinet';
 import type { IRCabinetParams } from './Cabinets/IRCabinet';
@@ -13,17 +13,17 @@ import type { IRCabinetParams } from './Cabinets/IRCabinet';
 import { Effector } from './Effector';
 import { JC120 } from './Preamps/JC120';
 import { GSP2101 } from './Preamps/GSP2101';
+import { TwinReverb } from './Preamps/Fender/TwinReverb';
 import { JTM45 } from './Preamps/Marshall/JTM45';
 import { JMP } from './Preamps/Marshall/JMP';
 import { JCM800 } from './Preamps/Marshall/JCM800';
 import { Mark } from './Preamps/MesaBoogie/Mark';
 import { Rectifier } from './Preamps/MesaBoogie/Rectifier';
-import { Fender } from './Preamps/Fender';
 import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
 import { IRCabinet } from './Cabinets/IRCabinet';
 
-export type PreampType = 'jc-120' | 'gsp2101' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier' | 'fender';
+export type PreampType = 'jc-120' | 'gsp2101' | 'twin' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier';
 
 export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
@@ -34,7 +34,7 @@ export type AmpSimulatorParams = {
   type?: PreampType,  // for compatible
   preampType?: PreampType,
   cabinetType?: CabinetType,
-  preamp?: JC120Params | GSP2101Params | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams | FenderParams;
+  preamp?: JC120Params | GSP2101Params | TwinReverbParams | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams;
   cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
@@ -45,19 +45,19 @@ export class AmpSimulator extends Effector {
   private preampType: PreampType   = 'jmp';
   private cabinetType: CabinetType = 'simple';
 
-  private preamp: JC120 | GSP2101 | JTM45 | JMP | JCM800 | Mark | Rectifier | Fender;
+  private preamp: JC120 | GSP2101 | TwinReverb | JTM45 | JMP | JCM800 | Mark | Rectifier;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   // for export
   public static readonly Preamps = {
     JC120,
     GSP2101,
+    TwinReverb,
     JTM45,
     JMP,
     JCM800,
     Mark,
-    Rectifier,
-    Fender
+    Rectifier
   } as const;
 
   // for export
@@ -217,6 +217,13 @@ export class AmpSimulator extends Effector {
                 break;
               }
 
+              case 'twin': {
+                this.preampType = 'twin';
+                this.preamp     = new TwinReverb(this.context);
+
+                break;
+              }
+
               case 'jtm45': {
                 this.preampType = 'jtm45';
                 this.preamp     = new JTM45(this.context);
@@ -248,13 +255,6 @@ export class AmpSimulator extends Effector {
               case 'rectifier': {
                 this.preampType = 'rectifier';
                 this.preamp     = new Rectifier(this.context);
-
-                break;
-              }
-
-              case 'fender': {
-                this.preampType = 'fender';
-                this.preamp     = new Fender(this.context);
 
                 break;
               }
@@ -283,6 +283,13 @@ export class AmpSimulator extends Effector {
                 break;
               }
 
+              case 'twin': {
+                this.preampType = 'twin';
+                this.preamp     = new TwinReverb(this.context);
+
+                break;
+              }
+
               case 'jtm45': {
                 this.preampType = 'jtm45';
                 this.preamp     = new JTM45(this.context);
@@ -314,13 +321,6 @@ export class AmpSimulator extends Effector {
               case 'rectifier': {
                 this.preampType = 'rectifier';
                 this.preamp     = new Rectifier(this.context);
-
-                break;
-              }
-
-              case 'fender': {
-                this.preampType = 'fender';
-                this.preamp     = new Fender(this.context);
 
                 break;
               }
@@ -377,6 +377,12 @@ export class AmpSimulator extends Effector {
               this.preamp.param(v);
             }
 
+            if (this.preamp instanceof TwinReverb) {
+              const v: TwinReverbParams = value;
+
+              this.preamp.param(v);
+            }
+
             if (this.preamp instanceof JTM45) {
               const v: JTM45Params = value;
 
@@ -403,12 +409,6 @@ export class AmpSimulator extends Effector {
 
             if (this.preamp instanceof Rectifier) {
               const v: RectifierParams = value;
-
-              this.preamp.param(v);
-            }
-
-            if (this.preamp instanceof Fender) {
-              const v: FenderParams = value;
 
               this.preamp.param(v);
             }

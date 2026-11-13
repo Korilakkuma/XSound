@@ -1,6 +1,7 @@
 import type { JC120Params } from './Preamps/JC120';
 import type { GSP2101Params } from './Preamps/GSP2101';
 import type { TwinReverbParams } from './Preamps/Fender/TwinReverb';
+import type { BassmanParams } from './Preamps/Fender/Bassman';
 import type { JTM45Params } from './Preamps/Marshall/JTM45';
 import type { JMPParams } from './Preamps/Marshall/JMP';
 import type { JCM800Params } from './Preamps/Marshall/JCM800';
@@ -14,6 +15,7 @@ import { Effector } from './Effector';
 import { JC120 } from './Preamps/JC120';
 import { GSP2101 } from './Preamps/GSP2101';
 import { TwinReverb } from './Preamps/Fender/TwinReverb';
+import { Bassman } from './Preamps/Fender/Bassman';
 import { JTM45 } from './Preamps/Marshall/JTM45';
 import { JMP } from './Preamps/Marshall/JMP';
 import { JCM800 } from './Preamps/Marshall/JCM800';
@@ -23,7 +25,7 @@ import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
 import { IRCabinet } from './Cabinets/IRCabinet';
 
-export type PreampType = 'jc-120' | 'gsp2101' | 'twin' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier';
+export type PreampType = 'jc-120' | 'gsp2101' | 'twin' | 'bassman' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier';
 
 export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
@@ -34,7 +36,7 @@ export type AmpSimulatorParams = {
   type?: PreampType,  // for compatible
   preampType?: PreampType,
   cabinetType?: CabinetType,
-  preamp?: JC120Params | GSP2101Params | TwinReverbParams | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams;
+  preamp?: JC120Params | GSP2101Params | TwinReverbParams | BassmanParams | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams;
   cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
@@ -45,7 +47,7 @@ export class AmpSimulator extends Effector {
   private preampType: PreampType   = 'jmp';
   private cabinetType: CabinetType = 'simple';
 
-  private preamp: JC120 | GSP2101 | TwinReverb | JTM45 | JMP | JCM800 | Mark | Rectifier;
+  private preamp: JC120 | GSP2101 | TwinReverb | Bassman | JTM45 | JMP | JCM800 | Mark | Rectifier;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   // for export
@@ -53,6 +55,7 @@ export class AmpSimulator extends Effector {
     JC120,
     GSP2101,
     TwinReverb,
+    Bassman,
     JTM45,
     JMP,
     JCM800,
@@ -224,6 +227,13 @@ export class AmpSimulator extends Effector {
                 break;
               }
 
+              case 'bassman': {
+                this.preampType = 'bassman';
+                this.preamp     = new Bassman(this.context);
+
+                break;
+              }
+
               case 'jtm45': {
                 this.preampType = 'jtm45';
                 this.preamp     = new JTM45(this.context);
@@ -285,6 +295,13 @@ export class AmpSimulator extends Effector {
 
               case 'twin': {
                 this.preampType = 'twin';
+                this.preamp     = new TwinReverb(this.context);
+
+                break;
+              }
+
+              case 'bassman': {
+                this.preampType = 'bassman';
                 this.preamp     = new TwinReverb(this.context);
 
                 break;
@@ -379,6 +396,12 @@ export class AmpSimulator extends Effector {
 
             if (this.preamp instanceof TwinReverb) {
               const v: TwinReverbParams = value;
+
+              this.preamp.param(v);
+            }
+
+            if (this.preamp instanceof Bassman) {
+              const v: BassmanParams = value;
 
               this.preamp.param(v);
             }

@@ -68,13 +68,8 @@ import type { PitchShifterParams } from './SoundModule/Effectors/PitchShifter';
 import type { AmpSimulatorParams, PreampType, CabinetType, PreampCurve } from './SoundModule/Effectors/AmpSimulator';
 import type { JC120, JC120Params } from './SoundModule/Effectors/Preamps/JC120';
 import type { GSP2101, GSP2101Params } from './SoundModule/Effectors/Preamps/GSP2101';
-import type {
-  TwinReverb,
-  TwinReverbParams,
-  PreEqualizerParams as TwinReverbPreEqualizerParams,
-  PostFilterParams as TwinReverbPostFilterParams,
-  SpeakerInches as TwinReverbSpeakerInches
-} from './SoundModule/Effectors/Preamps/Fender/TwinReverb';
+import type { PreEqualizerParams as FenderPreEqualizerParams, PostFilterParams as FenderPostFilterParams, SpeakerInches as FenderSpeakerInches } from './SoundModule/Effectors/Preamps/Fender/Fender';
+import type { TwinReverb, TwinReverbParams } from './SoundModule/Effectors/Preamps/Fender/TwinReverb';
 import type { PreEqualizerParams as MarshallPreEqualizerParams, PostEqualizerParams as MarshallPostEqualizerParams } from './SoundModule/Effectors/Preamps/Marshall/Marshall';
 import type { JTM45, JTM45Params } from './SoundModule/Effectors/Preamps/Marshall/JTM45';
 import type { JMP, JMPParams } from './SoundModule/Effectors/Preamps/Marshall/JMP';
@@ -738,11 +733,11 @@ export type {
   JC120Params,
   GSP2101,
   GSP2101Params,
+  FenderPreEqualizerParams,
+  FenderPostFilterParams,
+  FenderSpeakerInches,
   TwinReverb,
   TwinReverbParams,
-  TwinReverbPreEqualizerParams,
-  TwinReverbPostFilterParams,
-  TwinReverbSpeakerInches,
   MarshallPreEqualizerParams,
   MarshallPostEqualizerParams,
   JTM45,

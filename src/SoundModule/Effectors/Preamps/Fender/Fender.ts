@@ -1,0 +1,551 @@
+import type { FilterParams } from '../../../../types';
+
+import { Effector } from '../../Effector';
+import { AmpSimulator } from '../../AmpSimulator';
+
+export type SpeakerInches = -1 | 10 | 12 | 15;
+
+export type PreEqualizerParams = {
+  state?: boolean,
+  gain?: number,
+  bass?: number,
+  middle?: number,
+  treble?: number,
+  level?: number,
+  samples?: number,
+  oversample?: OverSampleType
+};
+
+export type PostFilterParams = {
+  state?: boolean,
+  inch?: SpeakerInches,
+  tilt?: boolean
+};
+
+export type PreEqualizerFilterParams = {
+  highpass: Required<FilterParams>,
+  bass: Required<FilterParams>,
+  middle: Required<FilterParams>,
+  treble: Required<FilterParams>
+};
+
+export type PostParams = {
+  lowpass: Required<FilterParams>,
+  notch: Required<FilterParams>,
+  peaking: Required<FilterParams>,
+  tilt: Required<FilterParams>,
+  speaker: SpeakerInches
+};
+
+/**
+ * Effector's subclass for Pre-Equalizer.
+ */
+export class PreEqualizer extends Effector {
+  private preGain: GainNode;
+
+  private highpass: BiquadFilterNode;
+
+  private bass: BiquadFilterNode;
+  private middle: BiquadFilterNode;
+  private treble: BiquadFilterNode;
+
+  private gainEdge: GainNode;
+  private gainBody: GainNode;
+  private gainBottom: GainNode;
+
+  private shapers: WaveShaperNode[] = [];
+  private iirLowpassFilters: IIRFilterNode[] = [];
+  private iirHighpassFilters: IIRFilterNode[] = [];
+
+  private mixer: GainNode;
+
+  // for creating curve
+  private level           = 1;
+  private numberOfSamples = 1024;
+
+  /**
+   * @param {AudioContext} context This argument is in order to use Web Audio API.
+   * @param {PreEqualizerFilterParams} filterParams This argument is constant value for filters. This value determines the sound character every preamplifier.
+   */
+  constructor(context: AudioContext, filterParams: PreEqualizerFilterParams) {
+    super(context);
+
+    this.preGain = context.createGain();
+
+    // Initialize parameters
+    this.preGain.gain.value = 0.5;
+
+    this.highpass = context.createBiquadFilter();
+
+    // Initialize parameters
+    this.highpass.type            = 'highpass';
+    this.highpass.frequency.value = filterParams.highpass.frequency;
+    this.highpass.Q.value         = filterParams.highpass.Q;
+
+    this.bass   = context.createBiquadFilter();
+    this.middle = context.createBiquadFilter();
+    this.treble = context.createBiquadFilter();
+
+    // Initialize parameters
+    this.bass.type   = 'lowshelf';
+    this.middle.type = 'peaking';
+    this.treble.type = 'highshelf';
+
+    // Set cutoff frequency
+    this.bass.frequency.value   = filterParams.bass.frequency;
+    this.middle.frequency.value = filterParams.middle.frequency;
+    this.treble.frequency.value = filterParams.treble.frequency;
+
+    // Set Q
+    this.middle.Q.value = filterParams.middle.Q;
+
+    // Set Gain
+    this.bass.gain.value   = 0;
+    this.middle.gain.value = 0;
+    this.treble.gain.value = 0;
+
+    this.gainEdge   = context.createGain();
+    this.gainBody   = context.createGain();
+    this.gainBottom = context.createGain();
+
+    // Initialize parameters
+    this.gainEdge.gain.value   = 1;
+    this.gainBody.gain.value   = 1;
+    this.gainBottom.gain.value = 1;
+
+    const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
+
+    // Initialize parameters
+    for (let n = 0; n < 3; n++) {
+      this.shapers[n] = context.createWaveShaper();
+
+      this.shapers[n].curve      = curve;
+      this.shapers[n].oversample = '4x';
+    }
+
+    const coefficient1 = (220 / context.sampleRate) * Math.PI;
+    const coefficient2 = (220 / context.sampleRate) * Math.PI;
+
+    const lowpassFeedforward1 = new Float32Array([coefficient1, coefficient1]);
+    const lowpassFeedforward2 = new Float32Array([coefficient2, coefficient2]);
+    const lowpassFeedback1    = new Float32Array([1.0 + coefficient1, -1.0 + coefficient1]);
+    const lowpassFeedback2    = new Float32Array([1.0 + coefficient2, -1.0 + coefficient2]);
+
+    const highpassFeedforward1 = new Float32Array([1.0, -1.0]);
+    const highpassFeedforward2 = new Float32Array([1.0, -1.0]);
+    const highpassFeedback1    = new Float32Array([1.0 + coefficient1, -1.0 + coefficient1]);
+    const highpassFeedback2    = new Float32Array([1.0 + coefficient2, -1.0 + coefficient2]);
+
+    this.iirLowpassFilters[0] = context.createIIRFilter(lowpassFeedforward1, lowpassFeedback1);
+    this.iirLowpassFilters[1] = context.createIIRFilter(lowpassFeedforward2, lowpassFeedback2);
+
+    this.iirHighpassFilters[0] = context.createIIRFilter(highpassFeedforward1, highpassFeedback1);
+    this.iirHighpassFilters[1] = context.createIIRFilter(highpassFeedforward2, highpassFeedback2);
+
+    this.mixer = context.createGain();
+
+    // Initialize parameters
+    this.mixer.gain.value = 1;
+
+    // `PreEqualizer` is not connected by default
+    this.deactivate();
+  }
+
+  /** @override */
+  public override connect(): GainNode {
+    this.input.disconnect(0);
+
+    if (this.isActive) {
+      // Effect ON
+
+      // GainNode (Input) -> GainNode (Pre-gain) -> BiquadFilterNode (High-pass) -> BiquadFilterNode (Bass: Low-shelving) -> BiquadFilterNode (Middle: Peaking) -> BiquadFilterNode (Treble: High-shelving)
+      this.input.connect(this.preGain);
+      this.preGain.connect(this.highpass);
+      this.highpass.connect(this.bass);
+      this.bass.connect(this.middle);
+      this.middle.connect(this.treble);
+
+      // Edge distortion
+      // BiquadFilterNode (Treble: High-shelving) -> IIRFilterNode (High-pass) -> WaveShaperNode (Clipping) -> GainNode (Edge volume) -> GainNode (Mixer)
+      this.treble.connect(this.iirHighpassFilters[1]);
+      this.iirHighpassFilters[1].connect(this.shapers[0]);
+      this.shapers[0].connect(this.gainEdge);
+      this.gainEdge.connect(this.mixer);
+
+      // Middle distortion
+      // BiquadFilterNode (Treble: High-shelving) -> IIRFilterNode (High-pass) -> WaveShaperNode (Clipping) -> IIRFilterNode (Low-pass) -> GainNode (Body volume) -> GainNode (Mixer)
+      this.treble.connect(this.iirHighpassFilters[0]);
+      this.iirHighpassFilters[0].connect(this.shapers[1]);
+      this.shapers[1].connect(this.iirLowpassFilters[1]);
+      this.iirLowpassFilters[1].connect(this.gainBody);
+      this.gainBody.connect(this.mixer);
+
+      // Low distortion
+      // BiquadFilterNode (Treble: High-shelving) -> IIRFilterNode (Low-pass) -> WaveShaperNode (Clipping) -> GainNode (Bottom volume) -> GainNode (Mixer)
+      this.treble.connect(this.iirLowpassFilters[0]);
+      this.iirLowpassFilters[0].connect(this.shapers[2]);
+      this.shapers[2].connect(this.gainBottom);
+      this.gainBottom.connect(this.mixer);
+
+
+      // GainNode (Mixer) -> GainNode (Output)
+      this.mixer.connect(this.output);
+    } else {
+      // Effect OFF
+
+      // GainNode (Input) -> GainNode (Output)
+      this.input.connect(this.output);
+    }
+
+    return this.output;
+  }
+
+  /**
+   * This method gets or sets parameters for pre-equalizer.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof PreEqualizerParams|PreEqualizerParams} params This argument is string if getter. Otherwise, setter.
+   * @return {PreEqualizerParams[keyof PreEqualizerParams]} Return value is parameter for pre-equalizer if getter.
+   */
+  public param(params: 'state'): boolean;
+  public param(params: 'gain'): number;
+  public param(params: 'bass'): number;
+  public param(params: 'middle'): number;
+  public param(params: 'treble'): number;
+  public param(params: 'level'): number;
+  public param(params: 'samples'): number;
+  public param(params: 'oversample'): OverSampleType;
+  public param(params: PreEqualizerParams): void;
+  public param(params: keyof PreEqualizerParams | PreEqualizerParams): PreEqualizerParams[keyof PreEqualizerParams] | void {
+    if (typeof params === 'string') {
+      switch (params) {
+        case 'state': {
+          return this.isActive;
+        }
+
+        case 'gain': {
+          return this.preGain.gain.value;
+        }
+
+        case 'bass': {
+          return this.bass.gain.value;
+        }
+
+        case 'middle': {
+          return this.middle.gain.value;
+        }
+
+        case 'treble': {
+          return this.treble.gain.value;
+        }
+
+        case 'level': {
+          return this.level;
+        }
+
+        case 'samples': {
+          return this.numberOfSamples;
+        }
+
+        case 'oversample': {
+          return this.shapers[0].oversample;
+        }
+      }
+    }
+
+    for (const [key, value] of Object.entries(params)) {
+      switch (key) {
+        case 'state': {
+          if (typeof value === 'boolean') {
+            if (value) {
+              this.activate();
+            } else {
+              this.deactivate();
+            }
+          }
+
+          break;
+        }
+
+        case 'gain': {
+          if (typeof value === 'number') {
+            this.preGain.gain.value = value;
+          }
+
+          break;
+        }
+
+        case 'bass': {
+          if (typeof value === 'number') {
+            this.bass.gain.value = value;
+          }
+
+          break;
+        }
+
+        case 'middle': {
+          if (typeof value === 'number') {
+            this.middle.gain.value = value;
+          }
+
+          break;
+        }
+
+        case 'treble': {
+          if (typeof value === 'number') {
+            this.treble.gain.value = value;
+          }
+
+          break;
+        }
+
+        case 'level': {
+          if (typeof value === 'number') {
+            this.level = value;
+
+            const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
+
+            for (let n = 0; n < 3; n++) {
+              this.shapers[n].curve = curve;
+            }
+          }
+
+          break;
+        }
+
+        case 'samples': {
+          if (typeof value === 'number') {
+            this.numberOfSamples = value;
+
+            const curve = AmpSimulator.createCurve(this.level, this.numberOfSamples);
+
+            for (let n = 0; n < 3; n++) {
+              this.shapers[n].curve = curve;
+            }
+          }
+
+          break;
+        }
+
+        case 'oversample': {
+          if (typeof value === 'string') {
+            if ((value === 'none') || (value === '2x') || (value === '4x')) {
+              for (let i = 0; i < 3; i++) {
+                this.shapers[i].oversample = value;
+              }
+            }
+          }
+
+          break;
+        }
+      }
+    }
+  }
+
+  /** @override */
+  public override params(): Required<PreEqualizerParams> {
+    return {
+      state     : this.isActive,
+      gain      : this.preGain.gain.value,
+      bass      : this.bass.gain.value,
+      middle    : this.middle.gain.value,
+      treble    : this.treble.gain.value,
+      level     : this.level,
+      samples   : this.numberOfSamples,
+      oversample: this.shapers[0].oversample
+    };
+  }
+}
+
+/**
+ * Effector's subclass for Post-filter.
+ */
+export class PostFilter extends Effector {
+  private inch: SpeakerInches = -1;
+  private tilt = false;
+
+  private preCabinetLowpass: BiquadFilterNode;
+  private preCabinetNotch: BiquadFilterNode;
+  private speakerFilter: BiquadFilterNode;
+  private tiltFilter: BiquadFilterNode;
+
+  /**
+   * @param {AudioContext} context This argument is in order to use Web Audio API.
+   * @param {PostParams} postParams This argument is constant value for filters. This value determines the sound character every preamplifier.
+   */
+  constructor(context: AudioContext, postParams: PostParams) {
+    super(context);
+
+    this.preCabinetLowpass = context.createBiquadFilter();
+    this.preCabinetNotch   = context.createBiquadFilter();
+    this.speakerFilter     = context.createBiquadFilter();
+
+    // Initialize parameters
+    this.preCabinetLowpass.type            = 'lowpass';
+    this.preCabinetLowpass.frequency.value = postParams.lowpass.frequency;
+    this.preCabinetLowpass.Q.value         = postParams.lowpass.Q;
+    this.preCabinetLowpass.gain.value      = 0;  // Not used
+
+    this.preCabinetNotch.type            = 'notch';
+    this.preCabinetNotch.frequency.value = postParams.notch.frequency;
+    this.preCabinetNotch.Q.value         = postParams.notch.Q;
+    this.preCabinetNotch.gain.value      = 0;  // Not used
+
+    this.speakerFilter.type            = 'peaking';
+    this.speakerFilter.frequency.value = postParams.peaking.frequency;
+    this.speakerFilter.Q.value         = postParams.peaking.Q;
+    this.speakerFilter.gain.value      = 0;
+
+    this.tiltFilter = context.createBiquadFilter();
+
+    // Initialize parameters
+    this.tiltFilter.type            = 'highshelf';
+    this.tiltFilter.frequency.value = postParams.tilt.frequency;
+    this.tiltFilter.Q.value         = postParams.tilt.Q;
+    this.tiltFilter.gain.value      = 0;
+
+    this.inch = postParams.speaker;
+
+    // `PostFilter` is not connected by default
+    this.deactivate();
+  }
+
+  /** @override */
+  public override connect(): GainNode {
+    this.input.disconnect(0);
+    this.preCabinetLowpass.disconnect(0);
+    this.preCabinetNotch.disconnect(0);
+
+    if (this.isActive) {
+      // Effect ON
+
+      // GainNode (Input) -> Pre-Cabinet (Notch -> Low-Pass) -> BiquadFilterNode (Speaker inch) -> BiquadFilterNode (Speaker tilt) -> GainNode (Output)
+      this.input.connect(this.preCabinetNotch);
+      this.preCabinetNotch.connect(this.preCabinetLowpass);
+      this.preCabinetLowpass.connect(this.speakerFilter);
+      this.speakerFilter.connect(this.tiltFilter);
+      this.tiltFilter.connect(this.output);
+    } else {
+      // Effect OFF
+
+      // GainNode (Input) -> GainNode (Output)
+      this.input.connect(this.output);
+    }
+
+    return this.output;
+  }
+
+  /**
+   * This method gets or sets parameters for post-filter.
+   * This method is overloaded for type interface and type check.
+   * @param {keyof PostFilterParams|PostFilterParams} params This argument is string if getter. Otherwise, setter.
+   * @return {PostFilterParams[keyof PostFilterParams]} Return value is parameter for post-filter if getter.
+   */
+  public param(params: 'state'): boolean;
+  public param(params: 'inch'): SpeakerInches;
+  public param(params: 'tilt'): boolean;
+  public param(params: PostFilterParams): void;
+  public param(params: keyof PostFilterParams | PostFilterParams): PostFilterParams[keyof PostFilterParams] | void {
+    if (typeof params === 'string') {
+      switch (params) {
+        case 'state': {
+          return this.isActive;
+        }
+
+        case 'inch': {
+          return this.inch;
+        }
+
+        case 'tilt': {
+          return this.tilt;
+        }
+      }
+    }
+
+    for (const [key, value] of Object.entries(params)) {
+      switch (key) {
+        case 'state': {
+          if (typeof value === 'boolean') {
+            if (value) {
+              this.activate();
+            } else {
+              this.deactivate();
+            }
+          }
+
+          break;
+        }
+
+        case 'inch': {
+          if (typeof value === 'number') {
+            switch (value) {
+              case -1: {
+                this.inch = -1;
+
+                this.speakerFilter.frequency.value = 40;
+                this.speakerFilter.Q.value         = Math.SQRT1_2;
+                this.speakerFilter.gain.value      = 0;
+
+                break;
+              }
+
+              case 10: {
+                this.inch = 10;
+
+                this.speakerFilter.frequency.value = 120;
+                this.speakerFilter.Q.value         = 3;
+                this.speakerFilter.gain.value      = 9;
+
+                break;
+              }
+
+              case 12: {
+                this.inch = 12;
+
+                this.speakerFilter.frequency.value = 80;
+                this.speakerFilter.Q.value         = 6;
+                this.speakerFilter.gain.value      = 10;
+
+                break;
+              }
+
+              case 15: {
+                this.inch = 15;
+
+                this.speakerFilter.frequency.value = 60;
+                this.speakerFilter.Q.value         = 9;
+                this.speakerFilter.gain.value      = 12;
+
+                break;
+              }
+            }
+          }
+
+          break;
+        }
+
+        case 'tilt': {
+          if (typeof value === 'boolean') {
+            this.tilt = value;
+
+            if (this.tilt) {
+              this.tiltFilter.gain.value = 6;
+            } else {
+              this.tiltFilter.gain.value = 0;
+            }
+          }
+
+          break;
+        }
+      }
+    }
+  }
+
+  /** @override */
+  public override params(): Required<PostFilterParams> {
+    return {
+      state: this.isActive,
+      inch : this.inch,
+      tilt : this.tilt
+    };
+  }
+}

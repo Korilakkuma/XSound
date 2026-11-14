@@ -7,6 +7,7 @@ import type { JMPParams } from './Preamps/Marshall/JMP';
 import type { JCM800Params } from './Preamps/Marshall/JCM800';
 import type { MarkParams } from './Preamps/MesaBoogie/Mark';
 import type { RectifierParams } from './Preamps/MesaBoogie/Rectifier';
+import type { SLO100Params } from './Preamps/Soldano/SLO100';
 import type { SimpleCabinetParams } from './Cabinets/SimpleCabinet';
 import type { FilterBankCabinetParams } from './Cabinets/FilterBankCabinet';
 import type { IRCabinetParams } from './Cabinets/IRCabinet';
@@ -21,11 +22,12 @@ import { JMP } from './Preamps/Marshall/JMP';
 import { JCM800 } from './Preamps/Marshall/JCM800';
 import { Mark } from './Preamps/MesaBoogie/Mark';
 import { Rectifier } from './Preamps/MesaBoogie/Rectifier';
+import { SLO100 } from './Preamps/Soldano/SLO100';
 import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
 import { IRCabinet } from './Cabinets/IRCabinet';
 
-export type PreampType = 'jc-120' | 'gsp2101' | 'twin' | 'bassman' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier';
+export type PreampType = 'jc-120' | 'gsp2101' | 'twin' | 'bassman' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier' | 'slo-100';
 
 export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
@@ -36,7 +38,7 @@ export type AmpSimulatorParams = {
   type?: PreampType,  // for compatible
   preampType?: PreampType,
   cabinetType?: CabinetType,
-  preamp?: JC120Params | GSP2101Params | TwinReverbParams | BassmanParams | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams;
+  preamp?: JC120Params | GSP2101Params | TwinReverbParams | BassmanParams | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams | SLO100Params;
   cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
@@ -47,7 +49,7 @@ export class AmpSimulator extends Effector {
   private preampType: PreampType   = 'jmp';
   private cabinetType: CabinetType = 'simple';
 
-  private preamp: JC120 | GSP2101 | TwinReverb | Bassman | JTM45 | JMP | JCM800 | Mark | Rectifier;
+  private preamp: JC120 | GSP2101 | TwinReverb | Bassman | JTM45 | JMP | JCM800 | Mark | Rectifier | SLO100;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   // for export
@@ -268,6 +270,13 @@ export class AmpSimulator extends Effector {
 
                 break;
               }
+
+              case 'slo-100': {
+                this.preampType = 'slo-100';
+                this.preamp     = new SLO100(this.context);
+
+                break;
+              }
             }
 
             this.connect();
@@ -338,6 +347,13 @@ export class AmpSimulator extends Effector {
               case 'rectifier': {
                 this.preampType = 'rectifier';
                 this.preamp     = new Rectifier(this.context);
+
+                break;
+              }
+
+              case 'slo-100': {
+                this.preampType = 'slo-100';
+                this.preamp     = new SLO100(this.context);
 
                 break;
               }
@@ -432,6 +448,12 @@ export class AmpSimulator extends Effector {
 
             if (this.preamp instanceof Rectifier) {
               const v: RectifierParams = value;
+
+              this.preamp.param(v);
+            }
+
+            if (this.preamp instanceof SLO100) {
+              const v: SLO100Params = value;
 
               this.preamp.param(v);
             }

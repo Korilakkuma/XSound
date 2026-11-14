@@ -78,6 +78,7 @@ import type { JCM800, JCM800Params } from './SoundModule/Effectors/Preamps/Marsh
 import type { PreEqualizerParams as MesaBoogiePreEqualizerParams, PostEqualizerParams as MesaBoogiePostEqualizerParams } from './SoundModule/Effectors/Preamps/MesaBoogie/MesaBoogie';
 import type { Mark, MarkParams } from './SoundModule/Effectors/Preamps/MesaBoogie/Mark';
 import type { Rectifier, RectifierParams } from './SoundModule/Effectors/Preamps/MesaBoogie/Rectifier';
+import type { SLO100, SLO100Params } from './SoundModule/Effectors/Preamps/Soldano/SLO100';
 import type { SimpleCabinetParams } from './SoundModule/Effectors/Cabinets/SimpleCabinet';
 import type { FilterBankCabinetParams } from './SoundModule/Effectors/Cabinets/FilterBankCabinet';
 import type { IRCabinetParams } from './SoundModule/Effectors/Cabinets/IRCabinet';
@@ -755,6 +756,8 @@ export type {
   MarkParams,
   Rectifier,
   RectifierParams,
+  SLO100,
+  SLO100Params,
   SimpleCabinetParams,
   FilterBankCabinetParams,
   IRCabinetParams,

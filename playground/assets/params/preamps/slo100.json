@@ -1,0 +1,24 @@
+{
+  "state": false,
+  "preampType": "slo-100",
+  "preamp": {
+    "state": true,
+    "level": 1,
+    "samples": 1024,
+    "pre": {
+      "state": true,
+      "oversample": "4x",
+      "gain": 0.5,
+      "lead": 0.5
+    },
+    "post": {
+      "state": true,
+      "oversample": "4x",
+      "bass": 0,
+      "middle": 0,
+      "treble": 0,
+      "presence": 0,
+      "frequency": 500
+    }
+  }
+}

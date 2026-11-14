@@ -3,7 +3,7 @@
   "preampType": "jmp",
   "preamp": {
     "state": true,
-    "level": 0,
+    "level": 1,
     "samples": 1024,
     "pre": {
       "state": true,

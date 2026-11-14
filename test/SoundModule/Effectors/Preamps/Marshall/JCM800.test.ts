@@ -84,7 +84,7 @@ describe(JCM800.name, () => {
     };
 
     const defaultParams: JCM800Params = {
-      level  : 0,
+      level  : 1,
       samples: 1024,
       pre    : defaultPreEQParams,
       post   : defaultPostEQParams
@@ -151,7 +151,7 @@ describe(JCM800.name, () => {
     test('should return parameters for Marshall JCM800 preamplifier as associative array', () => {
       expect(jcm800.params()).toStrictEqual({
         state  : false,
-        level  : 0,
+        level  : 1,
         samples: 1024,
         pre    : jcm800.param('pre'),
         post   : jcm800.param('post')

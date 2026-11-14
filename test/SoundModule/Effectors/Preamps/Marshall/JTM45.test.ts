@@ -83,7 +83,7 @@ describe(JTM45.name, () => {
     };
 
     const defaultParams: JTM45Params = {
-      level  : 0,
+      level  : 1,
       samples: 1024,
       pre    : defaultPreEQParams,
       post   : defaultPostEQParams
@@ -150,7 +150,7 @@ describe(JTM45.name, () => {
     test('should return parameters for Marshall JTM45 preamplifier as associative array', () => {
       expect(jtm45.params()).toStrictEqual({
         state  : false,
-        level  : 0,
+        level  : 1,
         samples: 1024,
         pre    : jtm45.param('pre'),
         post   : jtm45.param('post')

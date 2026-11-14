@@ -83,7 +83,7 @@ describe(JMP.name, () => {
     };
 
     const defaultParams: JMPParams = {
-      level  : 0,
+      level  : 1,
       samples: 1024,
       pre    : defaultPreEQParams,
       post   : defaultPostEQParams
@@ -150,7 +150,7 @@ describe(JMP.name, () => {
     test('should return parameters for Marshall JMP preamplifier as associative array', () => {
       expect(jmp.params()).toStrictEqual({
         state  : false,
-        level  : 0,
+        level  : 1,
         samples: 1024,
         pre    : jmp.param('pre'),
         post   : jmp.param('post')

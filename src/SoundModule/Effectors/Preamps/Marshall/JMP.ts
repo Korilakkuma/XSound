@@ -21,7 +21,7 @@ export class JMP extends Effector {
   private postEQ: PostEqualizer;
 
   // for creating curve
-  private level           = 0;
+  private level           = 1;
   private numberOfSamples = 1024;
 
   /**

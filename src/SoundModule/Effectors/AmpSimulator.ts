@@ -67,6 +67,7 @@ export class AmpSimulator extends Effector {
     JCM800,
     Mark,
     Rectifier,
+    SLO100,
     Studio5150,
     Uberschall
   } as const;

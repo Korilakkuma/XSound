@@ -79,6 +79,7 @@ import type { PreEqualizerParams as MesaBoogiePreEqualizerParams, PostEqualizerP
 import type { Mark, MarkParams } from './SoundModule/Effectors/Preamps/MesaBoogie/Mark';
 import type { Rectifier, RectifierParams } from './SoundModule/Effectors/Preamps/MesaBoogie/Rectifier';
 import type { SLO100, SLO100Params } from './SoundModule/Effectors/Preamps/Soldano/SLO100';
+import type { Studio5150, Studio5150Params } from './SoundModule/Effectors/Preamps/Peavey/Studio5150';
 import type { Uberschall, UberschallParams } from './SoundModule/Effectors/Preamps/Bogner/Uberschall';
 import type { SimpleCabinetParams } from './SoundModule/Effectors/Cabinets/SimpleCabinet';
 import type { FilterBankCabinetParams } from './SoundModule/Effectors/Cabinets/FilterBankCabinet';
@@ -759,6 +760,8 @@ export type {
   RectifierParams,
   SLO100,
   SLO100Params,
+  Studio5150,
+  Studio5150Params,
   Uberschall,
   UberschallParams,
   SimpleCabinetParams,

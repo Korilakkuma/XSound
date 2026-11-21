@@ -112,6 +112,7 @@ X.AmpSimulator.Preamps.JCM800(context: AudioContext);
 X.AmpSimulator.Preamps.Mark(context: AudioContext);
 X.AmpSimulator.Preamps.Rectifier(context: AudioContext);
 X.AmpSimulator.Preamps.SLO100(context: AudioContext);
+X.AmpSimulator.Preamps.Studio5150(context: AudioContext);
 X.AmpSimulator.Preamps.Uberschall(context: AudioContext);
 X.AmpSimulator.Cabinets.SimpleCabinet(context: AudioContext);
 X.AmpSimulator.Cabinets.FilterBankCabinet(context: AudioContext);

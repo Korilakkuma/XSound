@@ -114,6 +114,7 @@ X.AmpSimulator.Preamps.Rectifier(context: AudioContext);
 X.AmpSimulator.Preamps.SLO100(context: AudioContext);
 X.AmpSimulator.Preamps.Studio5150(context: AudioContext);
 X.AmpSimulator.Preamps.Uberschall(context: AudioContext);
+X.AmpSimulator.Preamps.AC30(context: AudioContext);
 X.AmpSimulator.Cabinets.SimpleCabinet(context: AudioContext);
 X.AmpSimulator.Cabinets.FilterBankCabinet(context: AudioContext);
 X.AmpSimulator.Cabinets.IRCabinet(context: AudioContext);

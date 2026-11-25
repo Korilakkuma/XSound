@@ -27,6 +27,9 @@ export class PreEqualizer extends Effector {
   private highpass: BiquadFilterNode;
   private lowpass: BiquadFilterNode;
 
+  /**
+   * @param {AudioContext} context This argument is in order to use Web Audio API.
+   */
   constructor(context: AudioContext) {
     super(context);
 

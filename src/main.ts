@@ -83,6 +83,8 @@ import type { Studio5150, Studio5150Params } from './SoundModule/Effectors/Pream
 import type { Uberschall, UberschallParams } from './SoundModule/Effectors/Preamps/Bogner/Uberschall';
 import type { PreEqualizerParams as VOXPreEqualizerParams, PostEqualizerParams as VOXPostEqualizerParams } from './SoundModule/Effectors/Preamps/VOX/VOX';
 import type { AC30, AC30Params } from './SoundModule/Effectors/Preamps/VOX/AC30';
+import type { PreEqualizerParams as HiwattPreEqualizerParams, PostEqualizerParams as HiwattPostEqualizerParams } from './SoundModule/Effectors/Preamps/Hiwatt/Hiwatt';
+import type { DR103, DR103Params } from './SoundModule/Effectors/Preamps/Hiwatt/DR103';
 import type { SimpleCabinetParams } from './SoundModule/Effectors/Cabinets/SimpleCabinet';
 import type { FilterBankCabinetParams } from './SoundModule/Effectors/Cabinets/FilterBankCabinet';
 import type { IRCabinetParams } from './SoundModule/Effectors/Cabinets/IRCabinet';
@@ -770,6 +772,10 @@ export type {
   VOXPostEqualizerParams,
   AC30,
   AC30Params,
+  HiwattPreEqualizerParams,
+  HiwattPostEqualizerParams,
+  DR103,
+  DR103Params,
   SimpleCabinetParams,
   FilterBankCabinetParams,
   IRCabinetParams,

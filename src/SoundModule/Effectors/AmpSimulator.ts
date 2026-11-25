@@ -11,6 +11,7 @@ import type { SLO100Params } from './Preamps/Soldano/SLO100';
 import type { Studio5150Params } from './Preamps/Peavey/Studio5150';
 import type { UberschallParams } from './Preamps/Bogner/Uberschall';
 import type { AC30Params } from './Preamps/VOX/AC30';
+import type { DR103Params } from './Preamps/Hiwatt/DR103';
 import type { SimpleCabinetParams } from './Cabinets/SimpleCabinet';
 import type { FilterBankCabinetParams } from './Cabinets/FilterBankCabinet';
 import type { IRCabinetParams } from './Cabinets/IRCabinet';
@@ -29,11 +30,12 @@ import { SLO100 } from './Preamps/Soldano/SLO100';
 import { Studio5150 } from './Preamps/Peavey/Studio5150';
 import { Uberschall } from './Preamps/Bogner/Uberschall';
 import { AC30 } from './Preamps/VOX/AC30';
+import { DR103 } from './Preamps/Hiwatt/DR103';
 import { SimpleCabinet } from './Cabinets/SimpleCabinet';
 import { FilterBankCabinet } from './Cabinets/FilterBankCabinet';
 import { IRCabinet } from './Cabinets/IRCabinet';
 
-export type PreampType = 'jc-120' | 'gsp2101' | 'twin' | 'bassman' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier' | 'slo-100' | '5150' | 'uberschall' | 'ac30';
+export type PreampType = 'jc-120' | 'gsp2101' | 'twin' | 'bassman' | 'jtm45' | 'jmp' | 'jcm800' | 'mark' | 'rectifier' | 'slo-100' | '5150' | 'uberschall' | 'ac30' | 'dr103';
 
 export type CabinetType = 'simple' | 'filterbank' | 'IR';
 
@@ -44,7 +46,7 @@ export type AmpSimulatorParams = {
   type?: PreampType,  // for compatible
   preampType?: PreampType,
   cabinetType?: CabinetType,
-  preamp?: JC120Params | GSP2101Params | TwinReverbParams | BassmanParams | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams | SLO100Params | Studio5150Params | UberschallParams | AC30Params;
+  preamp?: JC120Params | GSP2101Params | TwinReverbParams | BassmanParams | JTM45Params | JMPParams | JCM800Params | MarkParams | RectifierParams | SLO100Params | Studio5150Params | UberschallParams | AC30Params | DR103Params;
   cabinet?: SimpleCabinetParams | FilterBankCabinetParams | IRCabinetParams
 };
 
@@ -55,7 +57,7 @@ export class AmpSimulator extends Effector {
   private preampType: PreampType   = 'jmp';
   private cabinetType: CabinetType = 'simple';
 
-  private preamp: JC120 | GSP2101 | TwinReverb | Bassman | JTM45 | JMP | JCM800 | Mark | Rectifier | SLO100 | Studio5150 | Uberschall | AC30;
+  private preamp: JC120 | GSP2101 | TwinReverb | Bassman | JTM45 | JMP | JCM800 | Mark | Rectifier | SLO100 | Studio5150 | Uberschall | AC30 | DR103;
   private cabinet: SimpleCabinet | FilterBankCabinet | IRCabinet;
 
   // for export
@@ -72,7 +74,8 @@ export class AmpSimulator extends Effector {
     SLO100,
     Studio5150,
     Uberschall,
-    AC30
+    AC30,
+    DR103
   } as const;
 
   // for export
@@ -308,6 +311,13 @@ export class AmpSimulator extends Effector {
 
                 break;
               }
+
+              case 'dr103': {
+                this.preampType = 'dr103';
+                this.preamp     = new DR103(this.context);
+
+                break;
+              }
             }
 
             this.connect();
@@ -406,6 +416,13 @@ export class AmpSimulator extends Effector {
               case 'ac30': {
                 this.preampType = 'ac30';
                 this.preamp     = new AC30(this.context);
+
+                break;
+              }
+
+              case 'dr103': {
+                this.preampType = 'dr103';
+                this.preamp     = new DR103(this.context);
 
                 break;
               }
@@ -524,6 +541,12 @@ export class AmpSimulator extends Effector {
 
             if (this.preamp instanceof AC30) {
               const v: AC30Params = value;
+
+              this.preamp.param(v);
+            }
+
+            if (this.preamp instanceof DR103) {
+              const v: DR103Params = value;
 
               this.preamp.param(v);
             }
